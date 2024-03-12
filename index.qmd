@@ -90,6 +90,9 @@ This is the methods section.
 
 ## Results
 
+{{< embed notebooks/fig1.qmd#fig-bar >}}
+{{< embed notebooks/fig1.qmd#fig-line >}}
+
 Results include
 
 - Markdown text
@@ -99,12 +102,6 @@ Results include
 
 We demonstrate each (other than markdown text, which you should know!) below
 
-
-### Data Figures
-
-Figures are also generally created in separate notebooks and embedded into your manuscript.
-
-{{< embed notebooks/fig1.qmd#fig-1 >}}
 
 ### Figures from images
 

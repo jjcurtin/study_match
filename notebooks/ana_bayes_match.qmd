@@ -206,8 +206,10 @@ ci <- pp_tidy |>
   summary() |> 
   mutate(model = factor(model, levels = c("week_4", "week_26")),
          y = 1000) 
+```
 
-pp_tidy |> 
+```{r fig-posteriors}
+fig_posteriors <- pp_tidy |> 
   mutate(model = factor(model, levels = c("week_4", "week_26"))) |> 
   ggplot() + 
   geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
@@ -221,6 +223,8 @@ pp_tidy |>
   scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
   # ylab("Posterior Probability Density") +
   xlab("Area Under ROC Curve")
+
+fig_posteriors
 ```
 
 model contrast posteriors
@@ -234,8 +238,10 @@ ci_con <- pp |>
                            levels = c("week_4 vs week_26"),
                            labels = c("week 4 vs. week 26")),
          y = 700)
+```
 
-pp |> 
+```{r fig-contrasts}
+fig_contrasts <- pp |> 
   tidy(seed = 123) |>   
   group_by(model) |> 
   mutate(sample = row_number()) |> 
@@ -253,6 +259,8 @@ pp |>
                data = ci_con) +
   ylab("Posterior Probability") +
   xlab("Model Contrast for auROC (Week 4 vs. Week 26)")
+
+fig_contrasts
 ```
 
 

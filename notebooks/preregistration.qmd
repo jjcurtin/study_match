@@ -1,0 +1,503 @@
+---
+title: "Preregistration: Evaluation of Clinical Benefit"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+params:
+  study: "match"
+  version: "v5"
+  algorithms: "all"   # "all" or name of specific algorithm
+  y_col_name: "pp_hybrid_wk4_outcome" 
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r set_variables}
+#| echo: false
+study <- params$study
+version <- params$version
+algorithms <- params$algorithms
+y_col_name <- params$y_col_name
+
+```
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+#| echo: false
+
+# packages for script
+library(lme4)
+library(tidymodels)
+library(tidyverse)
+library(blme)
+library(brms)
+library(parallel)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+#| echo: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute paths}
+#| echo: false
+
+# absolute paths
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- stringr::str_c("P:/studydata/match/models/", 
+                                        y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_models <- stringr::str_c("/Volumes/private/studydata/match/models/", 
+                                        y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_models <- stringr::str_c("~/mnt/private/studydata/match/models/", 
+                                        y_col_name)}
+)
+```
+
+```{r defaults}
+#| echo: false
+
+# chunk defaults
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+```{r}
+#| echo: false
+
+# read in d
+d <- read_csv(file.path(path_models, str_c("aim_2_", version, ".csv")),
+              show_col_types = FALSE) |> 
+  mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
+         outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
+         outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
+         tx_worst = case_when(
+           prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
+           prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
+           prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
+           TRUE ~ NA_character_),
+         tx_second = case_when(
+           tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
+           tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
+           tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
+           tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
+           TRUE ~ NA_character_)) |> 
+  mutate(tx_rank = case_when(
+    tx_rct == tx_best ~ "first",
+    tx_rct == tx_second ~ "second",
+    tx_rct == tx_worst ~ "third",
+    TRUE ~ NA_character_)) |> 
+  select(subid, starts_with("tx_"), starts_with("prob_"),
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
+
+# read in best_config
+best_configuration <- read_csv(file.path(path_models, str_c("best_config_", version, ".csv")),
+                               show_col_types = FALSE) |> 
+  select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
+```
+
+```{r make_prelim_fig}
+#| echo: false
+#| eval: false
+
+# make figure for john's presentation
+d_fig <- d |> 
+  select(subid, tx_rank, 
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(tx_rank = factor(tx_rank, 
+                          levels = c("first", "second", "third")),
+         week = factor(week,
+                       levels = c("wk4", "wk12", "wk26")),
+         subid = factor(subid)) |> 
+  summarize(outcome_mean = mean(outcome_rct_num), .by = c(tx_rank, week)) 
+
+# bar chart
+d_fig |> 
+  ggplot(aes(x = week, y = outcome_mean, fill = tx_rank)) +
+  geom_col(position = "dodge") 
+
+# line graph
+d_fig |> 
+  ggplot(aes(x = week, y = outcome_mean, color = tx_rank)) +
+  geom_line(aes(group = tx_rank)) +
+  geom_point() +
+  scale_y_continuous(limits = c(0, 0.5))
+
+```
+
+```{r}
+#| echo: false
+
+# functions for viewing & understanding allFit() results
+# originally created in fun_stressor_use.R, modified slightly to work here
+tidy_opts <- function(m, terms = c("tx_rankbest_v_other", 
+                                   "tx_ranksecond_v_third",
+                                   "tx_rankbest_v_other:weekwk4_v_later", 
+                                   "tx_rankbest_v_other:weekwk12_v_wk26")) {
+
+  s <- summary(m)
+  
+  # Remove optimizers that fail to be fit at all (this is not models that don't converge)
+  m <- m[which(s$which.OK)]
+  
+  effects <- m %>% 
+    map_dfr(broom.mixed::tidy) %>% 
+    filter(term %in% terms) %>% 
+    arrange(term) %>% 
+    mutate(optimizer = rep(names(m), length(terms))) %>% 
+    select(-group) %>% 
+    relocate(optimizer) %>% 
+    arrange(term, optimizer)
+  
+  all <- tibble(optimizer = names(s$msgs), term = "model", msg = s$msgs, llik = s$llik) %>% 
+    bind_rows(effects)
+  return(all)
+}
+
+extract_opts_msgs <- function(tidy_msg, opt_name){
+
+  if (opt_name != "") {
+    if (is.null(tidy_msg)) {
+      the_msg <- ""
+    } else {
+      the_msg <- unlist(tidy_msg)
+    }
+    msgs <- tibble(opt_name = opt_name, 
+                   msg = the_msg)
+  } else{
+    msgs <- tibble(opt_name = character(), msg = character())
+  }
+
+
+  return(msgs)
+}
+```
+
+## Study Overview
+
+### Specific Aims
+
+This project represents a tangible application of the precision mental health paradigm using modern machine learning approaches. This project aims to produce a decision-making tool to select among cigarette smoking cessation treatments for individuals looking to quit smoking. 
+
+Cigarette smoking remains a critical and costly public health crisis. Existing treatments are only modestly effective at best. Additionally, treatments are similarly effective at the population level, meaning that even population-level effectiveness cannot guide treatment selection for individuals quitting smoking. Thus, deciding among first-line (i.e., FDA-approved) smoking cessation medications is a specific, objective decision that many individuals who smoke (or their providers) must make. Successful application of the precision mental health paradigm to cigarette smoking cessation would have immediate clinical benefit. 
+
+Specifically, this project pursues the following aims:
+
+**AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.** We will build a machine learning model to predict treatment success (i.e., 4-week point-prevalence abstinence from smoking) for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed randomized controlled trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.
+
+**AIM 2: Evaluate the clinical benefit of using a treatment selection machine learning model.** Using the best model identified in **AIM 1**, we will identify the treatment for each person that gives them the highest likelihood of abstinence at 4 weeks by comparing predicted probabilities of abstinence for each participant for each treatment. We will then evaluate the clinical benefit of this model-based treatment selection approach. 
+
+### Study Progress
+
+This project relies on existing data from a completed comparative effectiveness trial by [Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/). Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking.
+
+**AIM 1** analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds ("test sets") were used to evaluate model performance. A single, best model was selected with 1 repeat of 10-fold cross-validation in the full dataset. The best model configuration includes the following:
+
+```{r}
+glimpse(best_configuration)
+```
+
+* Selected algorithm was glmnet (xgboost and random forest also considered)
+
+* Selected feature set was "item_ordinal" indicating that individual items (rather than scale scores) were used, and ordinal scoring was used for ordered data (rather than dummy coding)
+
+* Selected resampling approach was "up_1" corresponding to upsampling (vs. downsampling or SMOTE) with a ratio of 1:1 (majority:minority class)
+
+* Values of the hyperparameters alpha and lambda were selected from sensible ranges for each value
+
+**AIM 2** analyses using this full model are underway. Specifically:
+
+We have used the full model to generate three predictions (probabilities, `prob_*`) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment. 
+
+```{r}
+set.seed(82294)
+d |> 
+  select(subid, prob_patch, prob_combo_nrt, prob_varenicline) |> 
+  slice_sample(n = 10) |> 
+  print_kbl(digits = 3)
+```
+
+The treatment that yields the highest model-predicted probability of abstinence is identified as that participant's "best" treatment (`tx_best`). 
+
+```{r}
+d |> 
+  select(subid, tx_best, prob_patch, prob_combo_nrt, prob_varenicline) |> 
+  slice_sample(n = 10) |> 
+  print_kbl(digits = 3)
+```
+
+The best treatments spanned all three medication options: varenicline, combination nicotine replacement therapy ("combo_nrt"), and nicotine patch ("patch").
+
+```{r}
+d |> 
+  tab(tx_best)
+```
+
+Some participants' best treatment (`tx_best`) matched what they were randomly assigned in the original trial (`tx_rct`). Other participants may have received what the model identified as their second-best or worst treatment. Thus, participants' original treatment can be "ranked" as being their first-best, second-best, or third-best (worst) model-selected treatment.
+
+```{r}
+d |> 
+  select(subid, tx_rank, tx_rct, tx_best, tx_second, tx_worst) |> 
+  slice_sample(n = 10) |> 
+  print_kbl()
+```
+
+Treatment "ranks" were distributed somewhat evenly across first-, second-, and third-best treatments.
+
+```{r}
+d |> 
+  tab(tx_rank)
+```
+
+### Purpose of Preregistration
+
+The purpose of this document is to **preregister the analyses for evaluating the clinical benefit of this treatment selection model**. 
+
+Our primary analysis will compare the observed outcomes (i.e., abstinence vs. smoking, from the original trial) for people who received their first-, second-, or third-best treatments. We will examine these outcomes over the following time points:
+
+* 4 weeks: This was the time point that served as the outcome for the prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.
+
+* 12 weeks: This is end-of-treatment and represents a mid-point between the early (4-week) outcome and the later outcome.
+
+* 26 weeks (6 months): This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial ([Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/)). This duration is often used as a proxy for long-term success.
+
+Thus, our model will have the following components:
+
+1. Dependent variable: abstinence (vs. smoking; `outcome_rct_num`). Binary outcome with abstinence coded as 1 and smoking coded as 0.
+
+2. Independent variable: treatment rank (`tx_rank`). Between-subjects categorical variable with three levels (first, second, third). This variable will be coded with orthogonal Helmert contrasts such that we compare individuals who received their first-best treatment to all others, and individuals who received their second-best treatment to individuals who received their third-best treatment.
+
+3. Independent variable: time (`week`). Within-subjects categorical variable with three levels (week 4, week 12, week 26). This variable will be coded with orthogonal Helmert contrasts to avoid making an assumption about the linearity of this effect. We will compare the earliest 4-week outcome to the two later outcomes, and the 12-week outcome to the 26-week (6 month) outcome. 
+
+4. Interaction between treatment rank and time
+
+5. Random slope for time (3 repeated observations of time for each subject)
+
+6. Random intercept
+
+We plan to follow a mixed-effects modeling approach using the `lme4` package. Specifically, we will fit a generalized linear model using `glmer()` with the components listed above. 
+
+Our **focal effect** is the main effect of the treatment rank Helmert contrast comparing individuals who received their best treatment to all others (i.e., across all times). We predict that individuals who received their best treatment will have improved outcomes compared to individuals who did not. 
+
+Our **secondary effects** include: 
+
+* The main effect of the treatment rank Helmert contrast comparing individuals who received their second-best treatment to individuals who received their worst treatment (i.e., across all times). We predict that individuals who received their second-best treatment will have improved outcomes compared to individuals who did not.
+
+* The interactions between the best vs. other treatment rank contrast and both time contrasts (week 4 vs. later, week 12 vs. week 26). We do not have directional hypotheses about these interactions.
+
+  + If either of these interactions are significant (*p* < 0.05), we will conduct **follow-up tests** of the simple effect of the best vs. other treatment contrast at all 3 time points (week 4, week 12, and week 26).
+
+Although the above estimates comprise our focal effects, we plan to report the estimates, test statistics, *p*-values, and confidence intervals for all fixed effects from this model.
+
+## Shuffle Data
+
+To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, the remainder of this document conducts analyses using our data with shuffled outcome variables. Following preregistration, our analyses will follow this script exactly using our real data.
+
+To create this shuffled dataset, we:
+
+* sample without replacement for 3 outcomes (outcome distribution remains the same at each time point; link with model-based treatment assignment is severed)
+
+* pivot into long format with week as a within-subjects factor
+
+* remove unnecessary variables
+```{r}
+set.seed(72905)
+d_shuf <- d |> 
+  select(subid, tx_rank, 
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  mutate(outcome_rct_wk4_num = sample(d$outcome_rct_wk4_num, 
+                                      nrow(d), replace = FALSE),
+         outcome_rct_wk12_num = sample(d$outcome_rct_wk12_num, 
+                                       nrow(d), replace = FALSE),
+         outcome_rct_wk26_num = sample(d$outcome_rct_wk26_num, 
+                                       nrow(d), replace = FALSE)) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(tx_rank = factor(tx_rank, 
+                          levels = c("third", "second", "first")),
+         week = factor(week,
+                       levels = c("wk26", "wk12", "wk4")),
+         subid = factor(subid)) 
+
+glimpse(d_shuf)
+rm(d)
+```
+
+Confirm that data look random
+```{r}
+d_shuf |> 
+  group_by(tx_rank) |> 
+  summarize(mean_outcome = mean(outcome_rct_num)) |> 
+  arrange(desc(tx_rank))
+```
+
+Set contrasts for week and treatment rank
+```{r}
+# contrast coding on week
+c_week <- contr.helmert(c("wk26", "wk12", "wk4"))
+c_week[, 1] <- c_week[, 1] / (max(c_week[, 1]) - min(c_week[, 1]))
+c_week[, 2] <- c_week[, 2] / (max(c_week[, 2]) - min(c_week[, 2]))
+colnames(c_week) <- c("wk12_v_wk26", "wk4_v_later")
+contrasts(d_shuf$week) <- c_week
+contrasts(d_shuf$week)
+
+# contrast coding on treatment rank
+c_tx <- contr.helmert(c("third", "second", "first"))
+c_tx[, 1] <- c_tx[, 1] / (max(c_tx[, 1]) - min(c_tx[, 1]))
+c_tx[, 2] <- c_tx[, 2] / (max(c_tx[, 2]) - min(c_tx[, 2]))
+colnames(c_tx) <- c("second_v_third", "best_v_other")
+contrasts(d_shuf$tx_rank) <- c_tx
+contrasts(d_shuf$tx_rank)
+```
+
+## Analysis Steps
+
+### Primary Model
+
+```{r}
+model_1 <- lme4::glmer(outcome_rct_num ~ tx_rank * week + (1 + week | subid),
+                       data = d_shuf,
+                       family = binomial(link = "logit"),
+                       control = glmerControl(optimizer = "bobyqa",
+                                              optCtrl = list(maxfun = 3e6)))
+
+summary(model_1)
+```
+
+### Alternative Models for Robustness Checks
+
+The model fit above has a singular fit. There are a number of recommended approaches to address singular fits (see `?isSingular`) if the model fit with our real data also has a singular fit. 
+
+For consistency, the following proposed alternative approaches mirror the steps we followed in a previously published project from our laboratory that also required complex mixed-effects modeling ([Schultz et al., 2022](https://psycnet.apa.org/record/2022-10249-001)). These steps are available in our open-access, annotated analysis scripts (e.g., [this script](https://osf.io/k8gfc)). 
+
+1. Use a partially Bayesian method that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity ([Chung et al., 2013](https://link.springer.com/article/10.1007/s11336-013-9328-2), `blme` package). We would use the `"nlminbwrap"` optimizer because `"bobyqa"` produced a singular fit.
+
+```{r}
+#| eval: false
+model_2 <- blme::bglmer(outcome_rct_num ~ tx_rank * week + (1 + week | subid),
+                        data = d_shuf,
+                        family = binomial(link = "logit"),
+                        control = glmerControl(optimizer = "nlminbwrap",
+                                               optCtrl = list(maxfun = 3e6)))
+```
+
+2. Use a simpler random effects structure to address problems with singular fits. Following this strategy, we would fit a model with only the random intercept.
+
+```{r}
+#| eval: false
+model_3 <- lme4::glmer(outcome_rct_num ~ tx_rank * week + (1 | subid),
+                       data = d_shuf,
+                       family = binomial(link = "logit"),
+                       control = glmerControl(optimizer = "bobyqa",
+                                              optCtrl = list(maxfun = 3e6)))
+```
+
+3. Re-fit the glmer model with the full random effects structure across all available optimizers and review for consistency of log-likelihood ratios, fixed effects, and test statistics of focal effect across optimizers. 
+
+```{r}
+#| eval: false
+opts <- tibble(optimizer = c("bobyqa", "Nelder_Mead", "nlminbwrap", 
+                             "nmkbw", "optimx", "nloptwrap", "nloptwrap"),
+               method = c("", "", "", "", "L-BFGS-B", 
+                          "NLOPT_LN_NELDERMEAD", "NLOPT_LN_BOBYQA")) %>% 
+  as.data.frame()
+
+model_all <- allFit(model_1, verbose = FALSE, meth.tab = opts)
+```
+
+```{r}
+#| include: false
+#| eval: false
+
+# Review warning/error messages across remaining optimizers
+effects <- tidy_opts(model_all, terms = "tx_rankbest_v_other")
+opt_names <- names(effects$msg)
+effects$msg |> 
+  map2_dfr(opt_names, extract_opts_msgs)
+
+# confirm that log-likelihood ratios are equivalent across optimizers
+effects |> 
+  filter(term == "model") |> 
+  select(optimizer, llik)
+
+# Confirm fixed effects & test stats are equivalent across optimizers for our focal effect (best treatment vs. other)
+effects |> 
+  filter(term == "tx_rankbest_v_other") |> 
+  select(-msg, -llik)
+```
+
+### Follow-up analyses: Simple Effects
+
+If either interaction for our secondary outcomes (best vs. other treatment rank contrast X both time contrasts) is significant (*p* < 0.05), we will conduct follow-up analyses to test the simple effect of the best vs. other treatment rank contrast at each time point.
+
+Simple effect at 4 weeks
+```{r}
+d_4_shuf <- d_shuf |> 
+  filter(week == "wk4")
+
+model_4wk <- glm(outcome_rct_num ~ tx_rank, 
+                 data = d_4_shuf,
+                 family = binomial(link = "logit"))
+
+summary(model_4wk)
+```
+
+Simple effect at 12 weeks
+```{r}
+d_12_shuf <- d_shuf |> 
+  filter(week == "wk12")
+
+model_12wk <- glm(outcome_rct_num ~ tx_rank, 
+                  data = d_12_shuf,
+                  family = binomial(link = "logit"))
+
+summary(model_12wk)
+```
+
+Simple effect at 26 weeks
+```{r}
+d_26_shuf <- d_shuf |> 
+  filter(week == "wk26")
+
+model_26wk <- glm(outcome_rct_num ~ tx_rank, 
+                  data = d_26_shuf,
+                  family = binomial(link = "logit"))
+
+summary(model_26wk)
+```

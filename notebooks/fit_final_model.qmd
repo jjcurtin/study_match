@@ -40,6 +40,7 @@ library(tidymodels)
 library(tidyverse)
 library(Matrix)
 library(probably)
+library(here)
 
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
@@ -151,7 +152,10 @@ A *negative coefficient* indicates that increases in the feature *decrease* the 
 
 ```{r}
 model_tidy <- tidy(model_best)
+```
 
+
+```{r tab-retained-vars}
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 
   filter(abs(estimate) > 0) |> 
@@ -162,7 +166,7 @@ print_kbl(retained_vars, digits = 4)
 ```
 `r round((nrow(retained_vars) / nrow(model_tidy)) * 100, digits = 2)`% of features were retained by the glmnet solution (`r nrow(retained_vars)` features of a total considered `r nrow(model_tidy)` features).
 
-```{r}
+```{r tab-retained-int}
 retained_vars_tx <- retained_vars |> 
   filter(str_detect(term, "treatment_")) |> 
   arrange(desc(abs(estimate))) 
@@ -331,6 +335,9 @@ Write out
 ```{r}
 d_aim_2 |> 
   write_csv(file.path(path_models, str_c("aim_2_", version, ".csv")))
+
+d_aim_2 |> 
+  write_csv(here("/objects", str_c("aim_2_", version, ".csv")))
 ```
 
 ### Validity check: Model Calibration

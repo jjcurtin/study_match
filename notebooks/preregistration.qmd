@@ -335,22 +335,17 @@ To create this shuffled dataset, we:
 ```{r}
 set.seed(72905)
 d_shuf <- d |> 
-  select(subid, tx_rank, 
+  select(subid, tx_match, 
          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
-  mutate(outcome_rct_wk4_num = sample(d$outcome_rct_wk4_num, 
-                                      nrow(d), replace = FALSE),
-         outcome_rct_wk12_num = sample(d$outcome_rct_wk12_num, 
-                                       nrow(d), replace = FALSE),
-         outcome_rct_wk26_num = sample(d$outcome_rct_wk26_num, 
-                                       nrow(d), replace = FALSE)) |> 
+  mutate(tx_match = sample(d$tx_match, nrow(d), replace = FALSE)) |>
   pivot_longer(
     cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
     names_to = "week",
     names_pattern = "(?<=outcome_rct_)(.+)(?=_num)",
     values_to = "outcome_rct_num"
   ) |> 
-  mutate(tx_rank = factor(tx_rank, 
-                          levels = c("third", "second", "first")),
+  mutate(tx_match = factor(tx_match, 
+                          levels = c(FALSE, TRUE)),
          week = factor(week,
                        levels = c("wk26", "wk12", "wk4")),
          subid = factor(subid)) 
@@ -362,12 +357,11 @@ rm(d)
 Confirm that data look random
 ```{r}
 d_shuf |> 
-  group_by(tx_rank) |> 
-  summarize(mean_outcome = mean(outcome_rct_num)) |> 
-  arrange(desc(tx_rank))
+  group_by(week, tx_match) |> 
+  summarize(mean_outcome = mean(outcome_rct_num)) 
 ```
 
-Set contrasts for week and treatment rank
+Set contrasts for week and treatment match
 ```{r}
 # contrast coding on week
 c_week <- contr.helmert(c("wk26", "wk12", "wk4"))
@@ -377,13 +371,12 @@ colnames(c_week) <- c("wk12_v_wk26", "wk4_v_later")
 contrasts(d_shuf$week) <- c_week
 contrasts(d_shuf$week)
 
-# contrast coding on treatment rank
-c_tx <- contr.helmert(c("third", "second", "first"))
+# contrast coding on treatment match
+c_tx <- contr.helmert(c(FALSE, TRUE))
 c_tx[, 1] <- c_tx[, 1] / (max(c_tx[, 1]) - min(c_tx[, 1]))
-c_tx[, 2] <- c_tx[, 2] / (max(c_tx[, 2]) - min(c_tx[, 2]))
-colnames(c_tx) <- c("second_v_third", "best_v_other")
-contrasts(d_shuf$tx_rank) <- c_tx
-contrasts(d_shuf$tx_rank)
+colnames(c_tx) <- c("best_v_other")
+contrasts(d_shuf$tx_match) <- c_tx
+contrasts(d_shuf$tx_match)
 ```
 
 ## Analysis Steps
@@ -391,7 +384,7 @@ contrasts(d_shuf$tx_rank)
 ### Primary Model
 
 ```{r}
-model_1 <- lme4::glmer(outcome_rct_num ~ tx_rank * week + (1 + week | subid),
+model_1 <- lme4::glmer(outcome_rct_num ~ tx_match * week + (1 + week | subid),
                        data = d_shuf,
                        family = binomial(link = "logit"),
                        control = glmerControl(optimizer = "bobyqa",
@@ -410,7 +403,7 @@ For consistency, the following proposed alternative approaches mirror the steps 
 
 ```{r}
 #| eval: false
-model_2 <- blme::bglmer(outcome_rct_num ~ tx_rank * week + (1 + week | subid),
+model_2 <- blme::bglmer(outcome_rct_num ~ tx_match * week + (1 + week | subid),
                         data = d_shuf,
                         family = binomial(link = "logit"),
                         control = glmerControl(optimizer = "nlminbwrap",
@@ -471,7 +464,7 @@ Simple effect at 4 weeks
 d_4_shuf <- d_shuf |> 
   filter(week == "wk4")
 
-model_4wk <- glm(outcome_rct_num ~ tx_rank, 
+model_4wk <- glm(outcome_rct_num ~ tx_match, 
                  data = d_4_shuf,
                  family = binomial(link = "logit"))
 
@@ -483,7 +476,7 @@ Simple effect at 12 weeks
 d_12_shuf <- d_shuf |> 
   filter(week == "wk12")
 
-model_12wk <- glm(outcome_rct_num ~ tx_rank, 
+model_12wk <- glm(outcome_rct_num ~ tx_match, 
                   data = d_12_shuf,
                   family = binomial(link = "logit"))
 
@@ -495,7 +488,7 @@ Simple effect at 26 weeks
 d_26_shuf <- d_shuf |> 
   filter(week == "wk26")
 
-model_26wk <- glm(outcome_rct_num ~ tx_rank, 
+model_26wk <- glm(outcome_rct_num ~ tx_match, 
                   data = d_26_shuf,
                   family = binomial(link = "logit"))
 

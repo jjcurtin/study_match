@@ -1,0 +1,427 @@
+---
+title: "Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+params:
+  study: "match"
+  version: "v5"
+  cv: "kfold"
+  algorithms: "all"   # "all" or name of specific algorithm
+  y_col_name: "pp_hybrid_wk4_outcome" 
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Set Up Environment
+
+```{r set_variables}
+study <- params$study
+version <- params$version
+cv <- params$cv
+algorithms <- params$algorithms
+y_col_name <- params$y_col_name
+
+```
+
+Packages for script
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+library(tidymodels)
+library(tidyverse)
+library(Matrix)
+library(probably)
+library(here)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+Handle conflicts
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+options(conflicts.policy = "depends.ok")
+```
+
+Absolute paths
+
+```{r, absolute paths}
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_input <- stringr::str_c("P:/studydata/match/chtc/", 
+                                       y_col_name)
+          path_models <- stringr::str_c("P:/studydata/match/models/", 
+                                        y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_input <- stringr::str_c("/Volumes/private/studydata/match/chtc/", 
+                                       y_col_name)
+          path_models <- stringr::str_c("/Volumes/private/studydata/match/models/", 
+                                        y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_input <- stringr::str_c("~/mnt/private/studydata/match/chtc/", 
+                                       y_col_name)
+          path_models <- stringr::str_c("~/mnt/private/studydata/match/models/", 
+                                        y_col_name)}
+)
+```
+
+Chunk Defaults
+
+```{r defaults}
+#| include: false
+
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+### Read in best configuration
+
+Selected in 1_metrics_inner (k-fold CV)
+
+```{r}
+best_config <- read_csv(file.path(path_models, 
+                                  str_c("best_config_", version, ".csv")),
+                        show_col_types = FALSE)
+
+glimpse(best_config)
+```
+
+### Fit best model in full dataset
+
+```{r}
+batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE) 
+
+batch_name <- batch_names[str_detect(batch_names, "train") & 
+                            str_detect(batch_names, cv) &
+                            str_detect(batch_names, version) &
+                            str_detect(batch_names, best_config$algorithm)] 
+
+path_batch <- file.path(path_input, batch_name)
+source(file.path(path_batch, "input", "training_controls.R"))
+
+d <- read_csv(file.path(path_batch, "input", "data_trn.csv"), 
+              show_col_types = FALSE) 
+
+d_outcomes <- d |> 
+  select(subid, ends_with("outcome") & contains("hybrid"))
+
+d <- format_data(d) 
+
+rec <- build_recipe(d = d, config = best_config)
+
+rec_prepped <- rec |> 
+  prep(training = d, strings_as_factors = FALSE)
+
+feat_all <- rec_prepped |> 
+  bake(new_data = d)
+
+model_best <- fit_best_model(best_model = best_config, 
+                             feat = feat_all, 
+                             ml_mode = "classification")
+
+
+```
+
+### Model coefficients
+
+**NOTE**: Coefficients are naturally inverted (i.e., positive class [abstinence] treated as first [vs. second] class). Here, we multiply coefficients by -1 to align the direction of coefficients with the rest of our analyses. Once flipped (i.e., as they appear below)...
+
+A *positive coefficient* indicates that increases in the feature *increase* the likelihood of abstinence. For example, increases in motivation to quit ("motive_quit_order") *increase* the likelihood of abstinence.
+
+A *negative coefficient* indicates that increases in the feature *decrease* the likelihood of smoking. For example, increases in carbon monoxide ("co") *decrease* the likelihood of abstinence.
+
+```{r}
+model_tidy <- tidy(model_best)
+```
+
+
+```{r tab-retained-vars}
+retained_vars <- model_tidy |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  select(-penalty) |> 
+  arrange(desc(abs(estimate)))
+
+print_kbl(retained_vars, digits = 4)
+```
+`r round((nrow(retained_vars) / nrow(model_tidy)) * 100, digits = 2)`% of features were retained by the glmnet solution (`r nrow(retained_vars)` features of a total considered `r nrow(model_tidy)` features).
+
+```{r tab-retained-int}
+retained_vars_tx <- retained_vars |> 
+  filter(str_detect(term, "treatment_")) |> 
+  arrange(desc(abs(estimate))) 
+
+print_kbl(retained_vars_tx, digits = 4)
+```
+`r round((nrow(retained_vars_tx) / nrow(retained_vars)) * 100, digits = 2)`% of the retained features were treatment interaction features (`r nrow(retained_vars_tx)` treatment features of `r nrow(retained_vars)` retained features). Of the `r nrow(model_tidy |> filter(str_detect(term, "treatment_")))` available treatment interaction features, `r round((nrow(retained_vars_tx) / nrow(model_tidy |> filter(str_detect(term, "treatment_")))) * 100)`% were retained.
+
+### Calculate and calibrate probabilities
+
+Make triplicate dataset
+```{r}
+d_patch <- d |> 
+  mutate(treatment = "patch") 
+
+d_combo <- d |> 
+  mutate(treatment = "combo_nrt")
+
+d_varen <- d |> 
+  mutate(treatment = "varenicline")
+
+d_trip <- bind_rows(d_patch, d_combo) |> 
+  bind_rows(d_varen) |> 
+  mutate(treatment = factor(treatment, 
+                            levels = c(
+                              "patch",
+                              "varenicline",
+                              "combo_nrt")))
+```
+
+Build triplicate feature set
+```{r}
+feat_trip <- rec_prepped |> 
+  bake(new_data = d_trip) 
+```
+
+Get raw and calibrated probabilities
+```{r}
+# raw (uncalibrated) predictions for triplicated dataset
+preds_prob <- predict(model_best, feat_trip,
+                      type = "prob")
+
+# fit calibration model
+set.seed(2468)
+cal_split <- d |> 
+  initial_split(prop = 3/4, strata = y)
+d_cal_in <- training(cal_split) 
+d_cal_out <- testing(cal_split)
+
+rec_cal_prepped <- rec |> 
+  prep(training = d_cal_in, strings_as_factors = FALSE)
+
+feat_cal_in <- rec_cal_prepped |> 
+  bake(new_data = NULL) 
+
+feat_cal_out <- rec_cal_prepped |> 
+  bake(new_data = d_cal_out) 
+
+model_cal <- fit_best_model(best_config, feat = feat_cal_in, "classification")
+
+# beta calibration
+beta <- predict(model_cal, feat_cal_out,
+                type = "prob") |>
+  mutate(truth = feat_cal_out$y) |>
+  cal_estimate_beta(truth = truth,
+                    estimate = dplyr::starts_with(".pred_"),
+                    smooth = TRUE)
+preds_prob_beta <- preds_prob |>
+  cal_apply(beta)
+
+# iso calibration
+iso <- predict(model_cal, feat_cal_out,
+               type = "prob") |>
+  mutate(truth = feat_cal_out$y) |>
+  cal_estimate_isotonic(truth = truth,
+                        estimate = dplyr::starts_with(".pred_"))
+preds_prob_iso <- preds_prob |>
+  cal_apply(iso)
+
+# logistic calibration
+logi <- predict(model_cal, feat_cal_out,
+                type = "prob") |>
+  mutate(truth = feat_cal_out$y) |>
+  cal_estimate_logistic(truth = truth,
+                        estimate = dplyr::starts_with(".pred_"),
+                        smooth = TRUE)
+preds_prob_logi <- preds_prob |>
+  cal_apply(logi)
+
+# combine raw and calibrated probs
+probs <- tibble(subid = d_trip$subid,
+                tx = d_trip$treatment,
+                prob_raw = preds_prob[[str_c(".pred_", y_level_pos)]],
+                prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
+                prob_iso = preds_prob_iso[[str_c(".pred_", y_level_pos)]],
+                prob_logi = preds_prob_logi[[str_c(".pred_", y_level_pos)]]) 
+
+glimpse(probs)
+```
+
+### Make AIM 2 Dataset
+
+Pivot probabilities into wide format & select only raw probability (based on calibration validity check below)
+```{r}
+raw_probs_wide <- probs |> 
+  select(subid, tx, prob_raw) |> 
+  pivot_wider(names_prefix = "prob_",
+              names_from = tx,
+              values_from = prob_raw)
+
+glimpse(raw_probs_wide)
+```
+
+Join with d & create new variables
+```{r}
+d_aim_2 <- d |> 
+  select(subid, tx_rct = treatment, outcome_rct_wk4 = y) |> 
+  left_join(raw_probs_wide, by = "subid") |> 
+  mutate(tx_best = case_when(
+    prob_patch > prob_combo_nrt & prob_patch > prob_varenicline ~ "patch",
+    prob_combo_nrt > prob_patch & prob_combo_nrt > prob_varenicline ~ "combo_nrt",
+    prob_varenicline > prob_patch & prob_varenicline > prob_combo_nrt ~ "varenicline",
+    TRUE ~ NA_character_
+  )) |> 
+  mutate(prob_best = case_when(
+    tx_best == "patch" ~ prob_patch,
+    tx_best == "combo_nrt" ~ prob_combo_nrt,
+    tx_best == "varenicline" ~ prob_varenicline,
+    TRUE ~ NA_real_
+  )) |> 
+  mutate(tx_best = factor(tx_best, 
+                          levels = c(
+                            "patch",
+                            "varenicline",
+                            "combo_nrt"))) |> 
+  mutate(tx_match = if_else(tx_best == tx_rct, TRUE, FALSE)) |> 
+  left_join(d_outcomes, by = "subid") |> 
+  select(-pp_hybrid_wk4_outcome, -pp_hybrid_wk1_outcome, -pp_hybrid_yr3_outcome) |> # already in there from d
+  rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
+         outcome_rct_wk26 = pp_hybrid_wk26_outcome,
+         outcome_rct_wk52 = pp_hybrid_wk52_outcome) |> 
+  relocate(subid, tx_rct, tx_best, tx_match,
+           prob_best, starts_with("outcome"), starts_with("prob"))
+
+glimpse(d_aim_2)
+```
+
+Quick EDA checks
+```{r}
+# confirm logic worked as expected
+head(d_aim_2)
+
+# check on variability of best tx
+janitor::tabyl(d_aim_2$tx_best)
+
+# check on variability of tx matching
+janitor::tabyl(d_aim_2$tx_match)
+
+# variability of matching within assignned (RCT) tx
+d_aim_2 |> 
+  group_by(tx_rct) |> 
+  tab(tx_match)
+```
+
+Write out
+```{r}
+d_aim_2 |> 
+  write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
+                                         y_col_name, ".csv")))
+
+d_aim_2 |> 
+  write_csv(here("/objects", str_c("aim_2_", version, "_", 
+                                         y_col_name, ".csv")))
+```
+
+### Validity check: Model Calibration
+
+Make wide format for all calibrated probabilities
+```{r}
+all_probs_wide <- probs |> 
+  rename_with(~ str_replace(.x, "prob_", ""), .cols = starts_with("prob_")) |> 
+  pivot_wider(
+    names_from = tx,
+    values_from = c(raw, beta, iso, logi),
+    names_glue = "{.value}_{tx}"
+  )
+```
+
+Set up validity check data
+```{r}
+d_valid <- d_aim_2 |> 
+  select(subid, tx_rct, outcome_rct_wk4) |> 
+  left_join(all_probs_wide, by = "subid") |> 
+  mutate(beta = case_when(
+    tx_rct == "patch" ~ beta_patch,
+    tx_rct == "combo_nrt" ~ beta_combo_nrt,
+    tx_rct == "varenicline" ~ beta_varenicline,
+    TRUE ~ NA_real_
+  ),
+  raw = case_when(
+    tx_rct == "patch" ~ raw_patch,
+    tx_rct == "combo_nrt" ~ raw_combo_nrt,
+    tx_rct == "varenicline" ~ raw_varenicline,
+    TRUE ~ NA_real_
+  ),
+  isotonic = case_when(
+    tx_rct == "patch" ~ iso_patch,
+    tx_rct == "combo_nrt" ~ iso_combo_nrt,
+    tx_rct == "varenicline" ~ iso_varenicline,
+    TRUE ~ NA_real_
+  ),
+  logistic = case_when(
+    tx_rct == "patch" ~ logi_patch,
+    tx_rct == "combo_nrt" ~ logi_combo_nrt,
+    tx_rct == "varenicline" ~ logi_varenicline,
+    TRUE ~ NA_real_
+  )) |> 
+  select(subid, outcome_rct_wk4, beta, raw, isotonic, logistic) 
+
+```
+
+Compare mean abstinence from RCT to predicted probabilities for RCT tx across calibrations
+```{r}
+d_valid |> 
+  mutate(outcome_rct = if_else(outcome_rct_wk4 == "abstinent", 1, 0)) |> 
+  summarize(mean_rct = mean(outcome_rct_wk4),
+            mean_beta = mean(beta),
+            mean_iso = mean(isotonic),
+            mean_logi = mean(logistic),
+            mean_raw = mean(raw))
+```
+Raw probabilities appear to match the outcome best.
+
+#### Plots
+
+Pivot data longer for required format
+```{r}
+d_plot <- d_valid |> 
+  pivot_longer(
+    cols = c(beta, raw, isotonic, logistic),
+    names_to = "method",
+    values_to = ".pred_abstinent"
+  )
+```
+
+Make plots by calibration method
+```{r}
+d_plot |> 
+  cal_plot_breaks(truth = outcome_rct_wk4, 
+                  estimate = .pred_abstinent,
+                  .by = method)
+  
+d_plot |> 
+  cal_plot_windowed(truth = outcome_rct_wk4, 
+                  estimate = .pred_abstinent,
+                  .by = method)
+```
+Raw probabilities appear the most well-calibrated: best aligned with diagonal line, spans the fullest range of bins/windows. Will use raw probabilities for AIM 2 analyses (selected above).

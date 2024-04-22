@@ -1,8 +1,8 @@
 ---
-title: A Super Cool Study - Take 2
+title: Machine learning-assisted treatment selection for smoking cessation
 author:
-  - name: Josephine Student 
-    orcid: 0000-0002-7859-8394
+  - name: Gaylen E Fronk
+    orcid: 0000-0001-6653-9699
     corresponding: false
     roles: []
     affiliations:
@@ -11,11 +11,7 @@ author:
     orcid: 0000-0002-3286-938X
     corresponding: true
     email: jjcurtin@wisc.edu
-    roles:
-      - Investigation
-      - Project administration
-      - Software
-      - Visualization
+    roles: []
     affiliations:
       - Department of Psychology, University of Wisconsin-Madison 
 keywords:
@@ -39,113 +35,161 @@ editor_options:
 
 ## Introduction
 
-You can write your text using markdown.  
+<!-- 
+all text added from nrsa significance section
+some additional text added from fyp/nature med manuscripts, included in comments to know it needs editing/incorporation
+numbers correspond to nrsa refs
+other refs likely missing
+-->
 
-- Top level section headings use ## because # is reserved for the manuscript title. 
-- APA (and other?) formats support ##, ###, and #### at least.
+### Precision mental health
 
-
-### Sub-heading - level 3
-
-This is the ### level
-
-
-#### Sub-heading - level 4
-
-This is the #### level
+<!-- 
+Cigarette smokers may differ with respect to the etiology of their tobacco use disorder, the severity of their dependence and/or withdrawal symptoms, historical factors related to their tobacco use (e.g., age of first use, years smoking, number of previous quit attempts), and barriers to initiation and/or retention in smoking cessation treatments (Oliver & McClernon, 2017; J. Wang, Simons-Morton, Farhat, Farhart, & Luk, 2009; Zheng, Wiebe, Cleveland, Molenaar, & Harris, 2013). These factors that affect the development and course of their disorder could include demographic traits, personal medical history, and many other key individual difference characteristics. However, the single diagnosis of tobacco use disorder obscures these potentially important individual differences, and the neglect of this heterogeneity when selecting among available treatments could account for their modest efficacy. 
 
 
-##### Sub-heading - level 5
+-->
 
-This is the ##### level
+Precision mental health is the application of the precision medicine paradigm to mental health conditions.1 It addresses an important problem in traditional treatment selection: what works best at a population level does not necessarily work best for a given patient. Rather than relying on population-level efficacy, precision mental health seeks to guide treatment selection using individual difference characteristics that are likely to predict treatment success for each patient.2 Successful precision mental health would increase the likelihood of treatment success for each patient because each patient receives the treatment predicted to work best for them. It would also improve treatment effectiveness rates across the population because each treatment is administered only to the patients for whom that treatment is expected to be their best option.
 
+Researchers have pursued precision mental health – and precision medicine broadly – for decades. In medicine, emphasis on personalizing treatments has grown rapidly with the ascendancy of advanced genetic methods. Complex clinical disorders tend to be polygenic; methods like genome-wide association studies permit identifying all common genetic variants associated with a trait to create an aggregate polygenic score that incorporates a wealth of genetic information simultaneously3,4. Within precision mental health, an early example comes from the substance use disorder (SUD) domain: the Project MATCH Research Group attempted to match people with alcohol use disorder to a particular treatment based on individual differences such as gender, social support, or symptom severity5,6. Many researchers have followed in their footsteps as the understanding has grown that neither mental health diagnoses nor treatments are one-size-fits-all7. Efforts thus far have often focused on tailoring treatments at the group level; in other words, identifying a (single) factor that divides individuals within a single diagnostic category into subgroups that can be treated differently7. 
 
-### Symbols and Equations
+Despite these opportunities for advances, however, precision mental health research has progressed with limited success. Extant research has not yet enabled reliable recommendations for treatment selection at the level of individual patients (vs. groups). These patient-level predictions are required for clinical implementation; our goal in clinical science is to predict behavior such that we can apply findings to a new patient.
 
-You can use quarto inline or display math equations as needed.  Quarto provides [details](https://quarto.org/docs/authoring/markdown-basics.html#equations) on the use of these equations.
+One reason for this slow progress is that many factors influence a complex clinical phenomenon like treatment success. Thus, any single feature (i.e., predictor variable) cannot account for more than a small portion of the variance in treatment success. Unfortunately, traditional analytic techniques have often limited the ability to consider more than one or a few features simultaneously. These limitations have also prevented considering concurrently features across constructs (e.g., demographics, psychological traits, environmental variables). Therefore, models have failed to capture that real-world complexity.
 
-For example $x$ and $y$ are two variables. And here is an important formula:
+Moreover, because researchers using traditional analytic techniques typically develop and evaluate their precision mental health models in a single sample, the models may become very overfit to that sample. Consequently, they do not generalize well to new patients that were not used for model development. This problem is particularly concerning because clinical implementation of precision mental health requires that these models provide accurate recommendations about treatment selection for new patients.
 
-$$
-p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
-$$ 
+These pitfalls interact with each other. To capture sufficient complexity to predict treatment success, we need to increase the total number of features in precision mental health models. Incorporating more features, however, makes overfitting the data more likely. Thus, successful precision mental health requires an analytic approach that can handle high-dimensional data without becoming too overfit to generalize to new patients.
 
+### Applying machine learning approaches
 
-### Citations & References
+<!-- 
+This is particularly problematic when we consider that clinical application of precision medicine requires reliable recommendations at the level of individual patients rather than groups. Although our goal in clinical research is always to apply our findings to new patients, we rarely conduct our research in a way that permits this. 
 
-We can use cite relevant research in multiple formats.  The two most common are: 
+Substance use researchers have employed machine learning algorithms to identify problematic drug use (Ahn, Ramesh, Moeller, & Vassileva, 2016; Ding, Bickel, & Pan, 2017; Mete et al., 2016; Squeglia et al., 2017). Less work has been conducted examining clinical outcomes (instead of diagnoses), although some researchers have used this approach to predict SUD treatment completion (Steele et al., 2018) and treatment response (Acion et al., 2017), and even to detect posts that merited intervention via text analysis of risky words in online recovery forums (Kornfield et al., 2018). 
+-->
 
-- @knuth84 concluded something.  
-- These are the conclusions[@knuth84].
+Applying machine learning to precision mental health research can address these limitations of traditional analytic techniques. Machine learning is an alternative analytic technique that uses statistical algorithms trained on high-dimensional arrays (hundreds or even thousands) of features8. Flexibly considering many features simultaneously means these models can tap the tangled web of constructs that comprise complex clinical phenomena. Critically, this allows researchers to consider many features in the same model – unlike previous precision mental health research that was limited to considering very few features simultaneously. This high dimensionality across and within sets of related features is necessary to explain a high portion of variance in person-level treatment success.
 
-Article references are stored in a .bib file using betterbibtex (BBT) format.  We create these references in Zotero collections.
+Although machine learning models can handle very large numbers of features, this capacity comes at a cost, referred to as the “bias-variance trade-off”9. Too many features (particularly correlated features) yield unstable models that vary strongly based on the data used to develop them. High variance compromises model generalizability because a high variance model may not predict very accurately in new data. However, too few features (as well as other constraints on model characteristics) yield biased models that also do not predict well because they miss important predictive patterns and relationships. Machine learning uses various techniques (e.g., regularization, hyperparameter tuning, simultaneous consideration of many statistical learning algorithms) to optimize this bias-variance trade-off to accommodate high-dimensional sets of features while reducing overfitting8,9. Thus, machine learning methods allow for precision mental health models that both capture clinical complexity and generalize accurately to new data.
 
-Although we don't do this regularly I think, if needed you can reference figures elsewhere using the @ symbol.   Here is a reference to @fig-1
+Finally, machine learning provides rigorous resampling techniques to fit and evaluate models in separate data9. Consequently, models generalize well to new patients because they are evaluated on out-of-sample prediction. In a simplest case, data can be divided into held-in and held-out samples. More sophisticated resampling techniques such as cross-validation involve dividing the data many times to create multiple held-in and held-out samples. These approaches offer significant advantages for 1) accurately selecting a best model among multiple model configurations, and 2) estimating how well that model will perform when applied to new data (e.g., new patients in a clinical setting). Applying machine learning can accomplish the goal in precision mental health of accurate, robust treatment selection for new patients.
 
+### Cigarette smoking as a critical PMH target
+
+<!-- 
+The idea of precision medicine is not new: researchers within the substance use domain have set their sites on this individualized approach to treatment for decades. Perhaps the most famous example is the Project MATCH Research Group, who were unsuccessful in their attempt to match individuals with alcohol use disorder to a particular treatment based on individual differences such as gender, social support, or symptom severity (PMRG 1993, 1998). Other researchers have examined characteristics such as impulsivity and sensation-seeking (Tomko et al 2016), comorbid disorders (Luo & Levin 2017), and genetics (Sun et al 2016) in an attempt to personalize treatment among subgroups of individuals with substance use disorders. Within the context of cigarette smoking, Piper and colleagues have identified several moderators that affect treatment response and cessation such as smoking heaviness, psychiatric history, and use of pre-quit interventions like nicotine gum (cite two Piper 2017 articles). 
+
+National clinical guidelines note that “there are no well-accepted algorithms to guide optimal selection” between any of the first-line medications (Fiore et al., 2008, p. 44). However, varenicline and C-NRT are consistently identified as the most effective options (Cahill et al., 2013), and guidelines recommend that clinicians consider either of these two medications first given their established efficacy (Fiore et al., 2008). These medications appear to be equally (though modestly) effective: a meta-analysis demonstrated comparable effectiveness rates (Cahill et al., 2013), and the first randomized controlled trial (RCT) directly comparing varenicline and C-NRT did not find a difference between them (Baker et al., 2016). Despite their similarity, there may be reason to expect we can make differential predictions.
+
+One reason for this is their distinct pharmacological mechanisms of action. C-NRT consists of a nicotine patch and ad libitum lozenge use, which both provide nicotine. Nicotine is a full agonist at nicotinic acetylcholine receptors (nAChRs). The patch offers transdermal administration of a low, steady dose of nicotine, and lozenges provide oral administration of nicotine with more rapid onset. In contrast, varenicline is a partial agonist at nAChRs. Partial agonists have a pharmacological action that is somewhere between full agonists and antagonists, depending on the level of surrounding neurotransmitter. In the absence of a full agonist or endogenous neurotransmitter, partial agonists can act as a functional agonist with lower activity than a full agonist. In the presence of a full agonist or endogenous neurotransmitter, however, they act as functional antagonists because their binding to the receptor limits the amount of binding from the full agonist and consequently reduces that response (Jordan & Xi, 2018; Lieberman, 2004). 
+
+Thus, varenicline may be more pharmacologically flexible than NRT medications: when an individual is not smoking, it can produce milder, nicotine-like effects; if an individual begins smoking again, it could block or reduce full agonist (cigarette nicotine) activity at the receptor. This would be expected to reduce the pharmacological effect of nicotine, likely reducing the behavioral pleasure of smoking (Cahill, Lindson‐Hawley, Thomas, Fanshawe, & Lancaster, 2016). Although C-NRT has some behavioral flexibility built in (i.e., combination of slow, steady dosing with faster-acting lozenges that can be used in response to internal states or environmental cues), it acts exclusively as a full agonist at nAChRs and cannot exert antagonist-like actions. 
+
+In addition to these purported pharmacological differences, there is some evidence that individuals respond differently to different treatments. One large study that examined multiple medication-assisted quit attempts found that individuals who switched medications were more likely to quit than individuals who used the same medication again or who did not use a medication on the first quit attempt but added one at the second (Heckman et al., 2017). Conversely, there is some evidence that retreatment with the same medication as a previous, unsuccessful quit attempt is not effective; Gonzales and colleagues note that “abstinence rates are more than threefold lower for NRTs and twofold lower for bupropion” during retreatment compared to initial treatment using the same medication (Gonzales et al., 2014, p. 391; Fiore et al., 2008; Tønnesen, Nørregaard, Säwe, & Simonsen, 1993). Additionally, clinical research related to other psychological and psychiatric disorders has demonstrated differential treatment benefit on an individual basis (e.g., antipsychotic medications for schizophrenia; Roussidis et al., 2013), suggesting it is worth investigating whether the same is true in smoking cessation and other SUDs.
+
+-->
+
+Cigarette smoking could benefit greatly from combining precision mental health and machine learning. Smoking remains an enormous public health burden. Fourteen percent of U.S. adults smoke cigarettes daily, and smoking is the leading cause of preventable death, accounting for 480,000 deaths annually10–12. Despite the severity of the problem, the best available smoking cessation treatments are only modestly effective, with 6-month abstinence rates hovering around 30-35% for smoking cessation medications combined with psychosocial counseling13,14. These rates represent a best-case scenario in that clinical trial data involve treatment regimens that are rigorously followed and optimized for adherence. Additionally, because several first-line (i.e., FDA-approved) smoking cessation treatments have comparable population-level effectiveness rates, population effectiveness alone cannot guide selection among smoking cessation treatments. These facts suggest a critical need for machine learning-assisted treatment selection in the cigarette smoking domain.
+
+To select among treatments for smoking cessation, features must exist that differentiate treatment success. Smoking cessation medications have distinct pharmacological mechanisms of action at nicotinic acetylcholine receptors (nAChRs), which may affect how helpful they are for different smokers. Nicotine replacement therapy (NRT) provides nicotine, a full agonist at nAChRs. Different NRTs provide nicotine differently. Some cigarette smokers may rely on a low, steady nicotine level from a NRT patch to replace nicotine from cigarettes. Other NRTs like gum or lozenges provide oral administration with more rapid onset, which could help individuals who need a quick boost during craving. Other individuals who smoke may benefit from a medication like varenicline. As a nAChR partial agonist, varenicline’s effect depends on surrounding neurotransmitter levels such that it can act like a NRT in the absence of other nicotine but can reduce nicotine’s effects when it is present15. 
+
+Features across several behavioral or environmental domains may also guide treatment selection, alone or in combination with medication mechanisms of action. For example, some cigarette smokers may have strong cravings with good self-monitoring. These characteristics may make treatments such as nicotine lozenges or gum more effective for those people because they can get a quick “hit” of nicotine when needed. Some smokers may be prone to side effects from a specific treatment, reducing adherence and subsequent likelihood of treatment success, though they may not have had the same adverse reactions to a different treatment. Environmentally, an individual who lives with other smokers may benefit from a partial agonist treatment like varenicline because any secondhand smoke would produce less effect.
+
+Any of these characteristics, among others, could powerfully inform treatment selection for cigarette smoking cessation. These examples illustrate the potential clinical benefit of using a precision mental health paradigm to inform treatment selection for smoking cessation. They point to the value of analytic techniques that can incorporate complex interactions among features. Although these examples were selected because they are more intuitive, there are likely other unexpected ways that treatment success differs across people. Machine learning models are not limited to intuitive or theoretically derived features. Thus, machine learning may reveal unanticipated features that could meaningfully guide treatment selection for cigarette smoking cessation.
+
+### Specific Aims? / Purpose
 
 ## Methods
 
-This is the methods section.
+### Transparency & Openness
 
+<!-- from ema, edit
+We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available ([https://osf.io/w5h9y/](https://osf.io/w5h9y/)).
+
+Our study design and analyses were not pre-registered. However, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication; models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
+-->
+
+21-word solution
+everything posted publicly on website
+preregistered aim 2 analyses 
+CV as a way to help mitigate concerns about model building process
+all analyses were: 1) preregistered, 2) based on CV approaches, and/or 3) following previous work from our lab and others'
+
+### Data
+
+info on original trial/sample/treatments & cite baker et al 2016
+inclusion criteria for trial, analysis inclusion criteria
+original trial procedure here?
+predictors - detailed accounting of different domains, table likely helpful
+outcomes
+
+### Analytic strategy
+
+#### Feature engineering and dimensionality reduction
+
+incl mmissing data
+
+#### Model training and evaluation
+
+##### Model configurations
+
+##### Performance matric
+
+<!-- 
+fromm ema paper
+
+Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; 2) is an aggregate metric across all decision thresholds, which is important because optimal decision thresholds may differ across settings and goals; and 3) is unaffected by class imbalance, which is important for comparing models with differing prediction window widths and levels of class imbalance.
+-->
+
+##### cross-validation
+
+<!-- 
+from ema paper. removed groupinig but likely needs more editing & expansion (fuller explanation of cv for purposes of dissertation?)
+
+We used nested cross-validation for model training, selection, and evaluation with auROC. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models, select the best models, and evaluate those best models. Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000].
+
+We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop.  Best model configurations were selected using median auROC across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.  We report median auROC for our six best model configurations in the test sets. For completeness, we also report auROCs for these models from the validation sets in the Supplement. In addition, we report other key performance metrics for the best full model configurations including sensitivity, specificity, balanced accuracy, positive predictive value (PPV), and negative predictive value (NPV) from the test sets [@kuhnAppliedPredictiveModeling2018].
+-->
+
+#### Evaluation of model performance
+
+model performance & comparisons across outcomes
+bayesian approach following tidymodels team recs & our previous work (ema paper), explain posterior probability distributions & credible intervals
+
+<!-- 
+We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian confidence intervals (CIs) for auROC for the six best models. To estimate the probability that the full model outperformed the baseline model, we regressed the auROCs (logit transformed) from the 30 test sets for each model as a function of model type (baseline vs. full). To determine the probability that full models' performances differed systematically from each other, we regressed the auROCs (logit transformed) from the 30 test sets for each full model as a function of prediction window width (week vs. day vs. hour). Following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022], we set two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3x10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our models' auROCs.  We also report 95% (equal-tailed) Bayesian CIs for the differences in performance associated with the Bayesian comparisons.
+
+also see EMA supplement
+-->
+
+#### Feature importance with SHAP?
+
+<!--
+from ema paper
+We computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of categories of features (based on EMA questions) across our three full models. Shapley values possess several useful properties including: Additivity (Shapley values for each feature can be computed independently and summed); Efficiency (the sum of Shapley values across features must add up to the difference between predicted and observed outcomes for each observation); Symmetry (Shapley values for two features should be equal if the two features contribute equally to all possible coalitions); and Dummy (a feature that does not change the predicted value in any coalition will have a Shapley value of 0).
+
+We calculated Shapley values from the 30 test sets using the SHAPforxgboost package that provides Shapley values in log-odds units for binary classification models.  We averaged the three Shapley values for each observation for each feature across the three repeats to increase their stability. The additivity property of Shapley values allowed us to create 18 feature categories from the 286 separate features. We created separate feature categories for each of the nine EMA questions (excluding the alcohol use question), the rates of past alcohol use and missing surveys, the time of day and day of the week of the start of the prediction window, and the five demographic variables included in the models. For the EMA questions and rates of past alcohol use and missing surveys, these categories included all individual raw and change features across the three to five scoring epochs (see Feature Engineering above) and the most recent response. To calculate the local (i.e., for each observation) importance for each category of features, we added Shapley values across all features in a category, separately for each observation.  To calculate global importance for each feature category, we averaged the absolute value of the Shapley values of all features in the category across all observations. These local and global importance scores based on Shapley values allow us to answer questions of relative feature importance.  However, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not available for Shapley values.
+-->
+
+#### Evaluation of clinical benefit
+
+reminder preregistered
+primary analysis: effect of best vs. other treatment (from model) on observed abstinence (from rct)
+possible exploratory analyses re: comparing to grand mean (effects coding), 1/2/3 rank
 
 ## Results
 
-{{< embed notebooks/fig1.qmd#fig-bar >}}
-{{< embed notebooks/fig1.qmd#fig-line >}}
+### Model performance
 
-Results include
+4-week & 26-week models
+absolute performance (vs. 0.5)
+model comparison (4 v 26)
 
-- Markdown text
-- Figures from data
-- Figures from images (maybe included table images)
-- Analysis output (i.e. statistics)
+### Feature importance?
 
-We demonstrate each (other than markdown text, which you should know!) below
-
-
-### Figures from images
-
-Images from figures can be included using the standard code to insert image files.  These images should generally be saved in the image folder at the root of the study template by convention.  The quarto website provides [additional details](https://quarto.org/docs/authoring/figures.html)
-
-![ARC Logo](images/arc_logo.png){#fig-2}
-
-### Tables
-
-We create tables using the kableExtra package.  We are working on the optimal method to embed these from notebooks.  It may be to save the tables as high res image files and then embed those images.  Stay tuned.
-
-Alternatively, this is an example of a simple table that is hard-coded using markdown table format.  We don't recommend this for tables built from data. Tables values should come directly from data so they don't need to be typed in and will update if your data change.  However, you may have other uses for simple tables where this method is helpful.
-
-| Name                | Year |
-|---------------------|------|
-| Current             | 2021 |
-| Teneguía            | 1971 |
-| Nambroque           | 1949 |
-| El Charco           | 1712 |
-| Volcán San Antonio  | 1677 |
-| Volcán San Martin   | 1646 |
-| Tajuya near El Paso | 1585 |
-| Montaña Quemada     | 1492 |
-
-: Recent historic eruptions on La Palma {#tbl-history}
-
-### Analysis Results
-
-To add results that are not figures or tables, you will need to open the objects you saved from these analyses.  See lm.qmd as an example. Generally you will open csv files that contain tidied results. For example
-```{r}
-library(tidyverse)
-
-coeffs <- read_csv(here::here("objects/coeff_table.csv"),
-                   col_types = cols())
-```
-
-A significant effect of speed was observed ($\beta$ = `r sprintf("%1.1f", coeffs |> filter(term == "speed") |> pull(estimate))`, t = `r sprintf("%1.2f", coeffs |> filter(term == "speed") |> pull(statistic))`, p = `r sprintf("%1.3f", coeffs |> filter(term == "speed") |> pull(p.value))`).
-
-NOTES: 
-
-- We should write a function that works with tidied coeffs tables and takes the row, column, and number of decimal  places to make this code simpler.
-- This table doesnt contain df.  Need to add that to table when saving in lm
-
-
+### Clinical benefit
 
 ## Discussion
 

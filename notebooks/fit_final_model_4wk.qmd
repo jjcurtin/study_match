@@ -337,9 +337,9 @@ d_aim_2 |>
   write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
                                    y_col_name, ".csv")))
 
-d_aim_2 |> 
-  write_csv(here("/objects", str_c("aim_2_", version, "_", 
-                                   y_col_name, ".csv")))
+# d_aim_2 |> 
+#   write_csv(here("/objects", str_c("aim_2_", version, "_", 
+#                                    y_col_name, ".csv")))
 ```
 
 ### Validity check: Model Calibration

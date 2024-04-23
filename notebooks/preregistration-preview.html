@@ -1375,14 +1375,19 @@ border: 0;
   <ul class="collapse">
   <li><a href="#completed-model-building-selection-evaluation" id="toc-completed-model-building-selection-evaluation" class="nav-link" data-scroll-target="#completed-model-building-selection-evaluation">Completed: Model Building, Selection, &amp; Evaluation</a></li>
   <li><a href="#completed-model-performance" id="toc-completed-model-performance" class="nav-link" data-scroll-target="#completed-model-performance">Completed: Model Performance</a></li>
+  <li><a href="#completed-fit-final-model" id="toc-completed-fit-final-model" class="nav-link" data-scroll-target="#completed-fit-final-model">Completed: Fit Final Model</a></li>
   <li><a href="#in-progress-aim-2-clinical-benefit-analyses" id="toc-in-progress-aim-2-clinical-benefit-analyses" class="nav-link" data-scroll-target="#in-progress-aim-2-clinical-benefit-analyses">In Progress: AIM 2 Clinical Benefit Analyses</a></li>
   </ul></li>
-  <li><a href="#purpose-of-preregistration" id="toc-purpose-of-preregistration" class="nav-link" data-scroll-target="#purpose-of-preregistration">Purpose of Preregistration</a></li>
+  <li><a href="#purpose-of-preregistration" id="toc-purpose-of-preregistration" class="nav-link" data-scroll-target="#purpose-of-preregistration">Purpose of Preregistration</a>
+  <ul class="collapse">
+  <li><a href="#outcomes" id="toc-outcomes" class="nav-link" data-scroll-target="#outcomes">Outcomes</a></li>
+  <li><a href="#modeling-specifications" id="toc-modeling-specifications" class="nav-link" data-scroll-target="#modeling-specifications">Modeling Specifications</a></li>
+  <li><a href="#focal-secondary-effects" id="toc-focal-secondary-effects" class="nav-link" data-scroll-target="#focal-secondary-effects">Focal &amp; Secondary Effects</a></li>
+  </ul></li>
   <li><a href="#shuffle-data" id="toc-shuffle-data" class="nav-link" data-scroll-target="#shuffle-data">Shuffle Data</a></li>
   <li><a href="#analysis-steps" id="toc-analysis-steps" class="nav-link" data-scroll-target="#analysis-steps">Analysis Steps</a>
   <ul class="collapse">
   <li><a href="#primary-model" id="toc-primary-model" class="nav-link" data-scroll-target="#primary-model">Primary Model</a></li>
-  <li><a href="#alternative-models-for-robustness-checks" id="toc-alternative-models-for-robustness-checks" class="nav-link" data-scroll-target="#alternative-models-for-robustness-checks">Alternative Models for Robustness Checks</a></li>
   <li><a href="#follow-up-analyses-simple-effects" id="toc-follow-up-analyses-simple-effects" class="nav-link" data-scroll-target="#follow-up-analyses-simple-effects">Follow-up analyses: Simple Effects</a></li>
   </ul></li>
   </ul>
@@ -1505,8 +1510,8 @@ border: 0;
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># read in d for week 4 model</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(path_models, <span class="st">&quot;pp_hybrid_wk4_outcome&quot;</span>, </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">str_c</span>(<span class="st">&quot;aim_2_&quot;</span>, version, <span class="st">&quot;_pp_hybrid_wk4_outcome.csv&quot;</span>)),</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">str_c</span>(<span class="st">&quot;aim_2_&quot;</span>, version, <span class="st">&quot;_pp_hybrid_wk4_outcome.csv&quot;</span>)),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">outcome_rct_wk4_num =</span> <span class="fu">if_else</span>(outcome_rct_wk4 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome_rct_wk12_num =</span> <span class="fu">if_else</span>(outcome_rct_wk12 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome_rct_wk26_num =</span> <span class="fu">if_else</span>(outcome_rct_wk26 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
@@ -1533,8 +1538,8 @@ border: 0;
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="co"># read in best_config for week 4 model</span></span>
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>best_configuration_wk4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(path_models, <span class="st">&quot;pp_hybrid_wk4_outcome&quot;</span>,</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>                                         <span class="fu">str_c</span>(<span class="st">&quot;best_config_&quot;</span>, version, <span class="st">&quot;.csv&quot;</span>)),</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>                               <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>                                             <span class="fu">str_c</span>(<span class="st">&quot;best_config_&quot;</span>, version, <span class="st">&quot;.csv&quot;</span>)),</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(algorithm, feature_set, <span class="at">alpha =</span> hp1, <span class="at">lambda =</span> hp2, resample)</span>
 <span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="co"># read in d for week 26 model</span></span>
@@ -1566,35 +1571,11 @@ border: 0;
 <span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="co">#          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) </span></span>
 <span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="co"># read in best_config for week 26 model</span></span>
-<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>best_configuration_wk26 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(path_models, <span class="st">&quot;pp_hybrid_wk26_outcome&quot;</span>,</span>
-<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>                                         <span class="fu">str_c</span>(<span class="st">&quot;best_config_&quot;</span>, version, <span class="st">&quot;.csv&quot;</span>)),</span>
-<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>                               <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(algorithm, feature_set, <span class="at">learning_rate =</span> hp1, <span class="at">tree_depth =</span> hp2, </span>
-<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>         <span class="at">mtry =</span> hp3, resample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make figure for john&#39;s presentation</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>d_fig <span class="ot">&lt;-</span> d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_rank, </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_)(.+)(?=_num)&quot;</span>,</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_rank =</span> <span class="fu">factor</span>(tx_rank, </span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;first&quot;</span>, <span class="st">&quot;second&quot;</span>, <span class="st">&quot;third&quot;</span>)),</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">factor</span>(week,</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>                       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;wk4&quot;</span>, <span class="st">&quot;wk12&quot;</span>, <span class="st">&quot;wk26&quot;</span>)),</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">subid =</span> <span class="fu">factor</span>(subid)) <span class="sc">|&gt;</span> </span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">outcome_mean =</span> <span class="fu">mean</span>(outcome_rct_num), <span class="at">.by =</span> <span class="fu">c</span>(tx_rank, week)) </span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co"># bar chart</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>d_fig <span class="sc">|&gt;</span> </span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> outcome_mean, <span class="at">fill =</span> tx_rank)) <span class="sc">+</span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="co"># best_configuration_wk26 &lt;- read_csv(file.path(path_models, &quot;pp_hybrid_wk26_outcome&quot;,</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a><span class="co">#                                               str_c(&quot;best_config_&quot;, version, &quot;.csv&quot;)),</span></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a><span class="co">#                                     show_col_types = FALSE) |&gt; </span></span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(algorithm, feature_set, learning_rate = hp1, tree_depth = hp2, </span></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a><span class="co">#          mtry = hp3, resample)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <section id="study-overview" class="level2">
 <h2 class="anchored" data-anchor-id="study-overview">Study Overview</h2>
@@ -1603,12 +1584,12 @@ border: 0;
 <p>This project represents a tangible application of the precision mental health paradigm using modern machine learning approaches. This project aims to produce a decision-making tool to select among cigarette smoking cessation treatments for individuals looking to quit smoking.</p>
 <p>Cigarette smoking remains a critical and costly public health crisis. Existing treatments are only modestly effective at best. Additionally, treatments are similarly effective at the population level, meaning that even population-level effectiveness cannot guide treatment selection for individuals quitting smoking. Thus, deciding among first-line (i.e., FDA-approved) smoking cessation medications is a specific, objective decision that many individuals who smoke (or their providers) must make. Successful application of the precision mental health paradigm to cigarette smoking cessation would have immediate clinical benefit.</p>
 <p>Specifically, this project pursues the following aims:</p>
-<p><strong>AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.</strong> We will build a machine learning model to predict treatment success (i.e., point-prevalence abstinence from smoking) for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed randomized controlled trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.</p>
+<p><strong>AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.</strong> We will build a machine learning model to predict treatment success (i.e.,7-day point-prevalence abstinence from smoking 4 weeks post-quit) for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed randomized controlled trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.</p>
 <p><strong>AIM 2: Evaluate the clinical benefit of using a treatment selection machine learning model.</strong> Using the best model identified in <strong>AIM 1</strong>, we will identify the treatment for each person that gives them the highest likelihood of abstinence by comparing predicted probabilities of abstinence for each participant for each treatment. We will then evaluate the clinical benefit of this model-based treatment selection approach.</p>
 </section>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>This project relies on existing data from a completed comparative effectiveness trial by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>. Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking.</p>
+<p>This project relies on existing data from a completed comparative effectiveness trial by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>. Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking. Thus, we used predictors from the rich baseline characterization to predict our <strong>primary outcome</strong> of 7-day point-prevalance abstinence at 4 weeks post-quit.</p>
 </section>
 </section>
 <section id="analysis-progress-at-time-of-preregistration" class="level2">
@@ -1616,13 +1597,47 @@ border: 0;
 <section id="completed-model-building-selection-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="completed-model-building-selection-evaluation">Completed: Model Building, Selection, &amp; Evaluation</h3>
 <p><strong>AIM 1</strong> analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds (“test sets”) were used to evaluate model performance.</p>
-<p>Models have been fit using two outcomes:</p>
-<ul>
-<li><p>Week 4 7-day point-prevalance abstinence</p></li>
-<li><p>Week 26 (60 month) 7-day point-prevalence abstinence</p></li>
-</ul>
-<p>A single, best model for each outcome was selected with 1 repeat of 10-fold cross-validation in the full dataset.</p>
-<p>The best model configuration for the <strong>Week 4 outcome</strong> includes the following:</p>
+</section>
+<section id="completed-model-performance" class="level3">
+<h3 class="anchored" data-anchor-id="completed-model-performance">Completed: Model Performance</h3>
+<p>Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases.</p>
+<p>We evaluated model performance in-depth by conducting <em>Bayesian hierarchical generalized linear models</em> to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC in held-out folds.</p>
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\gfronk\Documents\GitHub\study_match\notebooks\ana_bayes_match.qmd" data-notebook-title="Posterior probabilities across models for MATCH study (version v5)" data-notebook-cellid="cell-fig-week4">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-week4" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  mutate(model <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">&quot;week_4&quot;</span>, <span class="st">&quot;week_26&quot;</span>))) <span class="op">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">filter</span>(model <span class="op">==</span> <span class="st">&quot;week_4&quot;</span>) <span class="op">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  geom_histogram(aes(x <span class="op">=</span> posterior, fill <span class="op">=</span> model), color <span class="op">=</span> <span class="st">&quot;black&quot;</span>, alpha <span class="op">=</span> <span class="fl">.4</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                 bins <span class="op">=</span> <span class="dv">30</span>) <span class="op">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  geom_segment(mapping <span class="op">=</span> aes(y <span class="op">=</span> y <span class="op">+</span> <span class="dv">100</span>, yend <span class="op">=</span> y <span class="op">-</span> <span class="dv">100</span>, x <span class="op">=</span> mean, xend <span class="op">=</span> mean,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                             color <span class="op">=</span> model),</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>               data <span class="op">=</span> ci_week4) <span class="op">+</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  geom_segment(mapping <span class="op">=</span> aes(y <span class="op">=</span> y, yend <span class="op">=</span> y, x <span class="op">=</span> lower, xend <span class="op">=</span> upper, color <span class="op">=</span> model),</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>               data <span class="op">=</span> ci_week4) <span class="op">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  scale_y_continuous(<span class="st">&quot;Posterior Probability&quot;</span>, breaks <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>)) <span class="op">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ylab(&quot;Posterior Probability Density&quot;) +</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">&quot;Area Under ROC Curve&quot;</span>) <span class="op">+</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  theme(legend.position <span class="op">=</span> <span class="st">&quot;none&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-week4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672" height="480">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
+<a href="preregistration_files/figure-html/ana_bayes_match-fig-week4-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="preregistration_files/figure-html/ana_bayes_match-fig-week4-output-1.png" id="fig-week4" width="672" height="480" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
+<p>The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter. The CI does not contain 0.5 (i.e., chance performance), suggesting the model is capturing signal in the data.</p>
+</section>
+<section id="completed-fit-final-model" class="level3">
+<h3 class="anchored" data-anchor-id="completed-fit-final-model">Completed: Fit Final Model</h3>
+<p>A single, best model was selected with 1 repeat of 10-fold cross-validation in the full dataset.</p>
+<p>The best model configuration includes the following:</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(best_configuration_wk4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1641,75 +1656,16 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 <li><p>Selected resampling approach was “up_1” corresponding to upsampling (vs. downsampling or SMOTE) with a ratio of 1:1 (majority:minority class)</p></li>
 <li><p>Values of the hyperparameters alpha and lambda were selected from sensible ranges for each value</p></li>
 </ul>
-<p>The best model configuration for the <strong>Week 26 outcome</strong> includes the following:</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(best_configuration_wk26)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 1
-Columns: 6
-$ algorithm     &lt;chr&gt; &quot;xgboost&quot;
-$ feature_set   &lt;chr&gt; &quot;item_knn_5&quot;
-$ learning_rate &lt;dbl&gt; 0.01
-$ tree_depth    &lt;dbl&gt; 3
-$ mtry          &lt;dbl&gt; 50
-$ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
-</div>
-</div></div>
-<ul>
-<li><p>Selected algorithm was UPDATE (xgboost and random forest also considered)</p></li>
-<li><p>Selected feature set was “UPDATE” indicating that individual items (rather than scale scores) were used, and ordinal scoring was used for ordered data (rather than dummy coding)</p></li>
-<li><p>Selected resampling approach was “UPDATE” corresponding to upsampling (vs. downsampling or SMOTE) with a ratio of 1:1 (majority:minority class)</p></li>
-<li><p>Values of the hyperparameters UPDATE were selected from sensible ranges for each value</p></li>
-</ul>
-</section>
-<section id="completed-model-performance" class="level3">
-<h3 class="anchored" data-anchor-id="completed-model-performance">Completed: Model Performance</h3>
-<p>Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases.</p>
-<p>We evaluated model performance in-depth by conducting <em>Bayesian hierarchical generalized linear models</em> to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC for our week 4 (top panel) and week 26 (bottom panel) models.</p>
-<div class="quarto-embed-nb-cell" data-notebook="C:\Users\gfronk\Documents\GitHub\study_match\notebooks\ana_bayes_match.qmd" data-notebook-title="Posterior probabilities across models for Insight study (version v5)" data-notebook-cellid="cell-fig-posteriors">
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-posteriors" class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fig_posteriors <span class="op">&lt;-</span> pp_tidy <span class="op">|&gt;</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  mutate(model <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">&quot;week_4&quot;</span>, <span class="st">&quot;week_26&quot;</span>))) <span class="op">|&gt;</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span> </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  geom_histogram(aes(x <span class="op">=</span> posterior, fill <span class="op">=</span> model), color <span class="op">=</span> <span class="st">&quot;black&quot;</span>, alpha <span class="op">=</span> <span class="fl">.4</span>, </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                 bins <span class="op">=</span> <span class="dv">30</span>) <span class="op">+</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  geom_segment(mapping <span class="op">=</span> aes(y <span class="op">=</span> y <span class="op">+</span> <span class="dv">100</span>, yend <span class="op">=</span> y <span class="op">-</span> <span class="dv">100</span>, x <span class="op">=</span> mean, xend <span class="op">=</span> mean,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                             color <span class="op">=</span> model),</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>               data <span class="op">=</span> ci) <span class="op">+</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  geom_segment(mapping <span class="op">=</span> aes(y <span class="op">=</span> y, yend <span class="op">=</span> y, x <span class="op">=</span> lower, xend <span class="op">=</span> upper, color <span class="op">=</span> model),</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>               data <span class="op">=</span> ci) <span class="op">+</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  facet_wrap(<span class="op">~</span>model, ncol <span class="op">=</span> <span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  scale_y_continuous(<span class="st">&quot;Posterior Probability&quot;</span>, breaks <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>)) <span class="op">+</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ylab(&quot;Posterior Probability Density&quot;) +</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">&quot;Area Under ROC Curve&quot;</span>)</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>fig_posteriors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div id="fig-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
-<a href="preregistration_files/figure-html/ana_bayes_match-fig-posteriors-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="data:image/png;base64,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" id="fig-posteriors" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
-<p>The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter for each model. These CIs do not contain 0.5 (i.e., chance performance), suggesting both models are capturing signal in the data.</p>
-<p><em>Because both models have predictive value as evidenced by these Bayesian analyses, we will conduct AIM 2 analyses with both models.</em></p>
 </section>
 <section id="in-progress-aim-2-clinical-benefit-analyses" class="level3">
 <h3 class="anchored" data-anchor-id="in-progress-aim-2-clinical-benefit-analyses">In Progress: AIM 2 Clinical Benefit Analyses</h3>
-<p><strong>AIM 2</strong> analyses using this full model are underway. Here, we walk through our process using the data for only the week 4 model; however, the data structure and process are identical for the week 26 model.</p>
-<p>We have used the final models (for each outcome) fit in the full dataset to generate three predictions (probabilities, <code>prob_*</code>) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">82294</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>AIM 2</strong> analyses using this full model are underway. We have used the final model fit in the full dataset to generate three predictions (probabilities, <code>prob_*</code>) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">82294</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -1779,11 +1735,11 @@ $ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 </div></div>
 <p>The treatment that yields the highest model-predicted probability of abstinence is identified as that participant’s “best” treatment (<code>tx_best</code>).</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_best, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_best, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -1862,9 +1818,9 @@ $ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 </div></div>
 <p>The best treatments spanned all three medication options: varenicline, combination nicotine replacement therapy (“combo_nrt”), and nicotine patch (“patch”).</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="max-height: 500px;"><code># A tibble: 3 × 3
   tx_best         n  prop
@@ -1875,11 +1831,11 @@ $ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 </div></div>
 <p>Some participants’ best treatment (<code>tx_best</code>) matched what they were randomly assigned in the original trial (<code>tx_rct</code>). Other participants may have received what the model identified as their second-best or worst treatment. Thus, participants’ RCT-assigned treatment can be categorized by whether it “matched” their model-assigned treatment (<code>tx_match</code>).</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, tx_rct, tx_best, tx_second, tx_worst) <span class="sc">|&gt;</span> </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, tx_rct, tx_best, tx_second, tx_worst) <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -1982,10 +1938,10 @@ $ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 </div>
 </div></div>
-<p>Just over one third of participants received their model-assigned “best” treatment in the original trial.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Approximately 38% of participants received their model-assigned “best” treatment in the original trial.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="max-height: 500px;"><code># A tibble: 2 × 3
   tx_match     n  prop
@@ -1994,82 +1950,135 @@ $ resample      &lt;chr&gt; &quot;up_1&quot;</code></pre>
 2 TRUE       409 0.377</code></pre>
 </div>
 </div></div>
+<p>At the time of this preregistration, <strong>no analyses have been conducted using these probabilities or model-based treatment assignments.</strong></p>
 </section>
 </section>
 <section id="purpose-of-preregistration" class="level2">
 <h2 class="anchored" data-anchor-id="purpose-of-preregistration">Purpose of Preregistration</h2>
 <p>The purpose of this document is to <strong>preregister the analyses for evaluating the clinical benefit of this treatment selection model</strong>.</p>
+<section id="outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="outcomes">Outcomes</h3>
 <p>Our primary analysis will compare the observed outcomes (i.e., abstinence vs. smoking, from the original trial) for people who did or did not receive their best treatment. We will examine these outcomes over the following time points:</p>
 <ul>
-<li><p>4 weeks: This time point served as an outcome for a prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.</p></li>
+<li><p>4 weeks: This served as the outcome for a prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.</p></li>
 <li><p>12 weeks: This is end-of-treatment and represents a mid-point between the early (4-week) and later (26-week) outcomes.</p></li>
-<li><p>26 weeks (6 months): This time point served as an outcome for a prediction model. This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>). This duration is often used as a proxy for long-term success.</p></li>
+<li><p>26 weeks (6 months): This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>). This duration is often used as a proxy for long-term success.</p></li>
 </ul>
-<p>Thus, our model will have the following components:</p>
+</section>
+<section id="modeling-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="modeling-specifications">Modeling Specifications</h3>
+<p>We plan to follow a mixed-effects modeling approach using the <code>blme</code> package. Specifically, we will fit a partially Bayesian generalized linear model using <code>bglmer()</code> with the components listed below. This approach uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (<a href="https://link.springer.com/article/10.1007/s11336-013-9328-2">Chung et al., 2013</a>, <code>blme</code> package). We would use the default <code>&quot;nlminbwrap&quot;</code> optimizer.</p>
+<p>To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, <strong>we conduct these proposed analyses using our data with shuffled outcome variables</strong>. Following preregistration, our analyses will follow this script exactly using our real data.</p>
+<p>Our model will have the following components:</p>
 <ol type="1">
 <li><p>Dependent variable: abstinence (vs. smoking; <code>outcome_rct_num</code>). Binary outcome with abstinence coded as 1 and smoking coded as 0.</p></li>
 <li><p>Independent variable: treatment match (<code>tx_match</code>). Between-subjects categorical variable with two levels (TRUE or FALSE). This variable will be coded with an orthogonal contrast such that we compare individuals who received their best treatment to individuals who did not.</p></li>
-<li><p>Independent variable: time (<code>week</code>). Within-subjects categorical variable with three levels (week 4, week 12, week 26). This variable will be coded with orthogonal Helmert contrasts to avoid making an assumption about the linearity of this effect. We will compare the earliest 4-week outcome to the two later outcomes, and the 12-week outcome to the 26-week (6 month) outcome.</p></li>
+<li><p>Independent variable: time (<code>week</code>). This variable has repeated measures such that there are three time points for each subject. This variable will be treated as a numeric variable, and it will be log-transformed (natural log) to meet linearity assumptions. Log transformation is appropriate when the shape of the relationship between the raw variable and outcome is asymptotic.</p></li>
+</ol>
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>d_log_fig <span class="ot">&lt;-</span> d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_wk)(.+)(?=_num)&quot;</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week =</span> <span class="fu">as.numeric</span>(week)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log =</span> <span class="fu">log</span>(week)) <span class="co"># default base = e (natural log)</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>d_log_fig <span class="sc">|&gt;</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week) <span class="sc">|&gt;</span> </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> mean_outcome)) <span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Relationship Between Raw Week &amp; Outcome&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="preregistration_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="preregistration_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>d_log_fig <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week_log) <span class="sc">|&gt;</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) <span class="sc">|&gt;</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> week_log, <span class="at">y =</span> mean_outcome)) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Relationship Between Log-Transformed Week &amp; Outcome&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="preregistration_files/figure-html/unnamed-chunk-8-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="preregistration_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div></div>
+<ol start="4" type="1">
 <li><p>Interaction between treatment match and time</p></li>
 <li><p>Random slope for time (3 repeated observations of time for each subject)</p></li>
 <li><p>Random intercept</p></li>
 </ol>
-<p>We plan to follow a mixed-effects modeling approach using the <code>lme4</code> package. Specifically, we will fit a generalized linear model using <code>glmer()</code> with the components listed above.</p>
+</section>
+<section id="focal-secondary-effects" class="level3">
+<h3 class="anchored" data-anchor-id="focal-secondary-effects">Focal &amp; Secondary Effects</h3>
 <p>Our <strong>focal effect</strong> is the effect of treatment match. We predict that individuals who received their best treatment will have improved outcomes compared to individuals who did not.</p>
 <p>Our <strong>secondary effects</strong> include:</p>
 <ul>
-<li><p>The interactions between treatmennt match and both time contrasts (week 4 vs. later, week 12 vs. week 26). We do not have directional hypotheses about these interactions.</p>
+<li><p>The interaction between treatment match and time. We do not have a directional hypothesis about this interaction.</p>
 <ul>
-<li>If either of these interactions are significant (<em>p</em> &lt; 0.05), we will conduct <strong>follow-up tests</strong> of the simple effect of the best vs. other treatment contrast at all 3 time points (week 4, week 12, and week 26).</li>
+<li>If this interaction is significant (<em>p</em> &lt; 0.05), we will conduct <strong>follow-up tests</strong> of the simple effect of treatment match at all 3 time points (week 4, week 12, and week 26). These will be general linear models using the <code>glm</code> function within the <code>stats</code> package.</li>
 </ul></li>
 </ul>
-<p>Although the above estimates comprise our focal effects, we plan to report the estimates, test statistics, <em>p</em>-values, and confidence intervals for all fixed effects from this model.</p>
+<p>We plan to report the estimates, test statistics, <em>p</em>-values, and confidence intervals for all effects from this model.</p>
+</section>
 </section>
 <section id="shuffle-data" class="level2">
 <h2 class="anchored" data-anchor-id="shuffle-data">Shuffle Data</h2>
-<p>To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, the remainder of this document conducts analyses using our data with shuffled outcome variables. Following preregistration, our analyses will follow this script exactly using our real data.</p>
-<p><em>Again, we will walk through this process using shuffled data from our week 4 model, but the process will be identical for our week 26 model.</em></p>
-<p>To create this shuffled dataset, we:</p>
+<p>To create our shuffled dataset, we randomly sample (without replacement) the treatment match (<code>tx_match</code>) variable. This:</p>
 <ul>
-<li><p>break the relationship between treatment match and outcome by sampling (without replacement) the treatment match variable (<code>tx_match</code>)</p></li>
-<li><p>pivot into long format with week as a within-subjects factor</p></li>
-<li><p>remove unnecessary variables</p></li>
+<li><p>Breaks any relationship between <code>tx_match</code> and the outcome</p></li>
+<li><p>Breaks any interactive effect of <code>tx_match</code> and <code>week</code> on the outcome</p></li>
+<li><p>Maintains the random effect structure within the <code>week</code> variable</p></li>
 </ul>
-<div class="cell-container"><div class="cell-decorator"><pre>In [16]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">72905</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="ot">&lt;-</span> d_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, </span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">sample</span>(d_wk4<span class="sc">$</span>tx_match, <span class="fu">nrow</span>(d_wk4), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_wk)(.+)(?=_num)&quot;</span>,</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">factor</span>(tx_match, </span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>)),</span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">as.numeric</span>(week)) <span class="sc">|&gt;</span> </span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log =</span> <span class="fu">log</span>(week)) <span class="sc">|&gt;</span> </span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log_scale =</span> <span class="fu">scale</span>(week_log)[,<span class="dv">1</span>])</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(d_shuf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">72905</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="ot">&lt;-</span> d_wk4 <span class="sc">|&gt;</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only necessary variables</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># randomize tx_match variable</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">sample</span>(d_wk4<span class="sc">$</span>tx_match, <span class="fu">nrow</span>(d_wk4), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pivot to long data format where week is its own variable</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_wk)(.+)(?=_num)&quot;</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correctly class independent variables</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">factor</span>(tx_match, </span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>)),</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">as.numeric</span>(week)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># log transform week variable per above</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log =</span> <span class="fu">log</span>(week)) <span class="co"># default base is e (natural log)</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(d_shuf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="max-height: 500px;"><code>Rows: 3,258
-Columns: 6
+Columns: 5
 $ subid           &lt;dbl&gt; 20010, 20010, 20010, 20015, 20015, 20015, 20030, 20030…
 $ tx_match        &lt;fct&gt; TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, F…
 $ week            &lt;dbl&gt; 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26,…
 $ outcome_rct_num &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, …
-$ week_log        &lt;dbl&gt; 1.386294, 2.484907, 3.258097, 1.386294, 2.484907, 3.25…
-$ week_log_scale  &lt;dbl&gt; -1.2890446, 0.1412207, 1.1478239, -1.2890446, 0.141220…</code></pre>
+$ week_log        &lt;dbl&gt; 1.386294, 2.484907, 3.258097, 1.386294, 2.484907, 3.25…</code></pre>
 </div>
 </div></div>
 <p>Confirm that data look random</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [17]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week, tx_match) <span class="sc">|&gt;</span> </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [16]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week, tx_match) <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by &#39;week&#39;. You can override using the
 `.groups` argument.</code></pre>
@@ -2087,172 +2096,171 @@ $ week_log_scale  &lt;dbl&gt; -1.2890446, 0.1412207, 1.1478239, -1.2890446, 0.14
 6    26 TRUE            0.252</code></pre>
 </div>
 </div></div>
-<p>Set contrasts for week and treatment match</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [18]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># contrast coding on week</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># c_week &lt;- contr.helmert(c(&quot;wk26&quot;, &quot;wk12&quot;, &quot;wk4&quot;))</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># c_week[, 1] &lt;- c_week[, 1] / (max(c_week[, 1]) - min(c_week[, 1]))</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># c_week[, 2] &lt;- c_week[, 2] / (max(c_week[, 2]) - min(c_week[, 2]))</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(c_week) &lt;- c(&quot;wk12_v_wk26&quot;, &quot;wk4_v_later&quot;)</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(d_shuf$week) &lt;- c_week</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(d_shuf$week)</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># contrast coding on treatment match</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>c_tx <span class="ot">&lt;-</span> <span class="fu">contr.helmert</span>(<span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>c_tx[, <span class="dv">1</span>] <span class="ot">&lt;-</span> c_tx[, <span class="dv">1</span>] <span class="sc">/</span> (<span class="fu">max</span>(c_tx[, <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">min</span>(c_tx[, <span class="dv">1</span>]))</span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(c_tx) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;best_v_other&quot;</span>)</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match) <span class="ot">&lt;-</span> c_tx</span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="analysis-steps" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-steps">Analysis Steps</h2>
+<p>Set contrasts for treatment match</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [17]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>c_tx <span class="ot">&lt;-</span> <span class="fu">contr.helmert</span>(<span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>c_tx[, <span class="dv">1</span>] <span class="ot">&lt;-</span> c_tx[, <span class="dv">1</span>] <span class="sc">/</span> (<span class="fu">max</span>(c_tx[, <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">min</span>(c_tx[, <span class="dv">1</span>])) <span class="co"># scale</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(c_tx) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;best_v_other&quot;</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match) <span class="ot">&lt;-</span> c_tx</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="max-height: 500px;"><code>      best_v_other
 FALSE         -0.5
 TRUE           0.5</code></pre>
 </div>
 </div></div>
-</section>
-<section id="analysis-steps" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-steps">Analysis Steps</h2>
 <section id="primary-model" class="level3">
 <h3 class="anchored" data-anchor-id="primary-model">Primary Model</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [19]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week_log <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> week_log <span class="sc">|</span> subid),</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> d_shuf,</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control$checkConv, :
-Model failed to converge with max|grad| = 0.0166072 (tol = 0.002, component 1)</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [18]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> blme<span class="sc">::</span><span class="fu">bglmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week_log <span class="sc">+</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                          (<span class="dv">1</span> <span class="sc">+</span> week_log <span class="sc">|</span> subid),</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data =</span> d_shuf,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Generalized linear mixed model fit by maximum likelihood (Laplace
-  Approximation) [glmerMod]
+<pre style="max-height: 500px;"><code>Cov prior  : subid ~ wishart(df = 4.5, scale = Inf, posterior.scale = cov, common.scale = TRUE)
+Prior dev  : -2.0001
+
+Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [bglmerMod]
  Family: binomial  ( logit )
 Formula: outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid)
    Data: d_shuf
 Control: glmerControl(optCtrl = list(maxfun = 3e+06))
 
      AIC      BIC   logLik deviance df.resid 
-  3090.4   3133.1  -1538.2   3076.4     3251 
+  3091.9   3134.5  -1539.0   3077.9     3251 
 
 Scaled residuals: 
      Min       1Q   Median       3Q      Max 
--1.28497 -0.42787 -0.06827  0.14552  1.45809 
+-1.22909 -0.41112 -0.06664  0.14531  1.40569 
 
 Random effects:
  Groups Name        Variance Std.Dev. Corr 
- subid  (Intercept) 10.58    3.253         
-        week_log    12.93    3.595    -1.00
+ subid  (Intercept) 11.08    3.329         
+        week_log    13.23    3.638    -0.99
 Number of obs: 3258, groups:  subid, 1086
 
 Fixed effects:
                               Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                     1.9798     0.3412   5.803 6.53e-09 ***
-tx_matchbest_v_other           -0.3267     0.3963  -0.824     0.41    
-week_log                       -2.2200     0.2197 -10.103  &lt; 2e-16 ***
-tx_matchbest_v_other:week_log   0.1215     0.2765   0.439     0.66    
+(Intercept)                     1.9482     0.3557   5.478 4.31e-08 ***
+tx_matchbest_v_other           -0.3387     0.4028  -0.841    0.400    
+week_log                       -2.2343     0.2221 -10.060  &lt; 2e-16 ***
+tx_matchbest_v_other:week_log   0.1244     0.2783   0.447    0.655    
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
             (Intr) tx_m__ wek_lg
-tx_mtchbs__  0.138              
-week_log    -0.932 -0.118       
-tx_mtch__:_ -0.104 -0.868  0.130
-optimizer (Nelder_Mead) convergence code: 0 (OK)
-Model failed to converge with max|grad| = 0.0166072 (tol = 0.002, component 1)</code></pre>
+tx_mtchbs__  0.142              
+week_log    -0.917 -0.118       
+tx_mtch__:_ -0.103 -0.861  0.129</code></pre>
 </div>
-</div></div>
-</section>
-<section id="alternative-models-for-robustness-checks" class="level3">
-<h3 class="anchored" data-anchor-id="alternative-models-for-robustness-checks">Alternative Models for Robustness Checks</h3>
-<p>The model fit above has a singular fit. There are a number of recommended approaches to address singular fits (see <code>?isSingular</code>) if the model fit with our real data also has a singular fit.</p>
-<p>For consistency, the following proposed alternative approaches mirror the steps we followed in a previously published project from our laboratory that also required complex mixed-effects modeling (<a href="https://psycnet.apa.org/record/2022-10249-001">Schultz et al., 2022</a>). These steps are available in our open-access, annotated analysis scripts (e.g., <a href="https://osf.io/k8gfc">this script</a>).</p>
-<ol type="1">
-<li>Use a partially Bayesian method that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (<a href="https://link.springer.com/article/10.1007/s11336-013-9328-2">Chung et al., 2013</a>, <code>blme</code> package). We would use the <code>&quot;nlminbwrap&quot;</code> optimizer because <code>&quot;bobyqa&quot;</code> produced a singular fit.</li>
-</ol>
-<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> blme<span class="sc">::</span><span class="fu">bglmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week_log <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> week_log <span class="sc">|</span> subid),</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data =</span> d_shuf,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<ol start="2" type="1">
-<li>Use a simpler random effects structure to address problems with singular fits. Following this strategy, we would fit a model with only the random intercept.</li>
-</ol>
-<div class="cell-container"><div class="cell-decorator"><pre>In [21]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>model_3 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subid),</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> d_shuf,</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optimizer =</span> <span class="st">&quot;bobyqa&quot;</span>,</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<ol start="3" type="1">
-<li>Re-fit the glmer model with the full random effects structure across all available optimizers and review for consistency of log-likelihood ratios, fixed effects, and test statistics of focal effect across optimizers.</li>
-</ol>
-<div class="cell-container"><div class="cell-decorator"><pre>In [22]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>opts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">optimizer =</span> <span class="fu">c</span>(<span class="st">&quot;bobyqa&quot;</span>, <span class="st">&quot;Nelder_Mead&quot;</span>, <span class="st">&quot;nlminbwrap&quot;</span>, </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;nmkbw&quot;</span>, <span class="st">&quot;optimx&quot;</span>, <span class="st">&quot;nloptwrap&quot;</span>, <span class="st">&quot;nloptwrap&quot;</span>),</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;L-BFGS-B&quot;</span>, </span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;NLOPT_LN_NELDERMEAD&quot;</span>, <span class="st">&quot;NLOPT_LN_BOBYQA&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>model_all <span class="ot">&lt;-</span> <span class="fu">allFit</span>(model_1, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">meth.tab =</span> opts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [23]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Review warning/error messages across remaining optimizers</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>effects <span class="ot">&lt;-</span> <span class="fu">tidy_opts</span>(model_all, <span class="at">terms =</span> <span class="st">&quot;tx_rankbest_v_other&quot;</span>)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>opt_names <span class="ot">&lt;-</span> <span class="fu">names</span>(effects<span class="sc">$</span>msg)</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>effects<span class="sc">$</span>msg <span class="sc">|&gt;</span> </span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map2_dfr</span>(opt_names, extract_opts_msgs)</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="co"># confirm that log-likelihood ratios are equivalent across optimizers</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>effects <span class="sc">|&gt;</span> </span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">&quot;model&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(optimizer, llik)</span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirm fixed effects &amp; test stats are equivalent across optimizers for our focal effect (best treatment vs. other)</span></span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>effects <span class="sc">|&gt;</span> </span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">&quot;tx_rankbest_v_other&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>msg, <span class="sc">-</span>llik)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="follow-up-analyses-simple-effects" class="level3">
 <h3 class="anchored" data-anchor-id="follow-up-analyses-simple-effects">Follow-up analyses: Simple Effects</h3>
-<p>If either interaction for our secondary outcomes (best vs. other treatment rank contrast X both time contrasts) is significant (<em>p</em> &lt; 0.05), we will conduct follow-up analyses to test the simple effect of the best vs. other treatment rank contrast at each time point.</p>
+<p>If the interaction between <code>tx_match</code> and <code>week</code> is significant (<em>p</em> &lt; 0.05), we will conduct follow-up analyses to test the simple effect of <code>tx_match</code> at each time point.</p>
 <p>Simple effect at 4 weeks</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [24]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>d_4_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="st">&quot;wk4&quot;</span>)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>model_4wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d_4_shuf,</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_4wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [19]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>d_4_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>model_4wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d_4_shuf,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_4wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre style="max-height: 500px;"><code>
+Call:
+glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
+    data = d_4_shuf)
+
+Coefficients:
+                     Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          -0.66653    0.06626 -10.059   &lt;2e-16 ***
+tx_matchbest_v_other -0.08264    0.13252  -0.624    0.533    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1394.7  on 1085  degrees of freedom
+Residual deviance: 1394.3  on 1084  degrees of freedom
+AIC: 1398.3
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
 </div></div>
 <p>Simple effect at 12 weeks</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [25]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>d_12_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="st">&quot;wk12&quot;</span>)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>model_12wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_12_shuf,</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_12wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>d_12_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">12</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>model_12wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_12_shuf,</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_12wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre style="max-height: 500px;"><code>
+Call:
+glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
+    data = d_12_shuf)
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          -0.894255   0.068979 -12.964   &lt;2e-16 ***
+tx_matchbest_v_other  0.006995   0.137959   0.051     0.96    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1308  on 1085  degrees of freedom
+Residual deviance: 1308  on 1084  degrees of freedom
+AIC: 1312
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
 </div></div>
 <p>Simple effect at 26 weeks</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [26]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>d_26_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="st">&quot;wk26&quot;</span>)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>model_26wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_26_shuf,</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_26wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [21]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>d_26_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">26</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>model_26wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_26_shuf,</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_26wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre style="max-height: 500px;"><code>
+Call:
+glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
+    data = d_26_shuf)
+
+Coefficients:
+                     Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          -1.11062    0.07244  -15.33   &lt;2e-16 ***
+tx_matchbest_v_other  0.04352    0.14488    0.30    0.764    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1213.6  on 1085  degrees of freedom
+Residual deviance: 1213.6  on 1084  degrees of freedom
+AIC: 1217.6
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
 </div></div>
 <div class="hidden" aria-hidden="true">
 <span class="glightbox-desc lightbox-desc-1"></span>
@@ -2668,7 +2676,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -208,7 +208,8 @@ ci <- pp_tidy |>
          y = 1000) 
 ```
 
-```{r fig-posteriors}
+```{r}
+#| label: fig-posteriors
 fig_posteriors <- pp_tidy |> 
   mutate(model = factor(model, levels = c("week_4", "week_26"))) |> 
   ggplot() + 

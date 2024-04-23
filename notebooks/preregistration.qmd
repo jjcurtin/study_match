@@ -249,7 +249,7 @@ Models were evaluated using our primary performance metric, area under the ROC c
 
 We evaluated model performance in-depth by conducting *Bayesian hierarchical generalized linear models* to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC for our week 4 (top panel) and week 26 (bottom panel) models.
 
-{{< embed notebooks/ana_bayes_match.qmd#fig-posteriors >}}
+{{< embed ana_bayes_match.qmd#fig-posteriors >}}
 
 The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter for each model. These CIs do not contain 0.5 (i.e., chance performance), suggesting both models are capturing signal in the data.
 
@@ -478,6 +478,7 @@ If either interaction for our secondary outcomes (best vs. other treatment rank 
 
 Simple effect at 4 weeks
 ```{r}
+#| eval: false
 d_4_shuf <- d_shuf |> 
   filter(week == "wk4")
 
@@ -490,6 +491,7 @@ summary(model_4wk)
 
 Simple effect at 12 weeks
 ```{r}
+#| eval: false
 d_12_shuf <- d_shuf |> 
   filter(week == "wk12")
 
@@ -502,6 +504,7 @@ summary(model_12wk)
 
 Simple effect at 26 weeks
 ```{r}
+#| eval: false
 d_26_shuf <- d_shuf |> 
   filter(week == "wk26")
 

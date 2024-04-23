@@ -206,6 +206,9 @@ ci <- pp_tidy |>
   summary() |> 
   mutate(model = factor(model, levels = c("week_4", "week_26")),
          y = 1000) 
+
+ci_week4 <- ci |> 
+  filter(model == "week_4")
 ```
 
 ```{r}
@@ -227,6 +230,27 @@ fig_posteriors <- pp_tidy |>
 
 fig_posteriors
 ```
+
+```{r}
+#| label: fig-week4
+
+pp_tidy |> 
+  mutate(model = factor(model, levels = c("week_4", "week_26"))) |> 
+  filter(model == "week_4") |> 
+  ggplot() + 
+  geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
+                 bins = 30) +
+  geom_segment(mapping = aes(y = y + 100, yend = y - 100, x = mean, xend = mean,
+                             color = model),
+               data = ci_week4) +
+  geom_segment(mapping = aes(y = y, yend = y, x = lower, xend = upper, color = model),
+               data = ci_week4) +
+  scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
+  # ylab("Posterior Probability Density") +
+  xlab("Area Under ROC Curve") +
+  theme(legend.position = "none")
+```
+
 
 model contrast posteriors
 

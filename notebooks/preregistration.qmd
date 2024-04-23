@@ -85,8 +85,8 @@ options(tibble.print_max = Inf)
 
 # read in d for week 4 model
 d_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome", 
-                        str_c("aim_2_", version, "_pp_hybrid_wk4_outcome.csv")),
-              show_col_types = FALSE) |> 
+                            str_c("aim_2_", version, "_pp_hybrid_wk4_outcome.csv")),
+                  show_col_types = FALSE) |> 
   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
          outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
@@ -113,8 +113,8 @@ d_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
 
 # read in best_config for week 4 model
 best_configuration_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
-                                         str_c("best_config_", version, ".csv")),
-                               show_col_types = FALSE) |> 
+                                             str_c("best_config_", version, ".csv")),
+                                   show_col_types = FALSE) |> 
   select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
 
 # read in d for week 26 model
@@ -146,39 +146,11 @@ best_configuration_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome
 #          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
 
 # read in best_config for week 26 model
-best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
-                                         str_c("best_config_", version, ".csv")),
-                               show_col_types = FALSE) |> 
-  select(algorithm, feature_set, learning_rate = hp1, tree_depth = hp2, 
-         mtry = hp3, resample)
-```
-
-```{r make_prelim_fig}
-#| echo: false
-#| eval: false
-
-# make figure for john's presentation
-d_fig <- d_wk4 |> 
-  select(subid, tx_rank, 
-         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
-  pivot_longer(
-    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
-    names_to = "week",
-    names_pattern = "(?<=outcome_rct_)(.+)(?=_num)",
-    values_to = "outcome_rct_num"
-  ) |> 
-  mutate(tx_rank = factor(tx_rank, 
-                          levels = c("first", "second", "third")),
-         week = factor(week,
-                       levels = c("wk4", "wk12", "wk26")),
-         subid = factor(subid)) |> 
-  summarize(outcome_mean = mean(outcome_rct_num), .by = c(tx_rank, week)) 
-
-# bar chart
-d_fig |> 
-  ggplot(aes(x = week, y = outcome_mean, fill = tx_rank)) +
-  geom_col(position = "dodge") 
-
+# best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
+#                                               str_c("best_config_", version, ".csv")),
+#                                     show_col_types = FALSE) |> 
+#   select(algorithm, feature_set, learning_rate = hp1, tree_depth = hp2, 
+#          mtry = hp3, resample)
 ```
 
 ## Study Overview
@@ -191,29 +163,35 @@ Cigarette smoking remains a critical and costly public health crisis. Existing t
 
 Specifically, this project pursues the following aims:
 
-**AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.** We will build a machine learning model to predict treatment success (i.e., point-prevalence abstinence from smoking) for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed randomized controlled trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.
+**AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.** We will build a machine learning model to predict treatment success (i.e.,7-day point-prevalence abstinence from smoking 4 weeks post-quit) for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed randomized controlled trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.
 
 **AIM 2: Evaluate the clinical benefit of using a treatment selection machine learning model.** Using the best model identified in **AIM 1**, we will identify the treatment for each person that gives them the highest likelihood of abstinence by comparing predicted probabilities of abstinence for each participant for each treatment. We will then evaluate the clinical benefit of this model-based treatment selection approach. 
 
 ### Data
 
-This project relies on existing data from a completed comparative effectiveness trial by [Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/). Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking.
+This project relies on existing data from a completed comparative effectiveness trial by [Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/). Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking. Thus, we used predictors from the rich baseline characterization to predict our **primary outcome** of 7-day point-prevalance abstinence at 4 weeks post-quit.
 
 ## Analysis Progress at Time of Preregistration
 
 ### Completed: Model Building, Selection, & Evaluation
 
-**AIM 1** analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds ("test sets") were used to evaluate model performance.
+**AIM 1** analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds ("test sets") were used to evaluate model performance. 
 
-Models have been fit using two outcomes:
+### Completed: Model Performance
 
-* Week 4 7-day point-prevalance abstinence
+Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases. 
 
-* Week 26 (60 month) 7-day point-prevalence abstinence
+We evaluated model performance in-depth by conducting *Bayesian hierarchical generalized linear models* to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC in held-out folds.
 
-A single, best model for each outcome was selected with 1 repeat of 10-fold cross-validation in the full dataset. 
+{{< embed ana_bayes_match.qmd#fig-week4 >}}
 
-The best model configuration for the **Week 4 outcome** includes the following:
+The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter. The CI does not contain 0.5 (i.e., chance performance), suggesting the model is capturing signal in the data.
+
+### Completed: Fit Final Model
+
+A single, best model was selected with 1 repeat of 10-fold cross-validation in the full dataset. 
+
+The best model configuration includes the following:
 
 ```{r}
 #| echo: false
@@ -228,38 +206,9 @@ glimpse(best_configuration_wk4)
 
 * Values of the hyperparameters alpha and lambda were selected from sensible ranges for each value
 
-The best model configuration for the **Week 26 outcome** includes the following:
-
-```{r}
-#| echo: false
-glimpse(best_configuration_wk26)
-```
-
-* Selected algorithm was UPDATE (xgboost and random forest also considered)
-
-* Selected feature set was "UPDATE" indicating that individual items (rather than scale scores) were used, and ordinal scoring was used for ordered data (rather than dummy coding)
-
-* Selected resampling approach was "UPDATE" corresponding to upsampling (vs. downsampling or SMOTE) with a ratio of 1:1 (majority:minority class)
-
-* Values of the hyperparameters UPDATE were selected from sensible ranges for each value
-
-### Completed: Model Performance
-
-Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases. 
-
-We evaluated model performance in-depth by conducting *Bayesian hierarchical generalized linear models* to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC for our week 4 (top panel) and week 26 (bottom panel) models.
-
-{{< embed ana_bayes_match.qmd#fig-posteriors >}}
-
-The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter for each model. These CIs do not contain 0.5 (i.e., chance performance), suggesting both models are capturing signal in the data.
-
-*Because both models have predictive value as evidenced by these Bayesian analyses, we will conduct AIM 2 analyses with both models.*
-
 ### In Progress: AIM 2 Clinical Benefit Analyses
 
-**AIM 2** analyses using this full model are underway. Here, we walk through our process using the data for only the week 4 model; however, the data structure and process are identical for the week 26 model.
-
-We have used the final models (for each outcome) fit in the full dataset to generate three predictions (probabilities, `prob_*`) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment. 
+**AIM 2** analyses using this full model are underway. We have used the final model fit in the full dataset to generate three predictions (probabilities, `prob_*`) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment. 
 
 ```{r}
 set.seed(82294)
@@ -294,32 +243,70 @@ d_wk4 |>
   print_kbl()
 ```
 
-Just over one third of participants received their model-assigned "best" treatment in the original trial.
+Approximately `r str_c(round((mean(d_wk4$tx_match) * 100), digits = 0), "%")` of participants received their model-assigned "best" treatment in the original trial.
 
 ```{r}
 d_wk4 |> 
   tab(tx_match)
 ```
 
+At the time of this preregistration, **no analyses have been conducted using these probabilities or model-based treatment assignments.**
+
 ## Purpose of Preregistration
 
 The purpose of this document is to **preregister the analyses for evaluating the clinical benefit of this treatment selection model**. 
 
+### Outcomes
+
 Our primary analysis will compare the observed outcomes (i.e., abstinence vs. smoking, from the original trial) for people who did or did not receive their best treatment. We will examine these outcomes over the following time points:
 
-* 4 weeks: This time point served as an outcome for a prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.
+* 4 weeks: This served as the outcome for a prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.
 
 * 12 weeks: This is end-of-treatment and represents a mid-point between the early (4-week) and later (26-week) outcomes.
 
-* 26 weeks (6 months): This time point served as an outcome for a prediction model. This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial ([Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/)). This duration is often used as a proxy for long-term success.
+* 26 weeks (6 months): This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial ([Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/)). This duration is often used as a proxy for long-term success.
 
-Thus, our model will have the following components:
+### Modeling Specifications
+
+We plan to follow a mixed-effects modeling approach using the `blme` package. Specifically, we will fit a partially Bayesian generalized linear model using `bglmer()` with the components listed below. This approach uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity ([Chung et al., 2013](https://link.springer.com/article/10.1007/s11336-013-9328-2), `blme` package). We would use the default `"nlminbwrap"` optimizer.
+
+To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, **we conduct these proposed analyses using our data with shuffled outcome variables**. Following preregistration, our analyses will follow this script exactly using our real data.
+
+Our model will have the following components:
 
 1. Dependent variable: abstinence (vs. smoking; `outcome_rct_num`). Binary outcome with abstinence coded as 1 and smoking coded as 0.
 
 2. Independent variable: treatment match (`tx_match`). Between-subjects categorical variable with two levels (TRUE or FALSE). This variable will be coded with an orthogonal contrast such that we compare individuals who received their best treatment to individuals who did not.
 
-3. Independent variable: time (`week`). Within-subjects categorical variable with three levels (week 4, week 12, week 26). This variable will be coded with orthogonal Helmert contrasts to avoid making an assumption about the linearity of this effect. We will compare the earliest 4-week outcome to the two later outcomes, and the 12-week outcome to the 26-week (6 month) outcome. 
+3. Independent variable: time (`week`). This variable has repeated measures such that there are three time points for each subject. This variable will be treated as a numeric variable, and it will be log-transformed (natural log) to meet linearity assumptions. Log transformation is appropriate when the shape of the relationship between the raw variable and outcome is asymptotic. 
+
+```{r}
+#| echo: false
+d_log_fig <- d_wk4 |> 
+  select(subid, outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(week = as.numeric(week)) |> 
+  mutate(week_log = log(week)) # default base = e (natural log)
+
+d_log_fig |>
+  group_by(week) |> 
+  summarize(mean_outcome = mean(outcome_rct_num)) |> 
+  ggplot(aes(x = week, y = mean_outcome)) +
+  geom_line() +
+  ggtitle("Relationship Between Raw Week & Outcome")
+
+d_log_fig |>
+  group_by(week_log) |> 
+  summarize(mean_outcome = mean(outcome_rct_num)) |> 
+  ggplot(aes(x = week_log, y = mean_outcome)) +
+  geom_line() +
+  ggtitle("Relationship Between Log-Transformed Week & Outcome")
+```
 
 4. Interaction between treatment match and time
 
@@ -327,48 +314,49 @@ Thus, our model will have the following components:
 
 6. Random intercept
 
-We plan to follow a mixed-effects modeling approach using the `lme4` package. Specifically, we will fit a generalized linear model using `glmer()` with the components listed above. 
+### Focal & Secondary Effects
 
 Our **focal effect** is the effect of treatment match. We predict that individuals who received their best treatment will have improved outcomes compared to individuals who did not. 
 
 Our **secondary effects** include: 
 
-* The interactions between treatmennt match and both time contrasts (week 4 vs. later, week 12 vs. week 26). We do not have directional hypotheses about these interactions.
+* The interaction between treatment match and time. We do not have a directional hypothesis about this interaction.
 
-  + If either of these interactions are significant (*p* < 0.05), we will conduct **follow-up tests** of the simple effect of the best vs. other treatment contrast at all 3 time points (week 4, week 12, and week 26).
+  + If this interaction is significant (*p* < 0.05), we will conduct **follow-up tests** of the simple effect of treatment match at all 3 time points (week 4, week 12, and week 26). These will be general linear models using the `glm` function within the `stats` package.
 
-Although the above estimates comprise our focal effects, we plan to report the estimates, test statistics, *p*-values, and confidence intervals for all fixed effects from this model.
+We plan to report the estimates, test statistics, *p*-values, and confidence intervals for all effects from this model.
 
 ## Shuffle Data
 
-To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, the remainder of this document conducts analyses using our data with shuffled outcome variables. Following preregistration, our analyses will follow this script exactly using our real data.
+To create our shuffled dataset, we randomly sample (without replacement) the treatment match (`tx_match`) variable. This:
 
-*Again, we will walk through this process using shuffled data from our week 4 model, but the process will be identical for our week 26 model.*
+* Breaks any relationship between `tx_match` and the outcome
 
-To create this shuffled dataset, we:
+* Breaks any interactive effect of `tx_match` and `week` on the outcome
 
-* break the relationship between treatment match and outcome by sampling (without replacement) the treatment match variable (`tx_match`)
+* Maintains the random effect structure within the `week` variable
 
-* pivot into long format with week as a within-subjects factor
-
-* remove unnecessary variables
 ```{r}
 set.seed(72905)
 d_shuf <- d_wk4 |> 
+  # select only necessary variables
   select(subid, tx_match, 
          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  # randomize tx_match variable
   mutate(tx_match = sample(d_wk4$tx_match, nrow(d_wk4), replace = FALSE)) |>
+  # pivot to long data format where week is its own variable
   pivot_longer(
     cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
     names_to = "week",
     names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
     values_to = "outcome_rct_num"
   ) |> 
+  # correctly class independent variables
   mutate(tx_match = factor(tx_match, 
-                          levels = c(FALSE, TRUE)),
+                           levels = c(FALSE, TRUE)),
          week = as.numeric(week)) |> 
-  mutate(week_log = log(week)) |> 
-  mutate(week_log_scale = scale(week_log)[,1])
+  # log transform week variable per above
+  mutate(week_log = log(week)) # default base is e (natural log)
 
 glimpse(d_shuf)
 ```
@@ -380,107 +368,37 @@ d_shuf |>
   summarize(mean_outcome = mean(outcome_rct_num)) 
 ```
 
-Set contrasts for week and treatment match
-```{r}
-# contrast coding on week
-# c_week <- contr.helmert(c("wk26", "wk12", "wk4"))
-# c_week[, 1] <- c_week[, 1] / (max(c_week[, 1]) - min(c_week[, 1]))
-# c_week[, 2] <- c_week[, 2] / (max(c_week[, 2]) - min(c_week[, 2]))
-# colnames(c_week) <- c("wk12_v_wk26", "wk4_v_later")
-# contrasts(d_shuf$week) <- c_week
-# contrasts(d_shuf$week)
+## Analysis Steps
 
-# contrast coding on treatment match
+Set contrasts for treatment match
+```{r}
 c_tx <- contr.helmert(c(FALSE, TRUE))
-c_tx[, 1] <- c_tx[, 1] / (max(c_tx[, 1]) - min(c_tx[, 1]))
+c_tx[, 1] <- c_tx[, 1] / (max(c_tx[, 1]) - min(c_tx[, 1])) # scale
 colnames(c_tx) <- c("best_v_other")
 contrasts(d_shuf$tx_match) <- c_tx
 contrasts(d_shuf$tx_match)
 ```
 
-## Analysis Steps
-
 ### Primary Model
 
 ```{r}
-model_1 <- glmer(outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid),
-                       data = d_shuf,
-                       family = binomial(link = "logit"),
-                 control = glmerControl(optCtrl = list(maxfun = 3e6)))
+model_1 <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + 
+                          (1 + week_log | subid),
+                        data = d_shuf,
+                        family = binomial(link = "logit"),
+                        control = glmerControl(optCtrl = list(maxfun = 3e6)))
 
 summary(model_1)
 ```
 
-### Alternative Models for Robustness Checks
-
-The model fit above has a singular fit. There are a number of recommended approaches to address singular fits (see `?isSingular`) if the model fit with our real data also has a singular fit. 
-
-For consistency, the following proposed alternative approaches mirror the steps we followed in a previously published project from our laboratory that also required complex mixed-effects modeling ([Schultz et al., 2022](https://psycnet.apa.org/record/2022-10249-001)). These steps are available in our open-access, annotated analysis scripts (e.g., [this script](https://osf.io/k8gfc)). 
-
-1. Use a partially Bayesian method that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity ([Chung et al., 2013](https://link.springer.com/article/10.1007/s11336-013-9328-2), `blme` package). We would use the `"nlminbwrap"` optimizer because `"bobyqa"` produced a singular fit.
-
-```{r}
-#| eval: false
-model_2 <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid),
-                        data = d_shuf,
-                        family = binomial(link = "logit"),
-                        control = glmerControl(optCtrl = list(maxfun = 3e6)))
-```
-
-2. Use a simpler random effects structure to address problems with singular fits. Following this strategy, we would fit a model with only the random intercept.
-
-```{r}
-#| eval: false
-model_3 <- lme4::glmer(outcome_rct_num ~ tx_match * week + (1 | subid),
-                       data = d_shuf,
-                       family = binomial(link = "logit"),
-                       control = glmerControl(optimizer = "bobyqa",
-                                              optCtrl = list(maxfun = 3e6)))
-```
-
-3. Re-fit the glmer model with the full random effects structure across all available optimizers and review for consistency of log-likelihood ratios, fixed effects, and test statistics of focal effect across optimizers. 
-
-```{r}
-#| eval: false
-opts <- tibble(optimizer = c("bobyqa", "Nelder_Mead", "nlminbwrap", 
-                             "nmkbw", "optimx", "nloptwrap", "nloptwrap"),
-               method = c("", "", "", "", "L-BFGS-B", 
-                          "NLOPT_LN_NELDERMEAD", "NLOPT_LN_BOBYQA")) %>% 
-  as.data.frame()
-
-model_all <- allFit(model_1, verbose = FALSE, meth.tab = opts)
-```
-
-```{r}
-#| include: false
-#| eval: false
-
-# Review warning/error messages across remaining optimizers
-effects <- tidy_opts(model_all, terms = "tx_rankbest_v_other")
-opt_names <- names(effects$msg)
-effects$msg |> 
-  map2_dfr(opt_names, extract_opts_msgs)
-
-# confirm that log-likelihood ratios are equivalent across optimizers
-effects |> 
-  filter(term == "model") |> 
-  select(optimizer, llik)
-
-# Confirm fixed effects & test stats are equivalent across optimizers for our focal effect (best treatment vs. other)
-effects |> 
-  filter(term == "tx_rankbest_v_other") |> 
-  select(-msg, -llik)
-```
-
 ### Follow-up analyses: Simple Effects
 
-If either interaction for our secondary outcomes (best vs. other treatment rank contrast X both time contrasts) is significant (*p* < 0.05), we will conduct follow-up analyses to test the simple effect of the best vs. other treatment rank contrast at each time point.
+If the interaction between `tx_match` and `week` is significant (*p* < 0.05), we will conduct follow-up analyses to test the simple effect of `tx_match` at each time point.
 
 Simple effect at 4 weeks
 ```{r}
-#| eval: false
 d_4_shuf <- d_shuf |> 
-  filter(week == "wk4")
+  filter(week == 4)
 
 model_4wk <- glm(outcome_rct_num ~ tx_match, 
                  data = d_4_shuf,
@@ -491,9 +409,8 @@ summary(model_4wk)
 
 Simple effect at 12 weeks
 ```{r}
-#| eval: false
 d_12_shuf <- d_shuf |> 
-  filter(week == "wk12")
+  filter(week == 12)
 
 model_12wk <- glm(outcome_rct_num ~ tx_match, 
                   data = d_12_shuf,
@@ -504,9 +421,8 @@ summary(model_12wk)
 
 Simple effect at 26 weeks
 ```{r}
-#| eval: false
 d_26_shuf <- d_shuf |> 
-  filter(week == "wk26")
+  filter(week == 26)
 
 model_26wk <- glm(outcome_rct_num ~ tx_match, 
                   data = d_26_shuf,

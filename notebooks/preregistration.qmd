@@ -35,7 +35,6 @@ library(lme4)
 library(tidymodels)
 library(tidyverse)
 library(blme)
-library(brms)
 library(parallel)
 
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
@@ -119,32 +118,32 @@ best_configuration_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome
   select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
 
 # read in d for week 26 model
-d_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome", 
-                        str_c("aim_2_", version, "_pp_hybrid_wk26_outcome.csv")),
-              show_col_types = FALSE) |> 
-  mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
-         outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
-         outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
-         tx_worst = case_when(
-           prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
-           prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
-           prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
-           TRUE ~ NA_character_),
-         tx_second = case_when(
-           tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
-           tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
-           tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
-           tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
-           tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
-           tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
-           TRUE ~ NA_character_)) |> 
-  mutate(tx_rank = case_when(
-    tx_rct == tx_best ~ "first",
-    tx_rct == tx_second ~ "second",
-    tx_rct == tx_worst ~ "third",
-    TRUE ~ NA_character_)) |> 
-  select(subid, starts_with("tx_"), starts_with("prob_"),
-         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
+# d_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome", 
+#                         str_c("aim_2_", version, "_pp_hybrid_wk26_outcome.csv")),
+#               show_col_types = FALSE) |> 
+#   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
+#          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
+#          outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
+#          tx_worst = case_when(
+#            prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
+#            prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
+#            prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
+#            TRUE ~ NA_character_),
+#          tx_second = case_when(
+#            tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
+#            tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
+#            tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
+#            tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
+#            tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
+#            tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
+#            TRUE ~ NA_character_)) |> 
+#   mutate(tx_rank = case_when(
+#     tx_rct == tx_best ~ "first",
+#     tx_rct == tx_second ~ "second",
+#     tx_rct == tx_worst ~ "third",
+#     TRUE ~ NA_character_)) |> 
+#   select(subid, starts_with("tx_"), starts_with("prob_"),
+#          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
 
 # read in best_config for week 26 model
 best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
@@ -362,13 +361,14 @@ d_shuf <- d_wk4 |>
   pivot_longer(
     cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
     names_to = "week",
-    names_pattern = "(?<=outcome_rct_)(.+)(?=_num)",
+    names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
     values_to = "outcome_rct_num"
   ) |> 
   mutate(tx_match = factor(tx_match, 
                           levels = c(FALSE, TRUE)),
-         week = factor(week,
-                       levels = c("wk26", "wk12", "wk4"))) 
+         week = as.numeric(week)) |> 
+  mutate(week_log = log(week)) |> 
+  mutate(week_log_scale = scale(week_log)[,1])
 
 glimpse(d_shuf)
 ```
@@ -383,12 +383,12 @@ d_shuf |>
 Set contrasts for week and treatment match
 ```{r}
 # contrast coding on week
-c_week <- contr.helmert(c("wk26", "wk12", "wk4"))
-c_week[, 1] <- c_week[, 1] / (max(c_week[, 1]) - min(c_week[, 1]))
-c_week[, 2] <- c_week[, 2] / (max(c_week[, 2]) - min(c_week[, 2]))
-colnames(c_week) <- c("wk12_v_wk26", "wk4_v_later")
-contrasts(d_shuf$week) <- c_week
-contrasts(d_shuf$week)
+# c_week <- contr.helmert(c("wk26", "wk12", "wk4"))
+# c_week[, 1] <- c_week[, 1] / (max(c_week[, 1]) - min(c_week[, 1]))
+# c_week[, 2] <- c_week[, 2] / (max(c_week[, 2]) - min(c_week[, 2]))
+# colnames(c_week) <- c("wk12_v_wk26", "wk4_v_later")
+# contrasts(d_shuf$week) <- c_week
+# contrasts(d_shuf$week)
 
 # contrast coding on treatment match
 c_tx <- contr.helmert(c(FALSE, TRUE))
@@ -403,11 +403,10 @@ contrasts(d_shuf$tx_match)
 ### Primary Model
 
 ```{r}
-model_1 <- lme4::glmer(outcome_rct_num ~ tx_match * week + (1 + week | subid),
+model_1 <- glmer(outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid),
                        data = d_shuf,
                        family = binomial(link = "logit"),
-                       control = glmerControl(optimizer = "Nelder_Mead",
-                                              optCtrl = list(maxfun = 3e7)))
+                 control = glmerControl(optCtrl = list(maxfun = 3e6)))
 
 summary(model_1)
 ```
@@ -422,11 +421,10 @@ For consistency, the following proposed alternative approaches mirror the steps 
 
 ```{r}
 #| eval: false
-model_2 <- blme::bglmer(outcome_rct_num ~ tx_match * week + (1 + week | subid),
+model_2 <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid),
                         data = d_shuf,
                         family = binomial(link = "logit"),
-                        control = glmerControl(optimizer = "nlminbwrap",
-                                               optCtrl = list(maxfun = 3e6)))
+                        control = glmerControl(optCtrl = list(maxfun = 3e6)))
 ```
 
 2. Use a simpler random effects structure to address problems with singular fits. Following this strategy, we would fit a model with only the random intercept.

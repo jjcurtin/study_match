@@ -147,10 +147,11 @@ d_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
 
 # read in best_config for week 26 model
-best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
+best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
                                          str_c("best_config_", version, ".csv")),
                                show_col_types = FALSE) |> 
-  select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
+  select(algorithm, feature_set, learning_rate = hp1, tree_depth = hp2, 
+         mtry = hp3, resample)
 ```
 
 ```{r make_prelim_fig}

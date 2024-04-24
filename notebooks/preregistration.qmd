@@ -18,17 +18,14 @@ editor_options:
 ---
 
 ```{r set_variables}
-#| echo: false
+#| code-fold: true
+suppressMessages({
 study <- params$study
 version <- params$version
 algorithms <- params$algorithms
 
-```
 
-```{r, packages_script}
-#| message: false
-#| warning: false
-#| echo: false
+
 
 # packages for script
 library(lme4)
@@ -40,19 +37,11 @@ library(parallel)
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
 theme_set(theme_classic()) 
-```
 
-```{r, packages_workflow}
-#| message: false
-#| warning: false
-#| echo: false
 
 # handle conflicts
 options(conflicts.policy = "depends.ok")
-```
 
-```{r, absolute paths}
-#| echo: false
 
 # absolute paths
 switch (Sys.info()[['sysname']],
@@ -68,20 +57,18 @@ switch (Sys.info()[['sysname']],
         Linux = {
           path_models <- "~/mnt/private/studydata/match/models"}
 )
-```
 
-```{r defaults}
-#| echo: false
 
 # chunk defaults
 knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
 
 options(tibble.width = Inf)
 options(tibble.print_max = Inf)
+})
 ```
 
 ```{r}
-#| echo: false
+#| code-fold: true
 
 # read in d for week 4 model
 d_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome", 

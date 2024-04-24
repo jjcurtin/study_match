@@ -16,7 +16,10 @@ author:
       - Department of Psychology, University of Wisconsin-Madison 
 keywords:
   - Substance use disorders
-  - Precision mental health 
+  - Precision mental health
+  - Smoking
+  - Machine learning
+  - Treatment selection 
 abstract: |
   This study found some pretty cool results that have both high impact and important clinical implications.  For example ...
 plain-language-summary: |
@@ -32,6 +35,8 @@ number-sections: false
 editor_options: 
   chunk_output_type: console
 ---
+
+<!-- EDIT EVERYTHING TO BE PAST TENSE!!! -->
 
 ## Introduction
 
@@ -99,37 +104,41 @@ Features across several behavioral or environmental domains may also guide treat
 
 Any of these characteristics, among others, could powerfully inform treatment selection for cigarette smoking cessation. These examples illustrate the potential clinical benefit of using a precision mental health paradigm to inform treatment selection for smoking cessation. They point to the value of analytic techniques that can incorporate complex interactions among features. Although these examples were selected because they are more intuitive, there are likely other unexpected ways that treatment success differs across people. Machine learning models are not limited to intuitive or theoretically derived features. Thus, machine learning may reveal unanticipated features that could meaningfully guide treatment selection for cigarette smoking cessation.
 
-### Specific Aims? / Purpose
+### Purpose
 
 ## Methods
 
-### Transparency & Openness
+### Transparency & openness
 
-<!-- from ema, edit
-We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available ([https://osf.io/w5h9y/](https://osf.io/w5h9y/)).
+We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
 
-Our study design and analyses were not pre-registered. However, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication; models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
--->
-
-21-word solution
-everything posted publicly on website
-preregistered aim 2 analyses 
-CV as a way to help mitigate concerns about model building process
-all analyses were: 1) preregistered, 2) based on CV approaches, and/or 3) following previous work from our lab and others'
+We preregistered our analyses to evaluate clinical benefit that relied on significance testing. The preregistration can be found on our OSF page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). For our Bayesian hierarchical generalized linear models, we followed guidelines from the tidymodels team (CITE) that we have followed in other published research from our laboratory (Wyant et al., in press). For all other analyses, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication: models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
 
 ### Data
 
-info on original trial/sample/treatments & cite baker et al 2016
-inclusion criteria for trial, analysis inclusion criteria
-original trial procedure here?
-predictors - detailed accounting of different domains, table likely helpful
-outcomes
+The data for the proposed project come from a completed randomized controlled trial conducted by the University of Wisconsin (UW) Center for Tobacco Research and Intervention (CTRI)21. This trial compared the effectiveness of three cigarette smoking cessation treatments (varenicline, combination nicotine replacement therapy [C-NRT], and nicotine patch). Briefly, 1086 daily cigarette smokers were enrolled in Madison, WI, USA and Milwaukee, WI, USA. Exclusion criteria included contraindicated medical (e.g., severe hypertension) or psychiatric conditions (e.g., severe and persistent mental illness), current use of contraindicated medications, and pregnancy or unwillingness to use appropriate methods of contraception while taking a study medication. Participants set a quit date with study staff and were enrolled for several weeks prior to the target quit date through at least 6 months following quitting smoking. 
+
+#### Treatment conditions
+
+Participants were randomly assigned to receive 12 weeks of medication treatment plus 6 sessions of motivational and skill-training counseling per clinical guidelines (CITE FIORE GUIDELIINES). For varenicline, participants began medication use prior to their quit attempt, starting with 0.5 mg once daily for 3 days, followed by 0.5 mg twice daily for 4 days, and 1 mg twice daily for 3 days. They continued use of 1 mg twice daily for 11 weeks following their quit date except in response to adverse effects. For C-NRT or nicotine patch, participants began using the patch on their quit date, starting with 21 mg for 8 weeks, followed by 14 mg for 2 weeks, and 7 mg for 2 weeks. All individuals receiving C-NRT were also instructed to use 5 lozenges per day (2 or 4 mg nicotine lozenges determined by time to first daily cigarette) for the full 12 weeks except in the case of adverse effects.
+
+#### Individual difference characteristics
+
+Participants were comprehensively assessed for individual differences characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table X.
+
+#### Abstinence outcome
+
+Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking."
+
+Our primary prediction model outcome was abstinence at 4 weeks post-quit. In addition to this 4 week outcome, participants were assessed for abstinence at 12 weeks (end-of-treatment), 6 months (typical evaluation period used in national clinical guidelines for effectiveness determination of treatment for smoking cessation; Fiore et al., 2008), 1 year, and 3 years.
 
 ### Analytic strategy
 
 #### Feature engineering and dimensionality reduction
 
-incl mmissing data
+
+
+incl missing data
 
 #### Model training and evaluation
 
@@ -181,6 +190,12 @@ possible exploratory analyses re: comparing to grand mean (effects coding), 1/2/
 
 ## Results
 
+### Sample characteristics
+
+analysis sample inclusion criteria and final sample size here (full sample)
+descriptive statistics on demographics and maybe some tobacco-related characteristics
+tables
+
 ### Model performance
 
 4-week & 26-week models
@@ -192,6 +207,18 @@ model comparison (4 v 26)
 ### Clinical benefit
 
 ## Discussion
+
+<!-- from nrsa innovation & impact:
+
+The proposed project combines machine learning with precision mental health to select among treatments for cigarette smoking cessation. Machine learning remains novel and underused in substance use and, to some degree, clinical psychology broadly16. Further, prior machine learning research for SUDs has prioritized diagnosis and screening17–20 over treatment selection, highlighting the novelty of this project.
+
+This project is also innovative in that it will consider a wide variety of features within and across domains (e.g., smoking history, other substance use, psychological traits/conditions, physical health, demographics, social environment). Machine learning methods allow me to incorporate these features simultaneously and build high-dimensional models that capture real-world complexities. Including features across domains invites interactions among features and subsequent integration of knowledge across domains. The proposed project will allow features often considered disparate to interact with one another, permitting combinations of features that are both guided by domain expertise and driven by less intuitive patterns in the data.
+
+This project could provide immediate impact by offering a decision-making tool for selecting among smoking cessation treatments. My model would provide patient-level guidance for treatment selection among smoking cessation treatments, which would reduce health risks and societal burdens. Critically, this approach could offer those benefits without requiring new treatment development, which is time- and resource-intensive. Instead, we can improve treatment effectiveness by optimizing therapeutic benefit of existing treatments. 
+
+I aim to increase potential impact by allowing feasibility to guide model development. I will prioritize sparse models with readily available, easy-to-measure features to the degree that these models yield robust treatment selection. The available features set can be easily measured via self-report. Easy measurement would allow our decision-making tool to be implemented without blood draws, expensive or otherwise inaccessible testing (e.g., neuroimaging), formal clinical interviewing, or even in-person doctors’ visits. In fact, prioritizing feasibility is a primary rationale for excluding genetic features from the present project; genetic features would require specialty materials and/or in-person medical appointments during clinical implementation. An assessment constructed entirely from self-report measurements is particularly valuable because two treatments in the model (nicotine patch, combination NRT) are widely available over the counter, offering scalable implementation even when medical access is limited. This focus on feasibility (i.e., using low burden, low-cost features) could maximize potential clinical benefit. These efforts are especially warranted when applying the precision mental health paradigm to SUDs, for which large health disparities on the bases of race, ethnicity, socioeconomic status, and geographic location persist.
+
+-->
 
 ## References
 

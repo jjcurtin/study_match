@@ -35,7 +35,6 @@ library(lme4)
 library(tidymodels)
 library(tidyverse)
 library(blme)
-library(parallel)
 
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
@@ -356,7 +355,7 @@ d_shuf <- d_wk4 |>
                            levels = c(FALSE, TRUE)),
          week = as.numeric(week)) |> 
   # log transform week variable per above
-  mutate(week_log = log(week)) # default base is e (natural log)
+  mutate(week_log = log(week))  # default base is e (natural log)
 
 glimpse(d_shuf)
 ```
@@ -382,13 +381,23 @@ contrasts(d_shuf$tx_match)
 ### Primary Model
 
 ```{r}
-model_1 <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + 
+model_1 <- glmer(outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid),
+                 data = d_shuf,
+                 family = binomial(link = "logit"),
+                 control = glmerControl(optCtrl = list(maxfun = 3e6)))
+
+summary(model_1)
+```
+
+
+```{r}
+model_bayes <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + 
                           (1 + week_log | subid),
                         data = d_shuf,
                         family = binomial(link = "logit"),
                         control = glmerControl(optCtrl = list(maxfun = 3e6)))
 
-summary(model_1)
+summary(model_bayes)
 ```
 
 ### Follow-up analyses: Simple Effects

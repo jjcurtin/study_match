@@ -136,51 +136,56 @@ Throughout study participation, participants were assessed for biologically conf
 
 #### Feature engineering and dimensionality reduction
 
-Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE). 
+Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE). A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
 
-feature engineering i actually did incl missing data imp methods, model configurations, ordinal vs dummy scoring, yeo johnson transformations, constructing tx interactions
+<!-- ADD
+feature engineering i did incl ordinal vs dummy scoring, yeo johnson transformations, constructing tx interactions, scaling (content depends on glmnet only or multiple algorithms)
+-->
 
-Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, I used several dimensionality reduction approaches to reduce the number of features in my models. I used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm glmnet also conducts dimensionality reduction inherently by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional feature in the model.
+Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, we used several dimensionality reduction approaches to reduce the number of features in my models. We used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm glmnet also inherently conducts dimensionality reduction by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional parameter in the model.
 
-I also used several non-data-driven approaches for dimensionality reduction. First, I used domain knowledge to reduce dimensionality by removing features that lacked face validity for predicting abstinence or overlapped conceptually with other features. Second, I removed variables that would stand in contrast with the ultimate implementation goals; for example, variables that required blood work or lab tests.
+We also used several non-data-driven approaches for dimensionality reduction. First, we used domain knowledge to reduce dimensionality by removing features that lacked face validity for predicting abstinence or overlapped conceptually with other features. Second, we removed variables that stood in contrast to the ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests).
 
 #### Model training and evaluation
 
 ##### Model configurations
 
-##### Performance matric
+We trained and evaluated two separate classification models: one model predicting 4-week abstinence, and one model predicting 26-week (6 month) abstinence. <!-- either:
 
-<!-- 
-fromm ema paper
+We considered three well-established statistical algorithms (XGBoost, Random Forest, and Elastic Net Logistic Regression [GLMNet]) that vary across characteristics expected to affect model performance (e.g., flexibility, complexity, handling higher-order interactions natively) (CITE KUHN). Candidate model configurations differed across sensible values of associated hyperparameters (XGBoost: mtry, tree depth, learning rate; Random Forest: mtry, others?; GLMNet: alpha, lambda) using grid search. All other hyperparameters were set to tidymodels package defaults.
 
-Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; 2) is an aggregate metric across all decision thresholds, which is important because optimal decision thresholds may differ across settings and goals; and 3) is unaffected by class imbalance, which is important for comparing models with differing prediction window widths and levels of class imbalance.
--->
+OR
+
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm was chosen to align with our primary goal of building a treatmment selection. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). GLMNet also performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda. -->
+
+Candidate model configurations also differed on outcome resampling method. We considered no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE; GLMNet and XGBoost only). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. 
+
+We also considered several feature sets and feature engineering steps across model configurations. Feature sets could include either items (i.e., individual items within a self-report measure) or scales (i.e., total scale and subscale scores derived from items in a self-report measure). All other features (e.g., demographic variables) were included across model configurations. Feature engineering steps also differed across model configurations regarding how ordinal data were scored. Specifically, ordinal data could be considered as numeric (e.g., 1 - 7) or dummy coded (e.g., 7 dummy code features for a 7-level variable). Numeric and unordered nominal data were treated identically across configurations.
+
+##### Performance metric
+
+Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance, which is important for comparing models with differing levels of class imbalance.
 
 ##### cross-validation
 
-<!-- 
-from ema paper. removed groupinig but likely needs more editing & expansion (fuller explanation of cv for purposes of dissertation?)
+We used nested cross-validation for model training, selection, and evaluation with auROC. Cross-validation allows for rigorous consideration of many model configurations (i.e., combinations of feature sets, statistical algorithms, resampling techniques, and hyperparameters) and prioritizes performance in new data not used for model training.
 
-We used nested cross-validation for model training, selection, and evaluation with auROC. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models, select the best models, and evaluate those best models. Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000].
+Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models, select the best models, and evaluate those best models. Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000].
 
-We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop.  Best model configurations were selected using median auROC across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.  We report median auROC for our six best model configurations in the test sets. For completeness, we also report auROCs for these models from the validation sets in the Supplement. In addition, we report other key performance metrics for the best full model configurations including sensitivity, specificity, balanced accuracy, positive predictive value (PPV), and negative predictive value (NPV) from the test sets [@kuhnAppliedPredictiveModeling2018].
--->
+We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop.  Best model configurations were selected using median auROC across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.  We report median auROC for our best model configurations for each model (4-week and 26-week) in the test sets. For completeness, we also report auROCs for these models from the validation sets in the Supplement. In addition, we report other key performance metrics for the best full model configurations including sensitivity, specificity, balanced accuracy, positive predictive value (PPV), and negative predictive value (NPV) from the test sets [@kuhnAppliedPredictiveModeling2018].
+
+Following model evaluation, we completed another round of 1 repeat of 10-fold cross-validation using the full dataset. A single best model configuration was selected using median auROC across the 10 held-out folds; importantly, model performance is used *only* for selection and not evaluation in this phase. We fit our final model using this best model configuration in the full dataset, which was then used for clinical benefit analyses (below).
 
 #### Evaluation of model performance
 
-model performance & comparisons across outcomes
-bayesian approach following tidymodels team recs & our previous work (ema paper), explain posterior probability distributions & credible intervals
+We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian confidence intervals (CIs) for auROC for the best models. Posterior probability is the likelihood of obtaining our results given our data. A posterior probability distribution around a given parameter (e.g., median auROC) allows us to assess the certainty of our results.
 
-<!-- 
-We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian confidence intervals (CIs) for auROC for the six best models. To estimate the probability that the full model outperformed the baseline model, we regressed the auROCs (logit transformed) from the 30 test sets for each model as a function of model type (baseline vs. full). To determine the probability that full models' performances differed systematically from each other, we regressed the auROCs (logit transformed) from the 30 test sets for each full model as a function of prediction window width (week vs. day vs. hour). Following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022], we set two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3x10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our models' auROCs.  We also report 95% (equal-tailed) Bayesian CIs for the differences in performance associated with the Bayesian comparisons.
+To estimate the probability that the 4-week model outperformed the 26-week model, we regressed the auROCs (logit transformed) from the 30 test sets for each model as a function of outcome (4-week vs. 26-week). Following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022], we set two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3x10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our models' auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. We also report 95% (equal-tailed) Bayesian CIs for the differences in performance associated with the Bayesian comparisons. If the 95% Bayesian CI around a difference in performance does not include 0, we can conclude that one model performs better than the other.
 
-also see EMA supplement
--->
+Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting.  Specifically, the priors were set as follows: residual standard deviation ~ normal(location=0, scale=exp(2)), intercept (after centering predictors) ~ normal(location=2.3, scale=1.3), the two coefficients for window width contrasts ~ normal (location=0, scale=2.69), and covariance ~ decov(regularization=1, concentration=1, shape=1, scale=1). <!-- UPDATE PRIORS these are from ema supp -->
 
-#### Feature importance with SHAP?
+#### Feature importance with SHAP
 
-<!--
-from ema paper
 We computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of categories of features (based on EMA questions) across our three full models. Shapley values possess several useful properties including: Additivity (Shapley values for each feature can be computed independently and summed); Efficiency (the sum of Shapley values across features must add up to the difference between predicted and observed outcomes for each observation); Symmetry (Shapley values for two features should be equal if the two features contribute equally to all possible coalitions); and Dummy (a feature that does not change the predicted value in any coalition will have a Shapley value of 0).
 
 We calculated Shapley values from the 30 test sets using the SHAPforxgboost package that provides Shapley values in log-odds units for binary classification models.  We averaged the three Shapley values for each observation for each feature across the three repeats to increase their stability. The additivity property of Shapley values allowed us to create 18 feature categories from the 286 separate features. We created separate feature categories for each of the nine EMA questions (excluding the alcohol use question), the rates of past alcohol use and missing surveys, the time of day and day of the week of the start of the prediction window, and the five demographic variables included in the models. For the EMA questions and rates of past alcohol use and missing surveys, these categories included all individual raw and change features across the three to five scoring epochs (see Feature Engineering above) and the most recent response. To calculate the local (i.e., for each observation) importance for each category of features, we added Shapley values across all features in a category, separately for each observation.  To calculate global importance for each feature category, we averaged the absolute value of the Shapley values of all features in the category across all observations. These local and global importance scores based on Shapley values allow us to answer questions of relative feature importance.  However, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not available for Shapley values.
@@ -234,7 +239,14 @@ Sina plots of local Shapley values (i.e., the influence of features on individua
 
 ### Clinical benefit
 
+4 & 26 weeks
 
+main effect of best vs other treatment
+
+tx X time interaction
+- follow-up simple effects if needed
+
+supplemental aim 2 analyses: effects coding? 
 
 ## Discussion
 

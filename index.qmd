@@ -51,8 +51,6 @@ other refs likely missing
 
 <!-- 
 Cigarette smokers may differ with respect to the etiology of their tobacco use disorder, the severity of their dependence and/or withdrawal symptoms, historical factors related to their tobacco use (e.g., age of first use, years smoking, number of previous quit attempts), and barriers to initiation and/or retention in smoking cessation treatments (Oliver & McClernon, 2017; J. Wang, Simons-Morton, Farhat, Farhart, & Luk, 2009; Zheng, Wiebe, Cleveland, Molenaar, & Harris, 2013). These factors that affect the development and course of their disorder could include demographic traits, personal medical history, and many other key individual difference characteristics. However, the single diagnosis of tobacco use disorder obscures these potentially important individual differences, and the neglect of this heterogeneity when selecting among available treatments could account for their modest efficacy. 
-
-
 -->
 
 Precision mental health is the application of the precision medicine paradigm to mental health conditions.1 It addresses an important problem in traditional treatment selection: what works best at a population level does not necessarily work best for a given patient. Rather than relying on population-level efficacy, precision mental health seeks to guide treatment selection using individual difference characteristics that are likely to predict treatment success for each patient.2 Successful precision mental health would increase the likelihood of treatment success for each patient because each patient receives the treatment predicted to work best for them. It would also improve treatment effectiveness rates across the population because each treatment is administered only to the patients for whom that treatment is expected to be their best option.
@@ -106,9 +104,13 @@ Any of these characteristics, among others, could powerfully inform treatment se
 
 ### Purpose
 
+<!-- as AIMS? -->
+
 ## Methods
 
 ### Transparency & openness
+
+<!-- note: already correct OSF page -->
 
 We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
 
@@ -116,11 +118,11 @@ We preregistered our analyses to evaluate clinical benefit that relied on signif
 
 ### Data
 
-The data for the proposed project come from a completed randomized controlled trial conducted by the University of Wisconsin (UW) Center for Tobacco Research and Intervention (CTRI)21. This trial compared the effectiveness of three cigarette smoking cessation treatments (varenicline, combination nicotine replacement therapy [C-NRT], and nicotine patch). Briefly, 1086 daily cigarette smokers were enrolled in Madison, WI, USA and Milwaukee, WI, USA. Exclusion criteria included contraindicated medical (e.g., severe hypertension) or psychiatric conditions (e.g., severe and persistent mental illness), current use of contraindicated medications, and pregnancy or unwillingness to use appropriate methods of contraception while taking a study medication. Participants set a quit date with study staff and were enrolled for several weeks prior to the target quit date through at least 6 months following quitting smoking. 
+The data for this project came from a completed randomized controlled trial conducted by the University of Wisconsin (UW) Center for Tobacco Research and Intervention (CTRI)21. This trial compared the effectiveness of three cigarette smoking cessation treatments (varenicline, combination nicotine replacement therapy [C-NRT], and nicotine patch). Briefly, 1086 daily cigarette smokers were enrolled in Madison, WI, USA and Milwaukee, WI, USA. Exclusion criteria included contraindicated medical (e.g., severe hypertension) or psychiatric conditions (e.g., severe and persistent mental illness), current use of contraindicated medications, and pregnancy or unwillingness to use appropriate methods of contraception while taking a study medication. Participants set a quit date with study staff and were enrolled for several weeks prior to the target quit date through at least 6 months following quitting smoking. 
 
 #### Treatment conditions
 
-Participants were randomly assigned to receive 12 weeks of medication treatment plus 6 sessions of motivational and skill-training counseling per clinical guidelines (CITE FIORE GUIDELIINES). For varenicline, participants began medication use prior to their quit attempt, starting with 0.5 mg once daily for 3 days, followed by 0.5 mg twice daily for 4 days, and 1 mg twice daily for 3 days. They continued use of 1 mg twice daily for 11 weeks following their quit date except in response to adverse effects. For C-NRT or nicotine patch, participants began using the patch on their quit date, starting with 21 mg for 8 weeks, followed by 14 mg for 2 weeks, and 7 mg for 2 weeks. All individuals receiving C-NRT were also instructed to use 5 lozenges per day (2 or 4 mg nicotine lozenges determined by time to first daily cigarette) for the full 12 weeks except in the case of adverse effects.
+Participants were randomly assigned to receive 12 weeks of medication treatment plus 6 sessions of motivational and skill-training counseling per clinical guidelines (CITE FIORE GUIDELIINES). For varenicline, participants began medication use prior to their quit attempt, starting with 0.5 mg once daily for 3 days, followed by 0.5 mg twice daily for 4 days, and 1 mg twice daily for 3 days. They continued use of 1 mg twice daily for 11 weeks following their quit date except in response to adverse effects. For C-NRT or nicotine patch, participants began using the patch on their quit date, starting with 21 mg for 8 weeks, followed by 14 mg for 2 weeks, and 7 mg for 2 weeks. All individuals who received C-NRT were also instructed to use 5 lozenges per day (2 or 4 mg nicotine lozenges determined by time to first daily cigarette) for the full 12 weeks except in the case of adverse effects.
 
 #### Individual difference characteristics
 
@@ -128,17 +130,19 @@ Participants were comprehensively assessed for individual differences characteri
 
 #### Abstinence outcome
 
-Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking."
-
-Our primary prediction model outcome was abstinence at 4 weeks post-quit. In addition to this 4 week outcome, participants were assessed for abstinence at 12 weeks (end-of-treatment), 6 months (typical evaluation period used in national clinical guidelines for effectiveness determination of treatment for smoking cessation; Fiore et al., 2008), 1 year, and 3 years.
+Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." Participants were assessed for abstinence periodically beginning 4 week post-quit through the end of their study participation. 
 
 ### Analytic strategy
 
 #### Feature engineering and dimensionality reduction
 
+Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE). 
 
+feature engineering i actually did incl missing data imp methods, model configurations, ordinal vs dummy scoring, yeo johnson transformations, constructing tx interactions
 
-incl missing data
+Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, I used several dimensionality reduction approaches to reduce the number of features in my models. I used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm glmnet also conducts dimensionality reduction inherently by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional feature in the model.
+
+I also used several non-data-driven approaches for dimensionality reduction. First, I used domain knowledge to reduce dimensionality by removing features that lacked face validity for predicting abstinence or overlapped conceptually with other features. Second, I removed variables that would stand in contrast with the ultimate implementation goals; for example, variables that required blood work or lab tests.
 
 #### Model training and evaluation
 
@@ -190,6 +194,8 @@ possible exploratory analyses re: comparing to grand mean (effects coding), 1/2/
 
 ## Results
 
+<!-- need to insert all values & figure numbers -->
+
 ### Sample characteristics
 
 analysis sample inclusion criteria and final sample size here (full sample)
@@ -198,13 +204,37 @@ tables
 
 ### Model performance
 
-4-week & 26-week models
-absolute performance (vs. 0.5)
-model comparison (4 v 26)
+#### Individual model performance
 
-### Feature importance?
+We selected the best model configurations using auROCs from the *validation sets*. We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets.
+
+The median auROC across the 30 test sets for the 4-week model was XX (IQR = XX - XX, range = XX - XX). The median auROC across the 30 test sets for the 26-week model was XX (IQR = XX - XX, range = XX - XX). Additional performance metrics (not used for selection or primary evaluation) are reported in the Supplement.
+
+We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROCs from these posterior distributions were XX (4-week model) and XX (26-week model). These values represent our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROCs were relatively narrow and did not contain 0.5 (chance performance) for either the 4-week model [XX - XX] or the 26-week model [XX - XX]. Figure X displays posterior probability distributions for the auROC for the models by outcome.
+
+#### Bayesian model comparisons
+
+We used the posterior probability distributions for the auROCs to compare formally the 4- and 26-week models. The median increase in auROC for the 4- vs. 26-week model was XX (95% CI = [XX - XX]), yielding a probability of XX% that the 4-week model had superior performance. Figure X presents histograms of the posterior probability distributions for this model contrast.
+
+### Feature importance
+
+#### Parameter estimates for retained variables
+
+The glmnet algorithm offers two advantages with respect to understanding variable importance. First, the algorithm performs regularization using the hyperparameter alpha. This hyperparameter penalizes model complexity by shrinking parameter estimates and/or removing unimportant variables from the model entirely. Thus, variables are retained in the model only to the degree to which their contribution to performance outweighs the cost of having an additional parameter in the model. Consequently, we can review the retained predictor variables as a metric of feature importance.
+
+The best 4-week model configuration retained XX features (best model configuration alpha = XX). Of the XX retained features, XX were treatment interaction variables, suggesting the importance of these interactions for prediction. These retained features require assessing XX unique items (e.g., multiple dummy variables are from a single item, an item is retained in an additive and interactive feature). Table X presents the retained features from the 4-week model configuration and their parameter estimates.
+
+The best 26-week model configuration retained XX features (best model configuration alpha = XX). Of the XX retained features, XX were treatment interaction variables, suggesting the importance of these interactions for prediction. These retained features require assessing XX unique items (e.g., multiple dummy variables are from a single item, an item is retained in an additive and interactive feature). Table X presents the retained features from the 26-week model configuration and their parameter estimates.
+
+#### Shapley values
+
+Global importance (mean |Shapley value|) for features for each model appear in Panel A of Figure X. XX was the most important feature category across prediction outcomes. XX, XX, and XX were also globally important across models. XX, XX, and XX were the most relatively important treatment interaction variables.
+
+Sina plots of local Shapley values (i.e., the influence of features on individual observations) for each model show that some features (e.g., XX, XX, XX) impact abstinence probability for specific individuals even if they are not globally important across all observations (Figure X, Panels B-C).
 
 ### Clinical benefit
+
+
 
 ## Discussion
 

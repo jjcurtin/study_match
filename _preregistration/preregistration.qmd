@@ -83,9 +83,9 @@ options(tibble.print_max = Inf)
 #| echo: false
 
 # read in d for week 4 model
-d_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome", 
-                            str_c("aim_2_", version, "_pp_hybrid_wk4_outcome.csv")),
-                  show_col_types = FALSE) |> 
+d <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome", 
+                        str_c("aim_2_", version, "_pp_hybrid_wk4_outcome.csv")),
+              show_col_types = FALSE) |> 
   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
          outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
@@ -111,45 +111,10 @@ d_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
 
 # read in best_config for week 4 model
-best_configuration_wk4 <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
-                                             str_c("best_config_", version, ".csv")),
-                                   show_col_types = FALSE) |> 
+best_configuration <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
+                                         str_c("best_config_", version, ".csv")),
+                               show_col_types = FALSE) |> 
   select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
-
-# read in d for week 26 model
-# d_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome", 
-#                         str_c("aim_2_", version, "_pp_hybrid_wk26_outcome.csv")),
-#               show_col_types = FALSE) |> 
-#   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
-#          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
-#          outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
-#          tx_worst = case_when(
-#            prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
-#            prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
-#            prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
-#            TRUE ~ NA_character_),
-#          tx_second = case_when(
-#            tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
-#            tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
-#            tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
-#            tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
-#            tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
-#            tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
-#            TRUE ~ NA_character_)) |> 
-#   mutate(tx_rank = case_when(
-#     tx_rct == tx_best ~ "first",
-#     tx_rct == tx_second ~ "second",
-#     tx_rct == tx_worst ~ "third",
-#     TRUE ~ NA_character_)) |> 
-#   select(subid, starts_with("tx_"), starts_with("prob_"),
-#          outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) 
-
-# read in best_config for week 26 model
-# best_configuration_wk26 <- read_csv(file.path(path_models, "pp_hybrid_wk26_outcome",
-#                                               str_c("best_config_", version, ".csv")),
-#                                     show_col_types = FALSE) |> 
-#   select(algorithm, feature_set, learning_rate = hp1, tree_depth = hp2, 
-#          mtry = hp3, resample)
 ```
 
 ## Study Overview
@@ -194,7 +159,7 @@ The best model configuration includes the following:
 
 ```{r}
 #| echo: false
-glimpse(best_configuration_wk4)
+glimpse(best_configuration)
 ```
 
 * Selected algorithm was glmnet (xgboost and random forest also considered)
@@ -211,7 +176,7 @@ glimpse(best_configuration_wk4)
 
 ```{r}
 set.seed(82294)
-d_wk4 |> 
+d |> 
   select(subid, prob_patch, prob_combo_nrt, prob_varenicline) |> 
   slice_sample(n = 8) |> 
   print_kbl(digits = 3)
@@ -220,7 +185,7 @@ d_wk4 |>
 The treatment that yields the highest model-predicted probability of abstinence is identified as that participant's "best" treatment (`tx_best`). 
 
 ```{r}
-d_wk4 |> 
+d |> 
   select(subid, tx_best, prob_patch, prob_combo_nrt, prob_varenicline) |> 
   slice_sample(n = 8) |> 
   print_kbl(digits = 3)
@@ -229,14 +194,14 @@ d_wk4 |>
 The best treatments spanned all three medication options: varenicline, combination nicotine replacement therapy ("combo_nrt"), and nicotine patch ("patch").
 
 ```{r}
-d_wk4 |> 
+d |> 
   tab(tx_best)
 ```
 
 Some participants' best treatment (`tx_best`) matched what they were randomly assigned in the original trial (`tx_rct`). Other participants may have received what the model identified as their second-best or worst treatment. Thus, participants' RCT-assigned treatment can be categorized by whether it "matched" their model-assigned treatment (`tx_match`).
 
 ```{r}
-d_wk4 |> 
+d |> 
   select(subid, tx_match, tx_rct, tx_best, tx_second, tx_worst) |> 
   slice_sample(n = 10) |> 
   print_kbl()
@@ -245,7 +210,7 @@ d_wk4 |>
 Approximately `r str_c(round((mean(d_wk4$tx_match) * 100), digits = 0), "%")` of participants received their model-assigned "best" treatment in the original trial.
 
 ```{r}
-d_wk4 |> 
+d |> 
   tab(tx_match)
 ```
 
@@ -281,7 +246,7 @@ Our model will have the following components:
 
 ```{r}
 #| echo: false
-d_log_fig <- d_wk4 |> 
+d_log_fig <- d |> 
   select(subid, outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
   pivot_longer(
     cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
@@ -321,7 +286,7 @@ Our **secondary effects** include:
 
 * The interaction between treatment match and time. We do not have a directional hypothesis about this interaction.
 
-  + If this interaction is significant (*p* < 0.05), we will conduct **follow-up tests** of the simple effect of treatment match at all 3 time points (week 4, week 12, and week 26). These will be general linear models using the `glm` function within the `stats` package.
++ If this interaction is significant (*p* < 0.05), we will conduct **follow-up tests** of the simple effect of treatment match at all 3 time points (week 4, week 12, and week 26). These will be general linear models using the `glm` function within the `stats` package.
 
 We plan to report the estimates, test statistics, *p*-values, and confidence intervals for all effects from this model.
 
@@ -392,10 +357,10 @@ summary(model_1)
 
 ```{r}
 model_bayes <- blme::bglmer(outcome_rct_num ~ tx_match * week_log + 
-                          (1 + week_log | subid),
-                        data = d_shuf,
-                        family = binomial(link = "logit"),
-                        control = glmerControl(optCtrl = list(maxfun = 3e6)))
+                              (1 + week_log | subid),
+                            data = d_shuf,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
 
 summary(model_bayes)
 ```

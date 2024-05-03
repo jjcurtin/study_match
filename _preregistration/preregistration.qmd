@@ -203,7 +203,7 @@ d |>
   print_kbl()
 ```
 
-Approximately `r str_c(round((mean(d_wk4$tx_match) * 100), digits = 0), "%")` of participants received their model-assigned "best" treatment in the original trial.
+Approximately `r str_c(round((mean(d$tx_match) * 100), digits = 0), "%")` of participants received their model-assigned "best" treatment in the original trial.
 
 ```{r}
 d |> 

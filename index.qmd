@@ -155,21 +155,25 @@ We also used several non-data-driven approaches for dimensionality reduction. Fi
 
 We trained and evaluated two separate classification models: one model predicting 4-week abstinence, and one model predicting 26-week (6 month) abstinence. <!-- either:
 
-We considered three well-established statistical algorithms (XGBoost, Random Forest, and Elastic Net Logistic Regression [GLMNet]) that vary across characteristics expected to affect model performance (e.g., flexibility, complexity, handling higher-order interactions natively) (CITE KUHN). Candidate model configurations differed across sensible values of associated hyperparameters (XGBoost: mtry, tree depth, learning rate; Random Forest: mtry, others?; GLMNet: alpha, lambda) using grid search. All other hyperparameters were set to tidymodels package defaults.
+We considered three well-established statistical algorithms (XGBoost, Random Forest, and Elastic Net Logistic Regression [GLMNet]) that vary across characteristics expected to affect model performance (e.g., flexibility, complexity, handling higher-order interactions natively) (CITE KUHN & ISL). Candidate model configurations differed across sensible values of associated hyperparameters (XGBoost: mtry, tree depth, learning rate; Random Forest: mtry, others?; GLMNet: alpha, lambda) using grid search. All other hyperparameters were set to tidymodels package defaults.
 
 OR
 
-All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm was chosen to align with our primary goal of building a treatmment selection. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). GLMNet also performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda. -->
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm was chosen because it aligns with our primary goal of building a treatment selection in several ways. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda. -->
 
-Candidate model configurations also differed on outcome resampling method. We considered no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE; GLMNet and XGBoost only). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. 
+Candidate model configurations also differed on outcome resampling method. We considered no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE <!-- ; GLMNet and XGBoost only-->). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. 
 
 We also considered several feature sets and feature engineering steps across model configurations. Feature sets could include either items (i.e., individual items within a self-report measure) or scales (i.e., total scale and subscale scores derived from items in a self-report measure). All other features (e.g., demographic variables) were included across model configurations. Feature engineering steps also differed across model configurations regarding how ordinal data were scored. Specifically, ordinal data could be considered as numeric (e.g., 1 - 7) or dummy coded (e.g., 7 dummy code features for a 7-level variable). Numeric and unordered nominal data were treated identically across configurations.
 
 ##### Performance metric
 
+<!-- cite paper(s) about roc -->
+
 Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance, which is important for comparing models with differing levels of class imbalance.
 
 ##### Cross-validation
+
+<!-- cite paper in match folder about problems with selecting & evaluating in same sample -->
 
 We used nested cross-validation for model training, selection, and evaluation with auROC. Cross-validation allows for rigorous consideration of many model configurations (i.e., combinations of feature sets, statistical algorithms, resampling techniques, and hyperparameters) and prioritizes performance in new data not used for model training.
 
@@ -246,6 +250,64 @@ The glmnet algorithm offers two advantages with respect to understanding variabl
 The best 4-week model configuration retained XX features (best model configuration alpha = XX). Of the XX retained features, XX were treatment interaction variables, suggesting the importance of these interactions for prediction. These retained features require assessing XX unique items (e.g., multiple dummy variables are from a single item, an item is retained in an additive and interactive feature). Table X presents the retained features from the 4-week model configuration and their parameter estimates.
 
 The best 26-week model configuration retained XX features (best model configuration alpha = XX). Of the XX retained features, XX were treatment interaction variables, suggesting the importance of these interactions for prediction. These retained features require assessing XX unique items (e.g., multiple dummy variables are from a single item, an item is retained in an additive and interactive feature). Table X presents the retained features from the 26-week model configuration and their parameter estimates.
+
+<!-- 
+4-week best model as of now: 
+
+128 features retained (out of 1173; 10.91%)
+
+unique items required for differential prediction: 
+live with smoker (MC), 
+race, 
+wisdm 2 & 5 & 13 & 14 & 16 & 18 & 19 & 20 & 22 & 26 & 27 & 30 & 32, 
+smoke menthol y/n, 
+used cigars (MC), 
+close smoking friend y/n, 
+dts 5 & 13 & 15, 
+asi3 2 & 9 & 15, 
+spouse smoke (MC), 
+close smoking coworker y/n, 
+dsm5 3 & 6 & 7 & 8 & 10 & 12, 
+marital status, 
+mfi 5 & 6 & 9 & 13 & 15, 
+close smoking relative y/n, 
+income, 
+depression dx, 
+work ban (MC), 
+ftnd 1 & 2 & 6, 
+berlin 7, 
+tried nicotine gum y/n, 
+wsws constipation & want cigarette & unhappy & 18 & 5 & 9 & angry & stressed & 12 & crave & 26 & coughing, 
+life satisfaction, 
+used pipe (MC), 
+gender, 
+carbon monoxide, 
+motive for quitting, 
+longest quit, 
+time around smokers on weekend, 
+shp 2 & 3 & 9 & 13 & 14, 
+total quit attempts, 
+importance to quit, 
+sip2r 2 & 3 & 4, 
+hdsm tense & pain
+time around smokers
+30-day quit success
+phq9 6
+used chew or snuff (MC)
+used ecig (MC)
+hrqol 4
+
+- total: 83 unique items required for overall prediction
+
+56 of those are treatment interactions (43.75% of retained features, 6% of 879 available treatment interaction features)
+
+unique items required for differential prediction: live with smoker (MC), race, wisdm 16 & 18 & 19 & 22 & 26 & 27 & 30 & 32, smoke menthol y/n, used cigars (MC), close smoking friend y/n, dts 5, asi3 2 & 15, spouse smoke (MC), close smoking coworker y/n, dsm5 3 & 6 & 7 & 10, marital status, mfi 6 & 13, close smoking relative y/n, income, depression dx, work ban (MC), ftnd 2 & 6, berlin 7, tried nicotine gum y/n, wsws constipation, life satisfaction, used pipe (MC), gender
+
+- total: 37 unique items required for treatment selection
+
+(potential for some items to be combined eg people close to you who smoke, check all that apply)
+
+-->
 
 #### Shapley values
 

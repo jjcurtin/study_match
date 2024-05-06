@@ -23,7 +23,7 @@ keywords:
 abstract: |
   This study found some pretty cool results that have both high impact and important clinical implications.  For example ...
 plain-language-summary: |
-  The ARC produces some of the best science around! ...
+  We can select among treatments!!! Without a lot of questions!!! And with the opportunity to assess remotely for greater access!!! AND IT MAKES A BIG DIFFERENCE!!!
 key-points:
   - Take away point 1 
   - Take away point 2
@@ -53,10 +53,10 @@ Precision mental health is the application of the precision medicine paradigm to
 
 Rather than relying on population-level efficacy, precision mental health seeks to guide treatment selection using individual difference characteristics that are likely to predict treatment success for each patient.2 Successful precision mental health would increase the likelihood of treatment success for each patient because each patient receives the treatment predicted to work best for them. It would also improve treatment effectiveness rates across the population because each treatment is administered only to the patients for whom that treatment is expected to be their best option.
 
-Benefits of personalized treatments also extend beyond improved effectiveness. Precision mental health approaches may be more resource-efficient. Clinical trials to develop and validate new treatments are expensive, resource-intensive, and extremely slow (CITE?). These costs may also produce a treatment that is no better than existing treatments, or potentially ineffective altogether. In contrast, by seeking to optimize existing treatments and direct them to the *right* patients, precision mental health stands as a cost-effective alternative poised for more immediate impact to patients.
+In addition to offering improved effectiveness, precision mental health approaches may be more resource-efficient. Clinical trials to develop and validate new treatments are expensive, resource-intensive, and extremely slow (CITE?). These costs may also produce a treatment that is no better than existing treatments, or potentially ineffective altogether. In contrast, by seeking to optimize existing treatments and direct them to the *right* patients, precision mental health stands as a cost-effective alternative poised for more immediate impact to patients.
 
 Researchers have pursued precision mental health – and precision medicine broadly – for decades. In medicine, emphasis on personalizing treatments has grown rapidly with the ascendancy of advanced genetic methods such as genome-wide association studies and polygenic scores3,4. Within precision mental health, an early example comes from the substance use disorder (SUD) domain: the Project MATCH Research Group attempted to match people with alcohol use disorder to a particular treatment based on individual differences such as gender, social support, or symptom severity5,6. Many researchers have followed in their footsteps as the understanding has grown that neither mental health diagnoses nor treatments are one-size-fits-all7. Efforts thus far have often focused on tailoring treatments at the group level; in other words, identifying a (single) factor that divides individuals within a diagnostic category into subgroups that can be treated differently7. 
-<!-- consider more citations/references to how much this approach has taken off across mental health conditions. not sure if it makes sense here as a more general discussion or to be more specific later with sud/smoking -->
+<!-- consider more citations/references to how much this approach has taken off across mental health conditions. not sure if it makes sense here as a more general discussion or to be more specific later with sud/smoking (currently have it there, but could add non-sud/smoking examples here)-->
 
 Despite these opportunities for advances, however, precision mental health research has progressed with limited success. Extant research has not yet enabled reliable recommendations for treatment selection even at the group level - let alone for an individual patient. These patient-level predictions are required for clinical implementation; our goal in clinical science is to predict behavior such that we can apply findings to a new patient. 
 
@@ -68,50 +68,75 @@ These pitfalls interact with each other. To capture sufficient complexity to pre
 
 ### Applying machine learning approaches
 
-<!-- 
-This is particularly problematic when we consider that clinical application of precision medicine requires reliable recommendations at the level of individual patients rather than groups. Although our goal in clinical research is always to apply our findings to new patients, we rarely conduct our research in a way that permits this. 
-
-Substance use researchers have employed machine learning algorithms to identify problematic drug use (Ahn, Ramesh, Moeller, & Vassileva, 2016; Ding, Bickel, & Pan, 2017; Mete et al., 2016; Squeglia et al., 2017). Less work has been conducted examining clinical outcomes (instead of diagnoses), although some researchers have used this approach to predict SUD treatment completion (Steele et al., 2018) and treatment response (Acion et al., 2017), and even to detect posts that merited intervention via text analysis of risky words in online recovery forums (Kornfield et al., 2018). 
--->
-
 Applying machine learning to precision mental health research can address these limitations of traditional analytic techniques. Machine learning is an alternative analytic technique that uses statistical algorithms trained on high-dimensional arrays (hundreds or even thousands) of features8. Flexibly considering many features simultaneously means these models can tap the tangled web of constructs that comprise complex clinical phenomena. Critically, this allows researchers to consider many features in the same model – unlike previous precision mental health research that was limited to considering very few features simultaneously. This high dimensionality across and within sets of related features is necessary to explain a high portion of variance in person-level treatment success.
 
-Although machine learning models can handle very large numbers of features, this capacity comes at a cost, referred to as the “bias-variance trade-off”9. Too many features (particularly correlated features) yield unstable models that vary strongly based on the data used to develop them. High variance compromises model generalizability because a high variance model may not predict very accurately in new data. However, too few features (as well as other constraints on model characteristics) yield biased models that also do not predict well because they miss important predictive patterns and relationships. Machine learning uses various techniques (e.g., regularization, hyperparameter tuning, simultaneous consideration of many statistical learning algorithms) to optimize this bias-variance trade-off to accommodate high-dimensional sets of features while reducing overfitting8,9. Thus, machine learning methods allow for precision mental health models that both capture clinical complexity and generalize accurately to new data.
+Although machine learning models can handle very large numbers of features, this capacity comes at a cost, referred to as the “bias-variance trade-off”9. Too many features (particularly correlated features) yield unstable models that vary strongly based on the data used to develop them. High variance compromises model generalizability because a high variance (e.g., very flexible) model may not predict very accurately in new data. However, too few features (as well as other constraints on model characteristics) yield biased models that also do not predict well because they miss important predictive patterns and relationships. Machine learning uses various techniques (e.g., regularization, hyperparameter tuning, simultaneous consideration of many model configurations) to optimize this bias-variance trade-off to accommodate high-dimensional sets of features while reducing overfitting.8,9 Thus, machine learning methods may allow us to build precision mental health models that both capture clinical complexity and generalize accurately to new data.
 
 Finally, machine learning provides rigorous resampling techniques to fit and evaluate models in separate data9. Consequently, models generalize well to new patients because they are evaluated on out-of-sample prediction. In a simplest case, data can be divided into held-in and held-out samples. More sophisticated resampling techniques such as cross-validation involve dividing the data many times to create multiple held-in and held-out samples. These approaches offer significant advantages for 1) accurately selecting a best model among multiple model configurations, and 2) estimating how well that model will perform when applied to new data (e.g., new patients in a clinical setting). Applying machine learning can accomplish the goal in precision mental health of accurate, robust treatment selection for new patients.
 
-#### Opportunities to improve mental health treatment equity
+### Opportunities to improve equity in mental health treatment
 
-Additionally, when done correctly, precision mental health may be able to mitigate health disparities in our current treatment pipeline. In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race would be not only inappropriate but also discriminatory. However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes.
+The combination of machine learning methods with the precision mental health paradigm may be able to mitigate health disparities in our current treatment pipeline. This is critically important. Treatments are rarely designed or evaluated in diverse samples, though the NIH has launched some new initiatives to improve this disparity. This push becomes somewhat irrelevant, however, when we rely exclusively on treatments developed decades ago that were effective in homogeneous samples, and we discount treatments that were less effective within the research sample but may have worked well for people with characteristics or identities not well-represented in that sample. Unfortunately, the people who we failed to include in our treatment design and validation are also those who are often disproportionately affected by these exact health conditions or face additional barriers to receive effective treatment.
 
-A final way in which this approach can help mitigate health disparities is through access. 
+These problems have, in some ways, been amplified by early work in precision medicine and precision mental health. Studies often begin with retroactive samples before bringing the models built in those samples to new patients. Thus, these models may be likely to fail for the same people for whom our initial treatments fail - the model can only be as good as the data with which it was developed. However, when this research is done thoughtfully, there are clear opportunities to address health disparities.
 
-### Cigarette smoking as a critical PMH target
+In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race would be not only inappropriate but also discriminatory. However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes.
+
+An additional way in which this approach can help mitigate health disparities is through access. Many of the individual difference features that could help build treatment selection models may be easily measured via self-report, and dimensionality reduction approaches can limit the number of features that need to be assessed. Consequently, treatment selection models might require sparse assessment of only a handful of readily available items and could even be implemented online. In cases where treatments are available over-the-counter, completing the assessment remotely means that individuals without insurance or access to in-person medical care can still give themselves the best chance of treatment success.
+
+### Cigarette smoking as a critical precision mental health target
+
+#### Public health importance of cigarette smoking
+
+Cigarette smoking could benefit greatly from combining precision mental health and machine learning. Smoking remains an enormous public health burden. Fourteen percent of U.S. adults smoke cigarettes daily, and smoking is the leading cause of preventable death, accounting for 480,000 deaths annually10–12. 
 
 <!-- 
-Cigarette smokers may differ with respect to the etiology of their tobacco use disorder, the severity of their dependence and/or withdrawal symptoms, historical factors related to their tobacco use (e.g., age of first use, years smoking, number of previous quit attempts), and barriers to initiation and/or retention in smoking cessation treatments (Oliver & McClernon, 2017; J. Wang, Simons-Morton, Farhat, Farhart, & Luk, 2009; Zheng, Wiebe, Cleveland, Molenaar, & Harris, 2013). These factors that affect the development and course of their disorder could include demographic traits, personal medical history, and many other key individual difference characteristics. However, the single diagnosis of tobacco use disorder obscures these potentially important individual differences, and the neglect of this heterogeneity when selecting among available treatments could account for their modest efficacy. 
+ADD TO THIS: shouldn't be LONG but should be expanded 
+consider comparing to other substances, specific health consequences, citing work about impact on longevity of extra years smoking
+many people don't get treatment!! numbers for this & success rates without tx
 -->
 
-<!-- 
-The idea of precision medicine is not new: researchers within the substance use domain have set their sites on this individualized approach to treatment for decades. Perhaps the most famous example is the Project MATCH Research Group, who were unsuccessful in their attempt to match individuals with alcohol use disorder to a particular treatment based on individual differences such as gender, social support, or symptom severity (PMRG 1993, 1998). Other researchers have examined characteristics such as impulsivity and sensation-seeking (Tomko et al 2016), comorbid disorders (Luo & Levin 2017), and genetics (Sun et al 2016) in an attempt to personalize treatment among subgroups of individuals with substance use disorders. Within the context of cigarette smoking, Piper and colleagues have identified several moderators that affect treatment response and cessation such as smoking heaviness, psychiatric history, and use of pre-quit interventions like nicotine gum (cite two Piper 2017 articles). 
+#### Treatment effectiveness for smoking cessation
 
-National clinical guidelines note that “there are no well-accepted algorithms to guide optimal selection” between any of the first-line medications (Fiore et al., 2008, p. 44). However, varenicline and C-NRT are consistently identified as the most effective options (Cahill et al., 2013), and guidelines recommend that clinicians consider either of these two medications first given their established efficacy (Fiore et al., 2008). These medications appear to be equally (though modestly) effective: a meta-analysis demonstrated comparable effectiveness rates (Cahill et al., 2013), and the first randomized controlled trial (RCT) directly comparing varenicline and C-NRT did not find a difference between them (Baker et al., 2016). Despite their similarity, there may be reason to expect we can make differential predictions.
+Despite the severity of the problem <!-- possibly: For those who do get treatment-->, the best available smoking cessation treatments are only modestly effective. The medications varenicline and combination nicotine replacement therapy (C-NRT) are consistently identified as the most effective options when combined with psychosocial counseling (Cahill et al., 2013), and guidelines recommend that clinicians consider either of these two medications first given their established efficacy (Fiore et al., 2008). These medications appear to be equally (though modestly) effective: a meta-analysis demonstrated comparable effectiveness rates (Cahill et al., 2013), and the first randomized controlled trial (RCT) directly comparing varenicline and C-NRT did not find a difference between them (Baker et al., 2016). 
 
-One reason for this is their distinct pharmacological mechanisms of action. C-NRT consists of a nicotine patch and ad libitum lozenge use, which both provide nicotine. Nicotine is a full agonist at nicotinic acetylcholine receptors (nAChRs). The patch offers transdermal administration of a low, steady dose of nicotine, and lozenges provide oral administration of nicotine with more rapid onset. In contrast, varenicline is a partial agonist at nAChRs. Partial agonists have a pharmacological action that is somewhere between full agonists and antagonists, depending on the level of surrounding neurotransmitter. In the absence of a full agonist or endogenous neurotransmitter, partial agonists can act as a functional agonist with lower activity than a full agonist. In the presence of a full agonist or endogenous neurotransmitter, however, they act as functional antagonists because their binding to the receptor limits the amount of binding from the full agonist and consequently reduces that response (Jordan & Xi, 2018; Lieberman, 2004). 
+Typically, 6-month abstinence rates hover around 30-35% for these best smoking cessation medications combined with psychosocial counseling13,14. These rates represent a best-case scenario in that clinical trial data involve treatment regimens that are rigorously followed and optimized for adherence. Additionally, because several first-line (i.e., FDA-approved) smoking cessation treatments have comparable population-level effectiveness rates, population effectiveness alone cannot guide selection among smoking cessation treatments. These facts suggest a critical need for machine learning-assisted treatment selection in the cigarette smoking domain.
+
+<!-- ADD:
+- information about typical # of quit attempts, support that tx is not very effective, though worse when they don't get treatment
+
+-->
+
+#### Opportunities for differential treatment selection
+
+National clinical guidelines note that “there are no well-accepted algorithms to guide optimal selection” between any of the first-line medications (Fiore et al., 2008, p. 44). However, there may be reason to expect we can make differential predictions. 
+
+First, there is enormous heterogeneity among individuals who smoke cigarettes. Cigarette smokers may differ with respect to the etiology of their tobacco use disorder, the severity of their dependence and/or withdrawal symptoms, historical factors related to their tobacco use (e.g., age of first use, years smoking, number of previous quit attempts), and barriers to initiation and/or retention in smoking cessation treatments (Oliver & McClernon, 2017; J. Wang, Simons-Morton, Farhat, Farhart, & Luk, 2009; Zheng, Wiebe, Cleveland, Molenaar, & Harris, 2013). These factors that affect the development and course of their disorder could include demographic traits, personal medical history, and many other key individual difference characteristics. However, this heterogeneity is typically neglected when selecting among available treatments. 
+
+Second, smoking cessation medications have distinct pharmacological mechanisms of action at nicotinic acetylcholine receptors (nAChRs), which may affect how helpful they are for different people. Nicotine replacement therapy (NRT) provides nicotine, a full agonist at nAChRs. Different NRTs provide nicotine differently. C-NRT consists of a nicotine patch and ad libitum nicotine lozenge use. The patch offers transdermal administration of a low, steady dose of nicotine. Some people who smoke cigarettes may rely on this low, steady nicotine level to replace nicotine from cigarettes. Lozenges provide oral administration of nicotine with more rapid onset, which could help individuals who need a quick boost during craving. 
+
+Other individuals who smoke may benefit from a medication like varenicline. In contrast to NRTs, varenicline is a partial agonist at nAChRs. Partial agonists have a pharmacological action that is somewhere between full agonists and antagonists, depending on the level of surrounding neurotransmitter. In the absence of a full agonist or endogenous neurotransmitter, partial agonists can act as a functional agonist with lower activity than a full agonist. In the presence of a full agonist (e.g., a cigarette) or endogenous neurotransmitter, however, they act as functional antagonists because their binding to the receptor limits the amount of binding from the full agonist and consequently reduces that response (Jordan & Xi, 2018; Lieberman, 2004). 
 
 Thus, varenicline may be more pharmacologically flexible than NRT medications: when an individual is not smoking, it can produce milder, nicotine-like effects; if an individual begins smoking again, it could block or reduce full agonist (cigarette nicotine) activity at the receptor. This would be expected to reduce the pharmacological effect of nicotine, likely reducing the behavioral pleasure of smoking (Cahill, Lindson‐Hawley, Thomas, Fanshawe, & Lancaster, 2016). Although C-NRT has some behavioral flexibility built in (i.e., combination of slow, steady dosing with faster-acting lozenges that can be used in response to internal states or environmental cues), it acts exclusively as a full agonist at nAChRs and cannot exert antagonist-like actions. 
 
-In addition to these purported pharmacological differences, there is some evidence that individuals respond differently to different treatments. One large study that examined multiple medication-assisted quit attempts found that individuals who switched medications were more likely to quit than individuals who used the same medication again or who did not use a medication on the first quit attempt but added one at the second (Heckman et al., 2017). Conversely, there is some evidence that retreatment with the same medication as a previous, unsuccessful quit attempt is not effective; Gonzales and colleagues note that “abstinence rates are more than threefold lower for NRTs and twofold lower for bupropion” during retreatment compared to initial treatment using the same medication (Gonzales et al., 2014, p. 391; Fiore et al., 2008; Tønnesen, Nørregaard, Säwe, & Simonsen, 1993). Additionally, clinical research related to other psychological and psychiatric disorders has demonstrated differential treatment benefit on an individual basis (e.g., antipsychotic medications for schizophrenia; Roussidis et al., 2013), suggesting it is worth investigating whether the same is true in smoking cessation and other SUDs.
+Third, features across several behavioral or environmental domains may also guide treatment selection, alone or in combination with medication mechanisms of action. For example, some cigarette smokers may have strong cravings with good self-monitoring. These characteristics may make treatments such as nicotine lozenges or gum more effective for those people because they are aware enough of their own craving to get a quick “hit” of nicotine when needed. Some smokers may be prone to side effects from a specific treatment, reducing adherence and subsequent likelihood of treatment success, though they may not have had the same adverse reactions to a different treatment. Environmentally, an individual who lives with other smokers may benefit from a partial agonist treatment like varenicline because any secondhand smoke would produce less effect. Any of these characteristics, among others, could powerfully inform treatment selection for cigarette smoking cessation. These examples illustrate the potential clinical benefit of using a precision mental health paradigm to inform treatment selection for smoking cessation. They also point to the value of analytic techniques that can incorporate complex interactions among features. Although these examples were selected because they are more intuitive, there are likely other unexpected ways that treatment success differs across people. Machine learning models are not limited to intuitive or theoretically derived features. Thus, machine learning may reveal unanticipated features that could meaningfully guide treatment selection for cigarette smoking cessation.
 
+Finally, there is some evidence that individuals respond differently to different treatments. One large study that examined multiple medication-assisted quit attempts found that individuals who switched medications were more likely to quit than individuals who used the same medication again or who did not use a medication on the first quit attempt but added one at the second (Heckman et al., 2017). Relatedly, there is some evidence that re-treatment with the same medication as a previous, unsuccessful quit attempt is not effective; Gonzales and colleagues note that “abstinence rates are more than threefold lower for NRTs and twofold lower for bupropion” during re-treatment compared to initial treatment using the same medication (Gonzales et al., 2014, p. 391; Fiore et al., 2008; Tønnesen, Nørregaard, Säwe, & Simonsen, 1993). Additionally, clinical research related to other psychological and psychiatric disorders has demonstrated differential treatment benefit on an individual basis (e.g., antipsychotic medications for schizophrenia; Roussidis et al., 2013), suggesting it is worth investigating whether the same is true in smoking cessation.
+
+#### Previous precision mental health research
+
+<!--
+emphasize - certainly a lot of work has been done, but...
+- suboptimal targets (not tx selection, more often predicting who will succeed or not, or whether an individual tx will work or not [cite study that we rebutted])
+- using predictors that are not well-suited for implementation
+- don't produce an actionable tool
+
+Substance use researchers have employed machine learning algorithms to identify problematic drug use (Ahn, Ramesh, Moeller, & Vassileva, 2016; Ding, Bickel, & Pan, 2017; Mete et al., 2016; Squeglia et al., 2017). Less work has been conducted examining clinical outcomes (instead of diagnoses), although some researchers have used this approach to predict SUD treatment completion (Steele et al., 2018) and treatment response (Acion et al., 2017), and even to detect posts that merited intervention via text analysis of risky words in online recovery forums (Kornfield et al., 2018).
+
+Other researchers have examined characteristics such as impulsivity and sensation-seeking (Tomko et al 2016), comorbid disorders (Luo & Levin 2017), and genetics (Sun et al 2016) in an attempt to personalize treatment among subgroups of individuals with substance use disorders. Within the context of cigarette smoking, Piper and colleagues have identified several moderators that affect treatment response and cessation such as smoking heaviness, psychiatric history, and use of pre-quit interventions like nicotine gum (cite two Piper 2017 articles). 
+
+incorporate new articles (in zotero)
 -->
-
-Cigarette smoking could benefit greatly from combining precision mental health and machine learning. Smoking remains an enormous public health burden. Fourteen percent of U.S. adults smoke cigarettes daily, and smoking is the leading cause of preventable death, accounting for 480,000 deaths annually10–12. Despite the severity of the problem, the best available smoking cessation treatments are only modestly effective, with 6-month abstinence rates hovering around 30-35% for smoking cessation medications combined with psychosocial counseling13,14. These rates represent a best-case scenario in that clinical trial data involve treatment regimens that are rigorously followed and optimized for adherence. Additionally, because several first-line (i.e., FDA-approved) smoking cessation treatments have comparable population-level effectiveness rates, population effectiveness alone cannot guide selection among smoking cessation treatments. These facts suggest a critical need for machine learning-assisted treatment selection in the cigarette smoking domain.
-
-To select among treatments for smoking cessation, features must exist that differentiate treatment success. Smoking cessation medications have distinct pharmacological mechanisms of action at nicotinic acetylcholine receptors (nAChRs), which may affect how helpful they are for different smokers. Nicotine replacement therapy (NRT) provides nicotine, a full agonist at nAChRs. Different NRTs provide nicotine differently. Some cigarette smokers may rely on a low, steady nicotine level from a NRT patch to replace nicotine from cigarettes. Other NRTs like gum or lozenges provide oral administration with more rapid onset, which could help individuals who need a quick boost during craving. Other individuals who smoke may benefit from a medication like varenicline. As a nAChR partial agonist, varenicline’s effect depends on surrounding neurotransmitter levels such that it can act like a NRT in the absence of other nicotine but can reduce nicotine’s effects when it is present15. 
-
-Features across several behavioral or environmental domains may also guide treatment selection, alone or in combination with medication mechanisms of action. For example, some cigarette smokers may have strong cravings with good self-monitoring. These characteristics may make treatments such as nicotine lozenges or gum more effective for those people because they can get a quick “hit” of nicotine when needed. Some smokers may be prone to side effects from a specific treatment, reducing adherence and subsequent likelihood of treatment success, though they may not have had the same adverse reactions to a different treatment. Environmentally, an individual who lives with other smokers may benefit from a partial agonist treatment like varenicline because any secondhand smoke would produce less effect.
-
-Any of these characteristics, among others, could powerfully inform treatment selection for cigarette smoking cessation. These examples illustrate the potential clinical benefit of using a precision mental health paradigm to inform treatment selection for smoking cessation. They point to the value of analytic techniques that can incorporate complex interactions among features. Although these examples were selected because they are more intuitive, there are likely other unexpected ways that treatment success differs across people. Machine learning models are not limited to intuitive or theoretically derived features. Thus, machine learning may reveal unanticipated features that could meaningfully guide treatment selection for cigarette smoking cessation.
 
 ### Purpose
 
@@ -121,7 +146,7 @@ Any of these characteristics, among others, could powerfully inform treatment se
 
 ### Transparency & openness
 
-<!-- note: already correct OSF page -->
+<!-- NTS: already correct OSF page -->
 
 We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
 
@@ -309,7 +334,30 @@ hrqol 4
 
 56 of those are treatment interactions (43.75% of retained features, 6% of 879 available treatment interaction features)
 
-unique items required for differential prediction: live with smoker (MC), race, wisdm 16 & 18 & 19 & 22 & 26 & 27 & 30 & 32, smoke menthol y/n, used cigars (MC), close smoking friend y/n, dts 5, asi3 2 & 15, spouse smoke (MC), close smoking coworker y/n, dsm5 3 & 6 & 7 & 10, marital status, mfi 6 & 13, close smoking relative y/n, income, depression dx, work ban (MC), ftnd 2 & 6, berlin 7, tried nicotine gum y/n, wsws constipation, life satisfaction, used pipe (MC), gender
+unique items required for differential prediction: 
+live with smoker (MC), 
+race, 
+wisdm 16 & 18 & 19 & 22 & 26 & 27 & 30 & 32, 
+smoke menthol y/n, 
+used cigars (MC), 
+close smoking friend y/n, 
+dts 5, 
+asi3 2 & 15, 
+spouse smoke (MC), 
+close smoking coworker y/n, 
+dsm5 3 & 6 & 7 & 10, 
+marital status, 
+mfi 6 & 13, 
+close smoking relative y/n, 
+income, 
+depression dx, 
+work ban (MC), 
+ftnd 2 & 6, 
+berlin 7, 
+tried nicotine gum y/n, 
+wsws constipation, 
+life satisfaction, 
+used pipe (MC), gender
 
 - total: 37 unique items required for treatment selection
 
@@ -322,6 +370,8 @@ unique items required for differential prediction: live with smoker (MC), race, 
 Global importance (mean |Shapley value|) for features for each model appear in Panel A of Figure X. XX was the most important feature category across prediction outcomes. XX, XX, and XX were also globally important across models. XX, XX, and XX were the most relatively important treatment interaction variables.
 
 Sina plots of local Shapley values (i.e., the influence of features on individual observations) for each model show that some features (e.g., XX, XX, XX) impact abstinence probability for specific individuals even if they are not globally important across all observations (Figure X, Panels B-C).
+
+<!-- TBD: feature categories in addition to individual features -->
 
 ### Clinical benefit
 

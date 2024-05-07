@@ -164,6 +164,8 @@ Participants were randomly assigned to receive 12 weeks of medication treatment 
 
 Participants were comprehensively assessed for individual differences characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table X.
 
+<!-- more text here or ok just to refer to a detailed table? -->
+
 #### Abstinence outcome
 
 Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." Participants were assessed for abstinence periodically beginning 4 week post-quit through the end of their study participation. 
@@ -172,10 +174,17 @@ Throughout study participation, participants were assessed for biologically conf
 
 #### Feature engineering and dimensionality reduction
 
-Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE). A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
+Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE kuhn feature engineering). A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
 
 <!-- ADD
 feature engineering i did incl ordinal vs dummy scoring, yeo johnson transformations, constructing tx interactions, scaling (content depends on glmnet only or multiple algorithms)
+
+if glmnet only:
+- ordinal vs dummy scoring of ordered categorical variables (eg likert scale items on self-report measures)
+- dummy coding of unordered categorical variables
+- yeojohnson transformation of numeric variables
+- interactions between treatment dummy codes & all other variables
+
 -->
 
 Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, we used several dimensionality reduction approaches to reduce the number of features in my models. We used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm glmnet also inherently conducts dimensionality reduction by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional parameter in the model.

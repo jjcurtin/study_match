@@ -8,7 +8,6 @@ format:
 params:
   study: "match"
   version: "v5"
-  y_col_name: "pp_hybrid_wk4_outcome"
   cv: "nested"
 output: 
   html_document:

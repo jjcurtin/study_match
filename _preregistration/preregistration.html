@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Gaylen Fronk">
-<meta name="dcterms.date" content="2024-05-03">
+<meta name="dcterms.date" content="2024-05-07">
 
 <title>Preregistration: Evaluation of Clinical Benefit</title>
 <style>
@@ -3299,7 +3299,36 @@ border: 0;
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="..\notebooks\ana_bayes_match.embed-preview.html"><i class="bi bi-journal-code"></i>Posterior probabilities across models for MATCH study (version v5)</a></li></ul></div></div>
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#study-overview" id="toc-study-overview" class="nav-link active" data-scroll-target="#study-overview"><span class="header-section-number">1</span> Study Overview</a>
+  <ul>
+  <li><a href="#specific-aims" id="toc-specific-aims" class="nav-link" data-scroll-target="#specific-aims"><span class="header-section-number">1.1</span> Specific Aims</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">1.2</span> Data</a></li>
+  </ul></li>
+  <li><a href="#analysis-progress-at-time-of-preregistration" id="toc-analysis-progress-at-time-of-preregistration" class="nav-link" data-scroll-target="#analysis-progress-at-time-of-preregistration"><span class="header-section-number">2</span> Analysis Progress at Time of Preregistration</a>
+  <ul>
+  <li><a href="#completed-model-building-selection-evaluation" id="toc-completed-model-building-selection-evaluation" class="nav-link" data-scroll-target="#completed-model-building-selection-evaluation"><span class="header-section-number">2.1</span> Completed: Model Building, Selection, &amp; Evaluation</a></li>
+  <li><a href="#completed-fit-final-model" id="toc-completed-fit-final-model" class="nav-link" data-scroll-target="#completed-fit-final-model"><span class="header-section-number">2.2</span> Completed: Fit Final Model</a></li>
+  <li><a href="#in-progress-aim-2-clinical-benefit-analyses" id="toc-in-progress-aim-2-clinical-benefit-analyses" class="nav-link" data-scroll-target="#in-progress-aim-2-clinical-benefit-analyses"><span class="header-section-number">2.3</span> In Progress: AIM 2 Clinical Benefit Analyses</a></li>
+  </ul></li>
+  <li><a href="#purpose-of-preregistration" id="toc-purpose-of-preregistration" class="nav-link" data-scroll-target="#purpose-of-preregistration"><span class="header-section-number">3</span> Purpose of Preregistration</a>
+  <ul>
+  <li><a href="#outcomes" id="toc-outcomes" class="nav-link" data-scroll-target="#outcomes"><span class="header-section-number">3.1</span> Outcomes</a></li>
+  <li><a href="#sec-modeling-specs" id="toc-sec-modeling-specs" class="nav-link" data-scroll-target="#sec-modeling-specs"><span class="header-section-number">3.2</span> Modeling Specifications</a></li>
+  <li><a href="#focal-secondary-effects" id="toc-focal-secondary-effects" class="nav-link" data-scroll-target="#focal-secondary-effects"><span class="header-section-number">3.3</span> Focal &amp; Secondary Effects</a></li>
+  </ul></li>
+  <li><a href="#shuffle-data" id="toc-shuffle-data" class="nav-link" data-scroll-target="#shuffle-data"><span class="header-section-number">4</span> Shuffle Data</a></li>
+  <li><a href="#sec-analyses" id="toc-sec-analyses" class="nav-link" data-scroll-target="#sec-analyses"><span class="header-section-number">5</span> Preregistered Analyses</a>
+  <ul>
+  <li><a href="#primary-model" id="toc-primary-model" class="nav-link" data-scroll-target="#primary-model"><span class="header-section-number">5.1</span> Primary Model</a></li>
+  <li><a href="#follow-up-analyses-simple-effects" id="toc-follow-up-analyses-simple-effects" class="nav-link" data-scroll-target="#follow-up-analyses-simple-effects"><span class="header-section-number">5.2</span> Follow-up analyses: Simple Effects</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="..\notebooks\ana_bayes_match.embed-preview.html"><i class="bi bi-journal-code"></i>Posterior probabilities across models for MATCH study (version v5)</a></li></ul></div></nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -3321,7 +3350,7 @@ border: 0;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 3, 2024</p>
+      <p class="date">May 7, 2024</p>
     </div>
   </div>
   
@@ -3333,30 +3362,30 @@ border: 0;
 </header>
 
 
-<section id="study-overview" class="level2">
-<h2 class="anchored" data-anchor-id="study-overview">Study Overview</h2>
-<section id="specific-aims" class="level3">
-<h3 class="anchored" data-anchor-id="specific-aims">Specific Aims</h3>
+<p><strong>Quick Links</strong></p>
+<p>Jump to <a href="#sec-modeling-specs" class="quarto-xref">Section 3.2</a> for written modeling specifications.</p>
+<p>Jump to <a href="#sec-analyses" class="quarto-xref">Section 5</a> for analysis code.</p>
+<section id="study-overview" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="study-overview"><span class="header-section-number">1</span> Study Overview</h2>
+<section id="specific-aims" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="specific-aims"><span class="header-section-number">1.1</span> Specific Aims</h3>
 <p>This project represents a tangible application of the precision mental health paradigm using modern machine learning approaches. This project aims to produce a decision-making tool to select among cigarette smoking cessation treatments for individuals looking to quit smoking.</p>
-<p>Cigarette smoking remains a critical and costly public health crisis. Existing treatments are only modestly effective at best. Additionally, treatments are similarly effective at the population level, meaning that even population-level effectiveness cannot guide treatment selection for individuals quitting smoking. Thus, deciding among first-line (i.e., FDA-approved) smoking cessation medications is a specific, objective decision that many individuals who smoke (or their providers) must make. Successful application of the precision mental health paradigm to cigarette smoking cessation would have immediate clinical benefit.</p>
 <p>Specifically, this project pursues the following aims:</p>
-<p><strong>AIM 1: Build a machine learning model to guide treatment selection for cigarette smoking cessation.</strong> We will build a machine learning model to predict 7-day point-prevalence abstinence from smoking 4 weeks post-quit for people who smoke who received one of three cigarette smoking cessation treatments. This model will use clinical features (predictors) from a richly characterized sample of people who smoke from a previously completed comparative effectiveness trial. The model will produce probabilities of treatment success for each treatment such that it can guide selection of the best treatment for any specific individual.</p>
-<p><strong>AIM 2: Evaluate the clinical benefit of using a treatment selection machine learning model.</strong> Using the best model identified in <strong>AIM 1</strong>, we will identify the treatment for each person that gives them the highest likelihood of abstinence by comparing predicted probabilities of abstinence for each participant for each treatment. We will then evaluate the clinical benefit of this model-based treatment selection approach.</p>
+<p><strong>AIM 1:</strong> Build a machine learning model to guide treatment selection for cigarette smoking cessation.</p>
+<p><strong>AIM 2:</strong> Evaluate the clinical benefit of using a treatment selection machine learning model.</p>
 </section>
-<section id="data" class="level3">
-<h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>This project relies on existing data from a completed comparative effectiveness trial by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>. Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking. Thus, we used predictors from the rich baseline characterization to predict our <strong>primary outcome</strong> of 7-day point-prevalence abstinence at 4 weeks post-quit.</p>
+<section id="data" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="data"><span class="header-section-number">1.2</span> Data</h3>
+<p>This project relies on existing data from a completed comparative effectiveness trial by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>.</p>
+<p>Briefly, 1086 individuals who smoke cigarettes were randomized to receive varenicline, combination nicotine replacement therapy (NRT), or nicotine patch to assist with a quit attempt. Individuals were richly characterized at baseline (pre-treatment) with respect to demographic characteristics, mental health, social/environmental variables, physical health, and smoking history. Participants were assessed periodically for biologically confirmed, 7-day point-prevalence abstinence. When abstinence was biologically confirmed (i.e., via exhaled carbon monoxide), individuals were labeled as abstinent; otherwise, individuals were labeled as smoking.</p>
+<p>Thus, we used predictors from the rich baseline characterization to predict our <strong>primary outcome</strong> of 7-day point-prevalence abstinence at 4 weeks post-quit.</p>
 </section>
 </section>
-<section id="analysis-progress-at-time-of-preregistration" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-progress-at-time-of-preregistration">Analysis Progress at Time of Preregistration</h2>
-<section id="completed-model-building-selection-evaluation" class="level3">
-<h3 class="anchored" data-anchor-id="completed-model-building-selection-evaluation">Completed: Model Building, Selection, &amp; Evaluation</h3>
-<p><strong>AIM 1</strong> analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds (“test sets”) were used to evaluate model performance.</p>
-</section>
-<section id="completed-model-performance" class="level3">
-<h3 class="anchored" data-anchor-id="completed-model-performance">Completed: Model Performance</h3>
-<p>Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases.</p>
+<section id="analysis-progress-at-time-of-preregistration" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="analysis-progress-at-time-of-preregistration"><span class="header-section-number">2</span> Analysis Progress at Time of Preregistration</h2>
+<section id="completed-model-building-selection-evaluation" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="completed-model-building-selection-evaluation"><span class="header-section-number">2.1</span> Completed: Model Building, Selection, &amp; Evaluation</h3>
+<p><strong>AIM 1</strong> analyses have been completed: Models using all available data have been fit and selected with nested cross-validation (1 repeat of 10-fold cross-validation in the inner loops, 3 repeats of 10-fold cross-validation in the outer loop). These 30-held out folds (“test sets”) were used to evaluate model performance. Models were evaluated using our primary performance metric, area under the ROC curve (auROC), an index of how well our models discriminate between positive (abstinent) and negative (smoking) cases.</p>
 <p>We evaluated model performance in-depth by conducting <em>Bayesian hierarchical generalized linear models</em> to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for our best models from the 30 held-out test sets from nested cross-validation. Below, you can see the posterior probabilities for auROC in held-out folds.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-week4" class="cell">
@@ -3364,7 +3393,7 @@ border: 0;
 <div id="fig-week4" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="data:image/png;base64,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" id="fig-week4" class="img-fluid figure-img">
+<img src="data:image/png;base64,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" id="fig-week4" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure 1
@@ -3376,13 +3405,12 @@ Figure 1
 <a class="quarto-notebook-link" id="nblink-1" href="..\notebooks\ana_bayes_match.embed-preview.html#cell-fig-week4">Source: Posterior probabilities across models for MATCH study (version v5)</a></div>
 <p>The horizontal line indicates the 95% CIs. The vertical line represents the median posterior probability for auROC. This represents our best estimate for the magnitude of the auROC parameter. The CI does not contain 0.5 (i.e., chance performance), suggesting the model is capturing signal in the data.</p>
 </section>
-<section id="completed-fit-final-model" class="level3">
-<h3 class="anchored" data-anchor-id="completed-fit-final-model">Completed: Fit Final Model</h3>
-<p>A single, best model was selected with 1 repeat of 10-fold cross-validation in the full dataset.</p>
-<p>The best model configuration includes the following:</p>
+<section id="completed-fit-final-model" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="completed-fit-final-model"><span class="header-section-number">2.2</span> Completed: Fit Final Model</h3>
+<p>A single, best model was selected with 1 repeat of 10-fold cross-validation in the full dataset. The best model configuration includes the following:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 1
+<pre><code>Rows: 1
 Columns: 5
 $ algorithm   &lt;chr&gt; &quot;glmnet&quot;
 $ feature_set &lt;chr&gt; &quot;item_ordinal&quot;
@@ -3392,21 +3420,16 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 </div>
 <ul>
-<li><p>Selected algorithm was glmnet (xgboost and random forest also considered)</p></li>
+<li><p>Algorithm was glmnet (elastic net logistic regression)</p></li>
 <li><p>Selected feature set was “item_ordinal” indicating that individual items (rather than scale scores) were used, and ordinal scoring was used for ordered data (rather than dummy coding)</p></li>
 <li><p>Selected resampling approach was “up_1” corresponding to upsampling (vs. downsampling or SMOTE) with a ratio of 1:1 (majority:minority class)</p></li>
 <li><p>Values of the hyperparameters alpha and lambda were selected from sensible ranges for each value</p></li>
 </ul>
 </section>
-<section id="in-progress-aim-2-clinical-benefit-analyses" class="level3">
-<h3 class="anchored" data-anchor-id="in-progress-aim-2-clinical-benefit-analyses">In Progress: AIM 2 Clinical Benefit Analyses</h3>
+<section id="in-progress-aim-2-clinical-benefit-analyses" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="in-progress-aim-2-clinical-benefit-analyses"><span class="header-section-number">2.3</span> In Progress: AIM 2 Clinical Benefit Analyses</h3>
 <p><strong>AIM 2</strong> analyses using this full model are underway. We have used the final model fit in the full dataset to calculate three predictions (probabilities, <code>prob_*</code>) for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">82294</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -3477,10 +3500,6 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 <p>The treatment that yields the highest model-predicted probability of abstinence is identified as that participant’s “best” treatment (<code>tx_best</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_best, prob_patch, prob_combo_nrt, prob_varenicline) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -3560,10 +3579,8 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 <p>The best treatments spanned all three medication options: varenicline, combination nicotine replacement therapy (“combo_nrt”), and nicotine patch (“patch”).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code># A tibble: 3 × 3
+<pre><code># A tibble: 3 × 3
   tx_best         n  prop
   &lt;chr&gt;       &lt;int&gt; &lt;dbl&gt;
 1 combo_nrt     339 0.312
@@ -3573,10 +3590,6 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 <p>Some participants’ best treatment (<code>tx_best</code>) matched what they were randomly assigned in the original trial (<code>tx_rct</code>). Other participants may have received what the model identified as their second-best or worst treatment. Thus, participants’ RCT-assigned treatment can be categorized by whether it “matched” their model-assigned treatment (<code>tx_match</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, tx_rct, tx_best, tx_second, tx_worst) <span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_kbl</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
@@ -3656,22 +3669,6 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 <td style="text-align: right;">combo_nrt</td>
 <td style="text-align: right;">patch</td>
 </tr>
-<tr class="odd">
-<td style="text-align: right;">50140</td>
-<td style="text-align: right;">FALSE</td>
-<td style="text-align: right;">patch</td>
-<td style="text-align: right;">combo_nrt</td>
-<td style="text-align: right;">patch</td>
-<td style="text-align: right;">varenicline</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20359</td>
-<td style="text-align: right;">FALSE</td>
-<td style="text-align: right;">patch</td>
-<td style="text-align: right;">combo_nrt</td>
-<td style="text-align: right;">patch</td>
-<td style="text-align: right;">varenicline</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -3681,10 +3678,8 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </div>
 <p>Approximately 38% of participants received their model-assigned “best” treatment in the original trial.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab</span>(tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code># A tibble: 2 × 3
+<pre><code># A tibble: 2 × 3
   tx_match     n  prop
   &lt;lgl&gt;    &lt;int&gt; &lt;dbl&gt;
 1 FALSE      677 0.623
@@ -3694,11 +3689,11 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 <p>At the time of this preregistration, <strong>no analyses have been conducted using these probabilities or model-based treatment assignments.</strong></p>
 </section>
 </section>
-<section id="purpose-of-preregistration" class="level2">
-<h2 class="anchored" data-anchor-id="purpose-of-preregistration">Purpose of Preregistration</h2>
+<section id="purpose-of-preregistration" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="purpose-of-preregistration"><span class="header-section-number">3</span> Purpose of Preregistration</h2>
 <p>The purpose of this document is to <strong>preregister the analyses for evaluating the clinical benefit of this treatment selection model</strong>.</p>
-<section id="outcomes" class="level3">
-<h3 class="anchored" data-anchor-id="outcomes">Outcomes</h3>
+<section id="outcomes" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="outcomes"><span class="header-section-number">3.1</span> Outcomes</h3>
 <p>Our primary analysis will compare the <strong>observed outcomes</strong> (i.e., abstinence vs. smoking, from the original trial) for people who did or did not receive their best treatment. We will examine these outcomes over the following time points:</p>
 <ul>
 <li><p>4 weeks: This served as the outcome for our prediction model. This selection was made so that, in real-world implementation, treatment could be adjusted earlier for individuals for whom treatment is not working.</p></li>
@@ -3706,15 +3701,25 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 <li><p>26 weeks (6 months): This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/">Baker et al., 2016</a>). This duration is often used as a proxy for long-term success.</p></li>
 </ul>
 </section>
-<section id="modeling-specifications" class="level3">
-<h3 class="anchored" data-anchor-id="modeling-specifications">Modeling Specifications</h3>
+<section id="sec-modeling-specs" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="sec-modeling-specs"><span class="header-section-number">3.2</span> Modeling Specifications</h3>
 <p>We plan to follow a mixed-effects modeling approach using the <code>blme</code> package. Specifically, we will fit a partially Bayesian generalized linear model using <code>bglmer()</code> with the components listed below. This approach uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (<a href="https://link.springer.com/article/10.1007/s11336-013-9328-2">Chung et al., 2013</a>, <code>blme</code> package). We would use the default <code>&quot;nlminbwrap&quot;</code> optimizer.</p>
-<p>To ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, <strong>we conduct these proposed analyses using a shuffled (i.e., randomized) version of our dataset</strong>. Following preregistration, our analyses will follow this script exactly using our real data.</p>
 <p>Our model will have the following components:</p>
 <ol type="1">
 <li><p>Dependent variable: abstinence (vs. smoking; <code>outcome_rct_num</code>). Binary outcome with abstinence coded as 1 and smoking coded as 0.</p></li>
-<li><p>Independent variable: treatment match (<code>tx_match</code>). Between-subjects categorical variable with two levels (TRUE or FALSE). This variable will be coded with an orthogonal contrast such that we compare individuals who received their best treatment to individuals who did not.</p></li>
-<li><p>Independent variable: time (<code>week</code>). This variable has repeated measures such that there are three time points for each subject. This variable will be treated as a numeric variable, and it will be log-transformed (natural log, base <em>e</em>) to meet linearity assumptions. Log transformation is appropriate when the shape of the relationship between the raw variable and outcome is asymptotic.</p></li>
+<li><p>Independent variable: treatment match (<code>tx_match</code>). Between-subjects categorical variable with two levels (TRUE, 0.5; or FALSE, -0.5) such that we compare individuals who received their best treatment to individuals who did not.</p></li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  tx_match     n  prop
+     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+1     -0.5   677 0.623
+2      0.5   409 0.377</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Independent variable: time (<code>week</code>). This variable has repeated measures such that there are three time points for each subject. This variable will be treated as a numeric variable, and it will be log-transformed (natural log, base <em>e</em>) to meet linearity assumptions. Log transformation is appropriate when the shape of the relationship between the raw variable and outcome is asymptotic.</li>
 </ol>
 <div class="cell">
 <div class="cell-output-display">
@@ -3731,6 +3736,15 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+# Groups:   week [3]
+   week week_log     n  prop
+  &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+1     4     1.39  1086     1
+2    12     2.48  1086     1
+3    26     3.26  1086     1</code></pre>
+</div>
 </div>
 <ol start="4" type="1">
 <li><p>Interaction between treatment match and time</p></li>
@@ -3738,246 +3752,96 @@ $ resample    &lt;chr&gt; &quot;up_1&quot;</code></pre>
 <li><p>Random intercept</p></li>
 </ol>
 </section>
-<section id="focal-secondary-effects" class="level3">
-<h3 class="anchored" data-anchor-id="focal-secondary-effects">Focal &amp; Secondary Effects</h3>
+<section id="focal-secondary-effects" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="focal-secondary-effects"><span class="header-section-number">3.3</span> Focal &amp; Secondary Effects</h3>
 <p>Our <strong>focal effect</strong> is the effect of treatment match. We predict that individuals who received their best treatment will have improved outcomes compared to individuals who did not.</p>
-<p>Our <strong>secondary effects</strong> include:</p>
-<ul>
-<li><p>The interaction between treatment match and time. We do not have a directional hypothesis about this interaction.</p>
+<p>Our <strong>secondary effect</strong> is the interaction between treatment match and time. We do not have a directional hypothesis about this interaction.</p>
 <ul>
 <li>If this interaction is significant (<em>p</em> &lt; 0.05), we will conduct <strong>follow-up tests</strong> of the simple effect of treatment match at all 3 time points (week 4, week 12, and week 26). These will be general linear models using the <code>glm</code> function within the <code>stats</code> package.</li>
-</ul></li>
 </ul>
-<p>We plan to report the estimates, test statistics, <em>p</em>-values, and confidence intervals for all effects from this model.</p>
+<p>We plan to report the parameter estimates, test statistics, <em>p</em>-values, and confidence intervals for all effects from this model.</p>
 </section>
 </section>
-<section id="shuffle-data" class="level2">
-<h2 class="anchored" data-anchor-id="shuffle-data">Shuffle Data</h2>
+<section id="shuffle-data" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="shuffle-data"><span class="header-section-number">4</span> Shuffle Data</h2>
+<p>Typically, the above delineation is sufficient for preregistration. However, to ensure that all proposed analyses are feasible and to specify analyses as precisely as possible, <strong>we conduct these proposed analyses using a shuffled (i.e., randomized) version of our dataset</strong>. Following preregistration, our analyses will follow this script exactly using our real data.</p>
 <p>To create our shuffled dataset, we randomly sample (without replacement) the treatment match (<code>tx_match</code>) variable. This:</p>
 <ul>
 <li><p>Breaks any relationship between <code>tx_match</code> and the outcome</p></li>
 <li><p>Breaks any interactive effect of <code>tx_match</code> and <code>week</code> on the outcome</p></li>
 <li><p>Maintains the random effect structure within the <code>week</code> variable</p></li>
 </ul>
+</section>
+<section id="sec-analyses" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-analyses"><span class="header-section-number">5</span> Preregistered Analyses</h2>
+<section id="primary-model" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="primary-model"><span class="header-section-number">5.1</span> Primary Model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">72905</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only necessary variables</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, tx_match, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># randomize tx_match variable</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">sample</span>(d<span class="sc">$</span>tx_match, <span class="fu">nrow</span>(d), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pivot to long data format where week is its own variable</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_wk)(.+)(?=_num)&quot;</span>,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correctly class independent variables</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_match =</span> <span class="fu">factor</span>(tx_match, </span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>)),</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">as.numeric</span>(week)) <span class="sc">|&gt;</span> </span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># log transform week variable per above</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log =</span> <span class="fu">log</span>(week))  <span class="co"># default base is e (natural log)</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(d_shuf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model_bayes <span class="ot">&lt;-</span> blme<span class="sc">::</span><span class="fu">bglmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week_log <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                              (<span class="dv">1</span> <span class="sc">+</span> week_log <span class="sc">|</span> subid),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> d_shuf,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_bayes)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 3,258
-Columns: 5
-$ subid           &lt;dbl&gt; 20010, 20010, 20010, 20015, 20015, 20015, 20030, 20030…
-$ tx_match        &lt;fct&gt; TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, F…
-$ week            &lt;dbl&gt; 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26,…
-$ outcome_rct_num &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, …
-$ week_log        &lt;dbl&gt; 1.386294, 2.484907, 3.258097, 1.386294, 2.484907, 3.25…</code></pre>
-</div>
-</div>
-<p>Confirm that data look random</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week, tx_match) <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by &#39;week&#39;. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code># A tibble: 6 × 3
-# Groups:   week [3]
-   week tx_match mean_outcome
-  &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;
-1     4 FALSE           0.349
-2     4 TRUE            0.330
-3    12 FALSE           0.290
-4    12 TRUE            0.291
-5    26 FALSE           0.244
-6    26 TRUE            0.252</code></pre>
+<pre><code>                    Estimate Std. Error     z value     Pr(&gt;|z|)
+(Intercept)        1.9482148  0.3556276   5.4782441 4.295674e-08
+tx_match          -0.3386496  0.4027471  -0.8408492 4.004324e-01
+week_log          -2.2342858  0.2220852 -10.0604916 8.258496e-24
+tx_match:week_log  0.1243824  0.2782697   0.4469852 6.548857e-01</code></pre>
 </div>
 </div>
 </section>
-<section id="analysis-steps" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-steps">Analysis Steps</h2>
-<p>Set contrasts for treatment match</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>c_tx <span class="ot">&lt;-</span> <span class="fu">contr.helmert</span>(<span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>c_tx[, <span class="dv">1</span>] <span class="ot">&lt;-</span> c_tx[, <span class="dv">1</span>] <span class="sc">/</span> (<span class="fu">max</span>(c_tx[, <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">min</span>(c_tx[, <span class="dv">1</span>])) <span class="co"># scale</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(c_tx) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;best_v_other&quot;</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match) <span class="ot">&lt;-</span> c_tx</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d_shuf<span class="sc">$</span>tx_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>      best_v_other
-FALSE         -0.5
-TRUE           0.5</code></pre>
-</div>
-</div>
-<section id="primary-model" class="level3">
-<h3 class="anchored" data-anchor-id="primary-model">Primary Model</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model_bayes <span class="ot">&lt;-</span> blme<span class="sc">::</span><span class="fu">bglmer</span>(outcome_rct_num <span class="sc">~</span> tx_match <span class="sc">*</span> week_log <span class="sc">+</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                              (<span class="dv">1</span> <span class="sc">+</span> week_log <span class="sc">|</span> subid),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> d_shuf,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_bayes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Cov prior  : subid ~ wishart(df = 4.5, scale = Inf, posterior.scale = cov, common.scale = TRUE)
-Prior dev  : -2.0001
-
-Generalized linear mixed model fit by maximum likelihood (Laplace
-  Approximation) [bglmerMod]
- Family: binomial  ( logit )
-Formula: outcome_rct_num ~ tx_match * week_log + (1 + week_log | subid)
-   Data: d_shuf
-Control: glmerControl(optCtrl = list(maxfun = 3e+06))
-
-     AIC      BIC   logLik deviance df.resid 
-  3091.9   3134.5  -1539.0   3077.9     3251 
-
-Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--1.22908 -0.41112 -0.06664  0.14531  1.40568 
-
-Random effects:
- Groups Name        Variance Std.Dev. Corr 
- subid  (Intercept) 11.08    3.329         
-        week_log    13.23    3.638    -0.99
-Number of obs: 3258, groups:  subid, 1086
-
-Fixed effects:
-                              Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                     1.9482     0.3556   5.478  4.3e-08 ***
-tx_matchbest_v_other           -0.3386     0.4027  -0.841    0.400    
-week_log                       -2.2343     0.2221 -10.060  &lt; 2e-16 ***
-tx_matchbest_v_other:week_log   0.1244     0.2783   0.447    0.655    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation of Fixed Effects:
-            (Intr) tx_m__ wek_lg
-tx_mtchbs__  0.143              
-week_log    -0.917 -0.118       
-tx_mtch__:_ -0.103 -0.861  0.129</code></pre>
-</div>
-</div>
-</section>
-<section id="follow-up-analyses-simple-effects" class="level3">
-<h3 class="anchored" data-anchor-id="follow-up-analyses-simple-effects">Follow-up analyses: Simple Effects</h3>
+<section id="follow-up-analyses-simple-effects" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="follow-up-analyses-simple-effects"><span class="header-section-number">5.2</span> Follow-up analyses: Simple Effects</h3>
 <p>If the interaction between <code>tx_match</code> and <code>week</code> is significant (<em>p</em> &lt; 0.05), we will conduct follow-up analyses to test the simple effect of <code>tx_match</code> at each time point.</p>
 <p>Simple effect at 4 weeks</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>d_4_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">4</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>model_4wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d_4_shuf,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_4wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d_4_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>model_4wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d_4_shuf,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_4wk)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>
-Call:
-glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
-    data = d_4_shuf)
-
-Coefficients:
-                     Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)          -0.66653    0.06626 -10.059   &lt;2e-16 ***
-tx_matchbest_v_other -0.08264    0.13252  -0.624    0.533    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 1394.7  on 1085  degrees of freedom
-Residual deviance: 1394.3  on 1084  degrees of freedom
-AIC: 1398.3
-
-Number of Fisher Scoring iterations: 4</code></pre>
+<pre><code>               Estimate Std. Error     z value     Pr(&gt;|z|)
+(Intercept) -0.66653320 0.06626066 -10.0592604 8.362419e-24
+tx_match    -0.08264026 0.13252131  -0.6235997 5.328905e-01</code></pre>
 </div>
 </div>
 <p>Simple effect at 12 weeks</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d_12_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">12</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>model_12wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_12_shuf,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_12wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d_12_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">12</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>model_12wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_12_shuf,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_12wk)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>
-Call:
-glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
-    data = d_12_shuf)
-
-Coefficients:
-                      Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)          -0.894255   0.068979 -12.964   &lt;2e-16 ***
-tx_matchbest_v_other  0.006995   0.137959   0.051     0.96    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 1308  on 1085  degrees of freedom
-Residual deviance: 1308  on 1084  degrees of freedom
-AIC: 1312
-
-Number of Fisher Scoring iterations: 4</code></pre>
+<pre><code>                Estimate Std. Error      z value     Pr(&gt;|z|)
+(Intercept) -0.894255020 0.06897945 -12.96407887 1.955655e-38
+tx_match     0.006995181 0.13795890   0.05070482 9.595607e-01</code></pre>
 </div>
 </div>
 <p>Simple effect at 26 weeks</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>d_26_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">26</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>model_26wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_26_shuf,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_26wk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d_26_shuf <span class="ot">&lt;-</span> d_shuf <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(week <span class="sc">==</span> <span class="dv">26</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>model_26wk <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome_rct_num <span class="sc">~</span> tx_match, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> d_26_shuf,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_26wk)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>
-Call:
-glm(formula = outcome_rct_num ~ tx_match, family = binomial(link = &quot;logit&quot;), 
-    data = d_26_shuf)
-
-Coefficients:
-                     Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)          -1.11062    0.07244  -15.33   &lt;2e-16 ***
-tx_matchbest_v_other  0.04352    0.14488    0.30    0.764    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 1213.6  on 1085  degrees of freedom
-Residual deviance: 1213.6  on 1084  degrees of freedom
-AIC: 1217.6
-
-Number of Fisher Scoring iterations: 4</code></pre>
+<pre><code>               Estimate Std. Error     z value     Pr(&gt;|z|)
+(Intercept) -1.11061763 0.07244033 -15.3314818 4.711156e-53
+tx_match     0.04352304 0.14488066   0.3004061 7.638674e-01</code></pre>
 </div>
 </div>
 </section>

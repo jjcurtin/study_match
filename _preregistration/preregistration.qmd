@@ -2,6 +2,7 @@
 title: "Preregistration: Evaluation of Clinical Benefit"
 author: "Gaylen Fronk"
 date: "`r lubridate::today()`"
+number-sections: true
 output: 
   html_document:
     toc: true 
@@ -12,6 +13,8 @@ params:
 format:
   html:
     embed-resources: true
+    toc: true
+    toc-depth: 4
 editor_options: 
   chunk_output_type: console
 ---
@@ -111,6 +114,12 @@ best_configuration <- read_csv(file.path(path_models, "pp_hybrid_wk4_outcome",
                                show_col_types = FALSE) |> 
   select(algorithm, feature_set, alpha = hp1, lambda = hp2, resample)
 ```
+
+**Quick Links**
+
+Jump to @sec-modeling-specs for written modeling specifications.
+
+Jump to @sec-analyses for analysis code.
 
 ## Study Overview
 
@@ -226,7 +235,7 @@ Our primary analysis will compare the **observed outcomes** (i.e., abstinence vs
 
 * 26 weeks (6 months): This is the gold standard assessment period for smoking cessation treatments and was the primary outcome for the original trial ([Baker et al., 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824537/)). This duration is often used as a proxy for long-term success.
 
-### Modeling Specifications
+### Modeling Specifications {#sec-modeling-specs}
 
 We plan to follow a mixed-effects modeling approach using the `blme` package. Specifically, we will fit a partially Bayesian generalized linear model using `bglmer()` with the components listed below. This approach uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity ([Chung et al., 2013](https://link.springer.com/article/10.1007/s11336-013-9328-2), `blme` package). We would use the default `"nlminbwrap"` optimizer.
 
@@ -328,7 +337,7 @@ d_shuf <- d |>
   mutate(week_log = log(week))  # default base is e (natural log)
 ```
 
-## Preregistered Analyses
+## Preregistered Analyses {#sec-analyses}
 
 ### Primary Model
 

@@ -1,0 +1,449 @@
+---
+title: "Preregistration: Evaluation of Clinical Benefit"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+params:
+  study: "match"
+  version: "v5"
+  y_col_name: "pp_hybrid_wk4_outcome"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r set_variables}
+study <- params$study
+version <- params$version
+y_col_name <- params$y_col_name
+```
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+# packages for script
+library(tidyverse)
+library(blme)
+library(lme4)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute paths}
+
+# absolute paths
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- str_c("P:/studydata/match/models/", y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_models <- str_c("/Volumes/private/studydata/match/models/", y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_models <- str_c("~/mnt/private/studydata/match/models/", y_col_name)}
+)
+```
+
+```{r defaults}
+
+# chunk defaults
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+Read in aim 2 dataset
+```{r}
+
+d <- read_csv(file.path(path_models, 
+                        str_c("aim_2_", version, "_", y_col_name, ".csv")),
+              show_col_types = FALSE) |> 
+  mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
+         outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
+         outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
+         tx_worst = case_when(
+           prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
+           prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
+           prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
+           TRUE ~ NA_character_),
+         tx_second = case_when(
+           tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
+           tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
+           tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
+           tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
+           TRUE ~ NA_character_)) |> 
+  mutate(tx_rank = case_when(
+    tx_rct == tx_best ~ "first",
+    tx_rct == tx_second ~ "second",
+    tx_rct == tx_worst ~ "third",
+    TRUE ~ NA_character_)) |> 
+  select(subid, starts_with("tx_"), starts_with("prob_"),
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(c_tx_match = if_else(tx_match == TRUE, 0.5, -0.5), # center
+         week = as.numeric(week)) |> 
+  # log transformations
+  mutate(week_log_e = log(week),
+         week_log_2 = log(week, base = 2),
+         week_log_10 = log(week, base = 10)) |> 
+  # mean-centered log transformations
+  mutate(c_week_log_e = week_log_e - mean(week_log_e),
+         c_week_log_2 = week_log_2 - mean(week_log_2),
+         c_week_log_10 = week_log_10 - mean(week_log_10)) |> 
+  # week 4-centered log transformations
+  mutate(c4_week_log_e = week_log_e - log(4),
+         c4_week_log_2 = week_log_2 - log(4, base = 2),
+         c4_week_log_10 = week_log_10 - log(4, base = 10)) |> 
+  # week as categorical
+  mutate(c_week_cat = factor(week,
+                             levels = c("26", "12", "4"),
+                             labels = c("week26", "week12", "week4"))) |> 
+  # week as two separate regressors
+  mutate(
+    r_week_4_v_later = case_when(
+      week == 4 ~ (2/3),
+      week == 12 ~ (-1/3),
+      week == 26 ~ (-1/3),
+      TRUE ~ NA_real_
+    ),
+    r_week_12_v_26 = case_when(
+      week == 4 ~ 0,
+      week == 12 ~ 0.5,
+      week == 26 ~ -0.5,
+      TRUE ~ NA_real_
+    ))
+
+glimpse(d)
+
+```
+
+## Primary Model
+
+### Preregistered model
+
+Partial bayesian model, log-transformed week (base e)
+
+```{r}
+model_bayes_e <- blme::bglmer(outcome_rct_num ~ c_tx_match * week_log_e + 
+                                (1 + week_log_e | subid),
+                              data = d,
+                              family = binomial(link = "logit"),
+                              control = glmerControl(optCtrl = list(maxfun = 3e6)))
+
+summary(model_bayes_e)
+```
+Does not converge
+
+### Alternative bayesian models
+
+Mean-centered, log-transformed week (base e)
+```{r}
+model_bayes_c_e <- blme::bglmer(outcome_rct_num ~ c_tx_match * c_week_log_e + 
+                                 (1 + c_week_log_e | subid),
+                               data = d,
+                               family = binomial(link = "logit"),
+                               control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+4-week-centered, log-transformed week (base e)
+```{r}
+model_bayes_c4_e <- blme::bglmer(outcome_rct_num ~ c_tx_match * c4_week_log_e + 
+                                 (1 + c4_week_log_e | subid),
+                               data = d,
+                               family = binomial(link = "logit"),
+                               control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+Log-transformed week (base 2)
+```{r}
+model_bayes_2 <- blme::bglmer(outcome_rct_num ~ c_tx_match * week_log_2 + 
+                                (1 + week_log_2 | subid),
+                              data = d,
+                              family = binomial(link = "logit"),
+                              control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+Mean-centered, log-transformed week (base 2)
+```{r}
+model_bayes_c_2 <- blme::bglmer(outcome_rct_num ~ c_tx_match * c_week_log_2 + 
+                                 (1 + c_week_log_2 | subid),
+                               data = d,
+                               family = binomial(link = "logit"),
+                               control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+4-week-centered, log-transformed week (base 2)
+```{r}
+model_bayes_c4_2 <- blme::bglmer(outcome_rct_num ~ c_tx_match * c4_week_log_2 + 
+                                 (1 + c4_week_log_2 | subid),
+                               data = d,
+                               family = binomial(link = "logit"),
+                               control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+Log-transformed week (base 10)
+```{r}
+model_bayes_10 <- blme::bglmer(outcome_rct_num ~ c_tx_match * week_log_10 + 
+                                 (1 + week_log_10 | subid),
+                               data = d,
+                               family = binomial(link = "logit"),
+                               control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+Mean-centered, log-transformed week (base 10)
+```{r}
+model_bayes_c_10 <- blme::bglmer(outcome_rct_num ~ c_tx_match * c_week_log_10 + 
+                                  (1 + c_week_log_10 | subid),
+                                data = d,
+                                family = binomial(link = "logit"),
+                                control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Does not converge
+
+4-week-centered, log-transformed week (base 10)
+```{r}
+model_bayes_c4_10 <- blme::bglmer(outcome_rct_num ~ c_tx_match * c4_week_log_10 + 
+                                  (1 + c4_week_log_10 | subid),
+                                data = d,
+                                family = binomial(link = "logit"),
+                                control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+### Alternative non-bayesian (lme4 models)
+
+Log base e
+```{r}
+library(lme4)
+
+model_lme_e <- lme4::glmer(outcome_rct_num ~ c_tx_match * week_log_e +
+                             (1 + week_log_e | subid),
+                           data = d,
+                           family = binomial(link = "logit"),
+                           control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+Mean-centered log base e
+```{r}
+model_lme_c_e <- lme4::glmer(outcome_rct_num ~ c_tx_match * c_week_log_e +
+                              (1 + c_week_log_e | subid),
+                            data = d,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+4-week-centered log base e
+```{r}
+model_lme_c4_e <- lme4::glmer(outcome_rct_num ~ c_tx_match * c4_week_log_e +
+                              (1 + c4_week_log_e | subid),
+                            data = d,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+Log base 2
+```{r}
+model_lme_2 <- lme4::glmer(outcome_rct_num ~ c_tx_match * week_log_2 +
+                             (1 + week_log_2 | subid),
+                           data = d,
+                           family = binomial(link = "logit"),
+                           control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+Mean-centered log base 2
+```{r}
+model_lme_c_2 <- lme4::glmer(outcome_rct_num ~ c_tx_match * c_week_log_2 +
+                              (1 + c_week_log_2 | subid),
+                            data = d,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Converges
+
+4-week-centered log base 2
+```{r}
+model_lme_c4_2 <- lme4::glmer(outcome_rct_num ~ c_tx_match * c4_week_log_2 +
+                              (1 + c4_week_log_2 | subid),
+                            data = d,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+Log base 10
+```{r}
+model_lme_10 <- lme4::glmer(outcome_rct_num ~ c_tx_match * week_log_10 +
+                              (1 + week_log_10 | subid),
+                            data = d,
+                            family = binomial(link = "logit"),
+                            control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+Mean-centered log base 10
+```{r}
+model_lme_c_10 <- lme4::glmer(outcome_rct_num ~ c_tx_match * c_week_log_10 +
+                               (1 + c_week_log_10 | subid),
+                             data = d,
+                             family = binomial(link = "logit"),
+                             control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+4-week-centered log base 10
+```{r}
+model_lme_c4_10 <- lme4::glmer(outcome_rct_num ~ c_tx_match * c4_week_log_10 +
+                               (1 + c4_week_log_10 | subid),
+                             data = d,
+                             family = binomial(link = "logit"),
+                             control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+### Alternative models categorical week
+
+```{r}
+c_wk <- contr.helmert(levels(d$c_week_cat))
+c_wk[, 1] <- c_wk[, 1] / (max(c_wk[, 1]) - min(c_wk[, 1]))
+c_wk[, 2] <- c_wk[, 2] / (max(c_wk[, 2]) - min(c_wk[, 2]))
+colnames(c_wk) <- c("week12_v_week26", "week4_v_later")
+contrasts(d$c_week_cat) <- c_wk
+contrasts(d$c_week_cat)
+```
+
+Bayesian single model
+```{r}
+model_bayes_cat <- blme::bglmer(outcome_rct_num ~ c_tx_match * c_week_cat + 
+                                  (1 + c_week_cat | subid),
+                                data = d,
+                                family = binomial(link = "logit"),
+                                control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Does not converge
+
+Lme4 single model
+```{r}
+model_lme_cat <- lme4::glmer(outcome_rct_num ~ c_tx_match * c_week_cat +
+                               (1 + c_week_cat | subid),
+                             data = d,
+                             family = binomial(link = "logit"),
+                             control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+Singular fit
+
+### Alternative models categorical week split into two models
+
+Bayesian models
+```{r}
+model_bayes_cat_r1 <- blme::bglmer(outcome_rct_num ~ c_tx_match * r_week_4_v_later + 
+                                     (1 + r_week_4_v_later | subid),
+                                   data = d,
+                                   family = binomial(link = "logit"),
+                                   control = glmerControl(optCtrl = list(maxfun = 3e6)))
+
+model_bayes_cat_r2 <- blme::bglmer(outcome_rct_num ~ c_tx_match * r_week_12_v_26 + 
+                                     (1 + r_week_12_v_26 | subid),
+                                   data = d,
+                                   family = binomial(link = "logit"),
+                                   control = glmerControl(optCtrl = list(maxfun = 3e6)))
+
+```
+Both models converge
+
+Lme4 models
+```{r}
+model_lme_cat_r1 <- lme4::glmer(outcome_rct_num ~ c_tx_match * r_week_4_v_later +
+                                  (1 + r_week_4_v_later | subid),
+                                data = d,
+                                family = binomial(link = "logit"),
+                                control = glmerControl(optCtrl = list(maxfun = 3e6)))
+
+model_lme_cat_r2 <- lme4::glmer(outcome_rct_num ~ c_tx_match * r_week_12_v_26 +
+                                  (1 + r_week_12_v_26 | subid),
+                                data = d,
+                                family = binomial(link = "logit"),
+                                control = glmerControl(optCtrl = list(maxfun = 3e6)))
+```
+One model does not converge, the other has a singular fit
+
+### Follow-up analyses: Simple Effects
+
+If the interaction between `tx_match` and `week` is significant (*p* < 0.05), we will conduct follow-up analyses to test the simple effect of `tx_match` at each time point.
+
+Simple effect at 4 weeks
+```{r}
+#| eval: false
+d_4_shuf <- d_shuf |> 
+  filter(week == 4)
+
+model_4wk <- glm(outcome_rct_num ~ tx_match, 
+                 data = d_4_shuf,
+                 family = binomial(link = "logit"))
+
+summary(model_4wk)$coefficients
+```
+
+Simple effect at 12 weeks
+```{r}
+#| eval: false
+d_12_shuf <- d_shuf |> 
+  filter(week == 12)
+
+model_12wk <- glm(outcome_rct_num ~ tx_match, 
+                  data = d_12_shuf,
+                  family = binomial(link = "logit"))
+
+summary(model_12wk)$coefficients
+```
+
+Simple effect at 26 weeks
+```{r}
+#| eval: false
+d_26_shuf <- d_shuf |> 
+  filter(week == 26)
+
+model_26wk <- glm(outcome_rct_num ~ tx_match, 
+                  data = d_26_shuf,
+                  family = binomial(link = "logit"))
+
+summary(model_26wk)$coefficients
+```

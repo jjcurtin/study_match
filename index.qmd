@@ -36,13 +36,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- EDIT EVERYTHING TO BE PAST TENSE!!! -->
+<!-- EDIT EVERYTHING FROM NRSA TO BE PAST TENSE!!! -->
 
 ## Introduction
 
 <!-- 
-all text added from nrsa significance section
-some additional text added from fyp/nature med manuscripts, included in comments to know it needs editing/incorporation
 numbers correspond to nrsa refs
 other refs likely missing
 -->
@@ -56,7 +54,7 @@ Rather than relying on population-level efficacy, precision mental health seeks 
 In addition to offering improved effectiveness, precision mental health approaches may be more resource-efficient. Clinical trials to develop and validate new treatments are expensive, resource-intensive, and extremely slow (CITE?). These costs may also produce a treatment that is no better than existing treatments, or potentially ineffective altogether. In contrast, by seeking to optimize existing treatments and direct them to the *right* patients, precision mental health stands as a cost-effective alternative poised for more immediate impact to patients.
 
 Researchers have pursued precision mental health – and precision medicine broadly – for decades. In medicine, emphasis on personalizing treatments has grown rapidly with the ascendancy of advanced genetic methods such as genome-wide association studies and polygenic scores3,4. Within precision mental health, an early example comes from the substance use disorder (SUD) domain: the Project MATCH Research Group attempted to match people with alcohol use disorder to a particular treatment based on individual differences such as gender, social support, or symptom severity5,6. Many researchers have followed in their footsteps as the understanding has grown that neither mental health diagnoses nor treatments are one-size-fits-all7. Efforts thus far have often focused on tailoring treatments at the group level; in other words, identifying a (single) factor that divides individuals within a diagnostic category into subgroups that can be treated differently7. 
-<!-- consider more citations/references to how much this approach has taken off across mental health conditions. not sure if it makes sense here as a more general discussion or to be more specific later with sud/smoking (currently have it there, but could add non-sud/smoking examples here)-->
+<!-- consider more citations/references to how much this approach has taken off across mental health conditions. not sure if it makes sense here as a more general discussion or to be more specific later with sud/smoking (currently have it there, but could add non-sud/smoking examples here eg cancer for precision med, depression for pmh)-->
 
 Despite these opportunities for advances, however, precision mental health research has progressed with limited success. Extant research has not yet enabled reliable recommendations for treatment selection even at the group level - let alone for an individual patient. These patient-level predictions are required for clinical implementation; our goal in clinical science is to predict behavior such that we can apply findings to a new patient. 
 
@@ -80,7 +78,7 @@ Critically, the combination of machine learning methods with the precision menta
 
 These problems have, in some ways, been amplified by early work in precision medicine and precision mental health. Studies often begin with retrospective samples before bringing the models built in those samples to new patients. Thus, these models may be likely to fail for the same people for whom our initial treatments fail - the model can only be as good as the data with which it was developed. However, when this research is done thoughtfully, there are clear opportunities to address health disparities.
 
-First, we can make an effort to build treatment selection models using data from previously completed trials where there was good representation across as many marginalized characteristics as possible. This may include demographic variables such as sex, gender identity, race, or ethnicity, among others. Other important characteristics to consider might include income, access to insurance, and geographic region.
+First, we can make a concerted effort to build treatment selection models using data from previously completed trials where there was good representation across as many marginalized characteristics as possible. This may include demographic variables such as sex, gender identity, race, or ethnicity, among others. Other important characteristics to consider might include income, access to insurance, and geographic region.
 
 In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race would be not only inappropriate but also discriminatory. However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes.
 
@@ -90,19 +88,19 @@ An additional way in which this approach can help mitigate health disparities is
 
 #### Public health importance of cigarette smoking
 
-Cigarette smoking could benefit greatly from combining precision mental health and machine learning. Smoking remains an enormous public health burden. Fourteen percent of U.S. adults smoke cigarettes daily, and smoking is the leading cause of preventable death, accounting for 480,000 deaths annually10–12. 
+Cigarette smoking could benefit greatly from combining precision mental health and machine learning. Smoking remains an enormous public health burden. Tobacco is the number one cause of preventable death in the U.S. and accounts for more than 480,000 deaths annually10-12. Although rates of smoking have declined considerably, approximately 14% of U.S. adults continue to smoke daily or near-daily10-12. Cigarette smoking rates also remain much higher in potentially vulnerable populations including: people with chronic or severe mental illness (Baker ARCP); Native American and non-Hispanic Black individuals (CDC 2007); individuals who are economically and educationally disadvantaged (CDC 2007); people with other substance use disorders (Kelly 2012); people in the criminal justice system (Cropsey Eldridge Ladner 2004; Harrison et al 2019); people experiencing homelessness (); people who are insured through Medicaid or uninsured (Jamal 2015); and individuals who identify as lesbian, gay, or bisexual (Jamal 2015).
 
 <!-- 
-ADD TO THIS: shouldn't be LONG but should be expanded 
-consider comparing to other substances, specific health consequences, citing work about impact on longevity of extra years smoking
-many people don't get treatment!! numbers for this & success rates without tx
+consider citing work about impact on longevity of extra years smoking
 -->
 
-#### Treatment effectiveness for smoking cessation
+#### Smoking cessation treatment
 
-Despite the severity of the problem <!-- possibly: For those who do get treatment-->, the best available smoking cessation treatments are only modestly effective. The medications varenicline and combination nicotine replacement therapy (C-NRT) are consistently identified as the most effective options when combined with psychosocial counseling (Cahill et al., 2013), and guidelines recommend that clinicians consider either of these two medications first given their established efficacy (Fiore et al., 2008). These medications appear to be equally (though modestly) effective: a meta-analysis demonstrated comparable effectiveness rates (Cahill et al., 2013), and the first randomized controlled trial (RCT) directly comparing varenicline and C-NRT did not find a difference between them (Baker et al., 2016). 
+Despite the severity of the problem, treatment has had relatively limited reach (CITE Baker ARCP review). A survey of almost 16000 US adults who use cigarettes showed that the most commonly used strategies by far to quit were giving up cigarettes all at once and gradually cutting back, with a much smaller proportion using evidence-based treatments (CITE Carabello 2017). 
 
-Typically, 6-month abstinence rates hover around 30-35% for these best smoking cessation medications combined with psychosocial counseling13,14. These rates represent a best-case scenario in that clinical trial data involve treatment regimens that are rigorously followed and optimized for adherence. Additionally, because several first-line (i.e., FDA-approved) smoking cessation treatments have comparable population-level effectiveness rates, population effectiveness alone cannot guide selection among smoking cessation treatments. These facts suggest a critical need for machine learning-assisted treatment selection in the cigarette smoking domain.
+For those who do get treatment, the best available smoking cessation treatments are modestly effective. The medications varenicline and combination nicotine replacement therapy (C-NRT) are consistently identified as the most effective options when combined with psychosocial counseling (Cahill et al., 2013), and guidelines recommend that clinicians consider either of these two medications first given their established efficacy (Fiore et al., 2008). These medications appear to be equally (though modestly) effective: a meta-analysis demonstrated comparable effectiveness rates (Cahill et al., 2013), and the first randomized controlled trial (RCT) directly comparing varenicline and C-NRT did not find a difference between them (Baker et al., 2016). 
+
+Typically, 6-month abstinence rates hover around 30-35% for these best smoking cessation medications combined with psychosocial counseling13,14. Treatment with an FDA-approved medication doubles the likelihood that an individual will quit successfully (Baker ARCP). These rates represent a best-case scenario in that clinical trial data involve treatment regimens that are rigorously followed and optimized for adherence. Additionally, because several first-line (i.e., FDA-approved) smoking cessation treatments have comparable population-level effectiveness rates, population effectiveness alone cannot guide selection among smoking cessation treatments. These facts suggest a critical need for machine learning-assisted treatment selection in the cigarette smoking domain.
 
 <!-- ADD:
 - information about typical # of quit attempts, support that tx is not very effective, though worse when they don't get treatment
@@ -111,7 +109,9 @@ Typically, 6-month abstinence rates hover around 30-35% for these best smoking c
 
 #### Opportunities for differential treatment selection
 
-National clinical guidelines note that “there are no well-accepted algorithms to guide optimal selection” between any of the first-line medications (Fiore et al., 2008, p. 44). However, there may be reason to expect we can make differential predictions. 
+<!-- pilot data Cropsey et al 2017 - NRT "sampling" increases adherence to selected treatment -->
+
+National clinical guidelines note that “there are no well-accepted algorithms to guide optimal selection” between any of the first-line medications (Fiore et al., 2008, p. 44). However, there may be reason to expect that some treatments may work better than others for a specific individual. 
 
 First, there is enormous heterogeneity among people who smoke cigarettes. Individuals may differ with respect to the etiology of their tobacco use disorder, the severity of their dependence and/or withdrawal symptoms, historical factors related to their tobacco use (e.g., age of first use, years smoking, number of previous quit attempts), and barriers to initiation and/or retention in smoking cessation treatments (Oliver & McClernon, 2017; J. Wang, Simons-Morton, Farhat, Farhart, & Luk, 2009; Zheng, Wiebe, Cleveland, Molenaar, & Harris, 2013). These factors that affect the development and course of their disorder could include demographic traits, personal medical history, and many other key individual difference characteristics. However, this heterogeneity is typically neglected when selecting among available treatments. 
 
@@ -125,19 +125,21 @@ Third, features across several behavioral or environmental domains may also guid
 
 Finally, there is some evidence that individuals respond differently to different treatments. One large study that examined multiple medication-assisted quit attempts found that individuals who switched medications were more likely to quit than individuals who used the same medication again or who did not use a medication on the first quit attempt but added one at the second (Heckman et al., 2017). Relatedly, there is some evidence that re-treatment with the same medication as a previous, unsuccessful quit attempt is not effective; Gonzales and colleagues note that “abstinence rates are more than threefold lower for NRTs and twofold lower for bupropion” during re-treatment compared to initial treatment using the same medication (Gonzales et al., 2014, p. 391; Fiore et al., 2008; Tønnesen, Nørregaard, Säwe, & Simonsen, 1993). Additionally, clinical research related to other psychological and psychiatric disorders has demonstrated differential treatment benefit on an individual basis (e.g., antipsychotic medications for schizophrenia; Roussidis et al., 2013), suggesting it is worth investigating whether the same is true in smoking cessation.
 
-#### Previous precision mental health research
+#### Previous precision mental health & machine learning research
 
 <!--
 emphasize - certainly a lot of work has been done, but...
 - suboptimal targets (not tx selection, more often predicting who will succeed or not, or whether an individual tx will work or not [cite study that we rebutted])
-- using predictors that are not well-suited for implementation
-- don't produce an actionable tool
+- using predictors that are not well-suited for implementation (e.g., genetics, biological measures)
+- don't produce an actionable tool 
 
 Substance use researchers have employed machine learning algorithms to identify problematic drug use (Ahn, Ramesh, Moeller, & Vassileva, 2016; Ding, Bickel, & Pan, 2017; Mete et al., 2016; Squeglia et al., 2017). Less work has been conducted examining clinical outcomes (instead of diagnoses), although some researchers have used this approach to predict SUD treatment completion (Steele et al., 2018) and treatment response (Acion et al., 2017), and even to detect posts that merited intervention via text analysis of risky words in online recovery forums (Kornfield et al., 2018).
 
 Other researchers have examined characteristics such as impulsivity and sensation-seeking (Tomko et al 2016), comorbid disorders (Luo & Levin 2017), and genetics (Sun et al 2016) in an attempt to personalize treatment among subgroups of individuals with substance use disorders. Within the context of cigarette smoking, Piper and colleagues have identified several moderators that affect treatment response and cessation such as smoking heaviness, psychiatric history, and use of pre-quit interventions like nicotine gum (cite two Piper 2017 articles). 
 
 incorporate new articles (in zotero)
+
+LOTS of work in genetics especially related to nicotine metabolism ratio (variants in the CYP2A6 gene), slower metabolizers may do better with NRT and faster metabolizers may do better with varenicline (Chenoweth et al 2016, Kaufmann 2015, Schnoll 2009, Glatard 2017, Shahab 2019, Lerman 2015). also nicotinic receptor gene (Chen 2020, Schuit 2017) - individuals of non-European ancestry with GG genotype perform better with CNRT than with varenicline, those with GA/AA genotypes had higher abstinence rates with varenicline -- a lot of this is less exciting/certain than discussed in the baker arcp paper! caution!!! also often still has problems of predicting who will succeed or not (eg ok if you are a fast metabolizer, varenicline gives you a better chance than patch, but what do you do if you're a slow metabolizer?!). review chen horton bierut 2018 re: genetics/pm/smoking
 -->
 
 ### Purpose
@@ -178,18 +180,9 @@ Throughout study participation, participants were assessed for biologically conf
 
 Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness (CITE kuhn feature engineering). A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
 
-<!-- ADD
-feature engineering i did incl ordinal vs dummy scoring, yeo johnson transformations, constructing tx interactions, scaling (content depends on glmnet only or multiple algorithms)
+We used a Yeo-Johnson transformation on all numeric variables to address distributional shape. Unordered categorical variables were dummy-coded. Ordered categorical variables (e.g., Likert scale items on self-report measures) could be ordinal scored (i.e., treated as numeric data) or dummy-coded. We also allowed treatment (dummy coded) to interact with all other features. Finally, all features were normalized as a requirement of the GLMNet algorithm.
 
-if glmnet only:
-- ordinal vs dummy scoring of ordered categorical variables (eg likert scale items on self-report measures)
-- dummy coding of unordered categorical variables
-- yeojohnson transformation of numeric variables
-- interactions between treatment dummy codes & all other variables
-
--->
-
-Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, we used several dimensionality reduction approaches to reduce the number of features in my models. We used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm glmnet also inherently conducts dimensionality reduction by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional parameter in the model.
+Although machine learning methods can handle high-dimensional data, there is a cost to including a high ratio of features to observations ("*p* to *n* ratio"). Models were *p* > *n* are possible with machine learning; however, models can become easily overfit and therefore not generalizable to new data. Thus, we used several dimensionality reduction approaches to reduce the number of features in my models. We used data-driven methods for dimensionality reduction including: removing highly correlated or near-zero variance features, and considering feature engineering approaches that reduced the number of overall features (e.g., ordinal scoring vs. dummy coding). The algorithm GLMNet also inherently conducts dimensionality reduction by penalizing model complexity such that features' predictive value must outweigh the cost of including an additional parameter in the model.
 
 We also used several non-data-driven approaches for dimensionality reduction. First, we used domain knowledge to reduce dimensionality by removing features that lacked face validity for predicting abstinence or overlapped conceptually with other features. Second, we removed variables that stood in contrast to the ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests).
 
@@ -197,27 +190,23 @@ We also used several non-data-driven approaches for dimensionality reduction. Fi
 
 ##### Model configurations
 
-We trained and evaluated two separate classification models: one model predicting 4-week abstinence, and one model predicting 26-week (6 month) abstinence. <!-- either:
+We trained and evaluated two separate sets of classification models: one predicting 4-week abstinence, and one predicting 26-week (6 month) abstinence. 
 
-We considered three well-established statistical algorithms (XGBoost, Random Forest, and Elastic Net Logistic Regression [GLMNet]) that vary across characteristics expected to affect model performance (e.g., flexibility, complexity, handling higher-order interactions natively) (CITE KUHN & ISL). Candidate model configurations differed across sensible values of associated hyperparameters (XGBoost: mtry, tree depth, learning rate; Random Forest: mtry, others?; GLMNet: alpha, lambda) using grid search. All other hyperparameters were set to tidymodels package defaults.
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm aligns with our primary goal of building a treatment selection model in several ways. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). This permits capturing multiple interactions that each account for a small portion of variance. Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible. Finally, linear models such as GLMNet are often more interpretable and transparent because they produce parameter estimates for the features in the model. Initial testing showed that GLMNet outperformed or performed comparably to models fit using with several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals. 
 
-OR
-
-All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm was chosen because it aligns with our primary goal of building a treatment selection in several ways. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda. -->
-
-Candidate model configurations also differed on outcome resampling method. We considered no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE <!-- ; GLMNet and XGBoost only-->). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. 
+Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda (GLMNet tuning parameters). We also considered several outcome resampling techniques: no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. <!-- look up range -->
 
 We also considered several feature sets and feature engineering steps across model configurations. Feature sets could include either items (i.e., individual items within a self-report measure) or scales (i.e., total scale and subscale scores derived from items in a self-report measure). All other features (e.g., demographic variables) were included across model configurations. Feature engineering steps also differed across model configurations regarding how ordinal data were scored. Specifically, ordinal data could be considered as numeric (e.g., 1 - 7) or dummy coded (e.g., 7 dummy code features for a 7-level variable). Numeric and unordered nominal data were treated identically across configurations.
 
 ##### Performance metric
 
-<!-- cite paper(s) about roc -->
+<!-- cite paper(s) in paper_match about roc -->
 
 Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance, which is important for comparing models with differing levels of class imbalance.
 
 ##### Cross-validation
 
-<!-- cite paper in match folder about problems with selecting & evaluating in same sample -->
+<!-- cite paper in paper_match folder about problems with selecting & evaluating in same sample -->
 
 We used nested cross-validation for model training, selection, and evaluation with auROC. Cross-validation allows for rigorous consideration of many model configurations (i.e., combinations of feature sets, statistical algorithms, resampling techniques, and hyperparameters) and prioritizes performance in new data not used for model training.
 
@@ -239,7 +228,7 @@ Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorB
 
 We computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of categories of features (based on EMA questions) across our three full models. Shapley values possess several useful properties including: Additivity (Shapley values for each feature can be computed independently and summed); Efficiency (the sum of Shapley values across features must add up to the difference between predicted and observed outcomes for each observation); Symmetry (Shapley values for two features should be equal if the two features contribute equally to all possible coalitions); and Dummy (a feature that does not change the predicted value in any coalition will have a Shapley value of 0).
 
-We calculated Shapley values for the best model configuration from the 10 held-out folds in the final 1X 10-fold cross-validation used to select the final model. We used the DALEX and DALEXtra packages in R, which provide Shapley values in log-odds units for binary classification models. These Shapley values estimate local importance (i.e., for each observation). To calculate global importance (i.e., across all observations), we averaged the absolute value of the Shapley values of each feature across observations. These local and global importance scores based on Shapley values allow us to answer questions of relative feature importance; however, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not yet available for Shapley values.
+We calculated Shapley values for the best model configuration from the 10 held-out folds in the final 1X 10-fold cross-validation used to select the final model. We used the DALEX (CITE) and DALEXtra (CITE) packages in R, which provide Shapley values in log-odds units for binary classification models. These Shapley values estimate local importance (i.e., for each observation). To calculate global importance (i.e., across all observations), we averaged the absolute value of the Shapley values of each feature across observations. These local and global importance scores based on Shapley values allow us to answer questions of relative feature importance; however, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not yet available for Shapley values.
 
 <!-- TBD:
 The additivity property of Shapley values allowed us also to examine the relative importance of categories of features. We created two kinds of feature categories. First, we examined feature importance within a single self-report measure (e.g., all features derived from items from a specific measure). Second, we examined feature importance within a domain: demographic features, mental health features, physical health features, smoking use history, and social/environmental features. To calculate the local importance for each category of features, we added Shapley values across all features in a category, separately for each observation. To calculate global feature importance for each feature category, we averaged the absolute value of the Shapley values of all features in the category across all observations.
@@ -253,12 +242,14 @@ The treatment that yields the highest model-predicted probability of abstinence 
 
 Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants' RCT-assigned treatment can be categorized by whether it "matched" their model-selected treatment. 
 
-Our primary analysis to evaluate the clinical benefit of our model-selected treatment compared the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who did or did not receive their best treatment. This between-subjects predictor was coded as TRUE vs. FALSE. We examined this effect over time, at 4, 12, and 26 weeks by allowing the effect of treatment match to interact with time (i.e., week). Time was a within-subjects variable with three repeated measures for each participant. We treated time numerically, and we log-transformed it (natural log, base *e*) to meet linearity assumptions. Thus, our model included treatment match, time, the interaction between treatment match and time, a by-subject random slope for time, and a by-subject random intercept.
+Our primary analysis to evaluate the clinical benefit of our model-selected treatment compared the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who did or did not receive their best treatment. This between-subjects predictor was coded as 0.5 (TRUE) vs. -0.5 (FALSE). We examined this effect over time at 4, 12, and 26 weeks by allowing the effect of treatment match to interact with time (i.e., week). Time was a within-subjects variable with three repeated measures for each participant. We treated time numerically, and we used a log transformation (base X) to meet linearity assumptions. Thus, our model included treatment match, time, the interaction between treatment match and time, a by-subject random slope for time, and a by-subject random intercept.
 
-We followed a mixed-effects modeling approach using the blme package (CITE). Specifically, we fit a partially Bayesian generalized linear model. This approach uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (Chung et al., 2013). We identified the main effect of treatment match *a priori* as our focal effect; however, we report all estimates, test statistics, *p*-values, and confidence intervals from the model. If the interaction between treatment match and time was significant, we planned to conduct follow-up tests of the simple effect of treatment match at each time point (week 4, week 12, and week 26) using general linear models. 
+We followed a mixed-effects modeling approach using the blme package (Chung et al., 2013). Specifically, we fit a partially Bayesian generalized linear model that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (Chung et al., 2013). We identified the main effect of treatment match *a priori* as our focal effect; however, we report all estimates, test statistics, *p*-values, and confidence intervals from the model. If the interaction between treatment match and time was significant, we planned to conduct follow-up tests of the simple effect of treatment match at each time point (week 4, week 12, and week 26) using general linear models. 
 
 <!-- POSSIBLE
-exploratory analyses re: comparing to grand mean (effects coding), 1/2/3 rank
+exploratory analyses
+- 1/2/3 rank
+- time as categorical (2 models)
 -->
 
 ## Results
@@ -272,8 +263,6 @@ descriptive statistics on demographics and maybe some tobacco-related characteri
 tables
 
 ### Model performance
-
-#### Individual model performance
 
 We selected the best model configurations using auROCs from the *validation sets*. We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets.
 
@@ -388,18 +377,18 @@ Sina plots of local Shapley values (i.e., the influence of features on individua
 
 4 & 26 weeks
 
-main effect of best vs other treatment
+main effect of tx_match
 
-tx X time interaction
+tx_match X time interaction
 - follow-up simple effects if needed
-
-supplemental aim 2 analyses: effects coding? 
 
 supplemental aim 2 analyses: 1/2/3 tx rank?
 
 ## Discussion
 
-<!-- from nrsa innovation & impact:
+<!-- IGNORE FOR NOW
+
+from nrsa innovation & impact:
 
 The proposed project combines machine learning with precision mental health to select among treatments for cigarette smoking cessation. Machine learning remains novel and underused in substance use and, to some degree, clinical psychology broadly16. Further, prior machine learning research for SUDs has prioritized diagnosis and screening17–20 over treatment selection, highlighting the novelty of this project.
 
@@ -408,6 +397,8 @@ This project is also innovative in that it will consider a wide variety of featu
 This project could provide immediate impact by offering a decision-making tool for selecting among smoking cessation treatments. My model would provide patient-level guidance for treatment selection among smoking cessation treatments, which would reduce health risks and societal burdens. Critically, this approach could offer those benefits without requiring new treatment development, which is time- and resource-intensive. Instead, we can improve treatment effectiveness by optimizing therapeutic benefit of existing treatments. 
 
 I aim to increase potential impact by allowing feasibility to guide model development. I will prioritize sparse models with readily available, easy-to-measure features to the degree that these models yield robust treatment selection. The available features set can be easily measured via self-report. Easy measurement would allow our decision-making tool to be implemented without blood draws, expensive or otherwise inaccessible testing (e.g., neuroimaging), formal clinical interviewing, or even in-person doctors’ visits. In fact, prioritizing feasibility is a primary rationale for excluding genetic features from the present project; genetic features would require specialty materials and/or in-person medical appointments during clinical implementation. An assessment constructed entirely from self-report measurements is particularly valuable because two treatments in the model (nicotine patch, combination NRT) are widely available over the counter, offering scalable implementation even when medical access is limited. This focus on feasibility (i.e., using low burden, low-cost features) could maximize potential clinical benefit. These efforts are especially warranted when applying the precision mental health paradigm to SUDs, for which large health disparities on the bases of race, ethnicity, socioeconomic status, and geographic location persist.
+
+lots of stuff in baker arcp re: meds are not nearly as effective in real-world settings. NEED LONGER TERM SUPPORT!!!
 
 -->
 

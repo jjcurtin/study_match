@@ -220,7 +220,8 @@ fig_posteriors <- pp_tidy |>
   geom_segment(mapping = aes(y = y + 100, yend = y - 100, x = mean, xend = mean,
                              color = model),
                data = ci) +
-  geom_segment(mapping = aes(y = y, yend = y, x = lower, xend = upper, color = model),
+  geom_segment(mapping = aes(y = y, yend = y, 
+                             x = lower, xend = upper, color = model),
                data = ci) +
   facet_wrap(~model, ncol = 1) +
   scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
@@ -242,7 +243,8 @@ pp_tidy |>
   geom_segment(mapping = aes(y = y + 100, yend = y - 100, x = mean, xend = mean,
                              color = model),
                data = ci_week4) +
-  geom_segment(mapping = aes(y = y, yend = y, x = lower, xend = upper, color = model),
+  geom_segment(mapping = aes(y = y, yend = y, 
+                             x = lower, xend = upper, color = model),
                data = ci_week4) +
   scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
   # ylab("Posterior Probability Density") +
@@ -275,11 +277,15 @@ fig_contrasts <- pp |>
   ggplot() +
   geom_histogram(aes(x = posterior), 
                  color = "black", alpha = .4, bins = 30) +
-  geom_vline(xintercept = -.01, color = "yellow", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = .01, color = "yellow", linetype = "dashed", linewidth = 1) +
-  geom_segment(mapping = aes(y = y+50, yend = y-50, x = mean, xend = mean), 
+  geom_vline(xintercept = 0, color = "yellow", 
+             linetype = "dashed", linewidth = 1) +
+  # geom_vline(xintercept = .01, color = "yellow", 
+  #            linetype = "dashed", linewidth = 1) +
+  geom_segment(mapping = aes(y = y+50, yend = y-50, 
+                             x = mean, xend = mean), 
                data = ci_con) +
-  geom_segment(mapping = aes(y = y, yend = y, x = lower, xend = upper), 
+  geom_segment(mapping = aes(y = y, yend = y, 
+                             x = lower, xend = upper), 
                data = ci_con) +
   ylab("Posterior Probability") +
   xlab("Model Contrast for auROC (Week 4 vs. Week 26)")

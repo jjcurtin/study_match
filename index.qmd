@@ -172,9 +172,9 @@ Participants were comprehensively assessed for individual differences characteri
 
 #### Abstinence outcome
 
-Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." Participants were assessed for abstinence periodically beginning 4 week post-quit through the end of their study participation. 
+Throughout study participation, participants were assessed for biologically confirmed, 7-day point-prevalence abstinence. Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; Baker et al., 2016). If participants self-reported smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." Participants were assessed for abstinence periodically beginning 4 week post-quit through the end of their study participation. Our *primary prediction outcome* for our models was point-prevalence abstinence at 4 weeks post-quit.
 
-### Analytic strategy
+### AIM 1 analytic strategy: Model building
 
 #### Feature engineering and dimensionality reduction
 
@@ -190,23 +190,29 @@ We also used several non-data-driven approaches for dimensionality reduction. Fi
 
 ##### Model configurations
 
+<!-- 
 We trained and evaluated two separate sets of classification models: one predicting 4-week abstinence, and one predicting 26-week (6 month) abstinence. 
 
-All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm aligns with our primary goal of building a treatment selection model in several ways. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). This permits capturing multiple interactions that each account for a small portion of variance. Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible. Finally, linear models such as GLMNet are often more interpretable and transparent because they produce parameter estimates for the features in the model. Initial testing showed that GLMNet outperformed or performed comparably to models fit using with several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals. 
+likely going to have 6-month models only in supplement
+-->
 
-Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda (GLMNet tuning parameters). We also considered several outcome resampling techniques: no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from X:1 to X:1. <!-- look up range -->
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm aligns with our primary goal of building a treatment selection model in several ways. First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). This permits capturing multiple interactions that each account for a small portion of variance. Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity; thus, a model using this algorithm may require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible. Finally, linear models such as GLMNet are often more interpretable and transparent because they produce parameter estimates for the features in the model. Initial testing showed that GLMNet outperformed or performed comparably to models fit using several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals. 
 
-We also considered several feature sets and feature engineering steps across model configurations. Feature sets could include either items (i.e., individual items within a self-report measure) or scales (i.e., total scale and subscale scores derived from items in a self-report measure). All other features (e.g., demographic variables) were included across model configurations. Feature engineering steps also differed across model configurations regarding how ordinal data were scored. Specifically, ordinal data could be considered as numeric (e.g., 1 - 7) or dummy coded (e.g., 7 dummy code features for a 7-level variable). Numeric and unordered nominal data were treated identically across configurations.
+Candidate model configurations differed across sensible values of the hyperparameters alpha and lambda (GLMNet tuning parameters). We also considered several outcome resampling techniques: no resampling, up-sampling, down-sampling, and the synthetic minority oversampling technique (SMOTE). These resampling techniques were used to create majority/abstinence to minority/smoking ratios in the held-in training data ranging from 2:1 to 1:1 (natural rate in data ~3:1).
+
+We considered several feature sets across model configurations. Feature sets could include either items (i.e., individual items within a self-report measure) or scales (i.e., total scale and sub-scale scores derived from items in a self-report measure). All other features (e.g., demographic variables) were included across model configurations. 
+
+Feature engineering steps also differed across model configurations regarding how ordinal data were scored. Specifically, ordinal data could be considered as numeric (e.g., 1 - 7) or dummy coded (e.g., 7 dummy code features for a 7-level variable). Numeric and unordered nominal data were treated identically across configurations.
 
 ##### Performance metric
 
-<!-- cite paper(s) in paper_match about roc -->
+<!-- add citations for paper(s) in paper_match about roc -->
 
 Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (lapse) relative to a randomly selected negative case (no lapse). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance, which is important for comparing models with differing levels of class imbalance.
 
 ##### Cross-validation
 
-<!-- cite paper in paper_match folder about problems with selecting & evaluating in same sample -->
+<!-- add citations for paper in paper_match folder about problems with selecting & evaluating in same sample -->
 
 We used nested cross-validation for model training, selection, and evaluation with auROC. Cross-validation allows for rigorous consideration of many model configurations (i.e., combinations of feature sets, statistical algorithms, resampling techniques, and hyperparameters) and prioritizes performance in new data not used for model training.
 
@@ -217,6 +223,8 @@ We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats o
 Following model evaluation, we completed another round of 1 repeat of 10-fold cross-validation using the full dataset. A single best model configuration was selected using median auROC across the 10 held-out folds; importantly, model performance is used *only* for selection and not evaluation in this phase. We fit our final model using this best model configuration in the full dataset, which was then used for clinical benefit analyses (below).
 
 #### Evaluation of model performance
+
+<!-- add bayesian citations from paper_match folder -->
 
 We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian confidence intervals (CIs) for auROC for the best models. Posterior probability is the likelihood of obtaining our results given our data. A posterior probability distribution around a given parameter (e.g., median auROC) allows us to assess the certainty of our results.
 
@@ -232,19 +240,31 @@ We calculated Shapley values for the best model configuration from the 10 held-o
 
 <!-- TBD:
 The additivity property of Shapley values allowed us also to examine the relative importance of categories of features. We created two kinds of feature categories. First, we examined feature importance within a single self-report measure (e.g., all features derived from items from a specific measure). Second, we examined feature importance within a domain: demographic features, mental health features, physical health features, smoking use history, and social/environmental features. To calculate the local importance for each category of features, we added Shapley values across all features in a category, separately for each observation. To calculate global feature importance for each feature category, we averaged the absolute value of the Shapley values of all features in the category across all observations.
+
+nts: "domain" grouping (second idea in above paragraph) was used similarly by PATH paper, and i liked it there
 -->
 
-#### Evaluation of clinical benefit
+### AIM 2 analytic strategy: Evaluation of clinical benefit
+
+#### Identifying model-predicted best treatment
 
 The preregistration for our analyses evaluating clinical benefit can be found on our OSF page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Using our final model (best selected model configuration fit on all data), we calculated three predictions for each participant by substituting each treatment into the model inputs. Thus, there is one prediction per person per treatment. For example, an individual may have received varenicline in the original trial. We calculated their probability of abstinence using their data, and then we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. These substitutions affected the probabilities through any main effect of treatment and any interactions of treatment with other features.
 
 The treatment that yields the highest model-predicted probability of abstinence is identified as that participant's "best" treatment. For example, among the three calculated probabilities for an individual, their probability of abstinence may be highest when C-NRT is substituted in as their treatment. This would mean C-NRT is identified as the best treatment for that person. 
 
+#### Categorizing treatment "matching"
+
 Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants' RCT-assigned treatment can be categorized by whether it "matched" their model-selected treatment. 
 
-Our primary analysis to evaluate the clinical benefit of our model-selected treatment compared the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who did or did not receive their best treatment. This between-subjects predictor was coded as 0.5 (TRUE) vs. -0.5 (FALSE). We examined this effect over time at 4, 12, and 26 weeks by allowing the effect of treatment match to interact with time (i.e., week). Time was a within-subjects variable with three repeated measures for each participant. We treated time numerically, and we used a log transformation (base X) to meet linearity assumptions. Thus, our model included treatment match, time, the interaction between treatment match and time, a by-subject random slope for time, and a by-subject random intercept.
+#### Evaluating clinical benefit
 
-We followed a mixed-effects modeling approach using the blme package (Chung et al., 2013). Specifically, we fit a partially Bayesian generalized linear model that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (Chung et al., 2013). We identified the main effect of treatment match *a priori* as our focal effect; however, we report all estimates, test statistics, *p*-values, and confidence intervals from the model. If the interaction between treatment match and time was significant, we planned to conduct follow-up tests of the simple effect of treatment match at each time point (week 4, week 12, and week 26) using general linear models. 
+Our primary analysis to evaluate the clinical benefit of our model-selected treatment compared the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who did or did not receive their best treatment. Treatment matching was thus a between-subjects predictor and was coded as 0.5 (TRUE) vs. -0.5 (FALSE). 
+
+We examined this effect over time at 4, 12, and 26 weeks by allowing the effect of treatment match to interact with time (i.e., week). Time was a within-subjects variable with three repeated measures for each participant. We treated time numerically, and we used a log transformation (base 2) to meet linearity assumptions. Thus, our model included treatment match, time, the interaction between treatment match and time, a by-subject random slope for time, and a by-subject random intercept.
+
+We followed a mixed-effects modeling approach using the blme package (Chung et al., 2013). Specifically, we fit a partially Bayesian generalized linear model that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity (Chung et al., 2013). If the interaction between treatment match and time was significant, we planned to conduct follow-up tests of the simple effect of treatment match at each time point (week 4, week 12, and week 26) using general linear models. 
+
+We identified the main effect of treatment match *a priori* as our focal effect; however, we report all estimates, test statistics, *p*-values, and confidence intervals from all models. 
 
 <!-- POSSIBLE
 exploratory analyses

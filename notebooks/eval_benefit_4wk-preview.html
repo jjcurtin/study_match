@@ -5,10 +5,10 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <meta name="author" content="John Curtin">
+    <meta name="author" content="Gaylen Fronk">
     <meta name="dcterms.date" content="2024-05-13">
 
-    <title>Posterior probabilities across models for MATCH study (version v5)</title>
+    <title>Preregistration: Evaluation of Clinical Benefit</title>
     <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3182,15 +3182,15 @@ font-family: inherit;
     <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
       
       <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href><i class="bi bi-caret-left"></i> Back to Article</a>
-      <h6><i class="bi bi-journal-code"></i> Posterior probabilities across models for MATCH study (version <code>r params$version</code>)</h6>
+      <h6><i class="bi bi-journal-code"></i> Preregistration: Evaluation of Clinical Benefit</h6>
 
-            <a href="../notebooks/ana_bayes_match.qmd" class="btn btn-primary quarto-download-embed" download="ana_bayes_match.qmd">Download Source</a>
+            <a href="../notebooks/eval_benefit_4wk.qmd" class="btn btn-primary quarto-download-embed" download="eval_benefit_4wk.qmd">Download Source</a>
           </div>
 
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Posterior probabilities across models for MATCH study (version v5)</h1>
+      <h1 class="title">Preregistration: Evaluation of Clinical Benefit</h1>
           </div>
 
     
@@ -3202,7 +3202,7 @@ font-family: inherit;
                 <div>
             <div class="quarto-title-meta-heading">Author</div>
             <div class="quarto-title-meta-contents">
-                        <p>John Curtin </p>
+                        <p>Gaylen Fronk </p>
                       </div>
           </div>
                 
@@ -3230,14 +3230,12 @@ font-family: inherit;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#code-status" id="toc-code-status" class="nav-link active" data-scroll-target="#code-status">Code Status</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  <li><a href="#set-up-environment" id="toc-set-up-environment" class="nav-link" data-scroll-target="#set-up-environment">Set Up Environment</a></li>
-  <li><a href="#read-in-preds-and-metrics-for-best-model" id="toc-read-in-preds-and-metrics-for-best-model" class="nav-link" data-scroll-target="#read-in-preds-and-metrics-for-best-model">Read in preds and metrics for best model</a></li>
-  <li><a href="#all-models" id="toc-all-models" class="nav-link" data-scroll-target="#all-models">All models</a></li>
-  <li><a href="#model-posterier-cis" id="toc-model-posterier-cis" class="nav-link" data-scroll-target="#model-posterier-cis">Model posterier CIs</a></li>
-  <li><a href="#model-contrasts" id="toc-model-contrasts" class="nav-link" data-scroll-target="#model-contrasts">Model contrasts</a></li>
-  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots">Plots</a></li>
+  <li><a href="#analyses" id="toc-analyses" class="nav-link active" data-scroll-target="#analyses">Analyses</a>
+  <ul>
+  <li><a href="#primary-model" id="toc-primary-model" class="nav-link" data-scroll-target="#primary-model">Primary model</a></li>
+  <li><a href="#follow-up-analyses-simple-effects" id="toc-follow-up-analyses-simple-effects" class="nav-link" data-scroll-target="#follow-up-analyses-simple-effects">Follow-up analyses: Simple Effects</a></li>
+  </ul></li>
+  <li><a href="#figure" id="toc-figure" class="nav-link" data-scroll-target="#figure">Figure</a></li>
   </ul>
 </nav>
 </div>
@@ -3245,33 +3243,15 @@ font-family: inherit;
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-       <section id="code-status" class="level3">
-<h3 class="anchored" data-anchor-id="code-status">Code Status</h3>
-<p>In use with iterative improvement.</p>
-<p>Updating for use with MATCH</p>
-</section>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p>Can review online docs for</p>
-<ul>
-<li><a href="https://cran.r-project.org/web/packages/rstanarm/vignettes/rstanarm.html">how to use rstanarm</a></li>
-<li><a href="https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html">priors</a></li>
-<li><a href="https://mc-stan.org/misc/warnings.html">warnings</a></li>
-<li><a href="https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf">tutorial on rstanarm and shinystan</a></li>
-<li><a href="https://www.r-bloggers.com/2019/12/tidyposteriors-bayesian-approach-to-model-comparison/">R Bloggers on perf_mod</a></li>
-</ul>
-</section>
-<section id="set-up-environment" class="level3">
-<h3 class="anchored" data-anchor-id="set-up-environment">Set Up Environment</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+       <div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>study <span class="ot">&lt;-</span> params<span class="sc">$</span>study</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>version <span class="ot">&lt;-</span> params<span class="sc">$</span>version</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> params<span class="sc">$</span>cv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y_col_name <span class="ot">&lt;-</span> params<span class="sc">$</span>y_col_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<p>Packages for script</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyposterior)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># packages for script</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -3284,592 +3264,242 @@ font-family: inherit;
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blme)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──
-✔ broom        1.0.5      ✔ rsample      1.2.1 
-✔ dials        1.2.1      ✔ tune         1.2.1 
-✔ infer        1.0.7      ✔ workflows    1.1.4 
-✔ modeldata    1.3.0      ✔ workflowsets 1.1.0 
-✔ parsnip      1.2.1      ✔ yardstick    1.3.1 
-✔ recipes      1.0.10     
-── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-✖ scales::discard() masks purrr::discard()
-✖ dplyr::filter()   masks stats::filter()
-✖ recipes::fixed()  masks stringr::fixed()
-✖ dplyr::lag()      masks stats::lag()
-✖ yardstick::spec() masks readr::spec()
-✖ recipes::step()   masks stats::step()
-• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
+<pre><code>Loading required package: lme4
+Loading required package: Matrix
+
+Attaching package: &#39;Matrix&#39;
+
+The following objects are masked from &#39;package:tidyr&#39;:
+
+    expand, pack, unpack</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<p>Absolute paths</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> (<span class="fu">Sys.info</span>()[[<span class="st">&#39;sysname&#39;</span>]],</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="co"># PC paths</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">Windows =</span> {</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="st">&quot;P:/studydata/match/models/&quot;</span>},</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># IOS paths</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">Darwin =</span> {</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="st">&quot;/Volumes/private/studydata/match/models/&quot;</span>},</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Linux paths</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">Linux =</span> {</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="st">&quot;~/mnt/private/studydata/match/models/&quot;</span>}</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<p>Chunk Defaults</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">attr.output=</span><span class="st">&#39;style=&quot;max-height: 500px;&quot;&#39;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tibble.width =</span> <span class="cn">Inf</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tibble.print_max =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<p>Source training controls</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># EDA</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(<span class="st">&quot;https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(<span class="st">&quot;https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>ℹ SHA-1 hash of file is &quot;c045eee2655a18dc85e715b78182f176327358a7&quot;</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(<span class="st">&quot;https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ SHA-1 hash of file is &quot;b58b9e0adc05e89609ee8bc6f20c39375b262fe6&quot;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-</section>
-<section id="read-in-preds-and-metrics-for-best-model" class="level3">
-<h3 class="anchored" data-anchor-id="read-in-preds-and-metrics-for-best-model">Read in preds and metrics for best model</h3>
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># handle conflicts</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">conflicts.policy =</span> <span class="st">&quot;depends.ok&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute paths</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> (<span class="fu">Sys.info</span>()[[<span class="st">&#39;sysname&#39;</span>]],</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># PC paths</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">Windows =</span> {</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">&quot;P:/studydata/match/models/&quot;</span>, y_col_name)},</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># IOS paths</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">Darwin =</span> {</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">&quot;/Volumes/private/studydata/match/models/&quot;</span>, y_col_name)},</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Linux paths</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">Linux =</span> {</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>          path_models <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">&quot;~/mnt/private/studydata/match/models/&quot;</span>, y_col_name)}</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chunk defaults</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tibble.width =</span> <span class="cn">Inf</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tibble.print_max =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<p>Read in aim 2 dataset</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>auc_wk4 <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="fu">file.path</span>(path_models, <span class="st">&quot;pp_hybrid_wk4_outcome&quot;</span>,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">str_c</span>(<span class="st">&quot;outer_metrics_&quot;</span>, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                    version, <span class="st">&quot;_&quot;</span>, cv, <span class="st">&quot;.rds&quot;</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(outer_split_num) <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">repeat_num =</span> <span class="fu">rep</span>(<span class="fu">str_c</span>(<span class="st">&quot;repeat&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">each =</span> <span class="dv">10</span>),</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">fold_num =</span> <span class="fu">rep</span>(<span class="fu">str_c</span>(<span class="st">&quot;fold&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>), <span class="dv">3</span>)) <span class="sc">|&gt;</span>   <span class="co"># assumes 3x10 fold</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(repeat_num, fold_num, roc_auc) <span class="sc">|&gt;</span> </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(path_models, </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">str_c</span>(<span class="st">&quot;aim_2_&quot;</span>, version, <span class="st">&quot;_&quot;</span>, y_col_name, <span class="st">&quot;.csv&quot;</span>)),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">outcome_rct_wk4_num =</span> <span class="fu">if_else</span>(outcome_rct_wk4 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome_rct_wk12_num =</span> <span class="fu">if_else</span>(outcome_rct_wk12 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome_rct_wk26_num =</span> <span class="fu">if_else</span>(outcome_rct_wk26 <span class="sc">==</span> <span class="st">&quot;abstinent&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">tx_worst =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>           prob_patch <span class="sc">&lt;</span> prob_combo_nrt <span class="sc">&amp;</span> prob_patch <span class="sc">&lt;</span> prob_varenicline <span class="sc">~</span> <span class="st">&quot;patch&quot;</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>           prob_combo_nrt <span class="sc">&lt;</span> prob_patch <span class="sc">&amp;</span> prob_combo_nrt <span class="sc">&lt;</span> prob_varenicline <span class="sc">~</span> <span class="st">&quot;combo_nrt&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>           prob_varenicline <span class="sc">&lt;</span> prob_patch <span class="sc">&amp;</span> prob_varenicline <span class="sc">&lt;</span> prob_combo_nrt <span class="sc">~</span> <span class="st">&quot;varenicline&quot;</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">tx_second =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;patch&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;varenicline&quot;</span> <span class="sc">~</span> <span class="st">&quot;combo_nrt&quot;</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;patch&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;combo_nrt&quot;</span> <span class="sc">~</span> <span class="st">&quot;varenicline&quot;</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;varenicline&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;patch&quot;</span> <span class="sc">~</span> <span class="st">&quot;combo_nrt&quot;</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;varenicline&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;combo_nrt&quot;</span> <span class="sc">~</span> <span class="st">&quot;patch&quot;</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;combo_nrt&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;varenicline&quot;</span> <span class="sc">~</span> <span class="st">&quot;patch&quot;</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>           tx_worst <span class="sc">==</span> <span class="st">&quot;combo_nrt&quot;</span> <span class="sc">&amp;</span> tx_best <span class="sc">==</span> <span class="st">&quot;patch&quot;</span> <span class="sc">~</span> <span class="st">&quot;varenicline&quot;</span>,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tx_rank =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    tx_rct <span class="sc">==</span> tx_best <span class="sc">~</span> <span class="st">&quot;first&quot;</span>,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    tx_rct <span class="sc">==</span> tx_second <span class="sc">~</span> <span class="st">&quot;second&quot;</span>,</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    tx_rct <span class="sc">==</span> tx_worst <span class="sc">~</span> <span class="st">&quot;third&quot;</span>,</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subid, <span class="fu">starts_with</span>(<span class="st">&quot;tx_&quot;</span>), <span class="fu">starts_with</span>(<span class="st">&quot;prob_&quot;</span>),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) <span class="sc">|&gt;</span> </span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;week&quot;</span>,</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(?&lt;=outcome_rct_wk)(.+)(?=_num)&quot;</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;outcome_rct_num&quot;</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">c_tx_match =</span> <span class="fu">if_else</span>(tx_match <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="fl">0.5</span>, <span class="sc">-</span><span class="fl">0.5</span>), <span class="co"># center</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">as.numeric</span>(week)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># log transformation</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_log_2 =</span> <span class="fu">log</span>(week, <span class="at">base =</span> <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># week 4-centered log transformation</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">c4_week_log_2 =</span> week_log_2 <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">4</span>, <span class="at">base =</span> <span class="dv">2</span>))</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 30
-Columns: 3
-$ repeat_num &lt;chr&gt; &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;rep…
-$ fold_num   &lt;chr&gt; &quot;fold1&quot;, &quot;fold2&quot;, &quot;fold3&quot;, &quot;fold4&quot;, &quot;fold5&quot;, &quot;fold6&quot;, &quot;fold…
-$ roc_auc    &lt;dbl&gt; 0.5890269, 0.7846271, 0.7469794, 0.6510043, 0.7406656, 0.68…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>auc_wk26 <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="fu">file.path</span>(path_models, <span class="st">&quot;pp_hybrid_wk26_outcome&quot;</span>,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">str_c</span>(<span class="st">&quot;outer_metrics_&quot;</span>, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                                     version, <span class="st">&quot;_&quot;</span>, cv, <span class="st">&quot;.rds&quot;</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(outer_split_num) <span class="sc">|&gt;</span> </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">repeat_num =</span> <span class="fu">rep</span>(<span class="fu">str_c</span>(<span class="st">&quot;repeat&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">each =</span> <span class="dv">10</span>),</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">fold_num =</span> <span class="fu">rep</span>(<span class="fu">str_c</span>(<span class="st">&quot;fold&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>), <span class="dv">3</span>)) <span class="sc">|&gt;</span>   <span class="co"># assumes 3x10 fold</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(repeat_num, fold_num, roc_auc) <span class="sc">|&gt;</span> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 30
-Columns: 3
-$ repeat_num &lt;chr&gt; &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;rep…
-$ fold_num   &lt;chr&gt; &quot;fold1&quot;, &quot;fold2&quot;, &quot;fold3&quot;, &quot;fold4&quot;, &quot;fold5&quot;, &quot;fold6&quot;, &quot;fold…
-$ roc_auc    &lt;dbl&gt; 0.6405063, 0.6494382, 0.6266667, 0.5597776, 0.6827004, 0.63…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>auc <span class="ot">&lt;-</span> auc_wk4 <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">week_4 =</span> roc_auc) <span class="sc">|&gt;</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_26 =</span> auc_wk26<span class="sc">$</span>roc_auc) <span class="sc">|&gt;</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 30
-Columns: 4
-$ repeat_num &lt;chr&gt; &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;repeat1&quot;, &quot;rep…
-$ fold_num   &lt;chr&gt; &quot;fold1&quot;, &quot;fold2&quot;, &quot;fold3&quot;, &quot;fold4&quot;, &quot;fold5&quot;, &quot;fold6&quot;, &quot;fold…
-$ week_4     &lt;dbl&gt; 0.5890269, 0.7846271, 0.7469794, 0.6510043, 0.7406656, 0.68…
-$ week_26    &lt;dbl&gt; 0.6405063, 0.6494382, 0.6266667, 0.5597776, 0.6827004, 0.63…</code></pre>
+<pre><code>Rows: 3,258
+Columns: 16
+$ subid            &lt;dbl&gt; 20010, 20010, 20010, 20015, 20015, 20015, 20030, 2003…
+$ tx_rct           &lt;chr&gt; &quot;patch&quot;, &quot;patch&quot;, &quot;patch&quot;, &quot;combo_nrt&quot;, &quot;combo_nrt&quot;, …
+$ tx_best          &lt;chr&gt; &quot;varenicline&quot;, &quot;varenicline&quot;, &quot;varenicline&quot;, &quot;varenic…
+$ tx_match         &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
+$ tx_worst         &lt;chr&gt; &quot;combo_nrt&quot;, &quot;combo_nrt&quot;, &quot;combo_nrt&quot;, &quot;patch&quot;, &quot;patc…
+$ tx_second        &lt;chr&gt; &quot;patch&quot;, &quot;patch&quot;, &quot;patch&quot;, &quot;combo_nrt&quot;, &quot;combo_nrt&quot;, …
+$ tx_rank          &lt;chr&gt; &quot;second&quot;, &quot;second&quot;, &quot;second&quot;, &quot;second&quot;, &quot;second&quot;, &quot;se…
+$ prob_best        &lt;dbl&gt; 0.2646638, 0.2646638, 0.2646638, 0.4846121, 0.4846121…
+$ prob_patch       &lt;dbl&gt; 0.2007715, 0.2007715, 0.2007715, 0.4175508, 0.4175508…
+$ prob_combo_nrt   &lt;dbl&gt; 0.1845281, 0.1845281, 0.1845281, 0.4643572, 0.4643572…
+$ prob_varenicline &lt;dbl&gt; 0.2646638, 0.2646638, 0.2646638, 0.4846121, 0.4846121…
+$ week             &lt;dbl&gt; 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26, 4, 12, 26…
+$ outcome_rct_num  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,…
+$ c_tx_match       &lt;dbl&gt; -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5,…
+$ week_log_2       &lt;dbl&gt; 2.000000, 3.584963, 4.700440, 2.000000, 3.584963, 4.7…
+$ c4_week_log_2    &lt;dbl&gt; 0.000000, 1.584963, 2.700440, 0.000000, 1.584963, 2.7…</code></pre>
 </div>
 </div></div>
+<section id="analyses" class="level2">
+<h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
+<section id="primary-model" class="level3">
+<h3 class="anchored" data-anchor-id="primary-model">Primary model</h3>
+<p><em>NOTE</em>: differs from preregistration (base 2 instead of base e)</p>
+<p>4-week-centered, log-transformed week (base 2)</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>auc_wk4 <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> roc_auc), <span class="at">bins =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="ana_bayes_match_files/figure-html/auc_plots-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="ana_bayes_match_files/figure-html/auc_plots-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>auc_wk26 <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> roc_auc), <span class="at">bins =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="ana_bayes_match_files/figure-html/auc_plots-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="ana_bayes_match_files/figure-html/auc_plots-2.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(<span class="fu">file.path</span>(path_models, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_c</span>(<span class="st">&quot;model_clin_benefit_&quot;</span>, version, <span class="st">&quot;.rds&quot;</span>)))){</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">str_c</span>(<span class="st">&quot;Model already exists for version &quot;</span>, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                version, <span class="st">&quot;. Reading in existing model&quot;</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  model_bayes <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="fu">file.path</span>(path_models, </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">str_c</span>(<span class="st">&quot;model_clin_benefit_&quot;</span>, version, <span class="st">&quot;.rds&quot;</span>)))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">&quot;Fitting new model &amp; saving out&quot;</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  model_bayes <span class="ot">&lt;-</span> blme<span class="sc">::</span><span class="fu">bglmer</span>(outcome_rct_num <span class="sc">~</span> c_tx_match <span class="sc">*</span> c4_week_log_2 <span class="sc">+</span> </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                (<span class="dv">1</span> <span class="sc">+</span> c4_week_log_2 <span class="sc">|</span> subid),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data =</span> d,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                              <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>                              <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e6</span>)))</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  model_bayes <span class="sc">|&gt;</span> </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_rds</span>(<span class="fu">file.path</span>(path_models, </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">str_c</span>(<span class="st">&quot;model_clin_benefit_&quot;</span>, version, <span class="st">&quot;.rds&quot;</span>)))</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Model already exists for version v5. Reading in existing model</code></pre>
 </div>
 </div></div>
-</section>
-<section id="all-models" class="level3">
-<h3 class="anchored" data-anchor-id="all-models">All models</h3>
+<p>Evaluate model</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from ?perf_mod()</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeated CV (id = repeat, id2 = fold within repeat)</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> auc <span class="sc">|&gt;</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> repeat_num,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">id2 =</span> fold_num) <span class="sc">|&gt;</span> </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">perf_mod</span>(<span class="at">formula =</span> statistic <span class="sc">~</span> model <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id2<span class="sc">/</span>id), </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>           <span class="co"># prior_intercept = rstanarm::student_t(autoscale = TRUE),</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>           <span class="co"># prior = rstanarm::student_t(autoscale = TRUE),</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">transform =</span> tidyposterior<span class="sc">::</span>logit_trans,  <span class="co"># for skewed &amp; bounded AUC</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">chains =</span> <span class="dv">4</span>,  </span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">adapt_delta =</span> .<span class="dv">99</span>,</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>           <span class="co"># cores = 4, seed = 12345,</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> gaussian, </span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  )  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_bayes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>
-SAMPLING FOR MODEL &#39;continuous&#39; NOW (CHAIN 1).
-Chain 1: 
-Chain 1: Gradient evaluation took 6.1e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.61 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1: 
-Chain 1: 
-Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 1: 
-Chain 1:  Elapsed Time: 1.442 seconds (Warm-up)
-Chain 1:                0.473 seconds (Sampling)
-Chain 1:                1.915 seconds (Total)
-Chain 1: 
+<pre><code>Cov prior  : subid ~ wishart(df = 4.5, scale = Inf, posterior.scale = cov, common.scale = TRUE)
+Prior dev  : -1.5157
 
-SAMPLING FOR MODEL &#39;continuous&#39; NOW (CHAIN 2).
-Chain 2: 
-Chain 2: Gradient evaluation took 3.9e-05 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.39 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2: 
-Chain 2: 
-Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 2: 
-Chain 2:  Elapsed Time: 0.915 seconds (Warm-up)
-Chain 2:                0.775 seconds (Sampling)
-Chain 2:                1.69 seconds (Total)
-Chain 2: 
+Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [bglmerMod]
+ Family: binomial  ( logit )
+Formula: outcome_rct_num ~ c_tx_match * c4_week_log_2 + (1 + c4_week_log_2 |  
+    subid)
+   Data: d
+Control: glmerControl(optCtrl = list(maxfun = 3e+06))
 
-SAMPLING FOR MODEL &#39;continuous&#39; NOW (CHAIN 3).
-Chain 3: 
-Chain 3: Gradient evaluation took 2.4e-05 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.24 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3: 
-Chain 3: 
-Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 3: 
-Chain 3:  Elapsed Time: 1.22 seconds (Warm-up)
-Chain 3:                0.664 seconds (Sampling)
-Chain 3:                1.884 seconds (Total)
-Chain 3: 
+     AIC      BIC   logLik deviance df.resid 
+  3045.9   3088.6  -1516.0   3031.9     3251 
 
-SAMPLING FOR MODEL &#39;continuous&#39; NOW (CHAIN 4).
-Chain 4: 
-Chain 4: Gradient evaluation took 2.5e-05 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.25 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4: 
-Chain 4: 
-Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 4: 
-Chain 4:  Elapsed Time: 0.851 seconds (Warm-up)
-Chain 4:                0.449 seconds (Sampling)
-Chain 4:                1.3 seconds (Total)
-Chain 4: </code></pre>
-</div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rstanarm<span class="sc">::</span><span class="fu">prior_summary</span>(pp<span class="sc">$</span>stan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Priors for model &#39;pp$stan&#39; 
-------
-Intercept (after predictors centered)
-  Specified prior:
-    ~ normal(location = 0.68, scale = 2.5)
-  Adjusted prior:
-    ~ normal(location = 0.68, scale = 0.66)
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-1.60825 -0.32784 -0.06676  0.17412  1.59916 
 
-Coefficients
-  Specified prior:
-    ~ normal(location = 0, scale = 2.5)
-  Adjusted prior:
-    ~ normal(location = 0, scale = 1.3)
+Random effects:
+ Groups Name          Variance Std.Dev. Corr
+ subid  (Intercept)   3.977    1.994        
+        c4_week_log_2 5.848    2.418    0.94
+Number of obs: 3258, groups:  subid, 1086
 
-Auxiliary (sigma)
-  Specified prior:
-    ~ exponential(rate = 1)
-  Adjusted prior:
-    ~ exponential(rate = 3.8)
+Fixed effects:
+                         Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)              -1.05563    0.16229  -6.505 7.79e-11 ***
+c_tx_match                1.46351    0.25949   5.640 1.70e-08 ***
+c4_week_log_2            -1.52052    0.15285  -9.948  &lt; 2e-16 ***
+c_tx_match:c4_week_log_2 -0.04555    0.21204  -0.215     0.83    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
-Covariance
- ~ decov(reg. = 1, conc. = 1, shape = 1, scale = 1)
-------
-See help(&#39;prior_summary.stanreg&#39;) for more details</code></pre>
-</div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pp<span class="sc">$</span>stan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>
-Model Info:
- function:     stan_glmer
- family:       gaussian [identity]
- formula:      statistic ~ model + (1 | id2/id)
- algorithm:    sampling
- sample:       4000 (posterior sample size)
- priors:       see help(&#39;prior_summary&#39;)
- observations: 60
- groups:       id:id2 (30), id2 (10)
-
-Estimates:
-                                        mean   sd   10%   50%   90%
-(Intercept)                            0.6    0.0  0.5   0.6   0.6 
-modelweek_4                            0.2    0.0  0.2   0.2   0.3 
-b[(Intercept) id:id2:repeat1:fold1]   -0.1    0.1 -0.3  -0.2   0.0 
-b[(Intercept) id:id2:repeat1:fold10]  -0.2    0.1 -0.3  -0.2   0.0 
-b[(Intercept) id:id2:repeat1:fold2]    0.2    0.1  0.1   0.2   0.3 
-b[(Intercept) id:id2:repeat1:fold3]    0.1    0.1 -0.1   0.1   0.2 
-b[(Intercept) id:id2:repeat1:fold4]   -0.2    0.1 -0.3  -0.2   0.0 
-b[(Intercept) id:id2:repeat1:fold5]    0.2    0.1  0.0   0.2   0.3 
-b[(Intercept) id:id2:repeat1:fold6]    0.0    0.1 -0.1   0.0   0.1 
-b[(Intercept) id:id2:repeat1:fold7]    0.1    0.1  0.0   0.1   0.3 
-b[(Intercept) id:id2:repeat1:fold8]    0.1    0.1  0.0   0.1   0.2 
-b[(Intercept) id:id2:repeat1:fold9]   -0.1    0.1 -0.2  -0.1   0.0 
-b[(Intercept) id:id2:repeat2:fold1]    0.1    0.1  0.0   0.1   0.2 
-b[(Intercept) id:id2:repeat2:fold10]   0.2    0.1  0.0   0.2   0.3 
-b[(Intercept) id:id2:repeat2:fold2]   -0.1    0.1 -0.2  -0.1   0.0 
-b[(Intercept) id:id2:repeat2:fold3]   -0.3    0.1 -0.5  -0.3  -0.2 
-b[(Intercept) id:id2:repeat2:fold4]    0.1    0.1 -0.1   0.0   0.2 
-b[(Intercept) id:id2:repeat2:fold5]    0.0    0.1 -0.2   0.0   0.1 
-b[(Intercept) id:id2:repeat2:fold6]    0.2    0.1  0.0   0.2   0.3 
-b[(Intercept) id:id2:repeat2:fold7]    0.0    0.1 -0.2   0.0   0.1 
-b[(Intercept) id:id2:repeat2:fold8]    0.0    0.1 -0.1   0.0   0.1 
-b[(Intercept) id:id2:repeat2:fold9]    0.0    0.1 -0.2   0.0   0.1 
-b[(Intercept) id:id2:repeat3:fold1]    0.0    0.1 -0.1   0.0   0.2 
-b[(Intercept) id:id2:repeat3:fold10]   0.0    0.1 -0.1   0.0   0.1 
-b[(Intercept) id:id2:repeat3:fold2]   -0.2    0.1 -0.3  -0.2   0.0 
-b[(Intercept) id:id2:repeat3:fold3]    0.4    0.1  0.3   0.4   0.6 
-b[(Intercept) id:id2:repeat3:fold4]    0.0    0.1 -0.1   0.0   0.1 
-b[(Intercept) id:id2:repeat3:fold5]   -0.1    0.1 -0.2  -0.1   0.1 
-b[(Intercept) id:id2:repeat3:fold6]    0.0    0.1 -0.1   0.0   0.2 
-b[(Intercept) id:id2:repeat3:fold7]   -0.1    0.1 -0.2  -0.1   0.0 
-b[(Intercept) id:id2:repeat3:fold8]   -0.3    0.1 -0.4  -0.3  -0.2 
-b[(Intercept) id:id2:repeat3:fold9]    0.2    0.1  0.0   0.2   0.3 
-b[(Intercept) id2:fold1]               0.0    0.0  0.0   0.0   0.0 
-b[(Intercept) id2:fold10]              0.0    0.0  0.0   0.0   0.0 
-b[(Intercept) id2:fold2]               0.0    0.0  0.0   0.0   0.0 
-b[(Intercept) id2:fold3]               0.0    0.0  0.0   0.0   0.1 
-b[(Intercept) id2:fold4]               0.0    0.0 -0.1   0.0   0.0 
-b[(Intercept) id2:fold5]               0.0    0.0  0.0   0.0   0.1 
-b[(Intercept) id2:fold6]               0.0    0.0  0.0   0.0   0.1 
-b[(Intercept) id2:fold7]               0.0    0.0  0.0   0.0   0.0 
-b[(Intercept) id2:fold8]               0.0    0.0 -0.1   0.0   0.0 
-b[(Intercept) id2:fold9]               0.0    0.0  0.0   0.0   0.0 
-sigma                                  0.2    0.0  0.1   0.2   0.2 
-Sigma[id:id2:(Intercept),(Intercept)]  0.0    0.0  0.0   0.0   0.1 
-Sigma[id2:(Intercept),(Intercept)]     0.0    0.0  0.0   0.0   0.0 
-
-Fit Diagnostics:
-           mean   sd   10%   50%   90%
-mean_PPD 0.7    0.0  0.6   0.7   0.7  
-
-The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help(&#39;summary.stanreg&#39;)).
-
-MCMC diagnostics
-                                      mcse Rhat n_eff
-(Intercept)                           0.0  1.0  1737 
-modelweek_4                           0.0  1.0  5576 
-b[(Intercept) id:id2:repeat1:fold1]   0.0  1.0  3670 
-b[(Intercept) id:id2:repeat1:fold10]  0.0  1.0  3327 
-b[(Intercept) id:id2:repeat1:fold2]   0.0  1.0  3301 
-b[(Intercept) id:id2:repeat1:fold3]   0.0  1.0  3430 
-b[(Intercept) id:id2:repeat1:fold4]   0.0  1.0  3255 
-b[(Intercept) id:id2:repeat1:fold5]   0.0  1.0  3369 
-b[(Intercept) id:id2:repeat1:fold6]   0.0  1.0  3569 
-b[(Intercept) id:id2:repeat1:fold7]   0.0  1.0  4026 
-b[(Intercept) id:id2:repeat1:fold8]   0.0  1.0  3263 
-b[(Intercept) id:id2:repeat1:fold9]   0.0  1.0  3755 
-b[(Intercept) id:id2:repeat2:fold1]   0.0  1.0  3529 
-b[(Intercept) id:id2:repeat2:fold10]  0.0  1.0  2776 
-b[(Intercept) id:id2:repeat2:fold2]   0.0  1.0  4086 
-b[(Intercept) id:id2:repeat2:fold3]   0.0  1.0  2658 
-b[(Intercept) id:id2:repeat2:fold4]   0.0  1.0  3614 
-b[(Intercept) id:id2:repeat2:fold5]   0.0  1.0  4061 
-b[(Intercept) id:id2:repeat2:fold6]   0.0  1.0  3211 
-b[(Intercept) id:id2:repeat2:fold7]   0.0  1.0  3737 
-b[(Intercept) id:id2:repeat2:fold8]   0.0  1.0  3452 
-b[(Intercept) id:id2:repeat2:fold9]   0.0  1.0  3795 
-b[(Intercept) id:id2:repeat3:fold1]   0.0  1.0  3882 
-b[(Intercept) id:id2:repeat3:fold10]  0.0  1.0  3644 
-b[(Intercept) id:id2:repeat3:fold2]   0.0  1.0  3129 
-b[(Intercept) id:id2:repeat3:fold3]   0.0  1.0  2515 
-b[(Intercept) id:id2:repeat3:fold4]   0.0  1.0  4015 
-b[(Intercept) id:id2:repeat3:fold5]   0.0  1.0  3361 
-b[(Intercept) id:id2:repeat3:fold6]   0.0  1.0  3931 
-b[(Intercept) id:id2:repeat3:fold7]   0.0  1.0  3863 
-b[(Intercept) id:id2:repeat3:fold8]   0.0  1.0  2233 
-b[(Intercept) id:id2:repeat3:fold9]   0.0  1.0  2988 
-b[(Intercept) id2:fold1]              0.0  1.0  3274 
-b[(Intercept) id2:fold10]             0.0  1.0  3286 
-b[(Intercept) id2:fold2]              0.0  1.0  3026 
-b[(Intercept) id2:fold3]              0.0  1.0  2850 
-b[(Intercept) id2:fold4]              0.0  1.0  3367 
-b[(Intercept) id2:fold5]              0.0  1.0  3093 
-b[(Intercept) id2:fold6]              0.0  1.0  2201 
-b[(Intercept) id2:fold7]              0.0  1.0  3708 
-b[(Intercept) id2:fold8]              0.0  1.0  2398 
-b[(Intercept) id2:fold9]              0.0  1.0  3616 
-sigma                                 0.0  1.0  1388 
-Sigma[id:id2:(Intercept),(Intercept)] 0.0  1.0  1352 
-Sigma[id2:(Intercept),(Intercept)]    0.0  1.0  1519 
-mean_PPD                              0.0  1.0  4162 
-log-posterior                         0.3  1.0   774 
-
-For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
-</div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shinystan::launch_shinystan(pp$stan)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pp <span class="sc">%&gt;%</span>  <span class="fu">write_rds</span>(<span class="fu">file.path</span>(path_models, </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">str_c</span>(<span class="st">&quot;posteriors_&quot;</span>, version, <span class="st">&quot;_nested.rds&quot;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-</section>
-<section id="model-posterier-cis" class="level3">
-<h3 class="anchored" data-anchor-id="model-posterier-cis">Model posterier CIs</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="ot">&lt;-</span> pp <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>q <span class="ot">=</span> <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">5</span>, .<span class="dv">975</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="sc">|&gt;</span> </span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model) <span class="sc">|&gt;</span> </span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">quantile</span>(posterior, <span class="at">probs =</span> q[<span class="dv">2</span>]),</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">lower =</span> <span class="fu">quantile</span>(posterior, <span class="at">probs =</span> q[<span class="dv">1</span>]), </span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">upper =</span> <span class="fu">quantile</span>(posterior, <span class="at">probs =</span> q[<span class="dv">3</span>])) <span class="sc">|&gt;</span> </span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;week_26&quot;</span>, <span class="st">&quot;week_4&quot;</span>),</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Week 26&quot;</span>, <span class="st">&quot;Week 4&quot;</span>)),</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code># A tibble: 2 × 5
-  model   median lower upper     y
-  &lt;fct&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 Week 26  0.639 0.617 0.661  1000
-2 Week 4   0.687 0.666 0.707  1000</code></pre>
+Correlation of Fixed Effects:
+            (Intr) c_tx_m c4___2
+c_tx_match  -0.301              
+c4_wek_lg_2 -0.142  0.216       
+c_tx_:4___2  0.247  0.000 -0.009</code></pre>
 </div>
 </div></div>
 </section>
-<section id="model-contrasts" class="level3">
-<h3 class="anchored" data-anchor-id="model-contrasts">Model contrasts</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pp_contrasts <span class="ot">&lt;-</span> <span class="fu">contrast_models</span>(pp, </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">list</span>(<span class="st">&quot;week_4&quot;</span>), </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">list</span>(<span class="st">&quot;week_26&quot;</span>))</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pp_contrasts, <span class="at">size =</span> .<span class="dv">01</span>, <span class="at">prob =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code># A tibble: 1 × 9
-  contrast          probability   mean  lower  upper  size pract_neg pract_equiv
-  &lt;chr&gt;                   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-1 week_4 vs week_26           1 0.0474 0.0298 0.0646  0.01         0           0
-  pract_pos
-      &lt;dbl&gt;
-1         1</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pp_contrasts <span class="sc">|&gt;</span> <span class="fu">autoplot</span>(<span class="at">size =</span> .<span class="dv">01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class>
-<figure class="figure">
-<p class><a href="ana_bayes_match_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="ana_bayes_match_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-</div></div>
-<p>Here are contrasts against 0 rather than using ROPE</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pp_contrasts <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wk4_gt_wk26 =</span> <span class="fu">if_else</span>(difference <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(wk4_gt_wk26) <span class="sc">|&gt;</span> </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>[1] 1</code></pre>
-</div>
-</div></div>
+<section id="follow-up-analyses-simple-effects" class="level3">
+<h3 class="anchored" data-anchor-id="follow-up-analyses-simple-effects">Follow-up analyses: Simple Effects</h3>
+<p>From preregistration: If the interaction between <code>tx_match</code> and <code>week</code> is significant (<em>p</em> &lt; 0.05), we will conduct follow-up analyses to test the simple effect of <code>tx_match</code> at each time point.</p>
+<p>Interaction between <code>tx_match</code> and <code>week</code> was not significant (<em>p</em> = 0.83), so no follow-up analyses of simple effects are needed.</p>
 </section>
-<section id="plots" class="level3">
-<h3 class="anchored" data-anchor-id="plots">Plots</h3>
-<p>Model posteriors</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [16]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> pp_tidy <span class="sc">|&gt;</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;week_4&quot;</span>, <span class="st">&quot;week_26&quot;</span>)),</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="dv">1000</span>) </span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ci_week4 <span class="ot">&lt;-</span> ci <span class="sc">|&gt;</span> </span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">==</span> <span class="st">&quot;week_4&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [17]:</pre></div><div id="cell-fig-posteriors" class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>fig_posteriors <span class="ot">&lt;-</span> pp_tidy <span class="sc">|&gt;</span> </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;week_4&quot;</span>, <span class="st">&quot;week_26&quot;</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior, <span class="at">fill =</span> model), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> .<span class="dv">4</span>, </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y <span class="sc">+</span> <span class="dv">100</span>, <span class="at">yend =</span> y <span class="sc">-</span> <span class="dv">100</span>, <span class="at">x =</span> mean, <span class="at">xend =</span> mean,</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> model),</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci) <span class="sc">+</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y, <span class="at">yend =</span> y, </span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x =</span> lower, <span class="at">xend =</span> upper, <span class="at">color =</span> model),</span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci) <span class="sc">+</span></span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>model, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">&quot;Posterior Probability&quot;</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>)) <span class="sc">+</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ylab(&quot;Posterior Probability Density&quot;) +</span></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Area Under ROC Curve&quot;</span>)</span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>fig_posteriors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="figure" class="level2">
+<h2 class="anchored" data-anchor-id="figure">Figure</h2>
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-clin-ben-wk4" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">week_cat =</span> <span class="fu">factor</span>(week,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">26</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Week 4&quot;</span>, <span class="st">&quot;Week 12&quot;</span>, <span class="st">&quot;Week 26&quot;</span>)),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">tx_match =</span> <span class="fu">factor</span>(tx_match, </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Matched to Best&quot;</span>, <span class="st">&quot;Unmatched&quot;</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(week_cat, tx_match) <span class="sc">|&gt;</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_outcome =</span> <span class="fu">mean</span>(outcome_rct_num)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> week_cat, <span class="at">y =</span> mean_outcome, <span class="at">fill =</span> tx_match)) <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Week On-Study&quot;</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Mean Abstinence Rate&quot;</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Treatment Matching&quot;</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by &#39;week_cat&#39;. You can override using the
+`.groups` argument.</code></pre>
+</div>
 <div class="cell-output-display">
-<div id="fig-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
-<a href="ana_bayes_match_files/figure-html/fig-posteriors-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="ana_bayes_match_files/figure-html/fig-posteriors-1.png" id="fig-posteriors" class="img-fluid figure-img" width="672"></a>
+<div aria-describedby="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
+<a href="eval_benefit_4wk_files/figure-html/fig-clin-ben-wk4-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="eval_benefit_4wk_files/figure-html/fig-clin-ben-wk4-1.png" id="fig-clin-ben-wk4" class="img-fluid figure-img" width="672"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [18]:</pre></div><div id="cell-fig-week4" class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="sc">|&gt;</span> </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;week_4&quot;</span>, <span class="st">&quot;week_26&quot;</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">==</span> <span class="st">&quot;week_4&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior, <span class="at">fill =</span> model), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> .<span class="dv">4</span>, </span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y <span class="sc">+</span> <span class="dv">100</span>, <span class="at">yend =</span> y <span class="sc">-</span> <span class="dv">100</span>, <span class="at">x =</span> mean, <span class="at">xend =</span> mean,</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> model),</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci_week4) <span class="sc">+</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y, <span class="at">yend =</span> y, </span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x =</span> lower, <span class="at">xend =</span> upper, <span class="at">color =</span> model),</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci_week4) <span class="sc">+</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">&quot;Posterior Probability&quot;</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>)) <span class="sc">+</span></span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ylab(&quot;Posterior Probability Density&quot;) +</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Area Under ROC Curve&quot;</span>) <span class="sc">+</span></span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="fig-week4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
-<a href="ana_bayes_match_files/figure-html/fig-week4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" data-glightbox="description: .lightbox-desc-5"><img src="ana_bayes_match_files/figure-html/fig-week4-1.png" id="fig-week4" class="img-fluid figure-img" width="672"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-week4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-<p>model contrast posteriors</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [19]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ci_con <span class="ot">&lt;-</span> pp <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contrast_models</span>(<span class="fu">list</span>(<span class="st">&quot;week_4&quot;</span>), </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">list</span>(<span class="st">&quot;week_26&quot;</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="at">size =</span> .<span class="dv">01</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">contrast =</span> <span class="fu">factor</span>(contrast, </span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;week_4 vs week_26&quot;</span>),</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;week 4 vs. week 26&quot;</span>)),</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="dv">700</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [20]:</pre></div><div id="cell-fig-contrasts" class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fig_contrasts <span class="ot">&lt;-</span> pp <span class="sc">|&gt;</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">seed =</span> <span class="dv">123</span>) <span class="sc">|&gt;</span>   </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model) <span class="sc">|&gt;</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> model, <span class="at">values_from =</span> posterior) <span class="sc">|&gt;</span> </span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">posterior =</span> week_4 <span class="sc">-</span> week_26) <span class="sc">|&gt;</span> </span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior), </span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> .<span class="dv">4</span>, <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;yellow&quot;</span>, </span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_vline(xintercept = .01, color = &quot;yellow&quot;, </span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            linetype = &quot;dashed&quot;, linewidth = 1) +</span></span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y<span class="sc">+</span><span class="dv">50</span>, <span class="at">yend =</span> y<span class="dv">-50</span>, </span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x =</span> mean, <span class="at">xend =</span> mean), </span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci_con) <span class="sc">+</span></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y, <span class="at">yend =</span> y, </span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x =</span> lower, <span class="at">xend =</span> upper), </span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> ci_con) <span class="sc">+</span></span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Posterior Probability&quot;</span>) <span class="sc">+</span></span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Model Contrast for auROC (Week 4 vs. Week 26)&quot;</span>)</span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>fig_contrasts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="fig-contrasts" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-contrasts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class>
-<a href="ana_bayes_match_files/figure-html/fig-contrasts-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" data-glightbox="description: .lightbox-desc-6"><img src="ana_bayes_match_files/figure-html/fig-contrasts-1.png" id="fig-contrasts" class="img-fluid figure-img" width="672"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-contrasts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 </figcaption>
 </figure>
 </div>
 </div>
 </div></div>
 <div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-4"></span>
-<span class="glightbox-desc lightbox-desc-5"></span>
-<span class="glightbox-desc lightbox-desc-6"></span>
+<span class="glightbox-desc lightbox-desc-1"></span>
 </div>
 </section>
      </main>
@@ -4281,7 +3911,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","loop":false});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -1,0 +1,74 @@
+---
+title: "SHAP for 4-Week Model"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+params:
+  study: "match"
+  version: "v5"
+  y_col_name: "pp_hybrid_wk4_outcome"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r set_variables}
+study <- params$study
+version <- params$version
+y_col_name <- params$y_col_name
+```
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+# packages for script
+library(tidyverse)
+
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute paths}
+
+# absolute paths
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_data <- str_c("P:/studydata/match/chtc/", y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_data <- str_c("/Volumes/private/studydata/match/chtc/", y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_data <- str_c("~/mnt/private/studydata/match/chtc/", y_col_name)}
+)
+```
+
+```{r defaults}
+
+# chunk defaults
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+
+

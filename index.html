@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.5.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -170,9 +170,9 @@ div.csl-indent {
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks\ana_bayes_match-preview.html"><i class="bi bi-journal-code"></i>Posterior probabilities across models for MATCH study (version `r params$version`)</a></li><li><a href="notebooks\eval_benefit_4wk-preview.html"><i class="bi bi-journal-code"></i>Evaluation of Clinical Benefit: Week 4 Model</a></li><li><a href="notebooks\fit_final_model_26wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`</a></li><li><a href="notebooks\fit_final_model_4wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`</a></li><li><a href="notebooks\shap_4wk-preview.html"><i class="bi bi-journal-code"></i>SHAP for 4-Week Model</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks\fit_final_model_26wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`</a></li><li><a href="notebooks\fit_final_model_4wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`</a></li><li><a href="notebooks\ana_bayes_match-preview.html"><i class="bi bi-journal-code"></i>Posterior probabilities across models for MATCH study (version `r params$version`)</a></li><li><a href="notebooks\eval_benefit_4wk-preview.html"><i class="bi bi-journal-code"></i>Preregistration: Evaluation of Clinical Benefit</a></li><li><a href="notebooks\shap_4wk-preview.html"><i class="bi bi-journal-code"></i>SHAP for 4-Week Model</a></li></ul></div></nav>
 </div>
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -617,7 +617,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

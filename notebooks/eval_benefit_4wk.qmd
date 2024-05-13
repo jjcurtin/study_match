@@ -1,5 +1,5 @@
 ---
-title: "Preregistration: Evaluation of Clinical Benefit"
+title: "Evaluation of Clinical Benefit: Week 4 Model"
 author: "Gaylen Fronk"
 date: "`r lubridate::today()`"
 number-sections: true

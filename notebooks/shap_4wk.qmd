@@ -70,5 +70,78 @@ options(tibble.width = Inf)
 options(tibble.print_max = Inf)
 ```
 
+## Read in data
+
+```{r}
+d <- read_csv(file.path(path_data, str_c("shap_", version), 
+                        "output", "batch_results.csv"),
+              col_types = "cddd")
+
+glimpse(d)
+```
+This is already local SHAP values because we have one observation per subid per variable.
+
+## Get global Shapley values
+
+```{r}
+global <- d |> 
+  group_by(variable_name) |> 
+  summarize(mean_shap = mean(contribution),
+            abs_shap = abs(mean(contribution))) |> 
+  arrange(desc(abs_shap))
+
+```
+
+Treatment interactions only
+```{r}
+global_tx <- global |> 
+  filter(str_detect(variable_name, "treatment_"))
+```
+
+## Make global figures
+
+Overall
+```{r}
+#| label: fig-shap-global
+
+global |> 
+  arrange(desc(abs_shap)) |> 
+  slice(1:25) |> 
+  arrange(abs_shap) |> 
+  mutate(variable_name = fct_inorder(variable_name)) |> 
+  ggplot(mapping = aes(x = variable_name, y = abs_shap)) +
+  geom_point(size = 2, color = "red") +
+  geom_segment(aes(x = variable_name, y = abs_shap, xend = variable_name),
+               yend = 0, colour = "grey50") +
+  labs(
+    x = "Variable Name",
+    y = "Mean |Shapley value|"
+  ) +
+  coord_flip()
+```
+
+Global Shapley values among treatment interactions
+```{r}
+#| label: fig-shap-global-tx
+
+global_tx |> 
+  arrange(desc(abs_shap)) |> 
+  slice(1:25) |> 
+  arrange(abs_shap) |> 
+  mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
+  mutate(variable_name = fct_inorder(variable_name)) |> 
+  ggplot(mapping = aes(x = variable_name, y = abs_shap)) +
+  geom_point(size = 2, color = "red") +
+  geom_segment(aes(x = variable_name, y = abs_shap, xend = variable_name),
+               yend = 0, colour = "grey50") +
+  labs(
+    x = "Variable Name",
+    y = "Mean |Shapley value|"
+  ) +
+  coord_flip()
+```
+
+
+
 
 

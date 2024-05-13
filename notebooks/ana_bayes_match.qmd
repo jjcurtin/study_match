@@ -2,17 +2,20 @@
 title: "Posterior probabilities across models for MATCH study (version `r params$version`)"
 author: "John Curtin"
 date: "`r lubridate::today()`"
-format:
-  html:
-    embed-resources: true
-params:
-  study: "match"
-  version: "v5"
-  cv: "nested"
+number-sections: true
 output: 
   html_document:
     toc: true 
     toc_depth: 4
+params:
+  study: "match"
+  version: "v5"
+  cv: "nested"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
 editor_options: 
   chunk_output_type: console
 ---
@@ -266,7 +269,9 @@ ci_con <- pp |>
          y = 700)
 ```
 
-```{r fig-contrasts}
+```{r}
+#| label: fig-contrasts
+
 fig_contrasts <- pp |> 
   tidy(seed = 123) |>   
   group_by(model) |> 

@@ -171,7 +171,7 @@ model_4wk <- glm(outcome_rct_num ~ c_tx_match,
                  data = d_4,
                  family = binomial(link = "logit"))
 
-summary(model_4wk)$coefficients
+summary(model_4wk)
 ```
 
 Simple effect at 12 weeks
@@ -183,7 +183,7 @@ model_12wk <- glm(outcome_rct_num ~ c_tx_match,
                   data = d_12,
                   family = binomial(link = "logit"))
 
-summary(model_12wk)$coefficients
+summary(model_12wk)
 ```
 
 Simple effect at 26 weeks
@@ -195,7 +195,7 @@ model_26wk <- glm(outcome_rct_num ~ c_tx_match,
                   data = d_26,
                   family = binomial(link = "logit"))
 
-summary(model_26wk)$coefficients
+summary(model_26wk)
 ```
 
 ## Figure
@@ -223,17 +223,11 @@ d |>
 
 Make predicted dataset
 ```{r}
-fixef_tx <- summary(model_bayes)$coefficients["c_tx_match", "Estimate"]
-fixef_wk <- summary(model_bayes)$coefficients["c4_week_log_2", "Estimate"]
-fixef_int <- summary(model_bayes)$coefficients["c_tx_match:c4_week_log_2", "Estimate"]
-intercept <- summary(model_bayes)$coefficients["(Intercept)", "Estimate"]
 
 d_fig_alt <- d |> 
-  select(c_tx_match, c4_week_log_2) |> 
-  distinct(c_tx_match, c4_week_log_2) |> 
-  mutate(int = c_tx_match * c4_week_log_2) |> 
-  mutate(log_odds = (fixef_tx * c_tx_match) + (fixef_wk * c4_week_log_2) +
-           (fixef_int * int) + intercept) |> 
+  select(subid, c_tx_match, c4_week_log_2) |> 
+  mutate(pred_logodds = predict(model_bayes, d)) |> 
+  mutate(pred_probs = predict(model_bayes, d, type = "response")) |> 
   mutate(week_cat = factor(c4_week_log_2,
                            levels = c(0, (log(12, base = 2) - 2), 
                                       (log(26, base = 2) - 2)),
@@ -241,14 +235,15 @@ d_fig_alt <- d |>
          tx_match = factor(c_tx_match, 
                            levels = c(0.5, -0.5),
                            labels = c("Matched to Best", "Unmatched"))) |> 
-  mutate(odds = exp(log_odds)) |> 
-  mutate(probabilities = odds / (1 + odds))
+  group_by(week_cat, tx_match) |> 
+  summarize(mean_pred_logodds = mean(pred_logodds),
+            mean_pred_probs = mean(pred_probs))
 ```
 
 Log odds figure
 ```{r}
 d_fig_alt |> 
-  ggplot(aes(x = week_cat, y = log_odds, fill = tx_match)) +
+  ggplot(aes(x = week_cat, y = mean_pred_logodds, fill = tx_match)) +
   geom_col(position = "dodge") +
   labs(
     x = "Week On-Study",
@@ -260,7 +255,7 @@ d_fig_alt |>
 Predicted probabilities figure
 ```{r}
 d_fig_alt |> 
-  ggplot(aes(x = week_cat, y = probabilities, fill = tx_match)) +
+  ggplot(aes(x = week_cat, y = mean_pred_probs, fill = tx_match)) +
   geom_col(position = "dodge") +
   labs(
     x = "Week On-Study",

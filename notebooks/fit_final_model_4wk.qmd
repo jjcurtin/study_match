@@ -290,9 +290,16 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
 
 Map over participants so that each is held-out once
 ```{r}
-all_probs <- d$subid |> 
+if(file.exists(file.path(path_models, str_c("aim_2_", version, "_", 
+                                         y_col_name, ".csv")))) {
+  all_probs <- read_csv(file.path(path_models, str_c("aim_2_", version, "_", 
+                                         y_col_name, ".csv")),
+                        show_col_types = FALSE)
+} else {
+  all_probs <- d$subid |> 
   map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
   list_rbind()
+}
 ```
 
 ### Make AIM 2 Dataset
@@ -353,7 +360,7 @@ janitor::tabyl(d_aim_2$tx_best)
 # check on variability of tx matching
 janitor::tabyl(d_aim_2$tx_match)
 
-# variability of matching within assignned (RCT) tx
+# variability of matching within assigned (RCT) tx
 d_aim_2 |> 
   group_by(tx_rct) |> 
   tab(tx_match)
@@ -364,17 +371,13 @@ Write out
 d_aim_2 |> 
   write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
                                          y_col_name, ".csv")))
-
-# d_aim_2 |> 
-#   write_csv(here("/objects", str_c("aim_2_", version, "_", 
-#                                    y_col_name, ".csv")))
 ```
 
 ### Validity check: Model Calibration
 
 Make wide format for all calibrated probabilities
 ```{r}
-all_probs_wide <- probs |> 
+all_probs_wide <- all_probs |> 
   rename_with(~ str_replace(.x, "prob_", ""), .cols = starts_with("prob_")) |> 
   pivot_wider(
     names_from = tx,
@@ -420,13 +423,13 @@ Compare mean abstinence from RCT to predicted probabilities for RCT tx across ca
 ```{r}
 d_valid |> 
   mutate(outcome_rct = if_else(outcome_rct_wk4 == "abstinent", 1, 0)) |> 
-  summarize(mean_rct = mean(outcome_rct_wk4),
+  summarize(mean_rct = mean(outcome_rct),
             mean_beta = mean(beta),
             mean_iso = mean(isotonic),
             mean_logi = mean(logistic),
             mean_raw = mean(raw))
 ```
-Raw probabilities appear to match the outcome best.
+Beta and logistic calibrated probabilities appear to match the outcome best.
 
 #### Plots
 

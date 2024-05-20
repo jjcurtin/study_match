@@ -29,7 +29,6 @@ key-points:
   - Take away point 2
 date: last-modified
 bibliography: references.bib
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
 citation:
   container-title: Journal of Important Findings 
 number-sections: false 

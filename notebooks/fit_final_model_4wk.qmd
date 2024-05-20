@@ -292,7 +292,7 @@ Map over participants so that each is held-out once
 ```{r}
 if(file.exists(file.path(path_models, str_c("aim_2_", version, "_", 
                                          y_col_name, ".csv")))) {
-  all_probs <- read_csv(file.path(path_models, str_c("aim_2_", version, "_", 
+  d_aim_2 <- read_csv(file.path(path_models, str_c("aim_2_", version, "_", 
                                          y_col_name, ".csv")),
                         show_col_types = FALSE)
 } else {
@@ -306,6 +306,7 @@ if(file.exists(file.path(path_models, str_c("aim_2_", version, "_",
 
 Pivot probabilities into wide format & select only raw probability (based on calibration validity check below)
 ```{r}
+#| eval: false
 raw_probs_wide <- all_probs |> 
   select(subid, tx, prob_raw) |> 
   pivot_wider(names_prefix = "prob_",
@@ -317,6 +318,7 @@ glimpse(raw_probs_wide)
 
 Join with d & create new variables
 ```{r}
+#| eval: false
 d_aim_2 <- d |> 
   select(subid, tx_rct = treatment, outcome_rct_wk4 = y) |> 
   left_join(raw_probs_wide, by = "subid") |> 
@@ -377,6 +379,7 @@ d_aim_2 |>
 
 Make wide format for all calibrated probabilities
 ```{r}
+#| eval: false
 all_probs_wide <- all_probs |> 
   rename_with(~ str_replace(.x, "prob_", ""), .cols = starts_with("prob_")) |> 
   pivot_wider(
@@ -388,6 +391,7 @@ all_probs_wide <- all_probs |>
 
 Set up validity check data
 ```{r}
+#| eval: false
 d_valid <- d_aim_2 |> 
   select(subid, tx_rct, outcome_rct_wk4) |> 
   left_join(all_probs_wide, by = "subid") |> 
@@ -421,6 +425,7 @@ d_valid <- d_aim_2 |>
 
 Compare mean abstinence from RCT to predicted probabilities for RCT tx across calibrations
 ```{r}
+#| eval: false
 d_valid |> 
   mutate(outcome_rct = if_else(outcome_rct_wk4 == "abstinent", 1, 0)) |> 
   summarize(mean_rct = mean(outcome_rct),
@@ -435,6 +440,7 @@ Beta and logistic calibrated probabilities appear to match the outcome best.
 
 Pivot data longer for required format
 ```{r}
+#| eval: false
 d_plot <- d_valid |> 
   pivot_longer(
     cols = c(beta, raw, isotonic, logistic),
@@ -445,6 +451,7 @@ d_plot <- d_valid |>
 
 Make plots by calibration method
 ```{r}
+#| eval: false
 d_plot |> 
   cal_plot_breaks(truth = outcome_rct_wk4, 
                   estimate = .pred_abstinent,

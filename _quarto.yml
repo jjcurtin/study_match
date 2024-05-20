@@ -8,9 +8,9 @@ manuscript:
 format:
   html: default
   docx: default
-  apaish-manuscript-typst: default
-#  apaish-document-typst: default
-#  apaish-journal-typst: default
+  apaish-typst:
+    documentmode: doc 
+#   documentmode: jou #preprint
 #  pdf: default
 #  jats: default
 

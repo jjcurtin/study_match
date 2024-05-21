@@ -1,0 +1,63 @@
+---
+title: "Make Demographic, ID Characteristic, & Feature Category Tables"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+# packages for script
+library(tidyverse)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute paths}
+
+# absolute paths
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- str_c("P:/studydata/match/processed_data/")},
+        
+        # IOS paths
+        Darwin = {
+          path_models <- str_c("/Volumes/private/studydata/match/processed_data/")},
+        
+        # Linux paths
+        Linux = {
+          path_models <- str_c("~/mnt/private/studydata/match/processed_data/")}
+)
+```
+
+```{r defaults}
+
+# chunk defaults
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+

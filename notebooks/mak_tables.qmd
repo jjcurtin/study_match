@@ -41,15 +41,15 @@ options(conflicts.policy = "depends.ok")
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_models <- str_c("P:/studydata/match/processed_data/")},
+          path_data <- str_c("P:/studydata/match/processed_data/")},
         
         # IOS paths
         Darwin = {
-          path_models <- str_c("/Volumes/private/studydata/match/processed_data/")},
+          path_data <- str_c("/Volumes/private/studydata/match/processed_data/")},
         
         # Linux paths
         Linux = {
-          path_models <- str_c("~/mnt/private/studydata/match/processed_data/")}
+          path_data <- str_c("~/mnt/private/studydata/match/processed_data/")}
 )
 ```
 
@@ -60,4 +60,231 @@ switch (Sys.info()[['sysname']],
 options(tibble.width = Inf)
 options(tibble.print_max = Inf)
 ```
+
+## Read in processed data
+
+```{r}
+d <- read_csv(file.path(path_data, "match_cln.csv"),
+              show_col_types = FALSE)
+```
+
+## Table 1: Demographic Characteristics
+
+Select down data
+```{r}
+dt1 <- d |> 
+  select(employment, ends_with("_ehr"), income_order) |> 
+  select(-bmi_ehr, -diabetic_ehr) |> 
+  glimpse()
+```
+
+Build table
+```{r}
+tab_race <- dt1 |> 
+  tab(race_ehr) |> 
+  mutate(race_ehr = case_match(
+    race_ehr,
+    "asian" ~ "   Asian",
+    "black_african_american" ~ "   Black/African American",
+    "multiracial" ~ "   Multiracial",
+    "native_american_alaska_native" ~ "   Native American/Alaska Native",
+    "other" ~ "   Other",
+    "white" ~ "   White"
+  )) |> 
+  rename(var_name = race_ehr) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Race",
+          n_prop = "",
+          .before = 1)
+
+tab_ethnicity <- dt1 |> 
+  tab(ethnicity_ehr) |> 
+  mutate(ethnicity_ehr = case_match(
+    ethnicity_ehr,
+    "hispanic_latinx" ~ "   Hispanic or Latino/a",
+    "non_hispanic" ~ "   Non-Hispanic"
+  )) |> 
+  rename(var_name = ethnicity_ehr) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Ethnicity",
+          n_prop = "",
+          .before = 1)
+
+tab_gender <- dt1 |> 
+  tab(gender_ehr) |> 
+  mutate(gender_ehr = case_match(
+    gender_ehr,
+    "female" ~ "   Female",
+    "male" ~ "   Male"
+  )) |> 
+  rename(var_name = gender_ehr) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Gender",
+          n_prop = "",
+          .before = 1)
+
+tab_employment <- dt1 |> 
+  tab(employment) |> 
+  mutate(employment = case_match(
+    employment,
+    "employed_full_time" ~ "   Employed (full-time)",
+    "employed_part_time" ~ "   Employed (part-time)",
+    "unemployed" ~ "   Unemployed"
+  )) |> 
+  rename(var_name = employment) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Employment",
+          n_prop = "",
+          .before = 1)
+
+tab_marital <- dt1 |> 
+  tab(marital_status_ehr) |> 
+  mutate(marital_status_ehr = case_match(
+    marital_status_ehr,
+    "divorced" ~ "   Divorced",
+    "live_with_domestic_partner" ~ "   Living with a domestic partner",
+    "married" ~ "   Married",
+    "separated" ~ "   Separated",
+    "widowed" ~ "   Widowed",
+    "never_married" ~ "   Never married",
+    NA ~ "   Did not respond"
+  )) |> 
+  rename(var_name = marital_status_ehr) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Marital Status",
+          n_prop = "",
+          .before = 1)
+
+tab_income <- dt1 |> 
+  tab(income_order) |> 
+  mutate(income_order = case_match(
+    income_order,
+    "01_less_than_10000" ~ "   < $10,000",
+    "02_btwn_10000_19999" ~ "   $10,000 - $19,999",
+    "03_btwn_20000_24999" ~ "   $20,000 - $24,999",
+    "04_btwn_25000_34999" ~ "   $25,000 - $34,999",
+    "05_btwn_35000_49999" ~ "   $35,000 - $49,999",
+    "06_btwn_50000_74999" ~ "   $50,000 - $74,999",
+    "07_more_than_75000" ~ "   $75,000+",
+    NA ~ "   Did not respond"
+  )) |> 
+  rename(var_name = income_order) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Income",
+          n_prop = "",
+          .before = 1)
+
+tab_age <- tibble(
+  var_name = "Age",
+  n_prop = "",
+  `Mean (SD)` = str_c(round(mean(dt1$age_ehr), digits = 2),
+                      " (", round(sd(dt1$age_ehr), digits = 2), ")")
+)
+
+t1_demo <- bind_rows(tab_gender, tab_race) |> 
+  bind_rows(tab_ethnicity) |> 
+  bind_rows(tab_marital) |> 
+  bind_rows(tab_employment) |> 
+  bind_rows(tab_income) |> 
+  mutate(`Mean (SD)` = "") |> 
+  add_row(tab_age, .before = 1) |> 
+  rename(Characteristic = var_name,
+         `N (%)` = n_prop)
+  
+```
+
+Table 1
+```{r}
+#| label: tab-demo
+print(t1_demo)
+```
+
+## Table 2: Smoking-related ID Characteristics
+
+Select down data
+```{r}
+dt2 <- d |> 
+  select(age_1st_cig, age_daily_smoker, years_smoke, cigs_per_day_heaviest,
+         tot_quit_attempt, cigs_per_day, dsm5_total_scale, ftnd_1_item_order,
+         wisdm37_total_scale, wsws_total_scale)
+```
+
+Build table
+```{r}
+tab_ftnd_1 <- dt2 |> 
+  tab(ftnd_1_item_order) |> 
+  mutate(ftnd_1_item_order = case_match(
+    ftnd_1_item_order,
+    "03_within_5_min" ~ "   Within 5 minutes",
+    "02_6_to_30_min" ~ "   6 - 30 minutes",
+    "01_31_to_60_min" ~ "   31 - 60 minutes",
+    "00_after_60_min" ~ "   After 60 minutes",
+    NA ~ "   Did not respond"
+  )) |> 
+  rename(var_name = ftnd_1_item_order) |> 
+  mutate(n_prop = str_c(n, " (", round((prop * 100), digits = 2), "%)")) |> 
+  select(var_name, n_prop) |> 
+  add_row(var_name = "Time to first cigarette upon waking",
+          n_prop = "",
+          .before = 1) |> 
+  rename(`N (%)` = n_prop, Characteristic = var_name) |> 
+  mutate(`Mean (SD)` = "")
+
+tab2_means <- dt2 |> 
+  select(-ftnd_1_item_order) |> 
+  summarize(across(everything(), ~ mean(.x, na.rm = TRUE))) |> 
+  pivot_longer(
+    cols = everything(),
+    names_to = "var_name",
+    values_to = "means"
+  ) |> 
+  mutate(means = round(means, digits = 2))
+
+tab2_sds <- dt2 |> 
+  select(-ftnd_1_item_order) |> 
+  summarize(across(everything(), ~ sd(.x, na.rm = TRUE))) |> 
+  pivot_longer(
+    cols = everything(),
+    names_to = "var_name",
+    values_to = "sds"
+  ) |> 
+  mutate(sds = round(sds, digits = 2))
+
+t2_idchars <- full_join(tab2_means, tab2_sds, by = "var_name") |> 
+  mutate(var_name = case_match(
+    var_name,
+    "age_1st_cig" ~ "Age of first cigarette",
+    "age_daily_smoker" ~ "Age became daily smoker",
+    "years_smoke" ~ "Years smoking",
+    "cigs_per_day" ~ "Cigarettes per day (current)",
+    "cigs_per_day_heaviest" ~ "Cigarettes per day (heaviest)",
+    "tot_quit_attempt" ~ "Number of previous quit attempts",
+    "dsm5_total_scale" ~ "Number of DSM5 tobacco use disorder symptoms",
+    "wisdm37_total_scale" ~ "WISDM37 Total Score",
+    "wsws_total_scale" ~ "WSWS Total Score"
+  )) |> 
+  mutate(`Mean (SD)` = str_c(means, " (", sds, ")"),
+         `N (%)` = "") |> 
+  rename(Characteristic = var_name) |> 
+  select(-means, -sds) |> 
+  full_join(tab_ftnd_1,
+            by = join_by(Characteristic, `Mean (SD)`, `N (%)`))
+  
+```
+
+Table 2
+```{r}
+#| label: tab-smoking-chars
+
+print(t2_idchars)
+```
+
+
+
 

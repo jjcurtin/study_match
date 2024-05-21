@@ -314,7 +314,7 @@ Global importance (mean |Shapley value|) for features for each model appear in P
 
 There was a significant fixed effect of treatment matching on abstinence (OR = , *z* = 5.640, *p* < 0.001). Individuals who received their model-predicted best treatment were more likely to be abstinent. There was also a significant fixed effect of time (OR = , *z* = -9.948, *p* < 0.001) such that the probability of abstinence declined over time. 
 
-There was not a significant interaction between treatment matching and time (*p* = 0.830). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
+There was not a significant interaction between treatment matching and time (*p* = 0.830). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
 
 There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = , *z* = , *p* = ) and at 12 weeks (OR = , *z* = , *p* = ). The effect of treatment matching was no longer significant by the 26-week follow-up assessment (*p* = ). Figure X shows the mean abstinence rate by treatment matching at each time point.
 
@@ -337,6 +337,28 @@ This project could provide immediate impact by offering a decision-making tool f
 I aim to increase potential impact by allowing feasibility to guide model development. I will prioritize sparse models with readily available, easy-to-measure features to the degree that these models yield robust treatment selection. The available features set can be easily measured via self-report. Easy measurement would allow our decision-making tool to be implemented without blood draws, expensive or otherwise inaccessible testing (e.g., neuroimaging), formal clinical interviewing, or even in-person doctors’ visits. In fact, prioritizing feasibility is a primary rationale for excluding genetic features from the present project; genetic features would require specialty materials and/or in-person medical appointments during clinical implementation. An assessment constructed entirely from self-report measurements is particularly valuable because two treatments in the model (nicotine patch, combination NRT) are widely available over the counter, offering scalable implementation even when medical access is limited. This focus on feasibility (i.e., using low burden, low-cost features) could maximize potential clinical benefit. These efforts are especially warranted when applying the precision mental health paradigm to SUDs, for which large health disparities on the bases of race, ethnicity, socioeconomic status, and geographic location persist.
 
 lots of stuff in baker arcp re: meds are not nearly as effective in real-world settings. NEED LONGER TERM SUPPORT!!!
+
+main effect of time also supports need for continuing care
+
+notes from john meeting:
+for actual paper, everything 26 week in supp including model comparison
+issue of time in discussion = related to aim 2
+predicting later out makes less sense & doesn't perform as well
+for diss, also everything in supp
+can put "discussion" section in supp as well to interpret 26-week model aim 1 and aim 2 results
+in methods: one sentence comparable analyses with 26 week outcome for models, performed generally less well (could even be footnote), but reporting everything in the supplement
+take model comparison out of methods/results
+parameter estimate tables into supplement, documentation of how you would use the model -> get these from fit_final_model scripts
+do keep mention of how many features retained and how many are tx interactions
+don't report secondary metrics
+calibration plot main text with model performance
+roc curve (TP y-axis by FP x-axis rate, both go from 0 to 1) as figure; add roc curve cite back in -> 2 panel plot with posterior distribution as second panel
+just write bayesian ci rather than figure for that
+concatenate 30 held-out ROC curves (for display purposes)
+- maybe supp figure for 30 roc curves
+30 held-out aurocs in supplement histogram
+
+outline for discussion: start today in lab meeting & then follow-up with john later this week
 
 -->
 

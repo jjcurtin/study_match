@@ -285,6 +285,101 @@ Table 2
 print(t2_idchars)
 ```
 
+## Table 3: Feature Categories
 
+Set up data
+```{r}
+dt3 <- d |> select(-contains("outcome"), -subid)
+```
 
+Build table
+```{r}
+t3_feat_misc <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Treatment", "Incarcerated", "Works Third Shift"),
+  type = c("Categorical", "Dichotomous", "Dichotomous"),
+  n_feat = c(1, 1, 1)
+) |> 
+  add_row(feat_cat = "Miscellaneous",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat_psych_sud <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Alcohol Problems-2 (Revised)", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule", "Snaith-Hamilton Pleasure Scale", "Anxiety Severity Index-3", "Distress Tolerance Scale", "Patient History Questionnaire-9"),
+  type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
+  n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
+) |> 
+  add_row(feat_cat = "Mental Health & Psychological Traits",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat_smoking <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder", "Fagerstrom Test of Nicotine Dependence", "Wisconsin Inventory of Smoking Dependence Motives-37", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2"),
+  type = c("Numeric", "Dichotomous", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (Unordered)", "Numeric", "Ordinal", "Ordinal", "Dichotomous", "Numeric", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Dichotomous, Ordinal", "Ordinal", "Categorical (Unordered)", "Ordinal"),
+  n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 14, 6, 49, 1, 45)
+) |> 
+  add_row(feat_cat = "Smoking Use & History",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat_medical <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory", "Berlin Sleep Questionnaire", "Body Mass Index", "Health-related Quality of Life Scale", "Healthy Days Symptoms Module"),
+  type = c("Dichotomous", "Ordinal", "Ordinal, Dichotomous", "Numeric", "Ordinal, Numeric", "Numeric"),
+  n_feat = c(1, 26, 3, 1, 4, 5)
+) |> 
+  add_row(feat_cat = "Medical & Physical Health",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat_social_environ <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Spouse Smokes", "Live with Another Smoker", "People Close to You Who Smoke", "Ban on Smoking at Home", "Ban on Smoking at Work", "Time Around Other Smokers"),
+  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Dichotomous", "Categorical (unordered)", "Ordinal"),
+  n_feat = c(1, 1, 5, 1, 1, 2)
+) |> 
+  add_row(feat_cat = "Social & Environmental Characteristics",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat_demo <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Gender", "Age", "Race", "Marital Status", "Income", "Ethnicity", "Employment"),
+  type = c("Categorical (unordered)", "Numeric", "Categorical (unordered)", "Categorical (unordered)", "Ordinal", "Categorical (Unordered)", "Categorical (unordered)"),
+  n_feat = c(1, 1, 1, 1, 1, 1, 1)
+) |> 
+  add_row(feat_cat = "Demographic Characteristics",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |> 
+  bind_rows(t3_feat_social_environ) |> 
+  bind_rows(t3_feat_psych_sud) |> 
+  bind_rows(t3_feat_medical) |> 
+  bind_rows(t3_feat_misc) |> 
+  rename(Category = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `Number of Features` = n_feat)
+```
+
+Table 3
+```{r}
+#| label: tab-features
+print(t3_feat)
+```
 

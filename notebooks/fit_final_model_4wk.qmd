@@ -287,26 +287,29 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
 
 ```
 
-
 Map over participants so that each is held-out once
 ```{r}
-if(file.exists(file.path(path_models, str_c("aim_2_", version, "_", 
-                                         y_col_name, ".csv")))) {
-  d_aim_2 <- read_csv(file.path(path_models, str_c("aim_2_", version, "_", 
-                                         y_col_name, ".csv")),
+if(file.exists(file.path(path_models, 
+                         str_c("trip_probs_", version, ".csv")))) {
+  all_probs <- read_csv(file.path(path_models, 
+                                  str_c("trip_probs_", version, ".csv")),
                         show_col_types = FALSE)
 } else {
   all_probs <- d$subid |> 
   map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
   list_rbind()
+  
+  all_probs |> 
+    write_csv(file.path(path_models, 
+                        str_c("trip_probs_", version, ".csv")))
 }
+
 ```
 
 ### Make AIM 2 Dataset
 
 Pivot probabilities into wide format & select only raw probability (based on calibration validity check below)
 ```{r}
-#| eval: false
 raw_probs_wide <- all_probs |> 
   select(subid, tx, prob_raw) |> 
   pivot_wider(names_prefix = "prob_",
@@ -318,7 +321,6 @@ glimpse(raw_probs_wide)
 
 Join with d & create new variables
 ```{r}
-#| eval: false
 d_aim_2 <- d |> 
   select(subid, tx_rct = treatment, outcome_rct_wk4 = y) |> 
   left_join(raw_probs_wide, by = "subid") |> 
@@ -341,10 +343,10 @@ d_aim_2 <- d |>
                             "combo_nrt"))) |> 
   mutate(tx_match = if_else(tx_best == tx_rct, TRUE, FALSE)) |> 
   left_join(d_outcomes, by = "subid") |> 
-  select(-pp_hybrid_wk4_outcome, -pp_hybrid_wk1_outcome, -pp_hybrid_yr3_outcome) |> # already in there from d
+  select(-pp_hybrid_wk4_outcome, -pp_hybrid_wk1_outcome, 
+         -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> 
   rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
-         outcome_rct_wk26 = pp_hybrid_wk26_outcome,
-         outcome_rct_wk52 = pp_hybrid_wk52_outcome) |> 
+         outcome_rct_wk26 = pp_hybrid_wk26_outcome) |> 
   relocate(subid, tx_rct, tx_best, tx_match,
            prob_best, starts_with("outcome"), starts_with("prob"))
 
@@ -357,10 +359,12 @@ Quick EDA checks
 head(d_aim_2)
 
 # check on variability of best tx
-janitor::tabyl(d_aim_2$tx_best)
+d_aim_2 |> 
+  tab(tx_best)
 
 # check on variability of tx matching
-janitor::tabyl(d_aim_2$tx_match)
+d_aim_2 |> 
+  tab(tx_match)
 
 # variability of matching within assigned (RCT) tx
 d_aim_2 |> 
@@ -379,7 +383,6 @@ d_aim_2 |>
 
 Make wide format for all calibrated probabilities
 ```{r}
-#| eval: false
 all_probs_wide <- all_probs |> 
   rename_with(~ str_replace(.x, "prob_", ""), .cols = starts_with("prob_")) |> 
   pivot_wider(
@@ -391,7 +394,6 @@ all_probs_wide <- all_probs |>
 
 Set up validity check data
 ```{r}
-#| eval: false
 d_valid <- d_aim_2 |> 
   select(subid, tx_rct, outcome_rct_wk4) |> 
   left_join(all_probs_wide, by = "subid") |> 
@@ -423,9 +425,10 @@ d_valid <- d_aim_2 |>
 
 ```
 
+#### Comparison of means
+
 Compare mean abstinence from RCT to predicted probabilities for RCT tx across calibrations
 ```{r}
-#| eval: false
 d_valid |> 
   mutate(outcome_rct = if_else(outcome_rct_wk4 == "abstinent", 1, 0)) |> 
   summarize(mean_rct = mean(outcome_rct),
@@ -440,7 +443,6 @@ Beta and logistic calibrated probabilities appear to match the outcome best.
 
 Pivot data longer for required format
 ```{r}
-#| eval: false
 d_plot <- d_valid |> 
   pivot_longer(
     cols = c(beta, raw, isotonic, logistic),
@@ -451,7 +453,6 @@ d_plot <- d_valid |>
 
 Make plots by calibration method
 ```{r}
-#| eval: false
 d_plot |> 
   cal_plot_breaks(truth = outcome_rct_wk4, 
                   estimate = .pred_abstinent,
@@ -463,3 +464,32 @@ d_plot |>
                     .by = method)
 ```
 Raw probabilities appear the most well-calibrated: best aligned with diagonal line, spans the fullest range of bins/windows. Will use raw probabilities for AIM 2 analyses (selected above).
+
+#### Brier score
+
+Beta calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk4,
+                estimate = d_valid$beta)
+```
+
+Logistic calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk4,
+                estimate = d_valid$logistic)
+```
+
+Isotonic calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk4,
+                estimate = d_valid$isotonic)
+```
+
+Raw calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk4,
+                estimate = d_valid$raw)
+```
+
+Beta calibration has the lowest Brier score index, followed closely by logistic calibration.
+

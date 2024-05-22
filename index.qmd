@@ -37,12 +37,18 @@ editor_options:
 
 ## Introduction
 
-<!-- 
-numbers correspond to nrsa refs
-other refs likely missing
--->
-
 ### Precision mental health
+
+<!--
+consider starting with the problem: hard to select among treatments, differential treatment effectiveness, costliness, etc. -> then second paragraph introduces pm/pmh 
+
+precision med first, successes there eg cancer, then pmh and mh as more difficult/more important/less biological driver eg insel comment. get the most "mileage" out of the transition, what might be unique to pmh context?
+
+we are not in the business of picking smoking cessation meds, we are in the business of improving treatments
+
+discussion: remember to discuss chronic diseases, need for time-varying tx and personalizing/adapting OVER TIME cite oncology vs addiction paper
+
+-->
 
 Precision mental health is the application of the precision medicine paradigm to mental health conditions [@derubeisHistoryCurrentStatus2019; @inselNIMHResearchDomain2014; @bickmanAchievingPrecisionMental2016]. Precision medicine and precision mental health aim to address an important problem in traditional treatment selection: what works best at a population level does not necessarily work best for a given patient. For example, although treatment A may be more effective than treatment B across the population, it may be that treatment B is markedly more effective for a specific patient.
 
@@ -56,7 +62,7 @@ Within precision mental health, an early research example comes from the substan
 
 Despite these opportunities for advances, however, precision mental health research has progressed with limited success [@kesslerPragmaticPrecisionPsychiatry2021]. Efforts thus far have often focused on tailoring treatments at the group level; in other words, identifying a (single) factor that divides individuals within a diagnostic category into subgroups that can be treated differently [@derubeisHistoryCurrentStatus2019]. However, extant research has not yet enabled reliable recommendations for treatment selection even at the group level - let alone for an individual patient. These patient-level predictions are required for clinical implementation; our goal in clinical science is to predict behavior such that we can apply findings to a new patient. 
 
-One reason for this slow progress is that many factors influence a complex clinical phenomenon like treatment success. Thus, any single feature (i.e., predictor variable) cannot account for more than a small portion of the variance in treatment success [@kesslerPragmaticPrecisionPsychiatry2021; @inselNIMHResearchDomain2014]. This idea is comparable to the shift in understanding within genetics: research has moved away from candidate gene studies to polygenic approaches that rely on small contributions from many genes [@bogdanPolygenicRiskScores2018; @chenPathwaysPrecisionMedicine2018; @wrayResearchReviewPolygenic2014]. Unfortunately, traditional analytic techniques have often limited the ability to consider more than one or a few features simultaneously. These limitations have also prevented considering concurrently features across constructs (e.g., demographics, psychological traits, environmental variables; [@bickmanImprovingMentalHealth2020]). Therefore, models have failed to capture the real-world complexity underlying these clinical phenomena.
+One reason for this slow progress is that many factors influence a complex clinical phenomenon like treatment success. Thus, any single feature (i.e., predictor variable) cannot account for more than a small portion of the variance in treatment success [@kesslerPragmaticPrecisionPsychiatry2021; @inselNIMHResearchDomain2014]. This idea is comparable to the shift in understanding within genetics: research has moved away from candidate gene studies to polygenic approaches that rely on small contributions from many genes [@bogdanPolygenicRiskScores2018; @chenPathwaysPrecisionMedicine2018; @wrayResearchReviewPolygenic2014]. Unfortunately, traditional analytic techniques <!-- give examples here --> have often limited the ability to consider more than one or a few features simultaneously. These limitations have also prevented considering concurrently features across constructs (e.g., demographics, psychological traits, environmental variables; [@bickmanImprovingMentalHealth2020]). Therefore, models have failed to capture the real-world complexity underlying these clinical phenomena.
 
 Moreover, because researchers using traditional analytic techniques typically develop and evaluate their precision mental health models in a single sample, the models may become very overfit to that sample [@jonathanUseCrossvalidationAssess2000]. Consequently, they do not generalize well to new patients that were not used for model development. This problem is particularly concerning because clinical implementation of precision mental health requires that these models provide accurate recommendations about treatment selection for *new* patients rather than explaining treatment success within the study sample. 
 
@@ -68,9 +74,17 @@ Applying machine learning may be able to address these limitations of traditiona
 
 Although machine learning models can handle very large numbers of features, this capacity comes at a cost, referred to as the “bias-variance trade-off” [@jamesIntroductionStatisticalLearning2013; @ngMachineLearningYearning2018]. Too many features (particularly correlated features) yield unstable models that vary strongly based on the data used to develop them. High variance compromises model generalizability because a high variance (e.g., very flexible) model may not predict very accurately in new data. However, too few features (as well as other constraints on model characteristics) yield biased models that also do not predict well because they miss important predictive patterns and relationships. Machine learning uses various techniques (e.g., regularization, hyperparameter tuning, simultaneous consideration of many model configurations) to optimize this bias-variance trade-off to accommodate high-dimensional sets of features while reducing overfitting [@jamesIntroductionStatisticalLearning2013; @kuhnAppliedPredictiveModeling2018; @ngMachineLearningYearning2018; @mooneyBigDataPublic2018]. Thus, machine learning methods may allow us to build precision mental health models that both capture clinical complexity and generalize accurately to new data.
 
+<!-- try to break down and give digestible examples -->
 Finally, machine learning provides rigorous resampling techniques to fit and evaluate models in separate data [@jamesIntroductionStatisticalLearning2013]. Consequently, models generalize well to new patients because they are evaluated on out-of-sample prediction. In a simplest case, data can be divided into held-in and held-out samples. More sophisticated resampling techniques such as cross-validation involve dividing the data many times to create multiple held-in and held-out samples [@krstajicCrossvalidationPitfallsWhen2014; @jonathanUseCrossvalidationAssess2000]. These approaches offer significant advantages for 1) accurately selecting a best model among multiple model configurations, and 2) estimating how well that model will perform when applied to new data (e.g., new patients in a clinical setting). Applying machine learning can accomplish the goal in precision mental health of accurate, robust treatment selection for new patients.
 
 ### Opportunities to improve equity in mental health treatment
+
+<!-- 
+rather than having its own section:
+1. weave throughout (eg talking about vulnerable pops in smoking cessation tx, genetics/bio variables inequitable)
+2. implementation focus (rather than equity solely)
+3. discussion section including future directions re: algorithmic fairness
+-->
 
 Critically, the combination of machine learning methods with the precision mental health paradigm may be able to mitigate health disparities in our current treatment pipeline [@maceachernMachineLearningPrecision2021]. Treatments are rarely designed or evaluated in diverse samples; input directly from patient shareholders is incorporated even less often. Although the NIH has launched some new initiatives to improve effort in these areas, when it comes to treatments, we still rely almost exclusively on treatments developed decades ago that were effective in homogeneous samples. Unfortunately, the people who we failed to include in our treatment design and validation are also those who are often disproportionately affected by these exact health conditions or face additional barriers to receive effective treatment [@moralesCallActionAddress2020; @barksdaleInnovativeDirectionsAdvance2022; @officeofthesurgeongeneralusMentalHealthCulture2001; @jacobsonDigitalTherapeuticsMental2022].
 
@@ -120,7 +134,13 @@ Finally, there is some evidence that individuals respond differently to differen
 
 #### Previous precision mental health & machine learning research
 
-<!-- consider swapping this section with the previous one? end with differential treatment opportunities? would require slight intra-section reorganization but might flow better overall to end with optimistic possibilities for differential tx success before going into the purpose -->
+<!-- 
+consider swapping this section with the previous one? end with differential treatment opportunities? would require slight intra-section reorganization but might flow better overall to end with optimistic possibilities for differential tx success before going into the purpose 
+
+problem of smoking - problem of smoking cessation tx not being sufficiently effective - understandably, people have tried to predict smoking cessation - haven't done pmh tx selection but here's why i think we could do it
+
+YES SWAP
+-->
 
 In recognition of the need for improved treatment effectiveness and the potential for personalized treatment approaches, many smoking cessation researchers have pursued precision mental health research in recent years. 
 
@@ -134,11 +154,13 @@ Although models that identify prognostic factors are important, they do not offe
 
 Some research has begun to investigate factors that can allow selection among treatment options, particularly genetic factors and biomarkers (for review, see [@chenPathwaysPrecisionMedicine2018]). Chen and colleagues found that variants in the cholinergic receptor nicotinic alpha 5 subunit (CHRNA5) predict differential treatment success among Black individuals who smoke: C-NRT was more effective for people with certain genotypes, whereas varenicline was more effective for people with other genotypes [@chenGeneticVariantCHRNA52020]. Many researchers have investigated the role of the nicotine metabolite ratio (NMR), a phenotypic biomarker for nicotine metabolism that is easier to test than genotypes. Overall, it appears that slow metabolizers report greater cessation success with NRT medications, whereas varenicline is more effective for fast metabolizers [@shahabDoesNicotineMetabolite2019; @schnollNicotineMetabolicRate2009; @glatardAssociationNicotineMetabolism2017; @chenowethNicotineMetaboliteRatio2016; @lermanUseNicotineMetabolite2015], though a review by Siegel and colleagues notes that "real-world evaluations of NMR to personalize treatment for smoking cessation have produced mixed findings so far" ([@siegelUseNicotineMetabolite2020], p. 265).
 
-This research has exciting implications for selecting among treatments. However, using biologic and genetic factors comes with downsides when considering implementation. Though the necessary technology is improving, the testing required to collect these data is neither widely available nor accessible [@maceachernMachineLearningPrecision2021]. Moreover, using these data to select treatments is likely to exacerbate rather than mitigate existing disparities in mental healthcare. Using genetic and biological factors is likely to favor privileged individuals who have insurance that covers specialized care and specialty testing. Some have noted that biomarker testing for NMR is more affordable than genetic testing; however, there remain methodological challenges associated with establishing cut-off points for slow vs. fast metabolizers, particularly among vulnerable subpopulations for whom there are no NMR data available yet who experience greater smoking rates or associated risks (e.g., Native American/American Indian people, pregnant women, people who drink heavily or have other substance use disorders, people with serious mental illness, and individuals who identify as LGBTQ; [@siegelUseNicotineMetabolite2020]). 
+This research has exciting implications for selecting among treatments. However, using biologic and genetic factors comes with downsides when considering implementation. Though the necessary technology is improving, the testing required to collect these data is neither widely available nor accessible [@maceachernMachineLearningPrecision2021]. Moreover, using these data to select treatments is likely to exacerbate rather than mitigate existing disparities in mental healthcare. Using genetic and biological factors is likely to favor privileged individuals who have insurance that covers specialized care and specialty testing. Some have noted that biomarker testing for NMR is more affordable than genetic testing; however, there remain methodological challenges associated with establishing cut-off points for slow vs. fast metabolizers, particularly among vulnerable subpopulations for whom there are no NMR data available yet who experience greater smoking rates or associated risks (e.g., Native American/American Indian people, pregnant women, people who drink heavily or have other substance use disorders, people with serious mental illness, and individuals who identify as LGBTQ; [@siegelUseNicotineMetabolite2020]).
 
 Other research has investigated non-biological factors as potential moderators of treatment effectiveness. Kaye and colleagues (2020) examined whether varenicline might be more effective than C-NRT among individuals who smoke and binge drink; however, varenicline's effects did not vary as a function of drinking status [@kayeSearchingPersonalizedMedicine2020a]. Piper and colleagues conducted a series of studies with the goal of advancing precision mental health for smoking cessation. They used a factorial design to identify ideal treatment combinations at the group level (e.g., pre-quit medication, pre-quit counseling, counseling modality, cessation medications; [@piperIdentifyingEffectiveIntervention2016]). They followed up by exploring moderators of intervention main effects and interactions and found that psychiatric history moderated some treatment effects [@piperPrecisionSmokingCessation2017a]. They also looked at whether various treatment components affected their purported treatment mechanisms to help elucidate how these treatments may be producing their effects [@piperPrecisionSmokingCessation2017]. These studies took advantage of largely self-report data, making any resulting models more clinically implementable. However, each study examined only a single moderator or examined each moderator in a separate model. These analyses were ideally suited for clearly identifying moderators and explaining mechanisms, but they were less well-suited for finding high-dimensional sets of features that can predict differential treatment responses.
 
 ### Purpose
+
+<!-- introduce aims here -->
 
 The goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. We used machine learning analytic techniques to build a model that can take advantage of many features simultaneously while maintaining generalizability to new patients. We incorporated easy-to-collect self-report data as our primary model inputs such that any resulting model will be poised for accessible, equitable clinical implementation. 
 
@@ -168,7 +190,7 @@ Participants were randomly assigned to receive 12 weeks of medication treatment 
 
 Participants were comprehensively assessed for individual differences characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table X.
 
-<!-- more text here or OK just to refer to a detailed table? -->
+<!-- OK just to refer to a detailed table! -->
 
 #### Abstinence outcome
 
@@ -180,7 +202,11 @@ Our *primary prediction outcome* for our models was point-prevalence abstinence 
 
 #### Feature engineering and dimensionality reduction
 
-Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness [@kuhnFeatureEngineeringSelection2019]. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
+Feature engineering is the process of converting raw predictors into meaningful numeric and/or categorical representations (features) that improve model effectiveness [@kuhnFeatureEngineeringSelection2019]. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
+
+Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric features, mode imputation for nominal and ordinal features); and 2) removing zero-variance features. Medians/modes for missing data imputation and identification of zero variance features were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
+
+<!-- all designed to optimize the bias-variance trade-off. difficult to determine a priori where we need to be along the continuum, so we consider multiple configurations. anchor in BVTO -->
 
 We used a Yeo-Johnson transformation on all numeric variables to address distributional shape. Unordered categorical variables were dummy-coded. Ordered categorical variables (e.g., Likert scale items on self-report measures) could be ordinal scored (i.e., treated as numeric data) or dummy-coded. We also allowed treatment (dummy coded) to interact with all other features. Finally, all features were normalized as a requirement of the GLMNet algorithm.
 
@@ -225,6 +251,18 @@ To estimate the probability of different performance across models, we regressed
 Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting. Specifically, the priors were set as follows: residual standard deviation ~ normal(location=XX, scale=exp(XX)), intercept (after centering predictors) ~ normal(location=2.3, scale=1.3), the two coefficients for window width contrasts ~ normal (location=0, scale=2.69), and covariance ~ decov(regularization=1, concentration=1, shape=1, scale=1). <!-- UPDATE PRIORS these are from EMA, i don't know if i use specified priors or adjusted priors -->
 
 #### Feature importance with SHAP
+
+<!-- 
+add a sentence or two to say "so we can look at shapley values to do x, y, z..." 
+why am i doing this?
+1. interpretability to support implementation
+2. understanding of predictors to support theory, etc
+definitely add these here to provide clear justification
+
+maybe need to show directionality of importance? SHAP more likely to give us that than glmnet coefficients. SHAP doesn't have the problem of partial effects, showing unique effects
+
+
+-->
 
 We computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of features. Shapley values possess several useful properties including: Additivity (Shapley values for each feature can be computed independently and summed); Efficiency (the sum of Shapley values across features must add up to the difference between predicted and observed outcomes for each observation); Symmetry (Shapley values for two features should be equal if the two features contribute equally to all possible coalitions); and Dummy (a feature that does not change the predicted value in any coalition will have a Shapley value of 0).
 
@@ -359,6 +397,21 @@ concatenate 30 held-out ROC curves (for display purposes)
 30 held-out aurocs in supplement histogram
 
 outline for discussion: start today in lab meeting & then follow-up with john later this week
+
+discussion notes:
+1. this works!!!! can really be helpful!
+2. ok that auroc isn't that high because it's not our end goal
+3. might be able to predict better if we incorporated things like bio & genetic markers but comes at implementation cost
+4. tandem: tx development alongside pmh, who it doesn't work for, what factors predict success
+5. need adaptive support over time (no benefit at 26 week, can't predict that well overall using only baseline characteristics)
+
+MAKING A DISTINCTION BETWEEN MODELS THAT PREDICT BETTER AND MODELS THAT PREDICT DIFFERENTIALLY BETTER - a model that predicted abstinence perfectly but included no interactions would be useless for tx selection goal
+
+looking at "main effect" prediction may help identify mechanisms to target with other meds/new tx/etc.
+
+start with 37 unique things to assess - why do we only need to assess those and not main effects - difference in goals of overall prediction vs selection of tx - equity/implementation
+
+harm reduction in smoking?
 
 -->
 

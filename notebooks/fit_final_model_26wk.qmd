@@ -1,5 +1,5 @@
 ---
-title: "Fits and characterizes final model for version `r params$version` for outcome `r params$y_col_name`"
+title: "Fits and characterizes final model for 26-week outcome"
 author: "Gaylen Fronk"
 date: "`r lubridate::today()`"
 output: 
@@ -106,6 +106,7 @@ glimpse(best_config)
 
 ### Fit best model in full dataset
 
+**NOTE**: This model will only be used for 1) examining parameter estimates, and 2) ultimate dissemination.
 ```{r}
 batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE) 
 
@@ -195,74 +196,112 @@ d_trip <- bind_rows(d_patch, d_combo) |>
                               "combo_nrt")))
 ```
 
-Build triplicate feature set
+Make function to: 1) hold out each sub once, 2) fit model with remaining 1085 subs, 3) get 3 raw predictions for held-out sub, 4) get calibrated predictions for held-out sub
 ```{r}
-feat_trip <- rec_prepped |> 
-  bake(new_data = d_trip) 
+get_triple_probs <- function(i_sub, best_config, d, d_trip){
+  
+  # hold out single subject
+  d_out <- d_trip |> 
+    filter(subid == i_sub)
+  
+  d_in <- d |> 
+    filter(subid != i_sub)
+  
+  # prep recipe 
+  rec <- build_recipe(d = d_in, config = best_config)
+  rec_prepped <- rec |> 
+    prep(training = d_in, strings_as_factors = FALSE)
+  
+  # bake feat_in and feat_out
+  feat_in <- rec_prepped |> 
+    bake(new_data = NULL)
+  
+  feat_out <- rec_prepped |> 
+    bake(new_data = d_out)
+  
+  # fit model
+  model_best <- fit_best_model(best_config, feat = feat_in,
+                               "classification")
+  
+  # raw (uncalibrated) predictions
+  preds_prob <- predict(model_best, feat_out,
+                        type = "prob")
+  
+  # fit calibration model
+  set.seed(2468)
+  cal_split <- d_in |> 
+    initial_split(prop = 3/4, strata = y)
+  d_cal_in <- training(cal_split) 
+  d_cal_out <- testing(cal_split)
+  
+  rec_cal_prepped <- rec |> 
+    prep(training = d_cal_in, strings_as_factors = FALSE)
+  
+  feat_cal_in <- rec_cal_prepped |> 
+    bake(new_data = NULL) 
+  
+  feat_cal_out <- rec_cal_prepped |> 
+    bake(new_data = d_cal_out) 
+  
+  model_cal <- fit_best_model(best_config, feat = feat_cal_in, "classification")
+  
+  # beta calibration
+  beta <- predict(model_cal, feat_cal_out,
+                  type = "prob") |>
+    mutate(truth = feat_cal_out$y) |>
+    cal_estimate_beta(truth = truth,
+                      estimate = dplyr::starts_with(".pred_"),
+                      smooth = TRUE)
+  preds_prob_beta <- preds_prob |>
+    cal_apply(beta)
+  
+  # iso calibration
+  iso <- predict(model_cal, feat_cal_out,
+                 type = "prob") |>
+    mutate(truth = feat_cal_out$y) |>
+    cal_estimate_isotonic(truth = truth,
+                          estimate = dplyr::starts_with(".pred_"))
+  preds_prob_iso <- preds_prob |>
+    cal_apply(iso)
+  
+  # logistic calibration
+  logi <- predict(model_cal, feat_cal_out,
+                  type = "prob") |>
+    mutate(truth = feat_cal_out$y) |>
+    cal_estimate_logistic(truth = truth,
+                          estimate = dplyr::starts_with(".pred_"),
+                          smooth = TRUE)
+  preds_prob_logi <- preds_prob |>
+    cal_apply(logi)
+  
+  # combine raw and calibrated probs
+  probs <- tibble(subid = d_out$subid,
+                  tx = d_out$treatment,
+                  prob_raw = preds_prob[[str_c(".pred_", y_level_pos)]],
+                  prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
+                  prob_iso = preds_prob_iso[[str_c(".pred_", y_level_pos)]],
+                  prob_logi = preds_prob_logi[[str_c(".pred_", y_level_pos)]]) 
+}
+
 ```
 
-Get raw and calibrated probabilities
+Map over participants so that each is held-out once
 ```{r}
-# raw (uncalibrated) predictions for triplicated dataset
-preds_prob <- predict(model_best, feat_trip,
-                      type = "prob")
+if(file.exists(file.path(path_models, 
+                         str_c("trip_probs_", version, ".csv")))) {
+  all_probs <- read_csv(file.path(path_models, 
+                                  str_c("trip_probs_", version, ".csv")),
+                        show_col_types = FALSE)
+} else {
+  all_probs <- d$subid |> 
+  map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
+  list_rbind()
+  
+  all_probs |> 
+    write_csv(file.path(path_models, 
+                        str_c("trip_probs_", version, ".csv")))
+}
 
-# fit calibration model
-set.seed(2468)
-cal_split <- d |> 
-  initial_split(prop = 3/4, strata = y)
-d_cal_in <- training(cal_split) 
-d_cal_out <- testing(cal_split)
-
-rec_cal_prepped <- rec |> 
-  prep(training = d_cal_in, strings_as_factors = FALSE)
-
-feat_cal_in <- rec_cal_prepped |> 
-  bake(new_data = NULL) 
-
-feat_cal_out <- rec_cal_prepped |> 
-  bake(new_data = d_cal_out) 
-
-model_cal <- fit_best_model(best_config, feat = feat_cal_in, "classification")
-
-# beta calibration
-beta <- predict(model_cal, feat_cal_out,
-                type = "prob") |>
-  mutate(truth = feat_cal_out$y) |>
-  cal_estimate_beta(truth = truth,
-                    estimate = dplyr::starts_with(".pred_"),
-                    smooth = TRUE)
-preds_prob_beta <- preds_prob |>
-  cal_apply(beta)
-
-# iso calibration
-iso <- predict(model_cal, feat_cal_out,
-               type = "prob") |>
-  mutate(truth = feat_cal_out$y) |>
-  cal_estimate_isotonic(truth = truth,
-                        estimate = dplyr::starts_with(".pred_"))
-preds_prob_iso <- preds_prob |>
-  cal_apply(iso)
-
-# logistic calibration
-logi <- predict(model_cal, feat_cal_out,
-                type = "prob") |>
-  mutate(truth = feat_cal_out$y) |>
-  cal_estimate_logistic(truth = truth,
-                        estimate = dplyr::starts_with(".pred_"),
-                        smooth = TRUE)
-preds_prob_logi <- preds_prob |>
-  cal_apply(logi)
-
-# combine raw and calibrated probs
-probs <- tibble(subid = d_trip$subid,
-                tx = d_trip$treatment,
-                prob_raw = preds_prob[[str_c(".pred_", y_level_pos)]],
-                prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
-                prob_iso = preds_prob_iso[[str_c(".pred_", y_level_pos)]],
-                prob_logi = preds_prob_logi[[str_c(".pred_", y_level_pos)]]) 
-
-glimpse(probs)
 ```
 
 ### Make AIM 2 Dataset
@@ -293,7 +332,8 @@ d_aim_2 <- d |>
   mutate(tx_best = if_else(is.na(tx_best), case_when(
     prob_patch == prob_combo_nrt ~ "combo_nrt",
     prob_patch == prob_varenicline ~ "varenicline",
-    prob_combo_nrt == prob_varenicline ~ sample(c("combo_nrt", "varenicline"), 1),
+    prob_combo_nrt == prob_varenicline ~ sample(c("combo_nrt",
+                                                  "varenicline"), 1),
     TRUE ~ NA_character_
   ), tx_best)) |> 
   mutate(prob_best = case_when(
@@ -309,10 +349,9 @@ d_aim_2 <- d |>
                             "combo_nrt"))) |> 
   mutate(tx_match = if_else(tx_best == tx_rct, TRUE, FALSE)) |> 
   left_join(d_outcomes, by = "subid") |> 
-  select(-pp_hybrid_wk26_outcome, -pp_hybrid_wk1_outcome, -pp_hybrid_yr3_outcome) |> # already in there from d
+  select(-pp_hybrid_wk26_outcome, -pp_hybrid_wk1_outcome, -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> # already in there from d
   rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
-         outcome_rct_wk4 = pp_hybrid_wk4_outcome,
-         outcome_rct_wk52 = pp_hybrid_wk52_outcome) |> 
+         outcome_rct_wk4 = pp_hybrid_wk4_outcome) |> 
   relocate(subid, tx_rct, tx_best, tx_match,
            prob_best, starts_with("outcome"), starts_with("prob"))
 
@@ -393,6 +432,8 @@ d_valid <- d_aim_2 |>
 
 ```
 
+#### Comparison of means
+
 Compare mean abstinence from RCT to predicted probabilities for RCT tx across calibrations
 ```{r}
 d_valid |> 
@@ -430,3 +471,29 @@ d_plot |>
                   .by = method)
 ```
 Beta and logistic start off well but then quickly deviate and have a minimized range. Isotonic jumps fully from 0 to 1. Raw has some deviations in the upper quadrant of the graphs, but seems overall to follow the lines best for longest.
+
+#### Brier score
+
+Beta calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk26,
+                estimate = d_valid$beta)
+```
+
+Logistic calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk26,
+                estimate = d_valid$logistic)
+```
+
+Isotonic calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk26,
+                estimate = d_valid$isotonic)
+```
+
+Raw calibration
+```{r}
+brier_class_vec(truth = d_valid$outcome_rct_wk26,
+                estimate = d_valid$raw)
+```

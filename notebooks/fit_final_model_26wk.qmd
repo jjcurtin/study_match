@@ -308,7 +308,7 @@ if(file.exists(file.path(path_models,
 
 Pivot probabilities into wide format & select only raw probability (based on calibration validity check below)
 ```{r}
-raw_probs_wide <- probs |> 
+raw_probs_wide <- all_probs |> 
   select(subid, tx, prob_raw) |> 
   pivot_wider(names_prefix = "prob_",
               names_from = tx,
@@ -364,12 +364,14 @@ Quick EDA checks
 head(d_aim_2)
 
 # check on variability of best tx
-janitor::tabyl(d_aim_2$tx_best)
+d_aim_2 |> 
+  tab(tx_best) # note: no one gets assigned to patch
 
 # check on variability of tx matching
-janitor::tabyl(d_aim_2$tx_match)
+d_aim_2 |> 
+  tab(tx_match)
 
-# variability of matching within assignned (RCT) tx
+# variability of matching within assigned (RCT) tx
 d_aim_2 |> 
   group_by(tx_rct) |> 
   tab(tx_match)
@@ -390,7 +392,7 @@ d_aim_2 |>
 
 Make wide format for all calibrated probabilities
 ```{r}
-all_probs_wide <- probs |> 
+all_probs_wide <- all_probs |> 
   rename_with(~ str_replace(.x, "prob_", ""), .cols = starts_with("prob_")) |> 
   pivot_wider(
     names_from = tx,
@@ -470,7 +472,7 @@ d_plot |>
                   estimate = .pred_abstinent,
                   .by = method)
 ```
-Beta and logistic start off well but then quickly deviate and have a minimized range. Isotonic jumps fully from 0 to 1. Raw has some deviations in the upper quadrant of the graphs, but seems overall to follow the lines best for longest.
+Logistic and raw probabilities follow the diagonal line for the longest. Both jump off the line around the midpoint, with logistic probabilities jumping up, and raw probabilities jumping in both directions.
 
 #### Brier score
 

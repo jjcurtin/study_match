@@ -10,7 +10,6 @@ params:
   study: "match"
   version: "v5"
   cv: "kfold"
-  algorithms: "all"   # "all" or name of specific algorithm
   y_col_name: "pp_hybrid_wk4_outcome" 
 format:
   html:
@@ -25,7 +24,6 @@ editor_options:
 study <- params$study
 version <- params$version
 cv <- params$cv
-algorithms <- params$algorithms
 y_col_name <- params$y_col_name
 
 ```
@@ -230,7 +228,7 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
                         type = "prob")
   
   # fit calibration model
-  set.seed(1748)
+  set.seed(2468)
   cal_split <- d_in |> 
     initial_split(prop = 3/4, strata = y)
   d_cal_in <- training(cal_split) 

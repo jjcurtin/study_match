@@ -201,7 +201,7 @@ t1_demo <- bind_rows(tab_gender, tab_race) |>
 
 Table 1
 ```{r}
-#| label: tab-demo
+#| label: tbl-demo
 print(t1_demo)
 ```
 
@@ -280,7 +280,7 @@ t2_idchars <- full_join(tab2_means, tab2_sds, by = "var_name") |>
 
 Table 2
 ```{r}
-#| label: tab-smoking-chars
+#| label: tbl-smoking-chars
 
 print(t2_idchars)
 ```
@@ -308,7 +308,7 @@ t3_feat_misc <- tibble(
 
 t3_feat_psych_sud <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Alcohol Problems-2 (Revised)", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule", "Snaith-Hamilton Pleasure Scale", "Anxiety Severity Index-3", "Distress Tolerance Scale", "Patient History Questionnaire-9"),
+  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised)", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule", "Snaith-Hamilton Pleasure Scale", "Anxiety Severity Index-3", "Distress Tolerance Scale", "Patient History Questionnaire-9"),
   type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
   n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
 ) |> 
@@ -379,7 +379,7 @@ t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |>
 
 Table 3
 ```{r}
-#| label: tab-features
+#| label: tbl-features
 print(t3_feat)
 ```
 

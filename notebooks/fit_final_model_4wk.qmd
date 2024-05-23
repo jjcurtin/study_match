@@ -107,6 +107,8 @@ glimpse(best_config)
 ### Fit best model in full dataset
 
 **NOTE**: This model will only be used for 1) examining parameter estimates, and 2) ultimate dissemination.
+
+#### MY ORIGINAL CODE
 ```{r}
 batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE) 
 
@@ -138,8 +140,72 @@ model_best <- fit_best_model(best_model = best_config,
                              feat = feat_all, 
                              ml_mode = "classification")
 
+```
+
+#### EXPLORATION
+```{r}
+dim(feat_all)
+# N = 1086 (not doing upsampling)
+# p = 1173
+
+# model fit with new_data = NULL
+feat_all_null <- rec_prepped_full |> 
+  bake(new_data = NULL) 
+# N = 1430, p = 1173
+
+model_null <- fit_best_model(best_model = best_config, 
+                             feat = feat_all_null, 
+                             ml_mode = "classification")
+
+tidy(model_null) |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  nrow()
+# 181 features retained (similar to N = 1085 models)
+
+tidy(model_null) |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  select(-penalty) |> 
+  arrange(desc(abs(estimate))) |> 
+  slice(1:10) |> 
+  print_kbl(digits = 4)
+# parameter estimates are similar to those from N = 1085 models
+
+# fit a model with identical config except no resampling
+config_none <- best_config |> 
+  mutate(resample = "none")
+
+rec_none <- build_recipe(d = d, config = config_none)
+
+rec_prepped_none <- rec_none |> 
+  prep(training = d, strings_as_factors = FALSE)
+
+feat_none <- rec_prepped_none |> 
+  bake(new_data = NULL)
+# N = 1086, p = 1173
+
+model_none <- fit_best_model(best_model = config_none,
+                             feat = feat_none,
+                             ml_mode = "classification")
+
+tidy(model_none) |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  nrow()
+# 133 features retained (similar to mistake new_data = d model)
+
+tidy(model_none) |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  select(-penalty) |> 
+  arrange(desc(abs(estimate))) |> 
+  slice(1:10) |> 
+  print_kbl(digits = 4)
+# parameter estimates are similar to mistake model
 
 ```
+
 
 ### Model coefficients
 
@@ -296,8 +362,8 @@ if(file.exists(file.path(path_models,
                         show_col_types = FALSE)
 } else {
   all_probs <- d$subid |> 
-  map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
-  list_rbind()
+    map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
+    list_rbind()
   
   all_probs |> 
     write_csv(file.path(path_models, 
@@ -340,7 +406,7 @@ feat_out_manual <- rec_prepped_manual |>
   bake(new_data = d_20010)
 
 model_manual_20010 <- fit_best_model(best_config, feat = feat_in, 
-                               ml_mode = "classification")
+                                     ml_mode = "classification")
 
 preds_manual <- predict(model_manual_20010, feat_out_manual,
                         type = "prob") |> 
@@ -352,7 +418,7 @@ preds_manual <- predict(model_manual_20010, feat_out_manual,
 preds_loop <- get_triple_probs(20010, best_config, d, d_trip) |> 
   select(tx, prob_raw) |> 
   mutate(model = "loop")
-  
+
 preds_20010 <- full_join(preds_full, preds_manual, 
                          by = c("model", "tx", "prob_raw")) |> 
   full_join(preds_loop, by = c("model", "tx", "prob_raw"))
@@ -425,7 +491,7 @@ feat_out_manual <- rec_prepped_manual |>
   bake(new_data = d_40102)
 
 model_manual_40102 <- fit_best_model(best_config, feat = feat_in, 
-                               ml_mode = "classification")
+                                     ml_mode = "classification")
 
 preds_manual <- predict(model_manual_40102, feat_out_manual,
                         type = "prob") |> 
@@ -437,7 +503,7 @@ preds_manual <- predict(model_manual_40102, feat_out_manual,
 preds_loop <- get_triple_probs(40102, best_config, d, d_trip) |> 
   select(tx, prob_raw) |> 
   mutate(model = "loop")
-  
+
 preds_40102 <- full_join(preds_full, preds_manual, 
                          by = c("model", "tx", "prob_raw")) |> 
   full_join(preds_loop, by = c("model", "tx", "prob_raw"))
@@ -510,7 +576,7 @@ feat_out_manual <- rec_prepped_manual |>
   bake(new_data = d_50085)
 
 model_manual_50085 <- fit_best_model(best_config, feat = feat_in, 
-                               ml_mode = "classification")
+                                     ml_mode = "classification")
 
 preds_manual <- predict(model_manual_50085, feat_out_manual,
                         type = "prob") |> 
@@ -522,7 +588,7 @@ preds_manual <- predict(model_manual_50085, feat_out_manual,
 preds_loop <- get_triple_probs(50085, best_config, d, d_trip) |> 
   select(tx, prob_raw) |> 
   mutate(model = "loop")
-  
+
 preds_50085 <- full_join(preds_full, preds_manual, 
                          by = c("model", "tx", "prob_raw")) |> 
   full_join(preds_loop, by = c("model", "tx", "prob_raw"))

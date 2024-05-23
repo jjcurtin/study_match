@@ -378,7 +378,7 @@ t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |>
 ```
 
 Table 3
-```{r}
+```{r tbl-features}
 #| label: tbl-features
 print(t3_feat)
 ```

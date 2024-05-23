@@ -192,7 +192,7 @@ All participants also received 6 sessions of motivational and skill-training cou
 
 Participants were comprehensively assessed for individual differences characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table 1.
 
-<!-- {{< embed notebooks/mak_tables.qmd#tbl-features >}} -->
+{{< embed ./notebooks/mak_tables.qmd#tbl-features >}}
 
 <!-- add table caption that includes citations for major measures, susan is gathering references -->
 

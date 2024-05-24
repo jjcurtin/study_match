@@ -15,11 +15,11 @@ author:
     affiliations:
       - Department of Psychology, University of Wisconsin-Madison 
 keywords:
-  - Substance use disorders
-  - Precision mental health
-  - Cigarette smoking
-  - Machine learning
-  - Treatment selection 
+  - Substance use disorders  
+  - Precision mental health  
+  - Cigarette smoking  
+  - Machine learning  
+  - Treatment selection  
 abstract: |
   This study found some pretty cool results that have both high impact and important clinical implications.  For example ...
 plain-language-summary: |
@@ -47,6 +47,17 @@ precision med first, successes there eg cancer, then pmh and mh as more difficul
 we are not in the business of picking smoking cessation meds, we are in the business of improving treatments
 
 discussion: remember to discuss chronic diseases, need for time-varying tx and personalizing/adapting OVER TIME cite oncology vs addiction paper
+
+NEW OUTLINE FOR OPENING SECTION
+1. problem: traditional treatment development & selection
+    - selection often relies on population-level effectiveness. however, what works best at a population level does not necessarily work best for a specific patient.
+    - development is costly and slow
+2. one solution: precision medicine, which seeks to guide treatment selection using individual difference characteristics
+    - successful precision med improves effectiveness rates & increases likelihood of tx success for each patient
+    - also improves resource-efficiency by optimizing existing tx, directing them to right patient, opportunities to guide tx development in a more strategic way
+3. precision medicine success in cancer related to genetics
+4. 
+
 
 -->
 
@@ -168,22 +179,13 @@ Other research has investigated non-biological factors as potential moderators o
 
 ### Purpose
 
-<!-- introduce aims here -->
+The goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. Specifically, we pursued the following aims:
 
-<!--KW: I would try to make this section a little easier to map onto your two aims that you use in your Methods section. A very crude example, of what I am thinking by just rearranging what you have would be: 
+**AIM 1: Build a machine learning model to predict cigarette smoking cessation.** We built a model that could predict smoking cessation treatment success (i.e., point-prevalence abstinence) at 4 weeks post-quit. This model used retrospective data from a previously completed comparative effectiveness trial wherein individuals who smoke were randomized to treatments, richly characterized at baseline, and followed to assess short- and long-term abstinence [@bakerEffectsNicotinePatch2016]. 
 
-"The overall goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. We had two specific aims for doing this: 
+**AIM 2: Evaluate the clinical benefit of using our prediction model for differential treatment selection.** We used the prediction model to identify the best treatment for each person and evaluate whether individuals who received their best treatment were more likely to be abstinent in the original trial at 4 weeks, 12 weeks (end-of-treatment), and 6 months post-quit. 
 
-1. We used machine learning analytic techniques to build a model (and evaluate) that can take advantage of many features simultaneously while maintaining generalizability to new patients.
-
-2. We evaluated the clinical benefit of our model in these retrospective data while using resampling approaches that ensure our model offers benefit for treatment selection for new patients.
-
-Specifically, in this project we built a machine learning model to predict treatment success 4 weeks post-quit for people who smoke who received one of three cigarette smoking cessation treatments from a previously completed comparative effectiveness trial [bakerEffectsNicotinePatch2016]. We incorporated easy-to-collect self-report data as our primary model inputs such that any resulting model will be poised for accessible, equitable clinical implementation.This model was then used to calculate probabilities of treatment success for each treatment to guide selection of the best treatment for any specific individual. Clinical benefit was evaluated by .... (maybe mention other outcomes you are looking at?)
--->
-
-The goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. We used machine learning analytic techniques to build a model that can take advantage of many features simultaneously while maintaining generalizability to new patients. We incorporated easy-to-collect self-report data as our primary model inputs such that any resulting model will be poised for accessible, equitable clinical implementation. 
-
-Specifically, in this project we built a machine learning model to predict treatment success 4 weeks post-quit for people who smoke who received one of three cigarette smoking cessation treatments from a previously completed comparative effectiveness trial [@bakerEffectsNicotinePatch2016]. This model was used to calculate probabilities of treatment success for each treatment to guide selection of the best treatment for any specific individual. We evaluated the clinical benefit of our model in these retrospective data while using resampling approaches that ensure our model offers benefit for treatment selection for new patients.
+Across both Aims, we used rigorous resampling techniques to ensure that we evaluated our model's capacity to predict smoking cessation outcomes and select treatments in *new* patients. Additionally, we incorporated easy-to-collect self-report data as model inputs, and we employed a statistical algorithm that can reduce assessment requirements. These choices position our model for accessible clinical implementation.
 
 ## Methods
 

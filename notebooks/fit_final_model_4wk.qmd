@@ -98,7 +98,7 @@ Selected in 1_metrics_inner (k-fold CV)
 
 ```{r}
 best_config <- read_csv(file.path(path_models, 
-                                  str_c("best_config_", version, ".csv")),
+                                  str_c("best_config_none_", version, ".csv")),
                         show_col_types = FALSE)
 
 glimpse(best_config)
@@ -134,78 +134,13 @@ rec_prepped_full <- rec |>
   prep(training = d, strings_as_factors = FALSE)
 
 feat_all <- rec_prepped_full |> 
-  bake(new_data = d)
-
-model_best <- fit_best_model(best_model = best_config, 
-                             feat = feat_all, 
-                             ml_mode = "classification")
-
-```
-
-#### EXPLORATION
-```{r}
-dim(feat_all)
-# N = 1086 (not doing upsampling)
-# p = 1173
-
-# model fit with new_data = NULL
-feat_all_null <- rec_prepped_full |> 
-  bake(new_data = NULL) 
-# N = 1430, p = 1173
-
-model_null <- fit_best_model(best_model = best_config, 
-                             feat = feat_all_null, 
-                             ml_mode = "classification")
-
-tidy(model_null) |> 
-  mutate(estimate = estimate * -1) |> 
-  filter(abs(estimate) > 0) |> 
-  nrow()
-# 181 features retained (similar to N = 1085 models)
-
-tidy(model_null) |> 
-  mutate(estimate = estimate * -1) |> 
-  filter(abs(estimate) > 0) |> 
-  select(-penalty) |> 
-  arrange(desc(abs(estimate))) |> 
-  slice(1:10) |> 
-  print_kbl(digits = 4)
-# parameter estimates are similar to those from N = 1085 models
-
-# fit a model with identical config except no resampling
-config_none <- best_config |> 
-  mutate(resample = "none")
-
-rec_none <- build_recipe(d = d, config = config_none)
-
-rec_prepped_none <- rec_none |> 
-  prep(training = d, strings_as_factors = FALSE)
-
-feat_none <- rec_prepped_none |> 
   bake(new_data = NULL)
-# N = 1086, p = 1173
 
-model_none <- fit_best_model(best_model = config_none,
-                             feat = feat_none,
-                             ml_mode = "classification")
-
-tidy(model_none) |> 
-  mutate(estimate = estimate * -1) |> 
-  filter(abs(estimate) > 0) |> 
-  nrow()
-# 133 features retained (similar to mistake new_data = d model)
-
-tidy(model_none) |> 
-  mutate(estimate = estimate * -1) |> 
-  filter(abs(estimate) > 0) |> 
-  select(-penalty) |> 
-  arrange(desc(abs(estimate))) |> 
-  slice(1:10) |> 
-  print_kbl(digits = 4)
-# parameter estimates are similar to mistake model
+model_best_full <- fit_best_model(best_model = best_config, 
+                                  feat = feat_all, 
+                                  ml_mode = "classification")
 
 ```
-
 
 ### Model coefficients
 
@@ -216,7 +151,7 @@ A *positive coefficient* indicates that increases in the feature *increase* the 
 A *negative coefficient* indicates that increases in the feature *decrease* the likelihood of smoking. For example, increases in carbon monoxide ("co") *decrease* the likelihood of abstinence.
 
 ```{r}
-model_tidy <- tidy(model_best)
+model_tidy <- tidy(model_best_full)
 ```
 
 
@@ -356,9 +291,9 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
 Map over participants so that each is held-out once
 ```{r}
 if(file.exists(file.path(path_models, 
-                         str_c("trip_probs_", version, ".csv")))) {
+                         str_c("trip_probs_none_", version, ".csv")))) {
   all_probs <- read_csv(file.path(path_models, 
-                                  str_c("trip_probs_", version, ".csv")),
+                                  str_c("trip_probs_none_", version, ".csv")),
                         show_col_types = FALSE)
 } else {
   all_probs <- d$subid |> 
@@ -367,12 +302,12 @@ if(file.exists(file.path(path_models,
   
   all_probs |> 
     write_csv(file.path(path_models, 
-                        str_c("trip_probs_", version, ".csv")))
+                        str_c("trip_probs_none_", version, ".csv")))
 }
 
 ```
 
-## FIGURE OUT WHAT IS GOING ON
+### FIGURE OUT WHAT IS GOING ON
 
 Make predictions for subid 20010
 ```{r}
@@ -644,15 +579,24 @@ glimpse(raw_probs_wide)
 
 Join with d & create new variables
 ```{r}
+set.seed(52592)
 d_aim_2 <- d |> 
   select(subid, tx_rct = treatment, outcome_rct_wk4 = y) |> 
   left_join(raw_probs_wide, by = "subid") |> 
-  mutate(tx_best = case_when(
+    mutate(tx_best = case_when(
     prob_patch > prob_combo_nrt & prob_patch > prob_varenicline ~ "patch",
     prob_combo_nrt > prob_patch & prob_combo_nrt > prob_varenicline ~ "combo_nrt",
     prob_varenicline > prob_patch & prob_varenicline > prob_combo_nrt ~ "varenicline",
     TRUE ~ NA_character_
   )) |> 
+  # add in how to handle ties for best probability (prefer CNRT and varenicline per clinical guidelines; sample )
+  mutate(tx_best = if_else(is.na(tx_best), case_when(
+    prob_patch == prob_combo_nrt ~ "combo_nrt",
+    prob_patch == prob_varenicline ~ "varenicline",
+    prob_combo_nrt == prob_varenicline ~ sample(c("combo_nrt",
+                                                  "varenicline"), 1),
+    TRUE ~ NA_character_
+  ), tx_best)) |>  
   mutate(prob_best = case_when(
     tx_best == "patch" ~ prob_patch,
     tx_best == "combo_nrt" ~ prob_combo_nrt,
@@ -698,7 +642,7 @@ d_aim_2 |>
 Write out
 ```{r}
 d_aim_2 |> 
-  write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
+  write_csv(file.path(path_models, str_c("aim_2_", version, "_none_", 
                                          y_col_name, ".csv")))
 ```
 
@@ -760,7 +704,7 @@ d_valid |>
             mean_logi = mean(logistic),
             mean_raw = mean(raw))
 ```
-Beta and logistic calibrated probabilities appear to match the outcome best.
+Raw probabilities match best, though beta and logistic calibration are close.
 
 #### Plots
 
@@ -786,7 +730,7 @@ d_plot |>
                     estimate = .pred_abstinent,
                     .by = method)
 ```
-Raw probabilities appear the most well-calibrated: best aligned with diagonal line, spans the fullest range of bins/windows. Will use raw probabilities for AIM 2 analyses (selected above).
+Raw and beta look best. Raw follows the diagonal more closely for longer.
 
 #### Brier score
 
@@ -814,5 +758,5 @@ brier_class_vec(truth = d_valid$outcome_rct_wk4,
                 estimate = d_valid$raw)
 ```
 
-Beta calibration has the lowest Brier score index, followed closely by logistic calibration.
+Raw calibration has the lowest Brier score (though all are relatively similar). In keeping with the other methods above, beta and logistic are next-best followed by isotonic last.
 

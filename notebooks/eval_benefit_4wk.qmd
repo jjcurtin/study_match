@@ -78,7 +78,7 @@ Read in aim 2 dataset
 ```{r}
 
 d <- read_csv(file.path(path_models, 
-                        str_c("aim_2_", version, "_", y_col_name, ".csv")),
+                        str_c("aim_2_", version, "_none_", y_col_name, ".csv")),
               show_col_types = FALSE) |> 
   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),

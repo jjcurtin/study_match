@@ -211,7 +211,7 @@ We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats o
 
 ##### Performance metric
 
-Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. In simplest terms, auROC measures how well our model discriminates between positive (abstinent) and negative (smoking) cases. More specifically, auROC indexes the probability that the model will predict a higher score for a randomly selected positive case relative to a randomly selected negative case. This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance. 
+Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. In simplest terms, auROC measures how well our model discriminates between positive (abstinent) and negative (smoking) cases. More specifically, auROC indexes the probability that the model will predict a higher score for a randomly selected positive case relative to a randomly selected negative case. It ranges from 0.5 (chance prediction) to 1.0 (perfect prediction). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; and 2) is unaffected by class imbalance. 
 
 We report median auROC for our best model configurations in the test sets. For completeness, we also report auROCs from the validation sets in the Supplement.  
 

@@ -7,10 +7,6 @@ output:
   html_document:
     toc: true 
     toc_depth: 4
-params:
-  study: "match"
-  version: "v5"
-  cv: "nested"
 format:
   html:
     embed-resources: true
@@ -38,9 +34,9 @@ Can review online docs for
 ### Set Up Environment
 
 ```{r}
-study <- params$study
-version <- params$version
-cv <- params$cv
+study <- "match"
+version <- "v5"
+cv <- "nested"
 ```
 
 Packages for script

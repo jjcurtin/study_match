@@ -1,0 +1,257 @@
+---
+title: "Make Figure 1: Model Performance (3-Panel)"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+## Setup
+
+```{r set_values}
+version <- "v5"
+cv <- "nested"
+y_col_name <- "pp_hybrid_wk4_outcome"
+```
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+# packages for script
+library(tidyverse)
+library(tidymodels)
+library(tidyposterior)
+library(probably)
+library(patchwork)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute_paths}
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- str_c("P:/studydata/match/models/", 
+                               y_col_name)
+        },
+        
+        # IOS paths
+        Darwin = {
+          path_models <- str_c("/Volumes/private/studydata/match/models/",
+                               y_col_name)
+        },
+        
+        # Linux paths
+        Linux = {
+          path_models <- str_c("~/mnt/private/studydata/match/models/",
+                               y_col_name)
+        }
+)
+```
+
+```{r defaults}
+
+# chunk defaults
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+## Make Panels
+
+### Panel A: ROC Curve
+
+Read in outer loop predictions
+```{r}
+preds_out <- read_rds(file.path(path_models, 
+                                str_c("outer_preds_", version, 
+                                      "_", cv, ".rds"))) |> 
+  glimpse()
+```
+
+Set up data
+```{r}
+roc_data <- preds_out %>%
+  roc_curve(prob_raw, truth = label) |> 
+  glimpse()
+```
+
+Create plot
+```{r}
+#| label: fig-roc-single
+fig_roc <- roc_data %>%
+  ggplot(aes(x = 1 - specificity, y = sensitivity, color = .threshold)) +
+  geom_path(linewidth = 2) +
+  geom_abline(lty = 3) +
+  coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
+  labs(x = "False Positive Rate",
+       y = "True Positive Rate",
+       color = "Threshold") +
+  scale_x_continuous(breaks = seq(0,1,.25),
+                     labels = sprintf("%.2f", seq(1,0,-.25))) +
+  scale_color_gradient(low="blue", high="red") +
+  theme(axis.text = element_text(size = rel(1.25)),
+        axis.title = element_text(size = rel(1.5)))
+
+fig_roc
+```
+
+### Panel B: Prediction Calibration
+
+Read in final model predictions (LOOCV)
+```{r}
+d_cal <- read_csv(file.path(path_models,
+                            str_c("aim_2_", version, "_", y_col_name, ".csv")),
+                  show_col_types = FALSE) |> 
+  glimpse()
+```
+
+Set up data
+```{r}
+d_cal <- d_cal |> 
+  mutate(.pred_abstinent = case_when(
+    tx_rct == "patch" ~ prob_patch,
+    tx_rct == "combo_nrt" ~ prob_combo_nrt,
+    tx_rct == "varenicline" ~ prob_varenicline,
+    TRUE ~ NA_real_
+  )) |> 
+  select(outcome_rct = outcome_rct_wk4, .pred_abstinent) |> 
+  mutate(outcome_rct = factor(outcome_rct,
+                              levels = c("abstinent", "smoking"))) |> 
+  glimpse()
+```
+
+Create breaks plot
+```{r}
+#| label: fig-cal-breaks
+fig_cal_breaks <- d_cal |> 
+  cal_plot_breaks(truth = outcome_rct, 
+                  estimate = .pred_abstinent)
+
+fig_cal_breaks
+```
+
+Create windowed plot
+```{r}
+#| label: fig-cal-window
+fig_cal_window <- d_cal |> 
+  cal_plot_windowed(truth = outcome_rct, 
+                    estimate = .pred_abstinent)
+
+fig_cal_window
+```
+
+Created binned plot
+```{r}
+#| label: fig-cal-bins
+bin_width = 0.10
+fig_cal_bins <- d_cal |> 
+  rename(prob_raw = .pred_abstinent) |> 
+  mutate(bins = cut(prob_raw, breaks = seq(0, 1, bin_width)),
+         abstinent = if_else(outcome_rct == "abstinent", 1, 0)) |> 
+  group_by(bins)  |> 
+  summarize(mean_abstinent = mean(abstinent),
+            .groups = "drop") |>
+  mutate(bins = as.numeric(bins),
+         midpoints = bin_width/2 + bin_width * (bins - 1))  |> 
+  ggplot(data = _, aes(x = midpoints, y = mean_abstinent)) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+    geom_line() +
+    geom_point() +
+    xlab("Predicted Abstinence Probability (bin mid-point)") +
+    ylab("Observed Abstinence Probability") +
+    scale_x_continuous(breaks = seq(0, 1, bin_width),
+                       limits = c(0, 1)) +
+    scale_y_continuous(breaks = seq(0, 1, bin_width),
+                       limits = c(0, 1)) +
+  theme(axis.text = element_text(size = rel(1.25)),
+        axis.title = element_text(size = rel(1.5)))
+
+fig_cal_bins
+```
+
+### Panel C: Posterior Probability Distribution
+
+Read in posterior probabilities
+```{r}
+#| eval: false
+pp <- read_rds(file.path(path_models, 
+                         str_c("posteriors_", version, "_nested.rds"))) 
+```
+
+Set up data
+```{r}
+#| eval: false
+pp_tidy <- pp %>% 
+  tidy(seed = 123) 
+
+ci_week4 <- pp_tidy |> 
+  summary() |> 
+  mutate(model = factor(model, 
+                        levels = "roc_auc",
+                        labels = "Week 4"),
+         y = 1000) 
+
+```
+
+Create plot
+```{r}
+#| eval: false
+#| label: fig-pp-wk4
+fig_pp <- pp_tidy |> 
+  mutate(model = factor(model, 
+                        levels = "roc_auc",
+                        labels = "Week 4")) |> 
+  ggplot() + 
+  geom_histogram(aes(x = posterior, fill = model), 
+                 color = "black", alpha = .4, 
+                 bins = 30) +
+  geom_segment(mapping = aes(y = y + 100, yend = y - 100, 
+                             x = mean, xend = mean,
+                             color = model),
+               data = ci_week4) +
+  geom_segment(mapping = aes(y = y, yend = y, 
+                             x = lower, xend = upper, 
+                             color = model),
+               data = ci_week4) +
+  scale_y_continuous("Posterior Probability", 
+                     breaks = c(0, 250, 500, 750)) +
+  xlab("Area Under ROC Curve") +
+  theme(legend.position = "none")
+
+fig_pp
+```
+
+## Combine into single figure
+
+```{r}
+patchwork <- fig_roc + fig_cal_bin
+
+patchwork + plot_annotation(
+  title = "Model Performance",
+  tab_levels = "A"
+) +
+  plot_layout(ncol = 1)
+```
+

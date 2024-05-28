@@ -1,5 +1,5 @@
 ---
-title: "Posterior probabilities across models for MATCH study (version `r params$version`)"
+title: "Posterior probabilities across models for MATCH study"
 author: "John Curtin"
 date: "`r lubridate::today()`"
 number-sections: true

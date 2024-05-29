@@ -204,8 +204,6 @@ Feature sets differed in two ways across model configurations. First, ordered ca
 
 Dimensionality reduction approaches offer additional ways to produce lower-variance solutions that may generalize better to new data. We used several data-driven methods for dimensionality reduction such as: removing near-zero variance features, removing highly correlated features (via GLMNet penalization), and including lower-dimensional feature sets. We also used several non-data-driven approaches for dimensionality reduction. First, we removed variables that conflicted with our ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests). This reduced the overall number of features in the model. Second, we removed variables that lacked face validity for predicting abstinence (e.g., detailed questions about snoring used to diagnose sleep apnea; retained sleep apnea diagnosis) or overlapped conceptually with other features (e.g., including body mass index instead of height and weight separately). 
 
-<!-- removed resampling approaches, no longer considering anything except no resampling -->
-
 #### Model fitting, selection, & evaluation
 
 ##### Cross-validation

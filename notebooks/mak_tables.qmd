@@ -14,6 +14,9 @@ format:
     toc-depth: 4
 editor_options: 
   chunk_output_type: console
+html-table-processing: none
+bibliography: ../references.bib
+bibliographystyle: ../apa.csl
 ---
 
 ```{r, packages_script}
@@ -308,7 +311,7 @@ t3_feat_misc <- tibble(
 
 t3_feat_psych_sud <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised)", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule", "Snaith-Hamilton Pleasure Scale", "Anxiety Severity Index-3", "Distress Tolerance Scale", "Patient History Questionnaire-9"),
+  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]", "Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]", "Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]", "Distress Tolerance Scale [@simonsDistressToleranceScale2005a]", "Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]"),
   type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
   n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
 ) |> 
@@ -320,7 +323,7 @@ t3_feat_psych_sud <- tibble(
 
 t3_feat_smoking <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder", "Fagerstrom Test of Nicotine Dependence", "Wisconsin Inventory of Smoking Dependence Motives-37", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2"),
+  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]", "Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]", "Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]"),
   type = c("Numeric", "Dichotomous", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (Unordered)", "Numeric", "Ordinal", "Ordinal", "Dichotomous", "Numeric", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Dichotomous, Ordinal", "Ordinal", "Categorical (Unordered)", "Ordinal"),
   n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 14, 6, 49, 1, 45)
 ) |> 
@@ -332,7 +335,7 @@ t3_feat_smoking <- tibble(
 
 t3_feat_medical <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory", "Berlin Sleep Questionnaire", "Body Mass Index", "Health-related Quality of Life Scale", "Healthy Days Symptoms Module"),
+  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]", "Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]", "Body Mass Index", "Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]", "Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]"),
   type = c("Dichotomous", "Ordinal", "Ordinal, Dichotomous", "Numeric", "Ordinal, Numeric", "Numeric"),
   n_feat = c(1, 26, 3, 1, 4, 5)
 ) |> 
@@ -380,6 +383,20 @@ t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |>
 Table 3
 ```{r tbl-features}
 #| label: tbl-features
-print(t3_feat)
+#| tbl-cap: "Gaylen"
+
+t3_feat |>
+  mutate(across(where(is.numeric), as.character)) |>
+  mutate(across(everything(), ~replace_na(., "")))  |>
+  knitr::kable() 
+# |>
+#     kableExtra::pack_rows("Demographic Characteristics", 1, 7, bold = FALSE) |>
+#     kableExtra::pack_rows("Smoking Use & History", 8, 28, bold = FALSE) |>
+#     kableExtra::pack_rows("Social & Environmental Characteristics", 29, 34, bold = FALSE) |>
+#     kableExtra::pack_rows("Mental Health & Psychological Traits", 35, 46, bold = FALSE) |>
+#     kableExtra::pack_rows("Medical & Physical Health", 47, 52, bold = FALSE) |>
+#     kableExtra::pack_rows("Miscellaneous", 53, 55, bold = FALSE)
+
+  
 ```
 

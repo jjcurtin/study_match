@@ -100,6 +100,8 @@ roc_data <- preds_out %>%
 Create plot
 ```{r}
 #| label: fig-roc-single
+#| fig-cap: "ROC Curve"
+
 fig_roc <- roc_data %>%
   ggplot(aes(x = 1 - specificity, y = sensitivity, color = .threshold)) +
   geom_path(linewidth = 2) +
@@ -111,8 +113,8 @@ fig_roc <- roc_data %>%
   scale_x_continuous(breaks = seq(0,1,.25),
                      labels = sprintf("%.2f", seq(1,0,-.25))) +
   scale_color_gradient(low="blue", high="red") +
-  theme(axis.text = element_text(size = rel(1.25)),
-        axis.title = element_text(size = rel(1.5)))
+  theme(axis.text = element_text(size = rel(1)),
+        axis.title = element_text(size = rel(1)))
 
 fig_roc
 ```
@@ -145,6 +147,8 @@ d_cal <- d_cal |>
 Create breaks plot
 ```{r}
 #| label: fig-cal-breaks
+#| fig-cap: "Breaks Plot"
+
 fig_cal_breaks <- d_cal |> 
   cal_plot_breaks(truth = outcome_rct, 
                   estimate = .pred_abstinent)
@@ -155,17 +159,22 @@ fig_cal_breaks
 Create windowed plot
 ```{r}
 #| label: fig-cal-window
+#| fig-cap: "Windowed Plot"
+
 fig_cal_window <- d_cal |> 
   cal_plot_windowed(truth = outcome_rct, 
                     estimate = .pred_abstinent)
-
 fig_cal_window
+
 ```
 
 Created binned plot
 ```{r}
 #| label: fig-cal-bins
+#| fig-cap: "Binned Plot"
+
 bin_width = 0.10
+
 fig_cal_bins <- d_cal |> 
   rename(prob_raw = .pred_abstinent) |> 
   mutate(bins = cut(prob_raw, breaks = seq(0, 1, bin_width)),
@@ -185,8 +194,8 @@ fig_cal_bins <- d_cal |>
                        limits = c(0, 1)) +
     scale_y_continuous(breaks = seq(0, 1, bin_width),
                        limits = c(0, 1)) +
-  theme(axis.text = element_text(size = rel(1.25)),
-        axis.title = element_text(size = rel(1.5)))
+  theme(axis.text = element_text(size = rel(1)),
+        axis.title = element_text(size = rel(1)))
 
 fig_cal_bins
 ```
@@ -195,14 +204,14 @@ fig_cal_bins
 
 Read in posterior probabilities
 ```{r}
-#| eval: false
+
 pp <- read_rds(file.path(path_models, 
                          str_c("posteriors_", version, "_nested.rds"))) 
 ```
 
 Set up data
 ```{r}
-#| eval: false
+
 pp_tidy <- pp %>% 
   tidy(seed = 123) 
 
@@ -217,8 +226,10 @@ ci_week4 <- pp_tidy |>
 
 Create plot
 ```{r}
-#| eval: false
+
 #| label: fig-pp-wk4
+#| fig-cap: "Posterior Probabilities Distribution"
+
 fig_pp <- pp_tidy |> 
   mutate(model = factor(model, 
                         levels = "roc_auc",
@@ -240,19 +251,22 @@ fig_pp <- pp_tidy |>
   xlab("Area Under ROC Curve") +
   theme(legend.position = "none")
 
-fig_pp
+
 ```
 
 ## Combine into single figure
 
 ```{r}
-#| eval: false
-patchwork <- fig_roc + fig_cal_bins
+#| label: fig-combined
+#| fig-height: 10
+#| fig-cap: "Gaylen"
+
+patchwork <- fig_roc + fig_cal_bins + fig_pp
 
 patchwork + plot_annotation(
   title = "Model Performance",
-  tab_levels = "A"
+  tag_levels = c("A", "B", "C")
 ) +
-  plot_layout(ncol = 1)
+  plot_layout(ncol = 1, heights = unit(c(2.5,2.5,2.5), 'in'))
 ```
 

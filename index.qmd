@@ -202,7 +202,7 @@ Feature sets differed in two ways across model configurations. First, ordered ca
 
 ##### Dimensionality reduction
 
-Dimensionality reduction approaches offer additional ways to produce lower-variance solutions that may generalize better to new data. We used several data-driven methods for dimensionality reduction such as: removing near-zero variance features, removing highly correlated features (via GLMNet penalization), and including lower-dimensional feature sets. We also used several non-data-driven approaches for dimensionality reduction. First, we removed variables that conflicted with our ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests). This reduced the overall number of features in the model. Second, we removed variables that lacked face validity for predicting abstinence (e.g., <!-- find example -->) or overlapped conceptually with other features (e.g., including body mass index [1 feature] instead of height and weight [2 features]). 
+Dimensionality reduction approaches offer additional ways to produce lower-variance solutions that may generalize better to new data. We used several data-driven methods for dimensionality reduction such as: removing near-zero variance features, removing highly correlated features (via GLMNet penalization), and including lower-dimensional feature sets. We also used several non-data-driven approaches for dimensionality reduction. First, we removed variables that conflicted with our ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests). This reduced the overall number of features in the model. Second, we removed variables that lacked face validity for predicting abstinence (e.g., detailed questions about snoring used to diagnose sleep apnea; retained sleep apnea diagnosis) or overlapped conceptually with other features (e.g., including body mass index instead of height and weight separately). 
 
 <!-- removed resampling approaches, no longer considering anything except no resampling -->
 
@@ -222,7 +222,16 @@ Our primary performance metric for model selection and evaluation was area under
 
 We report median auROC for our best model configurations in the test sets. For completeness, we also report auROCs from the validation sets in the Supplement.  
 
-<!-- satisfying indices here? -->
+<!-- satisfying indices here? 
+from ng 2018 @ngMachineLearningYearning2018
+
+““satisficing metric”—your classifier just has to be “good enough” on this metric,” ([Ng, 2018, p. 22]
+
+“consider setting N-1 of the criteria as “satisficing” metrics. I.e., you simply require that they meet a certain value. Then define the final one as the “optimizing” metric.” ([Ng, 2018, p. 22]
+
+Although we can only optimize on one metric (i.e., auROC), we can define other relevant criteria as "satisficing metrics" ([@ngMachineLearningYearning2018], p. 22). We can require that our models meet a specific value for the satisficing metric and then optimize among those models. Specifically, because our goal is treatment selection, it is important that our models retain interaction features. Although retaining interaction features does not guarantee that our models will be able to select among treatments, *not* retaining any interactions *prevents* treatment selection. Consequently, we defined a satisficing metric of XX number of treatment interaction features retained // XX proportion of features retained were interaction features. Like with auROC, we used median [satisficing metric] across validation sets to determine whether we satisfied this criterion.
+
+-->
 
 ##### Bayesian analysis of model performance
 
@@ -290,8 +299,6 @@ Demographic characteristics of this sample appear in Table 2. Our sample was 52.
 
 Smoking-related characteristics of this sample appear in Table 3. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up. 
 
-<!--KW: It might be helpful to use subheadings that match your aims (like how you have your Methods) - e.g., AIM 1 analytic strategy: Model building and AIM 2 analytic strategy: Evaluation of clinical benefit. -->
-
 ### AIM 1 results: Prediction models
 
 #### Model performance
@@ -318,9 +325,7 @@ In Figure 1, panel C, we display our model's calibration from leave-one-out. Pre
 
 ##### Retained features
 
-
-
-Table X presents the retained features from the best 4-week model configuration and their parameter estimates. This model retained 128 features (best model configuration alpha = 0.1, item feature set). Of the 128 retained features, 56 were treatment interaction features, suggesting the importance of these interactions for prediction. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 37 unique items (e.g., multiple dummy variables are from a single item, a feature interacts with two levels of treatment). 
+Our final model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, a feature interacts with two levels of treatment). Supplemental table X presents the retained features and their parameter estimates. 
 
 ##### Feature importance via Shapley values
 
@@ -330,15 +335,13 @@ Global importance (mean |Shapley value|) for features for our model appear in Pa
 
 ### AIM 2 results: Clinical benefit
 
-<!-- redo values once predictions have been made with LOOCV & redo model -->
+<!-- redo values once predictions have been made with LOOCV & redone model -->
 
 There was a significant fixed effect of treatment matching on abstinence (OR = , *z* = 5.640, *p* < 0.001). Individuals who received their model-predicted best treatment were more likely to be abstinent. There was also a significant fixed effect of time (OR = , *z* = -9.948, *p* < 0.001) such that the probability of abstinence declined over time. 
 
 There was not a significant interaction between treatment matching and time (*p* = 0.830). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
 
 There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = , *z* = , *p* = ) and at 12 weeks (OR = , *z* = , *p* = ). The effect of treatment matching was no longer significant by the 26-week follow-up assessment (*p* = ). Figure X shows the mean abstinence rate by treatment matching at each time point.
-
-
 
 ## Discussion
 
@@ -419,6 +422,37 @@ looking at "main effect" prediction may help identify mechanisms to target with 
 start with 37 unique things to assess - why do we only need to assess those and not main effects - difference in goals of overall prediction vs selection of tx - equity/implementation
 
 harm reduction in smoking?
+
+
+DISCUSSION OUTLINE
+
+1. We built a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using first-line medications
+  - Be really excited about the benefit, explain the magnitude in digestible terms (eg compare probability of quitting without tx to probability of quitting with best tx - how much does this add on top of that?)
+  - Can do so with a low burden (quantity), accessible (self-report) assessment -> benefits for accessibility and equity especially given mhc disparities
+  - Interpretable model 
+
+2. In addition to identifying factors that predict differential treatment success (i.e., permit treatment selection; interaction terms), we have added to the literature on prognostic factors that predict smoking cessation
+  - May be able to use these to guide precessation support, treatment development, etc.
+  - These features that did not interact with treatment here may interact with other FDA-approved treatments (e.g., buproprion)
+
+3. Our prediction model auROC was not particularly high
+  - There is signal (PPD does not include 0.5), but not very strong performance
+  - Comparable to performance from other models predicting smoking cessation
+  - May have been able to improve performance if we incorporated biological markers or genetic data, but this would come at a cost to implementation and accessibility
+  - Also ok that the auROC is not particularly high because our purpose here is not overall prediction. Distinction between models that PREDICT better and models that PREDICT DIFFERENTIALLY better - a model that predicted abstinence perfectly but included no interactions would be useless for a treatment selection goal
+  - Important that our predictions are well-calibrated such that we can trust their ordinal ranking (which is then used in our treatment selection process)
+  
+4. What do our deficits in benefit/performance tell us?
+  - It is difficult to predict smoking cessation at 4 weeks using baseline characteristics
+  - It is even more difficult to predict smoking cessation at 6 months using those same baseline characteristics (supplement)
+  - The benefit of being assigned the right treatment endures while on-treatment (same endpoint used in several other PMH studies biomarker and otherwise Kaye) but does not persist beyond it
+  - SINGLE ASSESSMENT AND SHORT-LIVED TREATMENT WITHOUT ONGOING SUPPORT ARE INSUFFICIENT FOR CHRONIC DISEASES!!
+  
+5. Need for ongoing, dynamic assessment and adaptive, continuing care
+
+6. Future directions
+  - fairness analyses
+  - prospective trial!! critical
 
 -->
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Gaylen Fronk">
-    <meta name="dcterms.date" content="2024-05-23">
+    <meta name="dcterms.date" content="2024-05-30">
 
     <title>Make Demographic, ID Characteristic, &amp; Feature Category Tables</title>
     <style>
@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+} </style>
 
     <style>
 body.hypothesis-enabled #quarto-embed-header {
@@ -1117,7 +1137,7 @@ function nexttick(func) {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">May 23, 2024</p>
+              <p class="date">May 30, 2024</p>
             </div>
           </div>
           
@@ -1521,7 +1541,7 @@ $ income_order       &lt;chr&gt; &quot;01_less_than_10000&quot;, &quot;07_more_t
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>t3_feat_psych_sud <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Frequency of Drinking Alcohol&quot;</span>, <span class="st">&quot;Quantity of Alcohol&quot;</span>, <span class="st">&quot;Binge Drinking&quot;</span>, <span class="st">&quot;Short Inventory of Problems-2 (Revised)&quot;</span>, <span class="st">&quot;Life Satisfaction&quot;</span>, <span class="st">&quot;Life Enjoyment&quot;</span>, <span class="st">&quot;Psychological Disorder Diagnoses&quot;</span>, <span class="st">&quot;Positive and Negative Affect Schedule&quot;</span>, <span class="st">&quot;Snaith-Hamilton Pleasure Scale&quot;</span>, <span class="st">&quot;Anxiety Severity Index-3&quot;</span>, <span class="st">&quot;Distress Tolerance Scale&quot;</span>, <span class="st">&quot;Patient History Questionnaire-9&quot;</span>),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Frequency of Drinking Alcohol&quot;</span>, <span class="st">&quot;Quantity of Alcohol&quot;</span>, <span class="st">&quot;Binge Drinking&quot;</span>, <span class="st">&quot;Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]&quot;</span>, <span class="st">&quot;Life Satisfaction&quot;</span>, <span class="st">&quot;Life Enjoyment&quot;</span>, <span class="st">&quot;Psychological Disorder Diagnoses&quot;</span>, <span class="st">&quot;Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]&quot;</span>, <span class="st">&quot;Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]&quot;</span>, <span class="st">&quot;Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]&quot;</span>, <span class="st">&quot;Distress Tolerance Scale [@simonsDistressToleranceScale2005a]&quot;</span>, <span class="st">&quot;Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]&quot;</span>),</span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>),</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">16</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">22</span>, <span class="dv">20</span>, <span class="dv">11</span>)</span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
@@ -1533,7 +1553,7 @@ $ income_order       &lt;chr&gt; &quot;01_less_than_10000&quot;, &quot;07_more_t
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>t3_feat_smoking <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Baseline Carbon Monoxide&quot;</span>, <span class="st">&quot;Carbon Monoxide Exposure&quot;</span>, <span class="st">&quot;Age of 1st Cigarette&quot;</span>, <span class="st">&quot;Age Became Daily Smoker&quot;</span>, <span class="st">&quot;Years Smoking&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Heaviest)&quot;</span>, <span class="st">&quot;Use of Other Tobacco Products&quot;</span>, <span class="st">&quot;Number of Previous Quit Attempts&quot;</span>, <span class="st">&quot;Last Recent Quit Attempt&quot;</span>, <span class="st">&quot;Longest Quit Attempt&quot;</span>, <span class="st">&quot;Previous Quit Methods Used&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Current)&quot;</span>, <span class="st">&quot;Motivation to Quit&quot;</span>, <span class="st">&quot;Self-Efficacy for Quitting in Next 30 Days&quot;</span>, <span class="st">&quot;Confidence to Quit&quot;</span>, <span class="st">&quot;Importance to Quit&quot;</span>, <span class="st">&quot;DSM5 Tobacco Use Disorder&quot;</span>, <span class="st">&quot;Fagerstrom Test of Nicotine Dependence&quot;</span>, <span class="st">&quot;Wisconsin Inventory of Smoking Dependence Motives-37&quot;</span>, <span class="st">&quot;Smoke Menthol Cigarettes&quot;</span>, <span class="st">&quot;Wisconsin Smoking Withdrawal Scale-2&quot;</span>),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Baseline Carbon Monoxide&quot;</span>, <span class="st">&quot;Carbon Monoxide Exposure&quot;</span>, <span class="st">&quot;Age of 1st Cigarette&quot;</span>, <span class="st">&quot;Age Became Daily Smoker&quot;</span>, <span class="st">&quot;Years Smoking&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Heaviest)&quot;</span>, <span class="st">&quot;Use of Other Tobacco Products&quot;</span>, <span class="st">&quot;Number of Previous Quit Attempts&quot;</span>, <span class="st">&quot;Last Recent Quit Attempt&quot;</span>, <span class="st">&quot;Longest Quit Attempt&quot;</span>, <span class="st">&quot;Previous Quit Methods Used&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Current)&quot;</span>, <span class="st">&quot;Motivation to Quit&quot;</span>, <span class="st">&quot;Self-Efficacy for Quitting in Next 30 Days&quot;</span>, <span class="st">&quot;Confidence to Quit&quot;</span>, <span class="st">&quot;Importance to Quit&quot;</span>, <span class="st">&quot;DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]&quot;</span>, <span class="st">&quot;Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]&quot;</span>, <span class="st">&quot;Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]&quot;</span>, <span class="st">&quot;Smoke Menthol Cigarettes&quot;</span>, <span class="st">&quot;Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]&quot;</span>),</span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (Unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Dichotomous, Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Categorical (Unordered)&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>),</span>
 <span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">14</span>, <span class="dv">6</span>, <span class="dv">49</span>, <span class="dv">1</span>, <span class="dv">45</span>)</span>
 <span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
@@ -1545,7 +1565,7 @@ $ income_order       &lt;chr&gt; &quot;01_less_than_10000&quot;, &quot;07_more_t
 <span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>t3_feat_medical <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Diabetes Diagnosis&quot;</span>, <span class="st">&quot;Multidimensional Fatigue Inventory&quot;</span>, <span class="st">&quot;Berlin Sleep Questionnaire&quot;</span>, <span class="st">&quot;Body Mass Index&quot;</span>, <span class="st">&quot;Health-related Quality of Life Scale&quot;</span>, <span class="st">&quot;Healthy Days Symptoms Module&quot;</span>),</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Diabetes Diagnosis&quot;</span>, <span class="st">&quot;Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]&quot;</span>, <span class="st">&quot;Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]&quot;</span>, <span class="st">&quot;Body Mass Index&quot;</span>, <span class="st">&quot;Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]&quot;</span>, <span class="st">&quot;Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]&quot;</span>),</span>
 <span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal, Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal, Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>),</span>
 <span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">26</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
 <span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
@@ -1590,207 +1610,460 @@ $ income_order       &lt;chr&gt; &quot;01_less_than_10000&quot;, &quot;07_more_t
 <span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Number of Features</span><span class="st">`</span> <span class="ot">=</span> n_feat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Table 3</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="tbl-features" class="cell quarto-float anchored">
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
+
+<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>t3_feat <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), as.character)) <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(., <span class="st">&quot;&quot;</span>)))  <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># |&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Demographic Characteristics&quot;, 1, 7, bold = FALSE) |&gt;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Smoking Use &amp; History&quot;, 8, 28, bold = FALSE) |&gt;</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Social &amp; Environmental Characteristics&quot;, 29, 34, bold = FALSE) |&gt;</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Mental Health &amp; Psychological Traits&quot;, 35, 46, bold = FALSE) |&gt;</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Medical &amp; Physical Health&quot;, 47, 52, bold = FALSE) |&gt;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     kableExtra::pack_rows(&quot;Miscellaneous&quot;, 53, 55, bold = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-features" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gaylen
 </figcaption>
 <div aria-describedby="tbl-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t3_feat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 61 × 4
-   Category                              
-   &lt;chr&gt;                                 
- 1 Demographic Characteristics           
- 2 &lt;NA&gt;                                  
- 3 &lt;NA&gt;                                  
- 4 &lt;NA&gt;                                  
- 5 &lt;NA&gt;                                  
- 6 &lt;NA&gt;                                  
- 7 &lt;NA&gt;                                  
- 8 &lt;NA&gt;                                  
- 9 Smoking Use &amp; History                 
-10 &lt;NA&gt;                                  
-11 &lt;NA&gt;                                  
-12 &lt;NA&gt;                                  
-13 &lt;NA&gt;                                  
-14 &lt;NA&gt;                                  
-15 &lt;NA&gt;                                  
-16 &lt;NA&gt;                                  
-17 &lt;NA&gt;                                  
-18 &lt;NA&gt;                                  
-19 &lt;NA&gt;                                  
-20 &lt;NA&gt;                                  
-21 &lt;NA&gt;                                  
-22 &lt;NA&gt;                                  
-23 &lt;NA&gt;                                  
-24 &lt;NA&gt;                                  
-25 &lt;NA&gt;                                  
-26 &lt;NA&gt;                                  
-27 &lt;NA&gt;                                  
-28 &lt;NA&gt;                                  
-29 &lt;NA&gt;                                  
-30 &lt;NA&gt;                                  
-31 Social &amp; Environmental Characteristics
-32 &lt;NA&gt;                                  
-33 &lt;NA&gt;                                  
-34 &lt;NA&gt;                                  
-35 &lt;NA&gt;                                  
-36 &lt;NA&gt;                                  
-37 &lt;NA&gt;                                  
-38 Mental Health &amp; Psychological Traits  
-39 &lt;NA&gt;                                  
-40 &lt;NA&gt;                                  
-41 &lt;NA&gt;                                  
-42 &lt;NA&gt;                                  
-43 &lt;NA&gt;                                  
-44 &lt;NA&gt;                                  
-45 &lt;NA&gt;                                  
-46 &lt;NA&gt;                                  
-47 &lt;NA&gt;                                  
-48 &lt;NA&gt;                                  
-49 &lt;NA&gt;                                  
-50 &lt;NA&gt;                                  
-51 Medical &amp; Physical Health             
-52 &lt;NA&gt;                                  
-53 &lt;NA&gt;                                  
-54 &lt;NA&gt;                                  
-55 &lt;NA&gt;                                  
-56 &lt;NA&gt;                                  
-57 &lt;NA&gt;                                  
-58 Miscellaneous                         
-59 &lt;NA&gt;                                  
-60 &lt;NA&gt;                                  
-61 &lt;NA&gt;                                  
-   `Feature Name`                                       Type                   
-   &lt;chr&gt;                                                &lt;chr&gt;                  
- 1 &lt;NA&gt;                                                 &lt;NA&gt;                   
- 2 Gender                                               Categorical (unordered)
- 3 Age                                                  Numeric                
- 4 Race                                                 Categorical (unordered)
- 5 Marital Status                                       Categorical (unordered)
- 6 Income                                               Ordinal                
- 7 Ethnicity                                            Categorical (Unordered)
- 8 Employment                                           Categorical (unordered)
- 9 &lt;NA&gt;                                                 &lt;NA&gt;                   
-10 Baseline Carbon Monoxide                             Numeric                
-11 Carbon Monoxide Exposure                             Dichotomous            
-12 Age of 1st Cigarette                                 Numeric                
-13 Age Became Daily Smoker                              Numeric                
-14 Years Smoking                                        Numeric                
-15 Cigarettes Per Day (Heaviest)                        Numeric                
-16 Use of Other Tobacco Products                        Categorical (Unordered)
-17 Number of Previous Quit Attempts                     Numeric                
-18 Last Recent Quit Attempt                             Ordinal                
-19 Longest Quit Attempt                                 Ordinal                
-20 Previous Quit Methods Used                           Dichotomous            
-21 Cigarettes Per Day (Current)                         Numeric                
-22 Motivation to Quit                                   Ordinal                
-23 Self-Efficacy for Quitting in Next 30 Days           Ordinal                
-24 Confidence to Quit                                   Ordinal                
-25 Importance to Quit                                   Ordinal                
-26 DSM5 Tobacco Use Disorder                            Dichotomous            
-27 Fagerstrom Test of Nicotine Dependence               Dichotomous, Ordinal   
-28 Wisconsin Inventory of Smoking Dependence Motives-37 Ordinal                
-29 Smoke Menthol Cigarettes                             Categorical (Unordered)
-30 Wisconsin Smoking Withdrawal Scale-2                 Ordinal                
-31 &lt;NA&gt;                                                 &lt;NA&gt;                   
-32 Spouse Smokes                                        Categorical (unordered)
-33 Live with Another Smoker                             Categorical (unordered)
-34 People Close to You Who Smoke                        Categorical (unordered)
-35 Ban on Smoking at Home                               Dichotomous            
-36 Ban on Smoking at Work                               Categorical (unordered)
-37 Time Around Other Smokers                            Ordinal                
-38 &lt;NA&gt;                                                 &lt;NA&gt;                   
-39 Frequency of Drinking Alcohol                        Ordinal                
-40 Quantity of Alcohol                                  Ordinal                
-41 Binge Drinking                                       Ordinal                
-42 Short Inventory of Problems-2 (Revised)              Ordinal                
-43 Life Satisfaction                                    Ordinal                
-44 Life Enjoyment                                       Ordinal                
-45 Psychological Disorder Diagnoses                     Dichotomous            
-46 Positive and Negative Affect Schedule                Ordinal                
-47 Snaith-Hamilton Pleasure Scale                       Ordinal                
-48 Anxiety Severity Index-3                             Ordinal                
-49 Distress Tolerance Scale                             Ordinal                
-50 Patient History Questionnaire-9                      Ordinal                
-51 &lt;NA&gt;                                                 &lt;NA&gt;                   
-52 Diabetes Diagnosis                                   Dichotomous            
-53 Multidimensional Fatigue Inventory                   Ordinal                
-54 Berlin Sleep Questionnaire                           Ordinal, Dichotomous   
-55 Body Mass Index                                      Numeric                
-56 Health-related Quality of Life Scale                 Ordinal, Numeric       
-57 Healthy Days Symptoms Module                         Numeric                
-58 &lt;NA&gt;                                                 &lt;NA&gt;                   
-59 Treatment                                            Categorical            
-60 Incarcerated                                         Dichotomous            
-61 Works Third Shift                                    Dichotomous            
-   `Number of Features`
-                  &lt;dbl&gt;
- 1                   NA
- 2                    1
- 3                    1
- 4                    1
- 5                    1
- 6                    1
- 7                    1
- 8                    1
- 9                   NA
-10                    1
-11                    1
-12                    1
-13                    1
-14                    1
-15                    1
-16                    5
-17                    1
-18                    1
-19                    1
-20                    6
-21                    1
-22                    1
-23                    1
-24                    1
-25                    1
-26                   14
-27                    6
-28                   49
-29                    1
-30                   45
-31                   NA
-32                    1
-33                    1
-34                    5
-35                    1
-36                    1
-37                    2
-38                   NA
-39                    1
-40                    1
-41                    1
-42                   16
-43                    1
-44                    1
-45                    7
-46                    8
-47                   15
-48                   22
-49                   20
-50                   11
-51                   NA
-52                    1
-53                   26
-54                    3
-55                    1
-56                    4
-57                    5
-58                   NA
-59                    1
-60                    1
-61                    1</code></pre>
+<div class="cell-output-display">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 52%">
+<col style="width: 13%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Feature Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Number of Features</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Demographic Characteristics</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Marital Status</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Income</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ethnicity</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Employment</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Smoking Use &amp; History</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Baseline Carbon Monoxide</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Carbon Monoxide Exposure</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age of 1st Cigarette</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age Became Daily Smoker</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Years Smoking</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Cigarettes Per Day (Heaviest)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Use of Other Tobacco Products</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Number of Previous Quit Attempts</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Last Recent Quit Attempt</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Longest Quit Attempt</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Previous Quit Methods Used</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Cigarettes Per Day (Current)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Motivation to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Self-Efficacy for Quitting in Next 30 Days</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Confidence to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Importance to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">DSM5 Tobacco Use Disorder <span class="citation" data-cites="americanpsychiatricassociationDiagnosticStatisticalManual2013c">(<a href="#ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" role="doc-biblioref">American Psychiatric Association 2013</a>)</span></td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Fagerstrom Test of Nicotine Dependence <span class="citation" data-cites="heathertonFagerstromTestNicotine1991">(<a href="#ref-heathertonFagerstromTestNicotine1991" role="doc-biblioref">Heatherton et al. 1991</a>)</span></td>
+<td style="text-align: left;">Dichotomous, Ordinal</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Wisconsin Inventory of Smoking Dependence Motives-37 <span class="citation" data-cites="smithDevelopmentBriefWisconsin2010">(<a href="#ref-smithDevelopmentBriefWisconsin2010" role="doc-biblioref">Stevens S. Smith et al. 2010</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Smoke Menthol Cigarettes</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Wisconsin Smoking Withdrawal Scale-2 <span class="citation" data-cites="smithRevisionWisconsinSmoking2021">(<a href="#ref-smithRevisionWisconsinSmoking2021" role="doc-biblioref">Stevens S. Smith et al. 2021</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Social &amp; Environmental Characteristics</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Spouse Smokes</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Live with Another Smoker</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">People Close to You Who Smoke</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ban on Smoking at Home</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ban on Smoking at Work</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Time Around Other Smokers</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mental Health &amp; Psychological Traits</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Frequency of Drinking Alcohol</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Quantity of Alcohol</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Binge Drinking</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Short Inventory of Problems-2 (Revised) <span class="citation" data-cites="kilukShortInventoryProblems2013">(<a href="#ref-kilukShortInventoryProblems2013" role="doc-biblioref">Kiluk et al. 2013</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Life Enjoyment</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Psychological Disorder Diagnoses</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Positive and Negative Affect Schedule <span class="citation" data-cites="crawfordPositiveNegativeAffect2004a">(<a href="#ref-crawfordPositiveNegativeAffect2004a" role="doc-biblioref">Crawford and Henry 2004</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Snaith-Hamilton Pleasure Scale <span class="citation" data-cites="snaithScaleAssessmentHedonic1995a">(<a href="#ref-snaithScaleAssessmentHedonic1995a" role="doc-biblioref">Snaith et al. 1995</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Anxiety Severity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Distress Tolerance Scale <span class="citation" data-cites="simonsDistressToleranceScale2005a">(<a href="#ref-simonsDistressToleranceScale2005a" role="doc-biblioref">Simons and Gaher 2005</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Patient History Questionnaire-9 <span class="citation" data-cites="kroenkePHQ9ValidityBrief2001a">(<a href="#ref-kroenkePHQ9ValidityBrief2001a" role="doc-biblioref">Kroenke, Spitzer, and Williams 2001</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Medical &amp; Physical Health</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Diabetes Diagnosis</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Multidimensional Fatigue Inventory <span class="citation" data-cites="smetsMultidimensionalFatigueInventory1995">(<a href="#ref-smetsMultidimensionalFatigueInventory1995" role="doc-biblioref">Smets et al. 1995</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Berlin Sleep Questionnaire <span class="citation" data-cites="netzerUsingBerlinQuestionnaire1999">(<a href="#ref-netzerUsingBerlinQuestionnaire1999" role="doc-biblioref">Netzer et al. 1999</a>)</span></td>
+<td style="text-align: left;">Ordinal, Dichotomous</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Body Mass Index</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Health-related Quality of Life Scale <span class="citation" data-cites="taylorMeasuringHealthyDays2000">(<a href="#ref-taylorMeasuringHealthyDays2000" role="doc-biblioref">V. R. Taylor and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health 2000</a>)</span></td>
+<td style="text-align: left;">Ordinal, Numeric</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Healthy Days Symptoms Module <span class="citation" data-cites="moriartyCDCStudiesCommunity1996">(<a href="#ref-moriartyCDCStudiesCommunity1996" role="doc-biblioref">Moriarty 1996</a>)</span></td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Miscellaneous</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: left;">Categorical</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Incarcerated</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Works Third Shift</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </figure>
+</div></div></div>
 </div></div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" class="csl-entry" role="listitem">
+American Psychiatric Association. 2013. <em>Diagnostic and <span>Statistical Manual</span> of <span>Mental Disorders</span></em>. Fifth Edition. American Psychiatric Association. <a href="https://doi.org/10.1176/appi.books.9780890425596">https://doi.org/10.1176/appi.books.9780890425596</a>.
+</div>
+<div id="ref-crawfordPositiveNegativeAffect2004a" class="csl-entry" role="listitem">
+Crawford, John R., and Julie D. Henry. 2004. <span>“The <span>Positive</span> and <span>Negative Affect Schedule</span> (<span>PANAS</span>): <span>Construct</span> Validity, Measurement Properties and Normative Data in a Large Non-Clinical Sample.”</span> <em>British Journal of Clinical Psychology</em> 43 (3): 245–65. <a href="https://doi.org/10.1348/0144665031752934">https://doi.org/10.1348/0144665031752934</a>.
+</div>
+<div id="ref-heathertonFagerstromTestNicotine1991" class="csl-entry" role="listitem">
+Heatherton, Todd F, Lynn T Kozlowski, Richard C Frecker, and Karl Olov Fagerström. 1991. <span>“The <span class="nocase">Fagerstr<span class="nocase">ö</span>m Test</span> for <span>Nicotine Dependence</span>: <span>A</span> Revision of the <span class="nocase">Fagerstr<span class="nocase">ö</span>m Tolerance Questionnaire</span>.”</span> <em>British Journal of Addiction</em> 86 (9): 1119–27.
+</div>
+<div id="ref-kilukShortInventoryProblems2013" class="csl-entry" role="listitem">
+Kiluk, Brian D., Jessica A. Dreifuss, Roger D. Weiss, Jon Morgenstern, and Kathleen M. Carroll. 2013. <span>“The <span>Short Inventory</span> of <span>Problems</span> – <span>Revised</span> (<span>SIP-R</span>): <span>Psychometric</span> Properties Within a Large, Diverse Sample of Substance Use Disorder Treatment Seekers.”</span> <em>Psychology of Addictive Behaviors : Journal of the Society of Psychologists in Addictive Behaviors</em> 27 (1): 307–14. <a href="https://doi.org/10.1037/a0028445">https://doi.org/10.1037/a0028445</a>.
+</div>
+<div id="ref-kroenkePHQ9ValidityBrief2001a" class="csl-entry" role="listitem">
+Kroenke, K., R. L. Spitzer, and J. B. Williams. 2001. <span>“The <span>PHQ-9</span>: Validity of a Brief Depression Severity Measure.”</span> <em>Journal of General Internal Medicine</em> 16 (9): 606–13. <a href="https://doi.org/10.1046/j.1525-1497.2001.016009606.x">https://doi.org/10.1046/j.1525-1497.2001.016009606.x</a>.
+</div>
+<div id="ref-moriartyCDCStudiesCommunity1996" class="csl-entry" role="listitem">
+Moriarty, D. 1996. <span>“<span>CDC Studies Community Quality</span> of <span>Life</span>.”</span> <em>NACCHO News</em> 12(3) (10): 13.
+</div>
+<div id="ref-netzerUsingBerlinQuestionnaire1999" class="csl-entry" role="listitem">
+Netzer, N. C., R. A. Stoohs, C. M. Netzer, K. Clark, and K. P. Strohl. 1999. <span>“Using the <span>Berlin Questionnaire</span> to Identify Patients at Risk for the Sleep Apnea Syndrome.”</span> <em>Annals of Internal Medicine</em> 131 (7): 485–91. <a href="https://doi.org/10.7326/0003-4819-131-7-199910050-00002">https://doi.org/10.7326/0003-4819-131-7-199910050-00002</a>.
+</div>
+<div id="ref-simonsDistressToleranceScale2005a" class="csl-entry" role="listitem">
+Simons, Jeffrey S., and Raluca M. Gaher. 2005. <span>“The <span>Distress Tolerance Scale</span>: <span>Development</span> and Validation of a Self-Report Measure.”</span> <em>Motivation and Emotion</em> 29 (2): 83–102. <a href="https://doi.org/10.1007/s11031-005-7955-3">https://doi.org/10.1007/s11031-005-7955-3</a>.
+</div>
+<div id="ref-smetsMultidimensionalFatigueInventory1995" class="csl-entry" role="listitem">
+Smets, E. M. A., B. Garssen, B. Bonke, and J. C. J. M. De Haes. 1995. <span>“The Multidimensional <span>Fatigue Inventory</span> (<span>MFI</span>) Psychometric Qualities of an Instrument to Assess Fatigue.”</span> <em>Journal of Psychosomatic Research</em> 39 (3): 315–25. <a href="https://doi.org/10.1016/0022-3999(94)00125-O">https://doi.org/10.1016/0022-3999(94)00125-O</a>.
+</div>
+<div id="ref-smithRevisionWisconsinSmoking2021" class="csl-entry" role="listitem">
+Smith, Stevens S., Megan E. Piper, Daniel M. Bolt, Jesse T. Kaye, Michael C. Fiore, and Timothy B. Baker. 2021. <span>“Revision of the <span>Wisconsin Smoking Withdrawal Scale</span>: <span>Development</span> of <span>Brief</span> and <span>Long Forms</span>.”</span> <em>Psychological Assessment</em> 33 (3): 255–66. <a href="https://doi.org/10.1037/pas0000978">https://doi.org/10.1037/pas0000978</a>.
+</div>
+<div id="ref-smithDevelopmentBriefWisconsin2010" class="csl-entry" role="listitem">
+Smith, Stevens S, Megan E Piper, Daniel M Bolt, Michael C Fiore, David W Wetter, Paul M Cinciripini, and Timothy B Baker. 2010. <span>“Development of the <span>Brief Wisconsin Inventory</span> of <span>Smoking Dependence Motives</span>.”</span> <em>Nicotine &amp; Tobacco Research</em> 12 (5): 489–99. <a href="https://doi.org/10.1093/ntr/ntq032">https://doi.org/10.1093/ntr/ntq032</a>.
+</div>
+<div id="ref-snaithScaleAssessmentHedonic1995a" class="csl-entry" role="listitem">
+Snaith, R. P., M. Hamilton, S. Morley, A. Humayan, D. Hargreaves, and P. Trigwell. 1995. <span>“A Scale for the Assessment of Hedonic Tone the <span>Snaith-Hamilton Pleasure Scale</span>.”</span> <em>The British Journal of Psychiatry: The Journal of Mental Science</em> 167 (1): 99–103. <a href="https://doi.org/10.1192/bjp.167.1.99">https://doi.org/10.1192/bjp.167.1.99</a>.
+</div>
+<div id="ref-taylorRobustDimensionsAnxiety2007a" class="csl-entry" role="listitem">
+Taylor, Steven, Michael J. Zvolensky, Brian J. Cox, Brett Deacon, Richard G. Heimberg, Deborah Roth Ledley, Jonathan S. Abramowitz, et al. 2007. <span>“Robust Dimensions of Anxiety Sensitivity: Development and Initial Validation of the <span>Anxiety Sensitivity Index-3</span>.”</span> <em>Psychological Assessment</em> 19 (2): 176–88. <a href="https://doi.org/10.1037/1040-3590.19.2.176">https://doi.org/10.1037/1040-3590.19.2.176</a>.
+</div>
+<div id="ref-taylorMeasuringHealthyDays2000" class="csl-entry" role="listitem">
+Taylor, Virginia Ross, and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health. 2000. <span>“Measuring Healthy Days: <span>Population</span> Assessment of Health-Related Quality of Life.”</span> Atlanta, Georgia:CDC.
+</div>
+</div>
 </section>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">

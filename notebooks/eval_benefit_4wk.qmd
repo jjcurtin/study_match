@@ -7,10 +7,6 @@ output:
   html_document:
     toc: true 
     toc_depth: 4
-params:
-  study: "match"
-  version: "v5"
-  y_col_name: "pp_hybrid_wk4_outcome"
 format:
   html:
     embed-resources: true
@@ -21,9 +17,9 @@ editor_options:
 ---
 
 ```{r set_variables}
-study <- params$study
-version <- params$version
-y_col_name <- params$y_col_name
+study <- "match"
+version <- "v6"
+y_col_name <- "pp_hybrid_wk4_outcome"
 ```
 
 ```{r, packages_script}
@@ -78,7 +74,7 @@ Read in aim 2 dataset
 ```{r}
 
 d <- read_csv(file.path(path_models, 
-                        str_c("aim_2_", version, "_none_", y_col_name, ".csv")),
+                        str_c("aim_2_", version, "_", y_col_name, ".csv")),
               show_col_types = FALSE) |> 
   mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
          outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),

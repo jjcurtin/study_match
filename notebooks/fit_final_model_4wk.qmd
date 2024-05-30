@@ -6,11 +6,6 @@ output:
   html_document:
     toc: true 
     toc_depth: 4
-params:
-  study: "match"
-  version: "v5"
-  cv: "kfold"
-  y_col_name: "pp_hybrid_wk4_outcome" 
 format:
   html:
     embed-resources: true
@@ -21,10 +16,10 @@ editor_options:
 ### Set Up Environment
 
 ```{r set_variables}
-study <- params$study
-version <- params$version
-cv <- params$cv
-y_col_name <- params$y_col_name
+study <- "match"
+version <- "v6"
+cv <- "kfold"
+y_col_name <- "pp_hybrid_wk4_outcome"
 
 ```
 
@@ -98,7 +93,7 @@ Selected in 1_metrics_inner (k-fold CV)
 
 ```{r}
 best_config <- read_csv(file.path(path_models, 
-                                  str_c("best_config_none_", version, ".csv")),
+                                  str_c("best_config_", version, ".csv")),
                         show_col_types = FALSE)
 
 glimpse(best_config)
@@ -289,9 +284,9 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
 Map over participants so that each is held-out once
 ```{r}
 if(file.exists(file.path(path_models, 
-                         str_c("trip_probs_none_", version, ".csv")))) {
+                         str_c("trip_probs_", version, ".csv")))) {
   all_probs <- read_csv(file.path(path_models, 
-                                  str_c("trip_probs_none_", version, ".csv")),
+                                  str_c("trip_probs_", version, ".csv")),
                         show_col_types = FALSE)
 } else {
   all_probs <- d$subid |> 
@@ -300,7 +295,7 @@ if(file.exists(file.path(path_models,
   
   all_probs |> 
     write_csv(file.path(path_models, 
-                        str_c("trip_probs_none_", version, ".csv")))
+                        str_c("trip_probs_", version, ".csv")))
 }
 
 ```
@@ -384,7 +379,7 @@ d_aim_2 |>
 Write out
 ```{r}
 d_aim_2 |> 
-  write_csv(file.path(path_models, str_c("aim_2_", version, "_none_", 
+  write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
                                          y_col_name, ".csv")))
 ```
 

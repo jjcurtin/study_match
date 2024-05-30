@@ -294,11 +294,11 @@ Smoking-related characteristics of this sample appear in Table 3. On average, in
 
 #### Model performance
 
-We selected the best model configurations using auROCs from the *validation sets*. We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [krstajicCrossvalidationPitfallsWhen2014].
+We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [krstajicCrossvalidationPitfallsWhen2014].
 
-The median auROC across the 30 test sets for the 4-week model was 0.682 (IQR = 0.654 - 0.712, range = 0.589 - 0.797). The median auROC across the 30 test sets for the 26-week model was 0.645 (IQR = 0.605 - 0.672, range = 0.513 - 0.762). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). 
+The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). Figure 1, Panel A shows the ROC curve for held-out test set performance.
 
-We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROCs from these posterior distributions were 0.687 (4-week model) and 0.639 (26-week model). These values represent our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROCs were relatively narrow and did not contain 0.5 (chance performance) for either the 4-week model [0.666 - 0.707] or the 26-week model [0.617 - 0.661]. Figure X displays posterior probability distributions for the auROC for the models by outcome.
+We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. Figure 1, Panel B displays the posterior probability distribution for the auROC.
 
 <!-- move to supp
 #### Bayesian model comparisons
@@ -310,29 +310,29 @@ is the probability allowed to be 100%...?
 
 #### Model calibration
 
-In Figure 1, panel C, we display our model's calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their *original trial-assigned treatment* against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
+In Figure 1, panel C, we display our model's calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
 
 #### Model interpretation
 
 ##### Retained features
 
-Our final model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, a feature interacts with two levels of treatment). Supplemental table X presents the retained features and their parameter estimates. 
+Our final model fit with the full dataset retained retained 155 features. Of these, 74 were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). Supplemental table X presents the retained features and their parameter estimates. 
 
 ##### Feature importance via Shapley values
 
-Global importance (mean |Shapley value|) for features for our model appear in Panel A of Figure X. XX was the most important feature across prediction outcomes. XX, XX, and XX were also globally important across models. XX, XX, and XX were the most relatively important treatment interaction variables. XX was globally important for only the 4-week model, whereas XX was globally important for only the 26-week model.
+Global importance (mean |Shapley value|) for features for our model appear in Panel A of Figure X. XX was the most important feature. XX, XX, and XX were also globally important features. XX, XX, and XX were the most relatively important treatment interaction features. 
 
-<!-- not sure if i will need these? less relevant for my context/purpose unless helpful that they show direction? --> Sina plots of local Shapley values (i.e., the influence of features on individual observations) for each model show that some features (e.g., XX, XX, XX) impact abstinence probability for specific individuals even if they are not globally important across all observations (Figure X, Panel B).
+Sina plots of local Shapley values (i.e., the influence of features on individual observations) for each model show that some features (e.g., XX, XX, XX) impact abstinence probability for specific individuals even if they are not globally important across all observations (Figure X, Panel B). <!-- emphasize directionality! -->
 
 ### AIM 2 results: Clinical benefit
 
-<!-- redo values once predictions have been made with LOOCV & redone model -->
+There was a significant fixed effect of treatment matching on abstinence (OR = XX, *z* = 2.862, *p* = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent. There was also a significant fixed effect of time (OR = XX, *z* = -10.053, *p* < 0.001) such that the probability of abstinence declined over time. 
 
-There was a significant fixed effect of treatment matching on abstinence (OR = , *z* = 5.640, *p* < 0.001). Individuals who received their model-predicted best treatment were more likely to be abstinent. There was also a significant fixed effect of time (OR = , *z* = -9.948, *p* < 0.001) such that the probability of abstinence declined over time. 
+There was not a significant interaction between treatment matching and time (*p* = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
 
-There was not a significant interaction between treatment matching and time (*p* = 0.830). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
+There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, *z* = 2.452, *p* = 0.014). The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). Figure 3 shows the mean abstinence rate by treatment matching at each time point.
 
-There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = , *z* = , *p* = ) and at 12 weeks (OR = , *z* = , *p* = ). The effect of treatment matching was no longer significant by the 26-week follow-up assessment (*p* = ). Figure X shows the mean abstinence rate by treatment matching at each time point.
+<!-- embed figure 3 fig-clin-ben-wk4 from eval_benefit_4wk.qmd notebook -->
 
 ## Discussion
 
@@ -457,77 +457,38 @@ nts: "domain" grouping (second idea in above paragraph) was used similarly by PA
 
 4-WEEK BEST MODEL 
 
-unique items required for overall prediction: 
-
-live with smoker (MC), 
-race, 
-wisdm 2 & 5 & 13 & 14 & 16 & 18 & 19 & 20 & 22 & 26 & 27 & 30 & 32, 
-smoke menthol y/n, 
-used cigars (MC), 
-close smoking friend y/n, 
-dts 5 & 13 & 15, 
-asi3 2 & 9 & 15, 
-spouse smoke (MC), 
-close smoking coworker y/n, 
-dsm5 3 & 6 & 7 & 8 & 10 & 12, 
-marital status, 
-mfi 5 & 6 & 9 & 13 & 15, 
-close smoking relative y/n, 
-income, 
-depression dx, 
-work ban (MC), 
-ftnd 1 & 2 & 6, 
-berlin 7, 
-tried nicotine gum y/n, 
-wsws constipation & want cigarette & unhappy & 18 & 5 & 9 & angry & stressed & 12 & crave & 26 & coughing, 
-life satisfaction, 
-used pipe (MC), 
-gender, 
-carbon monoxide, 
-motive for quitting, 
-longest quit, 
-time around smokers on weekend, 
-shp 2 & 3 & 9 & 13 & 14, 
-total quit attempts, 
-importance to quit, 
-sip2r 2 & 3 & 4, 
-hdsm tense & pain
-time around smokers
-30-day quit success
-phq9 6
-used chew or snuff (MC)
-used ecig (MC)
-hrqol 4
-
-- total: 83 unique items required for overall prediction
-
 unique items required for differential prediction: 
 
-live with smoker (MC), 
-race, 
-wisdm 16 & 18 & 19 & 22 & 26 & 27 & 30 & 32, 
-smoke menthol y/n, 
-used cigars (MC), 
-close smoking friend y/n, 
-dts 5, 
-asi3 2 & 15, 
-spouse smoke (MC), 
-close smoking coworker y/n, 
-dsm5 3 & 6 & 7 & 10, 
-marital status, 
-mfi 6 & 13, 
-close smoking relative y/n, 
-income, 
-depression dx, 
-work ban (MC), 
-ftnd 2 & 6, 
-berlin 7, 
-tried nicotine gum y/n, 
-wsws constipation, 
-life satisfaction, 
-used pipe (MC), gender
+-live with smoker (MC)
+-race
+-wisdm 16, 18, 19, 22, 26, 27, 30, 32
+-smoke menthol y/n
+-used cigars (MC)
+-close smoking friend y/n
+-dts 1, 3, 5
+-asi3 2, 15
+-spouse smoke (MC)
+-close smoking coworker y/n
+-dsm5 3, 6, 7, 10, 12
+-marital status
+-mfi 6, 13, 15
+-close smoking relative y/n
+-income
+-depression dx
+-work ban (MC)
+-ftnd 2, 6
+-berlin 7, 9
+-tried nicotine gum y/n
+-tried xyban y/n
+-wsws crave, constipation, coughing, want cig, 5, 9, 26
+-life satisfaction
+-used pipe (MC)
+-gender
+-last rct quit
+-hdsm tense
+-total number quit attempts
 
-- total: 37 unique items required for treatment selection
+- total: 52 unique items required for treatment selection
 
 (potential for some items to be combined eg people close to you who smoke, check all that apply)
 

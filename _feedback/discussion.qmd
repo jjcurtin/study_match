@@ -1,0 +1,94 @@
+---
+title: "discussion"
+---
+
+DISCUSSION OUTLINE
+
+*1. We built a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using first-line medications*
+
+In this project, we have produced a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using several first-line medications. We can identify the best treatment for a specific individual at the moment in time that they are looking to quit. This treatment selection model can accomplish the goals of the precision mental health paradigm: the right treatment, for the right person, at the right time [@kaiserObamaGivesEast2015]. 
+
+  *- Be really excited about the benefit, explain the magnitude in digestible terms (eg compare probability of quitting without tx to probability of quitting with best tx - how much does this add on top of that?)*
+
+Individuals who received their model-predicted best treatment in the original trial had a mean abstinence rate of 39% at 4 weeks. The mean abstinence rate at 4 weeks in this study (among people who did and did not receive their best treatment, as might be expected using current treatment selection procedures) was 34%. Although this difference may seem somewhat small numerically, this represents a vast improvement. The best available smoking cessation treatments (i.e., varenicline or C-NRT plus psychosocial counseling) double the likelihood that an individual will quit successfully [@bakerSmokingTreatmentReport2021]. Thus, we might expect that these individuals would have had a 17% abstinence rate without any treatment. Using our model yields another 5% increase on top of this 17% increase - almost another third beyond what our *best* treatments currently offer.
+
+  *- Can do so with a low burden (quantity), accessible (self-report) assessment -> benefits for accessibility and equity especially given mhc disparities*
+  
+We can achieve this benefit using an assessment that is both low-burden and accessible. Implementing this treatment selection model would require assessing approximately 50 multiple choice and yes/no questions. These types of questions take 10-15 seconds each to answer on average [@lenznerCognitiveBurdenSurvey2010], meaning a 52-item assessment would be expected to take approximately 11-12 minutes. Additionally, because all items are self-report questions, this assessment can be completed remotely (e.g., administered online). Consequently, it can be made available to people who are un- or under-insured or who do not have access to in-person medical care. This assessment tool is particularly valuable in this context because two treatments in the model (C-NRT, nicotine patch) are widely available over-the-counter, offering scalable implementation when healthcare access is limited. 
+
+This focus on accessibility is particularly important given disparities in mental healthcare. Access to treatment is a known barrier in mental healthcare and a contributing factor driving healthcare disparities [@jacobsonDigitalTherapeuticsMental2022]. Cigarette smoking rates remain higher in many marginalized populations [@bakerSmokingTreatmentReport2021; @jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @kellyPrevalenceSmokingOther2012; @cropseySmokingFemalePrisoners2004; @harrisonCigaretteSmokingMental2020; @baggettTobaccoUseHomeless2013; @soarSmokingAmongstAdults2020]. Precision mental health approaches must aim to mitigate rather than exacerbate health disparities in our treatment pipeline; prioritizing accessibility in implementation is a critical first step towards this goal [@maceachernMachineLearningPrecision2021].
+
+*2. Interpretable model: By making our model more interpretable, we are well-positioned for our prediction/clinical/implementation goals AND for guiding future research/improving understanding*
+
+A second part of prioritizing implementation was to make our model as interpretable as possible. Several recent reviews have noted that the interpretability of "black box" machine learning models may impede their utility for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We used a relatively interpretable statistical algorithm, GLMNet, which outputs parameter estimates and reduces dimensionality of the feature set. We also calculated Shapley values to understand feature importance among the predictors in our model.
+  
+  *-Prescriptive factors for differential success*
+
+Using these methods for interpretable machine learning, we were able to identify *prescriptive* factors that predict differential success (i.e., features that interact with treatment). Our best selected model configuration retained 74 interaction terms that spanned 52 unique items. Each feature's associated global Shapley value, which indicates overall magnitude of feature importance, was relatively small. This finding supports what was long been suspected in precision mental health: there is no one factor that explains sufficient variance to make differential predictions by treatment on its own. Rather, we need to consider many features simultaneously, each of which offers only a small contribution but which together can guide treatment selection.
+
+All the features considered in this model were expected to be relevant to predicting smoking cessation overall. The selection of baseline characteristics to be assessed in the original trial was guided by domain expertise and decades of research. For example, it makes sense that having most of your friends or family smoke would decrease the probability of quitting successfully. What may be less immediately intuitive, however, is why this characteristic further decreases the probability of quitting successfully specifically when treated with varenicline. This example demonstrates the value of the suite of machine learning tools: models can be built with high-dimensional data, allowing us to identify unexpected relationships, which we can then elucidate and understand using interpretable machine learning techniques. 
+
+  *-In addition to identifying factors that predict differential treatment success (i.e., permit treatment selection; interaction terms), we have added to the literature on prognostic factors that predict smoking cessation*
+    *- May be able to use these to guide precessation support, treatment development, etc.*
+      *- These features that did not interact with treatment here may interact with other FDA-approved treatments (e.g., buproprion)*
+
+In addition to prescriptive factors, we identified *prognostic* factors that predict smoking cessation overall (i.e., features with "main effects"). Although these features are not useful for selecting among the treatments in our model, they are valuable in several other ways. 
+
+These features contribute to the literature on prognostic factors that predict smoking cessation. In particular, they support the conclusion from a recent review that predictors of smoking cessation span many categories [@bickelPredictorsSmokingCessation2023]. We found similar breadth in important features in this model: economic (e.g., income), environmental (e.g., living with another smoker), sociodemographic (e.g., marital status), psychological (e.g., depression diagnosis), physical health (e.g., pain interfering with daily activities), and smoking use/history (e.g., longest previous quit attempt) characteristics all contributed to predicting smoking cessation. 
+
+Additionally, these prognostic factors may yet help to advance precision mental health goals. These factors may represent mechanisms underlying smoking cessation success and thus offer targeted areas for future treatment development. They also may be used to tailor existing treatments to increase success across individuals. For example, greater life satisfaction and higher importance of quitting predicted a greater chance of successfully quitting. Perhaps motivational interviewing/motivational enhancement therapy techniques that might address these factors could be used in pre-cessation counseling. These improvements could be made more scalable by offering psychoeducation and support tool links in a website where people complete the remote assessment for treatment selection.
+
+It is also possible that features that emerged as prognostic factors in our model may serve as prescriptive factors related to other treatments not included in this study. For example, buproprion is another first-line smoking cessation medication. It may be that some features in this model do not differentiate among C-NRT, nicotine patch, or varenicline but would differentiate between one of these treatments and buproprion. 
+
+Finally, it is important to remember that because GLMNet aims to reduce dimensionality by removing highly correlated features, features that were not retained are not necessarily unimportant. Thus, we cannot conclude that the features that make up our final model are the only ones that could help to select among treatments, or that the features that were excluded offer no predictive value. 
+
+*3. Our prediction model auROC was not particularly high*
+
+
+
+  *- There is signal (PPD does not include 0.5), but not very strong performance*
+  
+  
+  
+  *- Comparable to performance from other models predicting smoking cessation*
+  
+  
+  
+  *- May have been able to improve performance if we incorporated biological markers or genetic data, but this would come at a cost to implementation and accessibility*
+  
+  
+  
+  *- Also ok that the auROC is not particularly high because our purpose here is not overall prediction. Distinction between models that PREDICT better and models that PREDICT DIFFERENTIALLY better - a model that predicted abstinence perfectly but included no interactions would be useless for a treatment selection goal*
+  
+  
+  
+  *- Important that our predictions are well-calibrated such that we can trust their ordinal ranking (which is then used in our treatment selection process)*
+  
+  
+  
+*4. What do our deficits in benefit/performance tell us?*
+
+
+
+  *- It is difficult to predict smoking cessation at 4 weeks using baseline characteristics*
+  
+  
+  
+  *- It is even more difficult to predict smoking cessation at 6 months using those same baseline characteristics (supplement)*
+  
+  
+  
+  *- SINGLE ASSESSMENT AND SHORT-LIVED TREATMENT WITHOUT ONGOING SUPPORT ARE INSUFFICIENT FOR CHRONIC DISEASES!!*
+  
+
+
+*5. Need for ongoing, dynamic assessment and adaptive, continuing care*
+
+
+
+*6. Future directions*
+  *- fairness analyses*
+  
+  
+  
+  *- prospective trial!! critical*

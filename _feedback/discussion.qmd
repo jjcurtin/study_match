@@ -4,33 +4,37 @@ title: "discussion"
 
 DISCUSSION OUTLINE
 
-*1. We built a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using first-line medications*
+## Discussion
 
 In this project, we have produced a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using several first-line medications. We can identify the best treatment for a specific individual at the moment in time that they are looking to quit. This treatment selection model can accomplish the goals of the precision mental health paradigm: the right treatment, for the right person, at the right time [@kaiserObamaGivesEast2015]. 
 
-  *- Be really excited about the benefit, explain the magnitude in digestible terms (eg compare probability of quitting without tx to probability of quitting with best tx - how much does this add on top of that?)*
+### Benefit of treatment selection
 
 Individuals who received their model-predicted best treatment in the original trial had a mean abstinence rate of 39% at 4 weeks. The mean abstinence rate at 4 weeks in this study (among people who did and did not receive their best treatment, as might be expected using current treatment selection procedures) was 34%. Although this difference may seem somewhat small numerically, this represents a vast improvement. The best available smoking cessation treatments (i.e., varenicline or C-NRT plus psychosocial counseling) double the likelihood that an individual will quit successfully [@bakerSmokingTreatmentReport2021]. Thus, we might expect that these individuals would have had a 17% abstinence rate without any treatment. Using our model yields another 5% increase on top of this 17% increase - almost another third beyond what our *best* treatments currently offer.
-
-  *- Can do so with a low burden (quantity), accessible (self-report) assessment -> benefits for accessibility and equity especially given mhc disparities*
   
 We can achieve this benefit using an assessment that is both low-burden and accessible. Implementing this treatment selection model would require assessing approximately 50 multiple choice and yes/no questions. These types of questions take 10-15 seconds each to answer on average [@lenznerCognitiveBurdenSurvey2010], meaning a 52-item assessment would be expected to take approximately 11-12 minutes. Additionally, because all items are self-report questions, this assessment can be completed remotely (e.g., administered online). Consequently, it can be made available to people who are un- or under-insured or who do not have access to in-person medical care. This assessment tool is particularly valuable in this context because two treatments in the model (C-NRT, nicotine patch) are widely available over-the-counter, offering scalable implementation when healthcare access is limited. 
 
 This focus on accessibility is particularly important given disparities in mental healthcare. Access to treatment is a known barrier in mental healthcare and a contributing factor driving healthcare disparities [@jacobsonDigitalTherapeuticsMental2022]. Cigarette smoking rates remain higher in many marginalized populations [@bakerSmokingTreatmentReport2021; @jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @kellyPrevalenceSmokingOther2012; @cropseySmokingFemalePrisoners2004; @harrisonCigaretteSmokingMental2020; @baggettTobaccoUseHomeless2013; @soarSmokingAmongstAdults2020]. Precision mental health approaches must aim to mitigate rather than exacerbate health disparities in our treatment pipeline; prioritizing accessibility in implementation is a critical first step towards this goal [@maceachernMachineLearningPrecision2021].
 
-*2. Interpretable model: By making our model more interpretable, we are well-positioned for our prediction/clinical/implementation goals AND for guiding future research/improving understanding*
-
-A second part of prioritizing implementation was to make our model as interpretable as possible. Several recent reviews have noted that the interpretability of "black box" machine learning models may impede their utility for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We used a relatively interpretable statistical algorithm, GLMNet, which outputs parameter estimates and reduces dimensionality of the feature set. We also calculated Shapley values to understand feature importance among the predictors in our model.
+### Predictive performance
   
-  *-Prescriptive factors for differential success*
+We evaluated our model based on performance across held-out test sets. We observed a median auROC of 0.695, and the Bayesian CI around auROC indicated that our model is capturing predictive signal. However, this is not particularly strong performance. It is possible that we could have improved prediction if we incorporated biological markers or genetic data given extant literature suggesting their value [@chenPathwaysPrecisionMedicine2018]. This potential improvement would have come at a cost to implementation given the relative inaccessibility of genetic and biological testing [@maceachernMachineLearningPrecision2021]. 
+  
+Although we used auROC to select among and evaluate our model's performance, our primary goal was not overall prediction. Capturing some signal with our model was necessary to yield credible predictions and establish the relevance of features, but it was insufficient for our purpose. A model that predicted abstinence perfectly (i.e., auROC of 1.0) but included no interactions would be useless for treatment selection. Indeed, this fact motivated our use of a satisficing metric for a minimum number of interaction terms retained in our models, even though it is possible that we sacrificed some level of predictive power by imposing that additional criterion.
+
+Perhaps more important than auROC for our purpose, then, is our model's calibration. Our predictions were well-calibrated such that we can trust their ordinal ranking. This is critical because what is used in our treatment selection process is the *order* of predicted probabilities for each person rather than the values themselves. <!-- NTS: add brier score to results -->
+
+### Interpreting our treatment selection model
+
+Several recent reviews have noted that the interpretability of "black box" machine learning models may impede their utility for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. Consequently, we aimed to make our model as interpretable as possible. We used a relatively interpretable statistical algorithm, GLMNet, which outputs parameter estimates and reduces dimensionality of the feature set. We also calculated Shapley values to understand feature importance among the predictors in our model.
+
+#### Prescriptive factors for treatment selection
 
 Using these methods for interpretable machine learning, we were able to identify *prescriptive* factors that predict differential success (i.e., features that interact with treatment). Our best selected model configuration retained 74 interaction terms that spanned 52 unique items. Each feature's associated global Shapley value, which indicates overall magnitude of feature importance, was relatively small. This finding supports what was long been suspected in precision mental health: there is no one factor that explains sufficient variance to make differential predictions by treatment on its own. Rather, we need to consider many features simultaneously, each of which offers only a small contribution but which together can guide treatment selection.
 
 All the features considered in this model were expected to be relevant to predicting smoking cessation overall. The selection of baseline characteristics to be assessed in the original trial was guided by domain expertise and decades of research. For example, it makes sense that having most of your friends or family smoke would decrease the probability of quitting successfully. What may be less immediately intuitive, however, is why this characteristic further decreases the probability of quitting successfully specifically when treated with varenicline. This example demonstrates the value of the suite of machine learning tools: models can be built with high-dimensional data, allowing us to identify unexpected relationships, which we can then elucidate and understand using interpretable machine learning techniques. 
-
-  *-In addition to identifying factors that predict differential treatment success (i.e., permit treatment selection; interaction terms), we have added to the literature on prognostic factors that predict smoking cessation*
-    *- May be able to use these to guide precessation support, treatment development, etc.*
-      *- These features that did not interact with treatment here may interact with other FDA-approved treatments (e.g., buproprion)*
+      
+#### Prognostic factors for treatment development
 
 In addition to prescriptive factors, we identified *prognostic* factors that predict smoking cessation overall (i.e., features with "main effects"). Although these features are not useful for selecting among the treatments in our model, they are valuable in several other ways. 
 
@@ -42,53 +46,40 @@ It is also possible that features that emerged as prognostic factors in our mode
 
 Finally, it is important to remember that because GLMNet aims to reduce dimensionality by removing highly correlated features, features that were not retained are not necessarily unimportant. Thus, we cannot conclude that the features that make up our final model are the only ones that could help to select among treatments, or that the features that were excluded offer no predictive value. 
 
-*3. Our prediction model auROC was not particularly high*
+#### The role of demographic features
 
+Several demographic features emerged as important prognostic and prescriptive factors: race, gender, income, and marital status. Ethnicity did not emerge as an important feature, and race-based features were specifically related to identifying as a Black or White individual. However, the limited representation of Hispanic, Latino/a, Asian, Multiracial, and Native American/Alaska Native individuals in this sample warrants caution in drawing conclusions about the predictive utility of ethnicity- and race-based features. 
 
+In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race is discriminatory (e.g., [@farayolaEthicsTrustworthinessAI2023]). However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes across vulnerable subpopulations.
 
-  *- There is signal (PPD does not include 0.5), but not very strong performance*
-  
-  
-  
-  *- Comparable to performance from other models predicting smoking cessation*
-  
-  
-  
-  *- May have been able to improve performance if we incorporated biological markers or genetic data, but this would come at a cost to implementation and accessibility*
-  
-  
-  
-  *- Also ok that the auROC is not particularly high because our purpose here is not overall prediction. Distinction between models that PREDICT better and models that PREDICT DIFFERENTIALLY better - a model that predicted abstinence perfectly but included no interactions would be useless for a treatment selection goal*
-  
-  
-  
-  *- Important that our predictions are well-calibrated such that we can trust their ordinal ranking (which is then used in our treatment selection process)*
-  
-  
-  
-*4. What do our deficits in benefit/performance tell us?*
+### Future directions
 
+#### Algorithmic fairness
 
+Our sample was representative across several demographic characteristics; however, as noted above, we had poor representation of several racial minority groups and of Hispanic and Latino/a individuals. Our model can only be as good as the data with which it was developed [@aldridgeResearchTrainingRecommendations2019]. We must make a concerted effort to build treatment selection models using data where there was good representation across as many marginalized characteristics as possible. Otherwise, we run the risk of exacerbating rather than mitigating mental healthcare disparities.
 
-  *- It is difficult to predict smoking cessation at 4 weeks using baseline characteristics*
-  
-  
-  
-  *- It is even more difficult to predict smoking cessation at 6 months using those same baseline characteristics (supplement)*
-  
-  
-  
-  *- SINGLE ASSESSMENT AND SHORT-LIVED TREATMENT WITHOUT ONGOING SUPPORT ARE INSUFFICIENT FOR CHRONIC DISEASES!!*
-  
+There are also tools to examine the fairness of a prediction algorithm across sub-populations. For example, we could assess whether our model performs as well for White and non-White individuals. We could similarly examine whether our treatment selection benefit differs by any demographic characteristics in our sample. This would help us to identify biases at play in our prediction and treatment selection models. 
 
+#### Prospective clinical trial
 
-*5. Need for ongoing, dynamic assessment and adaptive, continuing care*
+We made a concerted effort in this project to evaluate how our treatment selection model would perform for new patients. Specifically, we used leave-one-out cross-validation to calculate predictions for each held-out individual that were then used to select that person's best treatment. 
 
+Regardless, the ultimate test of this model's clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether this model is feasible and acceptable to patients and clinicians in clinical practice. There may be opportunities to incorporate input directly from these stakeholders. Second, we can compare treatment success among individuals who receive a model-assigned best treatment to treatment success when using traditional treatment selection. This will assess the clinical benefit of our treatment selection model in an entirely new sample. 
 
-
-*6. Future directions*
-  *- fairness analyses*
+#### Precision mental health for chronic, relapsing disorders
   
+Alongside many exciting findings, this project also demonstrates that it is difficult to predict complex outcomes like treatment success using distal predictors. Indeed, our model predicting point-prevalence abstinence at 4 weeks was not particularly accurate, but model performance became even worse when we built models predicting 6-month abstinence rates (median auROC across held-out test sets: XXX; see Supplement). Our model fitting, selection, and evaluation process was identical for these models, suggesting that the greater distance between our baseline predictors and abstinence outcomes was the cause of the degraded performance. 
   
-  
-  *- prospective trial!! critical*
+Relatedly, the benefit of our treatment selection model is short-lived. There was an overall effect of treatment matching, though this seems to be carried primarily by the significant simple effect at 4 weeks. There is no longer statistically significant benefit at 12 weeks, though there is a numeric difference, and there is no statistical or numeric difference at all by 6 months. 
+
+Initial treatment selection is critical, especially for cigarette smoking where even reducing smoking or quitting for some period of time can improve health outcomes and life expectancy [@jhaprabhat21stCenturyHazardsSmoking2013]. Additionally, smoking early in a quit attempt can have strong negative consequences: decreased self-efficacy (shown to be a prognostic factor predicting smoking cessation), reduced treatment adherence, and premature treatment cessation [@schlamInterventionsTobaccoSmoking2013]. Findings such as these highlight that selecting a treatment that increases abstinence in early recovery (i.e., at 4 weeks) is still quite useful.
+
+Nevertheless, we were of course hopeful that treatment matching benefits would endure. However, it is perhaps unsurprising that they do not. Many of the baseline characteristics used for prediction in this model were based on a single assessment of *current* states - withdrawal, dependence, confidence/motivation to quit, time around other smokers, distress tolerance, depression symptoms, among others. Even predictors that feel more "static" like employment or marital status can be subject to change. 
+
+Thus, there are several possibilities for the lack of benefit at later assessment points. First, it may be that the factors that predict differential treatment success at 4 weeks are qualitatively different than those that predict differential treatment success later on. 
+
+Second, it may be that there are consistent relationships among predictors and outcomes over time, but because these characteristics can change dynamically *within an individual*, what was the "right" treatment for them based on their pre-quit characteristics is no longer the right treatment by 12 weeks, 6 months, or beyond. Consider the example of the feature that assesses whether someone lives with another smoker other than their spouse/partner. The same answer to this question increases the likelihood of quitting using C-NRT and decreases the likelihood of quitting using varenicline in our model. What if this was an important factor that led to C-NRT being selected as an individual's best treatment - and then they move?
+
+Examples like these are the rule rather than the exception when it comes to chronic diseases like substance use disorders. Tobacco and other substance use disorders are dynamic and relapsing; both risk for use and the factors driving that risk fluctuate over time [@brandonRelapseRelapsePrevention2007]. This change over time has been identified as a key barrier that we must overcome to succeed with precision mental health goals in addiction: "an unspoken assumption underlying much research in this area has been that the purported mechanism of a given addiction treatment is static over time... research on this topic has not typically paid appropriate attention to the dynamic nature of addictive behavior and the complexity of the relapse process" [@oliverPrecisionMedicineAddiction2017]. 
+
+Thus, though important, initial treatment selection is insufficient for chronic, relapsing disorders. Conditions like these require long-term, continuing care - a fact supported by our finding that abstinence rates declined over time (i.e., main effect of time), which was consistent with decades of research [@bakerSmokingTreatmentReport2021]. Future precision mental health research must take into account both this need for long-term care and the reality of the dynamic nature of tobacco and other substance use disorders. This will require ongoing assessment of key risk factors as well as treatment selection that adapts over time. Adaptations may include adjustments to medications (e.g., changing doses, changing medications), offering other traditional treatments (e.g., psychosocial counseling), and incorporating alternative treatments and supports (e.g., mobile health apps).

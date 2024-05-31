@@ -71,11 +71,194 @@ d <- read_csv(file.path(path_data, "match_cln.csv"),
               show_col_types = FALSE)
 ```
 
-## Table 1: Demographic Characteristics
+
+## Table 1: Feature Categories
+
+Set up data
+```{r}
+dt3 <- d |> select(-contains("outcome"), -subid)
+```
+
+Build table
+```{r}
+t1_feat_misc <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Treatment", "Incarcerated", "Works Third Shift"),
+  type = c("Categorical", "Dichotomous", "Dichotomous"),
+  n_feat = c(1, 1, 1)
+) |> 
+  add_row(feat_cat = "Miscellaneous",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat_psych_sud <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]", "Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]", "Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]", "Distress Tolerance Scale [@simonsDistressToleranceScale2005a]", "Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]"),
+  type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
+  n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
+) |> 
+  add_row(feat_cat = "Mental Health & Psychological Traits",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat_smoking <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]", "Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]", "Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]"),
+  type = c("Numeric", "Dichotomous", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (Unordered)", "Numeric", "Ordinal", "Ordinal", "Dichotomous", "Numeric", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Dichotomous, Ordinal", "Ordinal", "Categorical (Unordered)", "Ordinal"),
+  n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 14, 6, 49, 1, 45)
+) |> 
+  add_row(feat_cat = "Smoking Use & History",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat_medical <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]", "Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]", "Body Mass Index", "Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]", "Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]"),
+  type = c("Dichotomous", "Ordinal", "Ordinal, Dichotomous", "Numeric", "Ordinal, Numeric", "Numeric"),
+  n_feat = c(1, 26, 3, 1, 4, 5)
+) |> 
+  add_row(feat_cat = "Medical & Physical Health",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat_social_environ <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Spouse Smokes", "Live with Another Smoker", "People Close to You Who Smoke", "Ban on Smoking at Home", "Ban on Smoking at Work", "Time Around Other Smokers"),
+  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Dichotomous", "Categorical (unordered)", "Ordinal"),
+  n_feat = c(1, 1, 5, 1, 1, 2)
+) |> 
+  add_row(feat_cat = "Social & Environmental Characteristics",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat_demo <- tibble(
+  feat_cat = NA_character_,
+  feat_name = c("Gender", "Age", "Race", "Marital Status", "Income", "Ethnicity", "Employment"),
+  type = c("Categorical (unordered)", "Numeric", "Categorical (unordered)", "Categorical (unordered)", "Ordinal", "Categorical (Unordered)", "Categorical (unordered)"),
+  n_feat = c(1, 1, 1, 1, 1, 1, 1)
+) |> 
+  add_row(feat_cat = "Demographic Characteristics",
+  feat_name = NA_character_,
+  type = c(),
+  n_feat = NA_real_,
+  .before = 1)
+
+t1_feat <- bind_rows(t1_feat_demo, t1_feat_smoking) |> 
+  bind_rows(t1_feat_social_environ) |> 
+  bind_rows(t1_feat_psych_sud) |> 
+  bind_rows(t1_feat_medical) |> 
+  bind_rows(t1_feat_misc) |> 
+  rename(Category = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `Number of Features` = n_feat)
+```
+
+Table 1
+```{r tbl-featureshtml}
+#| label: tbl-featureshtml
+#| tbl-cap: "Individual Differences"
+
+t1_feat |>
+  mutate(across(where(is.numeric), as.character)) |>
+  mutate(across(everything(), ~replace_na(., "")))  |>
+  knitr::kable() 
+
+```
+
+Table 1, formatted for Typst/PDF output
+```{r tbl-featurespdf}
+#| label: tbl-featurespdf
+#| tbl-cap: "Individual Differences"
+
+t1_feat_demo |>
+  mutate(feat_cat = " ") |>
+  rename(`Demographic Characteristics` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf2}
+#| label: featurespdf2
+
+t1_feat_smoking |>
+  mutate(feat_cat = " ") |>
+  rename(`Smoking Use/History` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf3}
+#| label: featurespdf3
+
+t1_feat_social_environ |>
+  mutate(feat_cat = " ") |>
+  rename(`Social & Environmental Characteristics` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+t1_feat_psych_sud |>
+  mutate(feat_cat = " ") |>
+  rename(`Mental Health & Psychological Traits` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf4}
+#| label: featurespdf4
+
+t1_feat_medical |>
+  mutate(feat_cat = " ") |>
+  rename(`Medical & Physical Health` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+t1_feat_misc |>
+  mutate(feat_cat = " ") |>
+  rename(`Miscellaneous Features` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+   knitr::kable(align = "lllc") 
+```
+
+## Table 2: Demographic Characteristics
 
 Select down data
 ```{r}
-dt1 <- d |> 
+dt2 <- d |> 
   select(employment, ends_with("_ehr"), income_order) |> 
   select(-bmi_ehr, -diabetic_ehr) |> 
   glimpse()
@@ -83,7 +266,7 @@ dt1 <- d |>
 
 Build table
 ```{r}
-tab_race <- dt1 |> 
+tab_race <- dt2 |> 
   tab(race_ehr) |> 
   mutate(race_ehr = case_match(
     race_ehr,
@@ -101,7 +284,7 @@ tab_race <- dt1 |>
           n_prop = "",
           .before = 1)
 
-tab_ethnicity <- dt1 |> 
+tab_ethnicity <- dt2 |> 
   tab(ethnicity_ehr) |> 
   mutate(ethnicity_ehr = case_match(
     ethnicity_ehr,
@@ -115,7 +298,7 @@ tab_ethnicity <- dt1 |>
           n_prop = "",
           .before = 1)
 
-tab_gender <- dt1 |> 
+tab_gender <- dt2 |> 
   tab(gender_ehr) |> 
   mutate(gender_ehr = case_match(
     gender_ehr,
@@ -129,7 +312,7 @@ tab_gender <- dt1 |>
           n_prop = "",
           .before = 1)
 
-tab_employment <- dt1 |> 
+tab_employment <- dt2 |> 
   tab(employment) |> 
   mutate(employment = case_match(
     employment,
@@ -144,7 +327,7 @@ tab_employment <- dt1 |>
           n_prop = "",
           .before = 1)
 
-tab_marital <- dt1 |> 
+tab_marital <- dt2 |> 
   tab(marital_status_ehr) |> 
   mutate(marital_status_ehr = case_match(
     marital_status_ehr,
@@ -163,7 +346,7 @@ tab_marital <- dt1 |>
           n_prop = "",
           .before = 1)
 
-tab_income <- dt1 |> 
+tab_income <- dt2 |> 
   tab(income_order) |> 
   mutate(income_order = case_match(
     income_order,
@@ -186,11 +369,11 @@ tab_income <- dt1 |>
 tab_age <- tibble(
   var_name = "Age",
   n_prop = "",
-  `Mean (SD)` = str_c(round(mean(dt1$age_ehr), digits = 2),
-                      " (", round(sd(dt1$age_ehr), digits = 2), ")")
+  `Mean (SD)` = str_c(round(mean(dt2$age_ehr), digits = 2),
+                      " (", round(sd(dt2$age_ehr), digits = 2), ")")
 )
 
-t1_demo <- bind_rows(tab_gender, tab_race) |> 
+t2_demo <- bind_rows(tab_gender, tab_race) |> 
   bind_rows(tab_ethnicity) |> 
   bind_rows(tab_marital) |> 
   bind_rows(tab_employment) |> 
@@ -202,17 +385,41 @@ t1_demo <- bind_rows(tab_gender, tab_race) |>
   
 ```
 
-Table 1
+Table 2
 ```{r}
-#| label: tbl-demo
-print(t1_demo)
+#| label: tbl-demohtml
+#| tbl-cap: Demographic Characteristics
+
+t2_demo |>
+  knitr::kable()
+
 ```
 
-## Table 2: Smoking-related ID Characteristics
+```{r}
+#| label: tbl-demopdf
+#| tbl-cap: Demographic Characteristics
+
+t2_demo |>
+  head(-9) |>
+  knitr::kable()
+
+```
+
+```{r}
+#| label: demopdf
+
+t2_demo |>
+  tail(9) |>
+  knitr::kable()
+
+```
+
+
+## Table 3: Smoking-related ID Characteristics
 
 Select down data
 ```{r}
-dt2 <- d |> 
+dt3 <- d |> 
   select(age_1st_cig, age_daily_smoker, years_smoke, cigs_per_day_heaviest,
          tot_quit_attempt, cigs_per_day, dsm5_total_scale, ftnd_1_item_order,
          wisdm37_total_scale, wsws_total_scale)
@@ -220,7 +427,7 @@ dt2 <- d |>
 
 Build table
 ```{r}
-tab_ftnd_1 <- dt2 |> 
+tab_ftnd_1 <- dt3 |> 
   tab(ftnd_1_item_order) |> 
   mutate(ftnd_1_item_order = case_match(
     ftnd_1_item_order,
@@ -239,7 +446,7 @@ tab_ftnd_1 <- dt2 |>
   rename(`N (%)` = n_prop, Characteristic = var_name) |> 
   mutate(`Mean (SD)` = "")
 
-tab2_means <- dt2 |> 
+tab3_means <- dt3 |> 
   select(-ftnd_1_item_order) |> 
   summarize(across(everything(), ~ mean(.x, na.rm = TRUE))) |> 
   pivot_longer(
@@ -249,7 +456,7 @@ tab2_means <- dt2 |>
   ) |> 
   mutate(means = round(means, digits = 2))
 
-tab2_sds <- dt2 |> 
+tab3_sds <- dt3 |> 
   select(-ftnd_1_item_order) |> 
   summarize(across(everything(), ~ sd(.x, na.rm = TRUE))) |> 
   pivot_longer(
@@ -259,7 +466,7 @@ tab2_sds <- dt2 |>
   ) |> 
   mutate(sds = round(sds, digits = 2))
 
-t2_idchars <- full_join(tab2_means, tab2_sds, by = "var_name") |> 
+t3_idchars <- full_join(tab3_means, tab3_sds, by = "var_name") |> 
   mutate(var_name = case_match(
     var_name,
     "age_1st_cig" ~ "Age of first cigarette",
@@ -281,191 +488,13 @@ t2_idchars <- full_join(tab2_means, tab2_sds, by = "var_name") |>
   
 ```
 
-Table 2
+Table 3
 ```{r}
 #| label: tbl-smoking-chars
+#| tbl-cap: Smoking-related ID Characteristics
 
-print(t2_idchars)
-```
-
-## Table 3: Feature Categories
-
-Set up data
-```{r}
-dt3 <- d |> select(-contains("outcome"), -subid)
-```
-
-Build table
-```{r}
-t3_feat_misc <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Treatment", "Incarcerated", "Works Third Shift"),
-  type = c("Categorical", "Dichotomous", "Dichotomous"),
-  n_feat = c(1, 1, 1)
-) |> 
-  add_row(feat_cat = "Miscellaneous",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat_psych_sud <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]", "Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]", "Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]", "Distress Tolerance Scale [@simonsDistressToleranceScale2005a]", "Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]"),
-  type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
-  n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
-) |> 
-  add_row(feat_cat = "Mental Health & Psychological Traits",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat_smoking <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]", "Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]", "Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]"),
-  type = c("Numeric", "Dichotomous", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (Unordered)", "Numeric", "Ordinal", "Ordinal", "Dichotomous", "Numeric", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Dichotomous, Ordinal", "Ordinal", "Categorical (Unordered)", "Ordinal"),
-  n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 14, 6, 49, 1, 45)
-) |> 
-  add_row(feat_cat = "Smoking Use & History",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat_medical <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]", "Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]", "Body Mass Index", "Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]", "Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]"),
-  type = c("Dichotomous", "Ordinal", "Ordinal, Dichotomous", "Numeric", "Ordinal, Numeric", "Numeric"),
-  n_feat = c(1, 26, 3, 1, 4, 5)
-) |> 
-  add_row(feat_cat = "Medical & Physical Health",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat_social_environ <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Spouse Smokes", "Live with Another Smoker", "People Close to You Who Smoke", "Ban on Smoking at Home", "Ban on Smoking at Work", "Time Around Other Smokers"),
-  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Dichotomous", "Categorical (unordered)", "Ordinal"),
-  n_feat = c(1, 1, 5, 1, 1, 2)
-) |> 
-  add_row(feat_cat = "Social & Environmental Characteristics",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat_demo <- tibble(
-  feat_cat = NA_character_,
-  feat_name = c("Gender", "Age", "Race", "Marital Status", "Income", "Ethnicity", "Employment"),
-  type = c("Categorical (unordered)", "Numeric", "Categorical (unordered)", "Categorical (unordered)", "Ordinal", "Categorical (Unordered)", "Categorical (unordered)"),
-  n_feat = c(1, 1, 1, 1, 1, 1, 1)
-) |> 
-  add_row(feat_cat = "Demographic Characteristics",
-  feat_name = NA_character_,
-  type = c(),
-  n_feat = NA_real_,
-  .before = 1)
-
-t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |> 
-  bind_rows(t3_feat_social_environ) |> 
-  bind_rows(t3_feat_psych_sud) |> 
-  bind_rows(t3_feat_medical) |> 
-  bind_rows(t3_feat_misc) |> 
-  rename(Category = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `Number of Features` = n_feat)
-```
-
-Table 3
-```{r tbl-featureshtml}
-#| label: tbl-featureshtml
-#| tbl-cap: "Gaylen"
-
-t3_feat |>
-  mutate(across(where(is.numeric), as.character)) |>
-  mutate(across(everything(), ~replace_na(., "")))  |>
-  knitr::kable() 
-
-```
-
-Table 3, formatted for Typst/PDF output
-```{r tbl-featurespdf}
-#| label: tbl-featurespdf
-#| tbl-cap: "Individual Differences"
-
-t3_feat_demo |>
-  mutate(feat_cat = " ") |>
-  rename(`Demographic Characteristics` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-  knitr::kable(align = "lllc") 
-
-```
+t3_idchars |>
+  knitr::kable()
 
 
-```{r featurespdf2}
-#| label: featurespdf2
-
-t3_feat_smoking |>
-  mutate(feat_cat = " ") |>
-  rename(`Smoking Use/History` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-  knitr::kable(align = "lllc") 
-
-```
-
-
-```{r featurespdf3}
-#| label: featurespdf3
-
-t3_feat_social_environ |>
-  mutate(feat_cat = " ") |>
-  rename(`Social & Environmental Characteristics` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-  knitr::kable(align = "lllc") 
-
-t3_feat_psych_sud |>
-  mutate(feat_cat = " ") |>
-  rename(`Mental Health & Psychological Traits` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-  knitr::kable(align = "lllc") 
-
-```
-
-
-```{r featurespdf4}
-#| label: featurespdf4
-
-t3_feat_medical |>
-  mutate(feat_cat = " ") |>
-  rename(`Medical & Physical Health` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-  knitr::kable(align = "lllc") 
-
-t3_feat_misc |>
-  mutate(feat_cat = " ") |>
-  rename(`Miscellaneous Features` = feat_cat,
-         `Feature Name` = feat_name,
-         Type = type,
-         `# Features` = n_feat) |>
-tail(-1) |>
-   knitr::kable(align = "lllc") 
 ```

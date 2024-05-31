@@ -158,7 +158,7 @@ All participants also received 6 sessions of motivational and skill-training cou
 
 #### Individual difference characteristics
 
-Participants were comprehensively assessed for individual difference characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table 1.
+Participants were comprehensively assessed for individual difference characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}.
 
 ::: {.content-hidden unless-format="html"}
 
@@ -306,13 +306,29 @@ We identified the main effect of treatment match *a priori* as our focal effect;
 
 All 1086 participants who were randomized to treatment in the comparative effectiveness trial [@bakerEffectsNicotinePatch2016] were included in our analysis sample. 
 
-Demographic characteristics of this sample appear in Table 2. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including almost one third of the sample reporting annual income lower than $20,000. 
+Demographic characteristics of this sample appear in [@tbl-demohtml]{.content-visible when-format="html"}[@tbl-demopdf]{.content-visible unless-format="html"}. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including almost one third of the sample reporting annual income lower than $20,000. 
 
-<!-- embed table 2 demos -->
 
-Smoking-related characteristics of this sample appear in Table 3. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up. 
 
-<!-- embed table 3 smoking chars -->
+
+::: {.content-hidden unless-format="html"}
+
+{{< embed notebooks/mak_tables.qmd#tbl-demohtml >}} 
+:::
+
+::: {.content-hidden when-format="html"}
+
+{{< embed notebooks/mak_tables.qmd#tbl-demopdf >}} 
+{{< pagebreak >}}   
+ 
+[Table 2: Demographic Characteristics (Continued)]{.center}
+{{< embed notebooks/mak_tables.qmd#demopdf >}} 
+:::
+
+Smoking-related characteristics of this sample appear in @tbl-smoking-chars. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up. 
+
+{{< embed notebooks/mak_tables.qmd#tbl-smoking-chars >}} 
+
 
 ### AIM 1 results: Prediction models
 

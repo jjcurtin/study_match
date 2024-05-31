@@ -24,7 +24,12 @@ cv <- "nested"
 y_col_name <- "pp_hybrid_wk4_outcome"
 ```
 
-```{r, packages_script}
+Read in posterior probabilities for Panel B
+
+{{< include ana_bayes_match.qmd >}}
+
+
+```{r, packages_script_1}
 #| message: false
 #| warning: false
 
@@ -70,7 +75,7 @@ switch (Sys.info()[['sysname']],
 )
 ```
 
-```{r defaults}
+```{r defaults_1}
 
 # chunk defaults
 
@@ -119,7 +124,44 @@ fig_roc <- roc_data %>%
 fig_roc
 ```
 
-### Panel B: Prediction Calibration
+### Panel B: Posterior Probability Distribution
+
+
+
+Create plot
+```{r}
+
+#| label: fig-pp-wk4
+#| fig-cap: "Posterior Probabilities Distribution"
+
+fig_pp <- pp_tidy |> 
+  mutate(model = factor(model, 
+                        levels = "roc_auc",
+                        labels = "Week 4")) |> 
+  ggplot() + 
+  geom_histogram(aes(x = posterior, fill = model), 
+                 color = "black", alpha = .4, 
+                 bins = 30) +
+  geom_segment(mapping = aes(y = y + 100, yend = y - 100, 
+                             x = mean, xend = mean,
+                             color = model),
+               data = ci_week4) +
+  geom_segment(mapping = aes(y = y, yend = y, 
+                             x = lower, xend = upper, 
+                             color = model),
+               data = ci_week4) +
+  scale_y_continuous("Posterior Probability", 
+                     breaks = c(0, 250, 500, 750)) +
+  xlab("Area Under ROC Curve") +
+  theme(legend.position = "none")
+
+
+```
+
+
+
+
+### Panel C: Prediction Calibration
 
 Read in final model predictions (LOOCV)
 ```{r}
@@ -200,59 +242,6 @@ fig_cal_bins <- d_cal |>
 fig_cal_bins
 ```
 
-### Panel C: Posterior Probability Distribution
-
-Read in posterior probabilities
-```{r}
-
-pp <- read_rds(file.path(path_models, 
-                         str_c("posteriors_", version, "_nested.rds"))) 
-```
-
-Set up data
-```{r}
-
-pp_tidy <- pp %>% 
-  tidy(seed = 123) 
-
-ci_week4 <- pp_tidy |> 
-  summary() |> 
-  mutate(model = factor(model, 
-                        levels = "roc_auc",
-                        labels = "Week 4"),
-         y = 1000) 
-
-```
-
-Create plot
-```{r}
-
-#| label: fig-pp-wk4
-#| fig-cap: "Posterior Probabilities Distribution"
-
-fig_pp <- pp_tidy |> 
-  mutate(model = factor(model, 
-                        levels = "roc_auc",
-                        labels = "Week 4")) |> 
-  ggplot() + 
-  geom_histogram(aes(x = posterior, fill = model), 
-                 color = "black", alpha = .4, 
-                 bins = 30) +
-  geom_segment(mapping = aes(y = y + 100, yend = y - 100, 
-                             x = mean, xend = mean,
-                             color = model),
-               data = ci_week4) +
-  geom_segment(mapping = aes(y = y, yend = y, 
-                             x = lower, xend = upper, 
-                             color = model),
-               data = ci_week4) +
-  scale_y_continuous("Posterior Probability", 
-                     breaks = c(0, 250, 500, 750)) +
-  xlab("Area Under ROC Curve") +
-  theme(legend.position = "none")
-
-
-```
 
 ## Combine into single figure
 
@@ -261,7 +250,7 @@ fig_pp <- pp_tidy |>
 #| fig-height: 10
 #| fig-cap: "Gaylen"
 
-patchwork <- fig_roc + fig_cal_bins + fig_pp
+patchwork <- fig_roc + fig_contrasts + fig_cal_bins 
 
 patchwork + plot_annotation(
   title = "Model Performance",

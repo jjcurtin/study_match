@@ -381,22 +381,91 @@ t3_feat <- bind_rows(t3_feat_demo, t3_feat_smoking) |>
 ```
 
 Table 3
-```{r tbl-features}
-#| label: tbl-features
+```{r tbl-featureshtml}
+#| label: tbl-featureshtml
 #| tbl-cap: "Gaylen"
 
 t3_feat |>
   mutate(across(where(is.numeric), as.character)) |>
   mutate(across(everything(), ~replace_na(., "")))  |>
   knitr::kable() 
-# |>
-#     kableExtra::pack_rows("Demographic Characteristics", 1, 7, bold = FALSE) |>
-#     kableExtra::pack_rows("Smoking Use & History", 8, 28, bold = FALSE) |>
-#     kableExtra::pack_rows("Social & Environmental Characteristics", 29, 34, bold = FALSE) |>
-#     kableExtra::pack_rows("Mental Health & Psychological Traits", 35, 46, bold = FALSE) |>
-#     kableExtra::pack_rows("Medical & Physical Health", 47, 52, bold = FALSE) |>
-#     kableExtra::pack_rows("Miscellaneous", 53, 55, bold = FALSE)
 
-  
 ```
 
+Table 3, formatted for Typst/PDF output
+```{r tbl-featurespdf}
+#| label: tbl-featurespdf
+#| tbl-cap: "Individual Differences"
+
+t3_feat_demo |>
+  mutate(feat_cat = " ") |>
+  rename(`Demographic Characteristics` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf2}
+#| label: featurespdf2
+
+t3_feat_smoking |>
+  mutate(feat_cat = " ") |>
+  rename(`Smoking Use/History` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf3}
+#| label: featurespdf3
+
+t3_feat_social_environ |>
+  mutate(feat_cat = " ") |>
+  rename(`Social & Environmental Characteristics` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+t3_feat_psych_sud |>
+  mutate(feat_cat = " ") |>
+  rename(`Mental Health & Psychological Traits` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+```
+
+
+```{r featurespdf4}
+#| label: featurespdf4
+
+t3_feat_medical |>
+  mutate(feat_cat = " ") |>
+  rename(`Medical & Physical Health` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+  knitr::kable(align = "lllc") 
+
+t3_feat_misc |>
+  mutate(feat_cat = " ") |>
+  rename(`Miscellaneous Features` = feat_cat,
+         `Feature Name` = feat_name,
+         Type = type,
+         `# Features` = n_feat) |>
+tail(-1) |>
+   knitr::kable(align = "lllc") 
+```

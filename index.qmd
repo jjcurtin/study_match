@@ -160,9 +160,29 @@ All participants also received 6 sessions of motivational and skill-training cou
 
 Participants were comprehensively assessed for individual difference characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table 1.
 
-<!-- {{< embed notebooks/mak_tables.qmd#tbl-features >}} figure out why this isn't working -->
+::: {.content-hidden unless-format="html"}
 
-<!-- add table caption that includes citations for major measures per KW, susan is gathering references -->
+{{< embed notebooks/mak_tables.qmd#tbl-featureshtml >}} 
+:::
+
+::: {.content-hidden when-format="html"}
+
+{{< embed notebooks/mak_tables.qmd#tbl-featurespdf >}} 
+{{< pagebreak >}}   
+ 
+[Table 1: Individual Differences (Continued)]{.center}
+{{< embed notebooks/mak_tables.qmd#featurespdf2 >}} 
+
+{{< pagebreak >}}  
+[Table 1: Individual Differences (Continued)]{.center}
+{{< embed notebooks/mak_tables.qmd#featurespdf3 >}} 
+
+{{< pagebreak >}}  
+
+[Table 1: Individual Differences (Continued)]{.center}
+{{< embed notebooks/mak_tables.qmd#featurespdf4 >}} 
+:::
+
 
 #### Abstinence outcome
 
@@ -300,9 +320,12 @@ Smoking-related characteristics of this sample appear in Table 3. On average, in
 
 We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [krstajicCrossvalidationPitfallsWhen2014].
 
-The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). Figure 1, Panel A shows the ROC curve for held-out test set performance.
+{{< embed notebooks/mak_fig_1.qmd#fig-combined >}}
 
-We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. Figure 1, Panel B displays the posterior probability distribution for the auROC.
+The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance.
+
+We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
+
 
 <!-- move to supp
 #### Bayesian model comparisons
@@ -314,7 +337,7 @@ is the probability allowed to be 100%...?
 
 #### Model calibration
 
-In Figure 1, panel C, we display our model's calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
+In @fig-combined, panel C, we display our model's calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
 
 #### Model interpretation
 

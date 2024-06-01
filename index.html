@@ -8,7 +8,7 @@
 
 <meta name="author" content="Gaylen E Fronk">
 <meta name="author" content="John J. Curtin">
-<meta name="dcterms.date" content="2024-05-30">
+<meta name="dcterms.date" content="2024-06-01">
 <meta name="keywords" content="Substance use disorders, Precision mental health, Cigarette smoking, Machine learning, Treatment selection">
 
 <title>Machine learning-assisted treatment selection for smoking cessation</title>
@@ -57,18 +57,21 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 
 
 <meta name="citation_title" content="Machine learning-assisted treatment selection for smoking cessation">
-<meta name="citation_abstract" content="Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs. smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of XX in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = XX). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.
+<meta name="citation_abstract" content="Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs. smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of 0.695 in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = XX). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.
 ">
 <meta name="citation_keywords" content="Substance use disorders,Precision mental health,Cigarette smoking,Machine learning,Treatment selection">
 <meta name="citation_author" content="Gaylen E Fronk">
 <meta name="citation_author" content="John J. Curtin">
-<meta name="citation_publication_date" content="2024-05-30">
-<meta name="citation_cover_date" content="2024-05-30">
+<meta name="citation_publication_date" content="2024-06-01">
+<meta name="citation_cover_date" content="2024-06-01">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-05-30">
+<meta name="citation_online_date" content="2024-06-01">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Use of a machine learning framework to predict substance use disorder treatment success;,citation_abstract=There are several methods for building prediction models. The wealth of currently available modeling techniques usually forces the researcher to judge, a priori, what will likely be the best method. Super learning (SL) is a methodology that facilitates this decision by combining all identified prediction algorithms pertinent for a particular prediction problem. SL generates a final model that is at least as good as any of the other models considered for predicting the outcome. The overarching aim of this work is to introduce SL to analysts and practitioners. This work compares the performance of logistic regression, penalized regression, random forests, deep learning neural networks, and SL to predict successful substance use disorders (SUD) treatment. A nationwide database including 99,013 SUD treatment patients was used. All algorithms were evaluated using the area under the receiver operating characteristic curve (AUC) in a test sample that was not included in the training sample used to fit the prediction models. AUC for the models ranged between 0.793 and 0.820. SL was superior to all but one of the algorithms compared. An explanation of SL steps is provided. SL is the first step in targeted learning, an analytic framework that yields double robust effect estimation and inference with fewer assumptions than the usual parametric methods. Different aspects of SL depending on the context, its function within the targeted learning framework, and the benefits of this methodology in the addiction field are discussed.;,citation_author=Laura Acion;,citation_author=Diana Kelmansky;,citation_author=Mark Laan;,citation_author=Ethan Sahker;,citation_author=DeShauna Jones;,citation_author=Stephan Arndt;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=4;,citation_doi=10.1371/journal.pone.0175383;,citation_issn=1932-6203;,citation_pmid=28394905;,citation_volume=12;,citation_language=en-US;,citation_journal_title=PloS One;">
 <meta name="citation_reference" content="citation_title=CO110 Comparative Effectiveness of Sertraline, Fluoxetine Vs Escitalopram Among Adults with Depression in the United States;,citation_author=K. Adjei;,citation_author=A. A. Ali;,citation_publication_date=2022-07;,citation_cover_date=2022-07;,citation_year=2022;,citation_issue=7;,citation_doi=10.1016/j.jval.2022.04.206;,citation_issn=1098-3015, 1524-4733;,citation_volume=25;,citation_language=en-US;,citation_journal_title=Value in Health;,citation_publisher=Elsevier;">
@@ -87,6 +90,7 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=DALEX: Explainers for Complex Predictive Models in R;,citation_abstract=Predictive modeling is invaded by elastic, yet complex methods such as neural networks or ensembles (model stacking, boosting or bagging). Such methods are usually described by a large number of parameters or hyper parameters - a price that one needs to pay for elasticity. The very number of parameters makes models hard to understand. This paper describes a consistent collection of explainers for predictive models, a.k.a. black boxes. Each explainer is a technique for exploration of a black box model. Presented approaches are model-agnostic, what means that they extract useful information from any predictive method irrespective of its internal structure. Each explainer is linked with a specific aspect of a model. Some are useful in decomposing predictions, some serve better in understanding performance, while others are useful in understanding importance and conditional responses of a particular variable. Every explainer presented here works for a single model or for a collection of models. In the latter case, models can be compared against each other. Such comparison helps to find strengths and weaknesses of different models and gives additional tools for model validation. Presented explainers are implemented in the DALEX package for R. They are based on a uniform standardized grammar of model exploration which may be easily extended.;,citation_author=Przemyslaw Biecek;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_issue=84;,citation_issn=1533-7928;,citation_volume=19;,citation_journal_title=Journal of Machine Learning Research;">
 <meta name="citation_reference" content="citation_title=Polygenic Risk Scores in Clinical Psychology: Bridging Genomic Risk to Individual Differences;,citation_abstract=Genomewide association studies (GWASs) across psychiatric phenotypes have shown that common genetic variants generally confer risk with small effect sizes (odds ratio &amp;amp;amp;lt; 1.1) that additively contribute to polygenic risk. Summary statistics derived from large discovery GWASs can be used to generate polygenic risk scores (PRS) in independent, target data sets to examine correlates of polygenic disorder liability (e.g., does genetic liability to schizophrenia predict cognition?). The intuitive appeal and generalizability of PRS have led to their widespread use and new insights into mechanisms of polygenic liability. However, when currently applied across traits they account for small amounts of variance (&amp;lt;3%), are relatively uninformative for clinical treatment, and, in isolation, provide no insight into molecular mechanisms. Larger GWASs are needed to increase the precision of PRS, and novel approaches integrating various data sources (e.g., multitrait analysis of GWASs) may improve the utility of current PRS.;,citation_author=Ryan Bogdan;,citation_author=David A. A. Baranger;,citation_author=Arpana Agrawal;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_issue=1;,citation_doi=10.1146/annurev-clinpsy-050817-084847;,citation_pmid=29579395;,citation_volume=14;,citation_journal_title=Annual Review of Clinical Psychology;">
 <meta name="citation_reference" content="citation_title=Evaluating the Replicability of Significance Tests for Comparing Learning Algorithms;,citation_abstract=Empirical research in learning algorithms for classification tasks generally requires the use of significance tests. The quality of a test is typically judged on Type I error (how often the test indicates a difference when it should not) and Type II error (how often it indicates no difference when it should). In this paper we argue that the replicability of a test is also of importance. We say that a test has low replicability if its outcome strongly depends on the particular random partitioning of the data that is used to perform it. We present empirical measures of replicability and use them to compare the performance of several popular tests in a realistic setting involving standard learning algorithms and benchmark datasets. Based on our results we give recommendations on which test to use.;,citation_author=Remco R. Bouckaert;,citation_author=Eibe Frank;,citation_editor=Honghua Dai;,citation_editor=Ramakrishnan Srikant;,citation_editor=Chengqi Zhang;,citation_publication_date=2004;,citation_cover_date=2004;,citation_year=2004;,citation_isbn=978-3-540-24775-3;,citation_language=en-US;,citation_conference_title=Advances in Knowledge Discovery and Data Mining;,citation_conference=Springer Berlin Heidelberg;,citation_series_title=Lecture Notes in Computer Science;">
+<meta name="citation_reference" content="citation_title=Relapse and relapse prevention;,citation_abstract=Abstract Most psychological disorders and problem behaviors are characterized by very high rates of postremittance relapse. Thus, advances in the long-term efficacy of psychological interventions require understanding the causes and processes of relapse, with the ultimate goal of developing strategies that reduce the probability of relapse. Existing psychological theory and interventions relevant to relapse and relapse prevention (RP) are reviewed, with a focus on addictive behaviors. The past two decades have produced increased attention toward the relapse problem and important advances in the conceptualization of relapse (i.e., as a process rather than a discrete event). Further progress will require the translation of basic theory into applied theory, the development of integrative theories of relapse, and the design and testing of theory-based, multimodal RP interventions.;,citation_author=Thomas H. Brandon;,citation_author=Jennifer Irvin Vidrine;,citation_author=Erika B. Litvin;,citation_publication_date=2007;,citation_cover_date=2007;,citation_year=2007;,citation_issue=1;,citation_doi=10.1146/annurev.clinpsy.3.022806.091455;,citation_pmid=17716056;,citation_volume=3;,citation_journal_title=Annual Review of Clinical Psychology;">
 <meta name="citation_reference" content="citation_title=Nicotine receptor partial agonists for smoking cessation;,citation_abstract=Background , When people stop smoking they experience cravings to smoke and unpleasant mood changes. Nicotine receptor partial agonists aim to reduce these withdrawal symptoms and the pleasure people usually experience when they smoke. The most widely-available treatment in this drug type is varenicline, which is available world-wide as an aid for quitting smoking. Cytisine is a similar medication, but is only available in Central and Eastern European countries and through internet sales., Study characteristics , We searched for randomised controlled trials testing varenicline, cytisine or dianicline. We found 39 studies of varenicline compared to placebo, bupropion or nicotine patches. We also found four trials of cytisine, one of which compared it to nicotine replacement therapy. We include one trial of dianicline, which is no longer in development, and so not available to use as a quitting aid. To be included, trials had to report quit rates at least six months from the start of treatment. We preferred the strictest available definition of quitting, and results which had been biochemically confirmed by testing blood or bodily fluids.We conducted full searches up to May 2015, although we have also included several key trials published after that date., Key findings , From the information we found (27 trials, 12,625 people), varenicline at standard dose more than doubled the chances of quitting compared with placebo. Low-dose varenicline (four trials, 1266 people) roughly doubled the chances of quitting, and reduced the number and severity of side effects. The number of people stopping smoking with varenicline was higher than with bupropion (five trials, 5877 people) or with NRT (eight trials, 6264 people). Based on the evidence so far, we can calculate that varenicline delivers one extra successful quitter for every 11 people treated, compared with smokers trying to quit without varenicline., The most common side effect of varenicline is nausea, but this is mostly at mild or moderate levels and usually clears over time. People taking varenicline appear to have about a 25% increased chance of a serious adverse event, although these include many which are unrelated to the treatment. We also note that more people were lost from the control groups than from the varenicline groups by the end of the trials, which may mean that the count of events in the control groups is lower than it should be. After varenicline became available to use, there were concerns that it could be linked with an increase in depressed mood, agitation, or suicidal thinking and behaviour in some smokers. However, the latest evidence does not support a link between varenicline and these disorders, although people with past or current psychiatric illness may be at slightly higher risk. There have also been concerns that varenicline may slightly increase heart and circulatory problems in people already at increased risk of these illnesses. The evidence is currently unclear whether or not they are caused or made worse by varenicline, but we should have clearer answers to these questions when a further study is published later this year., Quality of the evidence , The varenicline studies were generally of high quality, providing evidence that we consider to be reliable and robust. We rate the quality of the evidence comparing varenicline with NRT as moderate quality (we are reasonably confident of the stability of the evidence), since in some of them the participants knew which treatment they were receiving (i.e. non-blinded open-label trials). We judge the evidence from the cytsine trials to be of low quality (we have limited confidence in the evidence), as there are only two trials, with relatively low numbers included.;,citation_author=Kate Cahill;,citation_author=Nicola Lindson-Hawley;,citation_author=Kyla H Thomas;,citation_author=Thomas R Fanshawe;,citation_author=Tim Lancaster;,citation_publication_date=2016-05;,citation_cover_date=2016-05;,citation_year=2016;,citation_issue=5;,citation_doi=10.1002/14651858.CD006103.pub7;,citation_issn=1469-493X;,citation_pmid=27158893;,citation_volume=2016;,citation_journal_title=The Cochrane Database of Systematic Reviews;">
 <meta name="citation_reference" content="citation_title=Pharmacological interventions for smoking cessation: An overview and network meta-analysis;,citation_abstract=BACKGROUND: Smoking is the leading preventable cause of illness and premature death worldwide. Some medications have been proven to help people to quit, with three licensed for this purpose in Europe and the USA: nicotine replacement therapy (NRT), bupropion, and varenicline. Cytisine (a treatment pharmacologically similar to varenicline) is also licensed for use in Russia and some of the former socialist economy countries. Other therapies, including nortriptyline, have also been tested for effectiveness. OBJECTIVES: How do NRT, bupropion and varenicline compare with placebo and with each other in achieving long-term abstinence (six months or longer)? How do the remaining treatments compare with placebo in achieving long-term abstinence? How do the risks of adverse and serious adverse events (SAEs) compare between the treatments, and are there instances where the harms may outweigh the benefits? METHODS: The overview is restricted to Cochrane reviews, all of which include randomised trials. Participants are usually adult smokers, but we exclude reviews of smoking cessation for pregnant women and in particular disease groups or specific settings. We cover nicotine replacement therapy (NRT), antidepressants (bupropion and nortriptyline), nicotine receptor partial agonists (varenicline and cytisine), anxiolytics, selective type 1 cannabinoid receptor antagonists (rimonabant), clonidine, lobeline, dianicline, mecamylamine, Nicobrevin, opioid antagonists, nicotine vaccines, and silver acetate. Our outcome for benefit is continuous or prolonged abstinence at least six months from the start of treatment. Our outcome for harms is the incidence of serious adverse events associated with each of the treatments. We searched the Cochrane Database of Systematic Reviews (CDSR) in The Cochrane Library, for any reviews with ’smoking’ in the title, abstract or keyword fields. The last search was conducted in November 2012. We assessed methodological quality using a revised version of the AMSTAR scale. For NRT, bupropion and varenicline we conducted network meta-analyses, comparing each with the others and with placebo for benefit, and varenicline and bupropion for risks of serious adverse events. MAIN RESULTS: We identified 12 treatment-specific reviews. The analyses covered 267 studies, involving 101,804 participants. Both NRT and bupropion were superior to placebo (odds ratios (OR) 1.84; 95% credible interval (CredI) 1.71 to 1.99, and 1.82; 95% CredI 1.60 to 2.06 respectively). Varenicline increased the odds of quitting compared with placebo (OR 2.88; 95% CredI 2.40 to 3.47). Head-to-head comparisons between bupropion and NRT showed equal efficacy (OR 0.99; 95% CredI 0.86 to 1.13). Varenicline was superior to single forms of NRT (OR 1.57; 95% CredI 1.29 to 1.91), and to bupropion (OR 1.59; 95% CredI 1.29 to 1.96). Varenicline was more effective than nicotine patch (OR 1.51; 95% CredI 1.22 to 1.87), than nicotine gum (OR 1.72; 95% CredI 1.38 to 2.13), and than ’other’ NRT (inhaler, spray, tablets, lozenges; OR 1.42; 95% CredI 1.12 to 1.79), but was not more effective than combination NRT (OR 1.06; 95% CredI 0.75 to 1.48). Combination NRT also outperformed single formulations. The four categories of NRT performed similarly against each other, apart from ’other’ NRT, which was marginally more effective than NRT gum (OR 1.21; 95% CredI 1.01 to 1.46). Cytisine (a nicotine receptor partial agonist) returned positive findings (risk ratio (RR) 3.98; 95% CI 2.01 to 7.87), without significant adverse events or SAEs. Across the 82 included and excluded bupropion trials, our estimate of six seizures in the bupropion arms versus none in the placebo arms was lower than the expected rate (1:1000), at about 1:1500. SAE meta-analysis of the bupropion studies demonstrated no excess of neuropsychiatric (RR 0.88; 95% CI 0.31 to 2.50) or cardiovascular events (RR 0.77; 95% CI 0.37 to 1.59). SAE meta-analysis of 14 varenicline trials found no difference between the varenicline and placebo arms (RR 1.06; 95% CI 0.72 to 1.55), and subgroup analyses detected no significant excess of neuropsychiatric events (RR 0.53; 95% CI 0.17 to 1.67), or of cardiac events (RR 1.26; 95% CI 0.62 to 2.56). Nortriptyline increased the chances of quitting (RR 2.03; 95% CI 1.48 to 2.78). Neither nortriptyline nor bupropion were shown to enhance the effect of NRT compared with NRT alone. Clonidine increased the chances of quitting (RR 1.63; 95% CI 1.22 to 2.18), but this was offset by a dose-dependent rise in adverse events. Mecamylamine in combination with NRT may increase the chances of quitting, but the current evidence is inconclusive. Other treatments failed to demonstrate a benefit compared with placebo. Nicotine vaccines are not yet licensed for use as an aid to smoking cessation or relapse prevention. Nicobrevin’s UK license is now revoked, and the manufacturers of rimonabant, taranabant and dianicline are no longer supporting the development or testing of these treatments. AUTHORS’ CONCLUSIONS: NRT, bupropion, varenicline and cytisine have been shown to improve the chances of quitting. Combination NRT and varenicline are equally effective as quitting aids. Nortriptyline also improves the chances of quitting. On current evidence, none of the treatments appear to have an incidence of adverse events that would mitigate their use. Further research is warranted into the safety of varenicline and into cytisine’s potential as an effective and affordable treatment, but not into the efficacy and safety of NRT.;,citation_author=Kate Cahill;,citation_author=Sarah Stevens;,citation_author=Rafael Perera;,citation_author=Tim Lancaster;,citation_publication_date=2013-05;,citation_cover_date=2013-05;,citation_year=2013;,citation_issue=5;,citation_doi=10.1002/14651858.CD009329.pub2;,citation_issn=1469-493X;,citation_pmid=23728690;,citation_language=en-US;,citation_journal_title=The Cochrane Database of Systematic Reviews;">
 <meta name="citation_reference" content="citation_title=Quit Methods Used by US Adult Cigarette Smokers, 2014–2016;,citation_abstract=Preventing Chronic Disease (PCD) is a peer-reviewed electronic journal established by the National Center for Chronic Disease Prevention and Health Promotion. PCD provides an open exchange of information and knowledge among researchers, practitioners, policy makers, and others who strive to improve the health of the public through chronic disease prevention.;,citation_author=Ralph S. Caraballo;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_doi=10.5888/pcd14.160600;,citation_issn=1545-1151;,citation_volume=14;,citation_language=en-US;,citation_journal_title=Preventing Chronic Disease;">
@@ -133,6 +137,7 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=21st-Century Hazards of Smoking and Benefits of Cessation in the United States;,citation_abstract=In this analysis of current data from a nationally representative U.S. survey, smoking was associated with a reduction in life expectancy of 10 years, and the excess risk was reduced by about 90% among smokers who quit by 40 years of age. Smoking is a major cause of premature death worldwide.1–3 Despite substantial declines in the prevalence of smoking by adults, estimates based on extrapolation from studies in the 1980s suggest that for those between 35 and 69 years of age, smoking currently accounts for almost 200,000 deaths annually in the United States, or about one fourth of all deaths in this age group.4–6 The prevalence of smoking peaked around 1960 among U.S. men and about two decades later among U.S. women.7,8 Rates of death from vascular disease have decreased substantially since the 1980s owing to reductions in smoking .&nbsp;.&nbsp;.;,citation_author=Jha Prabhat;,citation_author=Ramasundarahettige Chinthanie;,citation_author=Landsman Victoria;,citation_author=Rostron Brian;,citation_author=Thun Michael;,citation_author=Anderson Robert N.;,citation_author=McAfee Tim;,citation_author=Peto Richard;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_issue=4;,citation_doi=10.1056/NEJMsa1211128;,citation_volume=368;,citation_journal_title=New England Journal of Medicine;,citation_publisher=Massachusetts Medical Society;">
 <meta name="citation_reference" content="citation_title=On the use of cross-validation to assess performance in multivariate prediction;,citation_abstract=We describe a Monte Carlo investigation of a number of variants of cross-validation for the assessment of performance of predictive models, including different values of k in leave-k-out cross-validation, and implementation either in a one-deep or a two-deep fashion. We assume an underlying linear model that is being fitted using either ridge regression or partial least squares, and vary a number of design factors such as sample size n relative to number of variables p, and error variance. The investigation encompasses both the non-singular (i.e. n &amp;amp;amp;gt; p) and the singular (i.e. n \leq p) cases. The latter is now common in areas such as chemometrics but has as yet received little rigorous investigation. Results of the experiments enable us to reach some definite conclusions and to make some practical recommendations.;,citation_author=P. Jonathan;,citation_author=W. J. Krzanowski;,citation_author=W. V. McCarthy;,citation_publication_date=2000-07;,citation_cover_date=2000-07;,citation_year=2000;,citation_issue=3;,citation_doi=10.1023/A:1008987426876;,citation_issn=1573-1375;,citation_volume=10;,citation_language=en-US;,citation_journal_title=Statistics and Computing;">
 <meta name="citation_reference" content="citation_title=Discovery and development of varenicline for smoking cessation;,citation_abstract=Introduction: Tobacco use causes one premature death every six seconds. Current smoking cessation aids include nicotine replacement therapies and bupropion. Although more than 70% of smokers express a desire to quit, fewer than 3% remain abstinent for more than one year, highlighting a critical need for more efficacious smoking cessation treatments. Areas Covered: The authors discuss the rationale, preclinical and clinical development of varenicline for smoking cessation. They cover the formulation of varenicline as a partial agonist at \alpha4\beta2 receptors, the primary neural substrate for nicotine reward. Then, they discuss evidence from preclinical studies indicating varenicline’s efficacy in blocking nicotine reward, followed by clinical trials demonstrating safety and efficacy in sustaining abstinence in smokers. Finally, they cover post-market surveillance, including contraindications in heavy machine operators, putative cardiovascular risk, and the repealed warning for adverse neuropsychiatric events. Expert opinion: Varenicline development was based on strong theoretical rationale and preclinical evidence. Clinical studies indicate that varenicline is safe and more effective in sustaining abstinence than placebo, bupropion or nicotine replacement therapies. However, given that continuous abstinence rates across studies remain low (18~30% with varenicline; 4~10% with placebo), novel and more effective medications targeting other nicotinic or glutamate receptors for smoking cessation are required.;,citation_author=Chloe J. Jordan;,citation_author=Zheng-Xiong Xi;,citation_publication_date=2018-07;,citation_cover_date=2018-07;,citation_year=2018;,citation_issue=7;,citation_doi=10.1080/17460441.2018.1458090;,citation_issn=1746-0441;,citation_pmid=29587555;,citation_volume=13;,citation_journal_title=Expert opinion on drug discovery;">
+<meta name="citation_reference" content="citation_title=Obama gives East Room rollout to Precision Medicine Initiative;,citation_abstract=President explains project’s aims to audience of patients, scientists, drug company execs;,citation_author=Jocelyn Kaiser;,citation_publication_date=2015-01;,citation_cover_date=2015-01;,citation_year=2015;,citation_language=en-US;,citation_journal_title=Science;,citation_publisher=https://www.science.org/content/article/obama-gives-east-room-rollout-precision-medicine-initiative;">
 <meta name="citation_reference" content="citation_title=Interaction Terms in Nonlinear Models;,citation_abstract=Objectives To explain the use of interaction terms in nonlinear models. Study Design We discuss the motivation for including interaction terms in multivariate analyses. We then explain how the straightforward interpretation of interaction terms in linear models changes in nonlinear models, using graphs and equations. We extend the basic results from logit and probit to difference-in-differences models, models with higher powers of explanatory variables, other nonlinear models (including log transformation and ordered models), and panel data models. Empirical Application We show how to calculate and interpret interaction effects using a publicly available Stata data set with a binary outcome. Stata 11 has added several features which make those calculations easier. LIMDEP code also is provided. Conclusions It is important to understand why interaction terms are included in nonlinear models in order to be clear about their substantive interpretation.;,citation_author=Pinar Karaca-Mandic;,citation_author=Edward C. Norton;,citation_author=Bryan Dowd;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=1pt1;,citation_doi=10.1111/j.1475-6773.2011.01314.x;,citation_issn=1475-6773;,citation_volume=47;,citation_language=en-US;,citation_journal_title=Health Services Research;">
 <meta name="citation_reference" content="citation_title=Rate of Nicotine Metabolism and Smoking Cessation Outcomes in a Community-based Sample of Treatment-Seeking Smokers;,citation_abstract=Background In samples from controlled randomized clinical trials, a smoker’s rate of nicotine metabolism, measured by the 3-hydroxycotinine to cotinine ratio (NMR), predicts response to transdermal nicotine. Replication of this relationship in community-based samples of treatment-seeking smokers may help guide the implementation of the NMR for personalized treatment for nicotine dependence. Methods Data from a community-based sample of treatment seeking smokers (N=499) who received 8weeks of transdermal nicotine and 4 behavioral counseling sessions were used to evaluate associations between the NMR and smoking cessation. Secondary outcomes included withdrawal and craving, depression and anxiety, side effects, and treatment adherence. Results The NMR was a significant predictor of abstinence (OR=.56, 95% CI: 0.33-0.95, p=.03), with faster metabolizers showing lower quit rates than slower metabolizers (24% vs. 33%). Faster nicotine metabolizers exhibited significantly higher levels of anxiety symptoms over time during treatment, vs. slower metabolizers (NMR x Time interaction: F[3,357]=3.29, p=.02). NMR was not associated with changes in withdrawal, craving, depression, side effects, and treatment adherence (p’s&amp;amp;amp;gt;.05). Conclusions In a community-based sample of treatment-seeking smokers, faster nicotine metabolizers were significantly less likely to quit smoking and showed higher rates of anxiety symptoms during a smoking cessation treatment program, vs. slower nicotine metabolizers. These results provide further evidence that transdermal nicotine is less effective for faster nicotine metabolizers and suggest the need to address cessation-induced anxiety symptoms among these smokers to increase the chances for successful smoking cessation.;,citation_author=Amanda Kaufmann;,citation_author=Brian Hitsman;,citation_author=Patricia M. Goelz;,citation_author=Anna Veluz-Wilkins;,citation_author=Sonja Blazekovic;,citation_author=Lindsay Powers;,citation_author=Frank T. Leone;,citation_author=Peter Gariti;,citation_author=Rachel F. Tyndale;,citation_author=Robert A. Schnoll;,citation_publication_date=2015-12;,citation_cover_date=2015-12;,citation_year=2015;,citation_doi=10.1016/j.addbeh.2015.07.019;,citation_issn=0306-4603;,citation_volume=51;,citation_journal_title=Addictive Behaviors;">
 <meta name="citation_reference" content="citation_title=Searching for Personalized Medicine for Binge Drinking Smokers: Smoking Cessation Using Varenicline, Nicotine Patch, or Combination Nicotine Replacement Therapy;,citation_abstract=Objective: Heavy drinking is common among smokers and is associated with especially poor health outcomes. Varenicline may affect mechanisms and clinical outcomes that are relevant for both smoking cessation and alcohol use. The current study examines whether varenicline, relative to nicotine replacement therapy, yields better smoking cessation outcomes among binge drinking smokers. Method: Secondary data analyses of a comparative effectiveness randomized controlled trial of three smoking cessation pharmacotherapies (12 weeks of varenicline, nicotine patch, or nicotine patch and lozenge) paired with six counseling sessions were conducted. Adult daily cigarette smokers (N = 1,078, 52% female) reported patterns of alcohol use, cigarette craving, and alcohol-related cigarette craving at baseline and over 4 weeks after quitting. Smoking cessation outcome was 7-day biochemically confirmed point-prevalence abstinence. Results: Binge drinkers had higher relapse rates than moderate drinkers at 4-week post-target quit day but not at the end of treatment or long-term follow up (12 and 26 weeks). Varenicline did not yield superior smoking cessation outcomes among binge drinkers, nor did it affect alcohol use early in the quit attempt. Varenicline did produce relatively large reductions in alcohol-related cigarette craving and overall cigarette craving during the first 4 weeks after quitting. Conclusions: Varenicline did not yield higher smoking abstinence rates or reduce alcohol use among binge drinkers. Varenicline did reduce alcohol-related cigarette craving but this did not translate to meaningful differences in smoking abstinence. Varenicline’s effects on smoking abstinence do not appear to vary significantly as a function of drinking status.;,citation_author=Jesse T. Kaye;,citation_author=Adrienne L. Johnson;,citation_author=Timothy B. Baker;,citation_author=Megan E. Piper;,citation_author=Jessica W. Cook;,citation_publication_date=2020-07;,citation_cover_date=2020-07;,citation_year=2020;,citation_issue=4;,citation_doi=10.15288/jsad.2020.81.426;,citation_issn=1937-1888;,citation_volume=81;,citation_journal_title=Journal of Studies on Alcohol and Drugs;,citation_publisher=Alcohol Research Documentation, Inc.;">
@@ -149,6 +154,7 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Feature Engineering and Selection: A Practical Approach for Predictive Models;,citation_abstract=The process of developing predictive models includes many stages. Most resources focus on the modeling algorithms but neglect other critical aspects of the modeling process. This book describes techniques for finding the best representations of predictors for modeling and for nding the best subset of predictors for improving model performance. A variety of example data sets are used to illustrate the techniques along with R programs for reproducing the results.;,citation_author=Max Kuhn;,citation_author=Kjell Johnson;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_isbn=978-1-138-07922-9;,citation_language=en-US;">
 <meta name="citation_reference" content="citation_title=Tidyposterior: Bayesian Analysis to Compare Models using Resampling Statistics;,citation_abstract=Bayesian analysis used here to answer the question: &amp;amp;amp;quot;when looking at resampling results, are the differences between models ’real’?&amp;quot; To answer this, a model can be created were the performance statistic is the resampling statistics (e.g. accuracy or RMSE). These values are explained by the model types. In doing this, we can get parameter estimates for each model’s affect on performance and make statistical (and practical) comparisons between models. The methods included here are similar to Benavoli et al (2017) &amp;lt;https://jmlr.org/papers/v18/16-305.html&amp;gt;.;,citation_author=Max Kuhn;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;">
 <meta name="citation_reference" content="citation_title=Development of Machine Learning Models for Prediction of Smoking Cessation Outcome;,citation_abstract=Predictors for success in smoking cessation have been studied, but a prediction model capable of providing a success rate for each patient attempting to quit smoking is still lacking. The aim of this study is to develop prediction models using machine learning algorithms to predict the outcome of smoking cessation. Data was acquired from patients underwent smoking cessation program at one medical center in Northern Taiwan. A total of 4875 enrollments fulfilled our inclusion criteria. Models with artificial neural network (ANN), support vector machine (SVM), random forest (RF), logistic regression (LoR), k-nearest neighbor (KNN), classification and regression tree (CART), and naïve Bayes (NB) were trained to predict the final smoking status of the patients in a six-month period. Sensitivity, specificity, accuracy, and area under receiver operating characteristic (ROC) curve (AUC or ROC value) were used to determine the performance of the models. We adopted the ANN model which reached a slightly better performance, with a sensitivity of 0.704, a specificity of 0.567, an accuracy of 0.640, and an ROC value of 0.660 (95% confidence interval (CI): 0.617–0.702) for prediction in smoking cessation outcome. A predictive model for smoking cessation was constructed. The model could aid in providing the predicted success rate for all smokers. It also had the potential to achieve personalized and precision medicine for treatment of smoking cessation.;,citation_author=Cheng-Chien Lai;,citation_author=Wei-Hsin Huang;,citation_author=Betty Chia-Chen Chang;,citation_author=Lee-Ching Hwang;,citation_publication_date=2021-01;,citation_cover_date=2021-01;,citation_year=2021;,citation_issue=5;,citation_doi=10.3390/ijerph18052584;,citation_issn=1660-4601;,citation_volume=18;,citation_language=en-US;,citation_journal_title=International Journal of Environmental Research and Public Health;,citation_publisher=Multidisciplinary Digital Publishing Institute;">
+<meta name="citation_reference" content="citation_title=Cognitive burden of survey questions and response times: A psycholinguistic experiment;,citation_abstract=Applied Cognitive Psychology publishes psychological analyses of memory, learning, thinking, problem solving, language, and consciousness.;,citation_author=Timo Lenzner;,citation_author=Lars Kaczmirek;,citation_author=Alwine Lenzner;,citation_publication_date=2010-10;,citation_cover_date=2010-10;,citation_year=2010;,citation_issue=7;,citation_doi=10.1002/acp.1602;,citation_issn=1099-0720;,citation_volume=24;,citation_language=en-US;,citation_journal_title=Applied Cognitive Psychology;,citation_publisher=John Wiley &amp;amp;amp; Sons, Ltd;">
 <meta name="citation_reference" content="citation_title=Initiating Pharmacologic Treatment in Tobacco-Dependent Adults. An Official American Thoracic Society Clinical Practice Guideline;,citation_abstract=Background: Current tobacco treatment guidelines have established the efficacy of available interventions, but they do not provide detailed guidance for common implementation questions frequently faced in the clinic. An evidence-based guideline was created that addresses several pharmacotherapy-initiation questions that routinely confront treatment teams. Methods: Individuals with diverse expertise related to smoking cessation were empaneled to prioritize questions and outcomes important to clinicians. An evidence-synthesis team conducted systematic reviews, which informed recommendations to answer the questions. The GRADE (Grading of Recommendations, Assessment, Development, and Evaluation) approach was used to rate the certainty in the estimated effects and the strength of recommendations. Results: The guideline panel formulated five strong recommendations and two conditional recommendations regarding pharmacotherapy choices. Strong recommendations include using varenicline rather than a nicotine patch, using varenicline rather than bupropion, using varenicline rather than a nicotine patch in adults with a comorbid psychiatric condition, initiating varenicline in adults even if they are unready to quit, and using controller therapy for an extended treatment duration greater than 12 weeks. Conditional recommendations include combining a nicotine patch with varenicline rather than using varenicline alone and using varenicline rather than electronic cigarettes. Conclusions: Seven recommendations are provided, which represent simple practice changes that are likely to increase the effectiveness of tobacco-dependence pharmacotherapy.;,citation_author=Frank T. Leone;,citation_author=Yuqing Zhang;,citation_author=Sarah Evers-Casey;,citation_author=A. Eden Evins;,citation_author=Michelle N. Eakin;,citation_author=Joelle Fathi;,citation_author=Kathleen Fennig;,citation_author=Patricia Folan;,citation_author=Panagis Galiatsatos;,citation_author=Hyma Gogineni;,citation_author=Stephen Kantrow;,citation_author=Hasmeena Kathuria;,citation_author=Thomas Lamphere;,citation_author=Enid Neptune;,citation_author=Manuel C. Pacheco;,citation_author=Smita Pakhale;,citation_author=David Prezant;,citation_author=David P. L. Sachs;,citation_author=Benjamin Toll;,citation_author=Dona Upson;,citation_author=Dan Xiao;,citation_author=Luciane Cruz-Lopes;,citation_author=Izabela Fulone;,citation_author=Rachael L. Murray;,citation_author=Kelly K. O’Brien;,citation_author=Sureka Pavalagantharajah;,citation_author=Stephanie Ross;,citation_author=Yuan Zhang;,citation_author=Meng Zhu;,citation_author=Harold J. Farber;,citation_publication_date=2020-07;,citation_cover_date=2020-07;,citation_year=2020;,citation_issue=2;,citation_doi=10.1164/rccm.202005-1982ST;,citation_issn=1073-449X;,citation_volume=202;,citation_journal_title=American Journal of Respiratory and Critical Care Medicine;,citation_publisher=American Thoracic Society - AJRCCM;">
 <meta name="citation_reference" content="citation_title=Use of the nicotine metabolite ratio as a genetically informed biomarker of response to nicotine patch or varenicline for smoking cessation: A randomised, double-blind placebo-controlled trial;,citation_abstract=BACKGROUND: Substantial variability exists in therapeutic response and adverse effects with pharmacotherapies for tobacco dependence. Biomarkers to optimise treatment choice for individual smokers might improve treatment outcomes. We tested whether a genetically informed biomarker of nicotine clearance, the nicotine metabolite ratio (NMR; 3’-hydroxycotinine:cotinine), predicts response to nicotine patch or varenicline for smoking cessation. METHODS: We undertook NMR-stratified multicentre, randomised, placebo-controlled clinical trial from Nov 16, 2010, to Sept 12, 2014, at four sites. Smokers seeking treatment were randomly assigned by baseline NMR status and study site, in blocks of 12 patients (1:1:1 ratio), to 11 weeks of placebo (placebo pill plus placebo patch), nicotine patch (active patch plus placebo pill), or varenicline (active pill plus placebo patch), plus behavioural counselling. Participants and investigators were masked to group allocation and NMR status. An intention-to-treat analysis was done. Participants were followed up for 12 months after the target quit date. The primary endpoint was biochemically verified 7 day point prevalence abstinence at the end of treatment to estimate the pharmacological effect of treatment by NMR. The trial is registered at ClinicalTrials.gov, number NCT01314001. FINDINGS: 1246 participants (662 slow metabolisers of nicotine, 584 normal metabolisers of nicotine) were enrolled and randomly assigned to the three interventions (408 placebo, 418 nicotine patch, 420 varenicline). At end of treatment, varenicline was more efficacious than nicotine patch in normal metabolisers (OR 2\cdot17, 95% CI 1\cdot38-3\cdot42; p=0\cdot001), but not in slow metabolisers (OR 1\cdot13, 0\cdot74-1\cdot71; p=0\cdot56). In the longitudinal model including all timepoints, the NMR-by-treatment interaction was significant (ratio of odds ratios [ORR] 1\cdot96, 95% CI 1\cdot11-3\cdot46; p=0\cdot02). An NMR-by-treatment interaction showed that slow (vs normal) metabolisers reported greater overall side-effect severity with varenicline versus placebo (\beta=-1\cdot06, 95% CI -2\cdot08 to -0\cdot03; p=0\cdot044). INTERPRETATION: Treating normal metabolisers with varenicline and slow metabolisers with nicotine patch could optimise quit rates while minimising side-effects. FUNDING: National Institutes of Health, Canadian Institutes of Health Research, Abramson Cancer Center, Centre for Addiction and Mental Health Foundation, and Pennsylvania Department of Health.;,citation_author=Caryn Lerman;,citation_author=Robert A. Schnoll;,citation_author=Larry W. Hawk;,citation_author=Paul Cinciripini;,citation_author=Tony P. George;,citation_author=E. Paul Wileyto;,citation_author=Gary E. Swan;,citation_author=Neal L. Benowitz;,citation_author=Daniel F. Heitjan;,citation_author=Rachel F. Tyndale;,citation_author=PGRN-PNAT Research Group;,citation_publication_date=2015-02;,citation_cover_date=2015-02;,citation_year=2015;,citation_issue=2;,citation_doi=10.1016/S2213-2600(14)70294-2;,citation_issn=2213-2619;,citation_pmid=25588294;,citation_volume=3;,citation_language=en-US;,citation_journal_title=The Lancet. Respiratory Medicine;">
 <meta name="citation_reference" content="citation_title=Psychological therapies for post-traumatic stress disorder in adults: Systematic review and meta-analysis;,citation_author=Catrin Lewis;,citation_author=Neil P. Roberts;,citation_author=Martin Andrew;,citation_author=Elise Starling;,citation_author=Jonathan I. Bisson;,citation_publication_date=2020-12;,citation_cover_date=2020-12;,citation_year=2020;,citation_issue=1;,citation_doi=10.1080/20008198.2020.1729633;,citation_issn=2000-8066;,citation_volume=11;,citation_language=en-US;,citation_journal_title=European Journal of Psychotraumatology;">
@@ -253,7 +259,7 @@ div.csl-indent {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">May 30, 2024</p>
+              <p class="date">June 1, 2024</p>
             </div>
           </div>
           
@@ -267,7 +273,7 @@ div.csl-indent {
     <div>
       <div class="abstract">
         <div class="block-title">Abstract</div>
-        <p>Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs.&nbsp;smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of XX in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = XX). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.</p>
+        <p>Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs.&nbsp;smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of 0.695 in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = XX). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.</p>
       </div>
     </div>
 
@@ -305,7 +311,14 @@ div.csl-indent {
   <li><a href="#aim-1-results-prediction-models" id="toc-aim-1-results-prediction-models" class="nav-link" data-scroll-target="#aim-1-results-prediction-models">AIM 1 results: Prediction models</a></li>
   <li><a href="#aim-2-results-clinical-benefit" id="toc-aim-2-results-clinical-benefit" class="nav-link" data-scroll-target="#aim-2-results-clinical-benefit">AIM 2 results: Clinical benefit</a></li>
   </ul></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul class="collapse">
+  <li><a href="#benefit-of-treatment-selection" id="toc-benefit-of-treatment-selection" class="nav-link" data-scroll-target="#benefit-of-treatment-selection">Benefit of treatment selection</a></li>
+  <li><a href="#predictive-performance" id="toc-predictive-performance" class="nav-link" data-scroll-target="#predictive-performance">Predictive performance</a></li>
+  <li><a href="#interpreting-our-treatment-selection-model" id="toc-interpreting-our-treatment-selection-model" class="nav-link" data-scroll-target="#interpreting-our-treatment-selection-model">Interpreting our treatment selection model</a></li>
+  <li><a href="#future-directions" id="toc-future-directions" class="nav-link" data-scroll-target="#future-directions">Future directions</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks\ana_bayes_match-preview.html"><i class="bi bi-journal-code"></i>Posterior probabilities across models for MATCH study</a></li><li><a href="notebooks\eval_benefit_4wk-preview.html"><i class="bi bi-journal-code"></i>Evaluation of Clinical Benefit: Week 4 Model</a></li><li><a href="notebooks\fit_final_model_26wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for 26-week outcome</a></li><li><a href="notebooks\fit_final_model_4wk-preview.html"><i class="bi bi-journal-code"></i>Fits and characterizes final model for 4-week outcome</a></li><li><a href="notebooks\mak_fig_1-preview.html"><i class="bi bi-journal-code"></i>Make Figure 1: Model Performance (3-Panel)</a></li><li><a href="notebooks\mak_tables-preview.html"><i class="bi bi-journal-code"></i>Make Demographic, ID Characteristic, &amp; Feature Category Tables</a></li><li><a href="notebooks\shap_4wk-preview.html"><i class="bi bi-journal-code"></i>SHAP for 4-Week Model</a></li></ul></div></nav>
 </div>
@@ -403,9 +416,406 @@ div.csl-indent {
 </section>
 <section id="individual-difference-characteristics" class="level4">
 <h4 class="anchored" data-anchor-id="individual-difference-characteristics">Individual difference characteristics</h4>
-<p>Participants were comprehensively assessed for individual difference characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in Table 1.</p>
-<!-- {{< embed notebooks/mak_tables.qmd#tbl-features >}} figure out why this isn't working -->
-<!-- add table caption that includes citations for major measures per KW, susan is gathering references -->
+<p>Participants were comprehensively assessed for individual difference characteristics prior to treatment randomization. These characteristics fall into several domains expected to relate to cigarette smoking cessation: tobacco-related (e.g., cigarettes per day), psychological (e.g., psychiatric diagnoses, distress tolerance), physical health (e.g., vital signs), social/environmental (e.g., living with another person who smokes), and demographic (e.g., age, sex). A detailed list of all available individual differences variables appears in <span><a href="#tbl-featureshtml" class="quarto-xref">Table&nbsp;1</a></span>.</p>
+<div class="quarto-embed-nb-cell">
+<div class="cell">
+<div id="tbl-featureshtml" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-featureshtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Individual Differences
+</figcaption>
+<div aria-describedby="tbl-featureshtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 59%">
+<col style="width: 13%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Feature Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Number of Features</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Demographic Characteristics</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Marital Status</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Income</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ethnicity</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Employment</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Smoking Use &amp; History</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Baseline Carbon Monoxide</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Carbon Monoxide Exposure</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age of 1st Cigarette</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Age Became Daily Smoker</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Years Smoking</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Cigarettes Per Day (Heaviest)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Use of Other Tobacco Products</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Number of Previous Quit Attempts</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Last Recent Quit Attempt</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Longest Quit Attempt</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Previous Quit Methods Used</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Cigarettes Per Day (Current)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Motivation to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Self-Efficacy for Quitting in Next 30 Days</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Confidence to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Importance to Quit</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">DSM5 Tobacco Use Disorder <span class="citation" data-cites="americanpsychiatricassociationDiagnosticStatisticalManual2013c">(<a href="#ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" role="doc-biblioref">American Psychiatric Association 2013</a>)</span></td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Fagerstrom Test of Nicotine Dependence <span class="citation" data-cites="heathertonFagerstromTestNicotine1991">(<a href="#ref-heathertonFagerstromTestNicotine1991" role="doc-biblioref">Heatherton et al. 1991</a>)</span></td>
+<td style="text-align: left;">Dichotomous, Ordinal</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Wisconsin Inventory of Smoking Dependence Motives-37 <span class="citation" data-cites="smithDevelopmentBriefWisconsin2010">(<a href="#ref-smithDevelopmentBriefWisconsin2010" role="doc-biblioref">Stevens S. Smith et al. 2010</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Smoke Menthol Cigarettes</td>
+<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Wisconsin Smoking Withdrawal Scale-2 <span class="citation" data-cites="smithRevisionWisconsinSmoking2021">(<a href="#ref-smithRevisionWisconsinSmoking2021" role="doc-biblioref">Stevens S. Smith et al. 2021</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Social &amp; Environmental Characteristics</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Spouse Smokes</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Live with Another Smoker</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">People Close to You Who Smoke</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ban on Smoking at Home</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Ban on Smoking at Work</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Time Around Other Smokers</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mental Health &amp; Psychological Traits</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Frequency of Drinking Alcohol</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Quantity of Alcohol</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Binge Drinking</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Short Inventory of Problems-2 (Revised) <span class="citation" data-cites="kilukShortInventoryProblems2013">(<a href="#ref-kilukShortInventoryProblems2013" role="doc-biblioref">Kiluk et al. 2013</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Life Enjoyment</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Psychological Disorder Diagnoses</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Positive and Negative Affect Schedule <span class="citation" data-cites="crawfordPositiveNegativeAffect2004a">(<a href="#ref-crawfordPositiveNegativeAffect2004a" role="doc-biblioref">Crawford and Henry 2004</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Snaith-Hamilton Pleasure Scale <span class="citation" data-cites="snaithScaleAssessmentHedonic1995a">(<a href="#ref-snaithScaleAssessmentHedonic1995a" role="doc-biblioref">Snaith et al. 1995</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Anxiety Severity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Distress Tolerance Scale <span class="citation" data-cites="simonsDistressToleranceScale2005a">(<a href="#ref-simonsDistressToleranceScale2005a" role="doc-biblioref">Simons and Gaher 2005</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Patient History Questionnaire-9 <span class="citation" data-cites="kroenkePHQ9ValidityBrief2001a">(<a href="#ref-kroenkePHQ9ValidityBrief2001a" role="doc-biblioref">Kroenke, Spitzer, and Williams 2001</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Medical &amp; Physical Health</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Diabetes Diagnosis</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Multidimensional Fatigue Inventory <span class="citation" data-cites="smetsMultidimensionalFatigueInventory1995">(<a href="#ref-smetsMultidimensionalFatigueInventory1995" role="doc-biblioref">Smets et al. 1995</a>)</span></td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Berlin Sleep Questionnaire <span class="citation" data-cites="netzerUsingBerlinQuestionnaire1999">(<a href="#ref-netzerUsingBerlinQuestionnaire1999" role="doc-biblioref">Netzer et al. 1999</a>)</span></td>
+<td style="text-align: left;">Ordinal, Dichotomous</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Body Mass Index</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Health-related Quality of Life Scale <span class="citation" data-cites="taylorMeasuringHealthyDays2000">(<a href="#ref-taylorMeasuringHealthyDays2000" role="doc-biblioref">V. R. Taylor and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health 2000</a>)</span></td>
+<td style="text-align: left;">Ordinal, Numeric</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Healthy Days Symptoms Module <span class="citation" data-cites="moriartyCDCStudiesCommunity1996">(<a href="#ref-moriartyCDCStudiesCommunity1996" role="doc-biblioref">Moriarty 1996</a>)</span></td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Miscellaneous</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: left;">Categorical</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Incarcerated</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Works Third Shift</td>
+<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-1" href="notebooks\mak_tables-preview.html#cell-tbl-featureshtml">Source: Make Demographic, ID Characteristic, &amp; Feature Category Tables</a></div>
 </section>
 <section id="abstinence-outcome" class="level4">
 <h4 class="anchored" data-anchor-id="abstinence-outcome">Abstinence outcome</h4>
@@ -423,10 +833,10 @@ div.csl-indent {
 <section id="statistical-algorithm" class="level5">
 <h5 class="anchored" data-anchor-id="statistical-algorithm">Statistical algorithm</h5>
 <p>We used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm aligns with our primary goal of building a treatment selection model in several ways.</p>
-<p>First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). This permits capturing many interactions that each account for a small portion of variance; as discussed, this seems critical to capturing the complexity of clinical phenomena.</p>
-<p>Second, GLMNet performs a degree of dimensionality reduction because it penalizes model complexity via two hyperparameters (alpha and lambda). A model using this algorithm may ultimately require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible.</p>
+<p>First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other variables). This permits considering many interactions that each account for a small portion of variance, which may be necessary to capture the complexity of clinical phenomena.</p>
+<p>Second, GLMNet performs a degree of dimensionality reduction. It penalizes model complexity via two hyperparameters (alpha and lambda) such that features are only retained in the model when their contribution to prediction outweighs the cost of adding another parameter to the model. A model using this algorithm may ultimately require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible.</p>
 <p>Finally, linear models such as GLMNet are often more interpretable and transparent because they produce parameter estimates for the features in the model. We aimed to prioritize interpretability to avoid a potential barrier to using machine learning approaches for clinical and public health goals <span class="citation" data-cites="maceachernMachineLearningPrecision2021 mooneyBigDataPublic2018 cohenTreatmentSelectionDepression2018">(<a href="#ref-maceachernMachineLearningPrecision2021" role="doc-biblioref">MacEachern and Forkert 2021</a>; <a href="#ref-mooneyBigDataPublic2018" role="doc-biblioref">Mooney and Pejaver 2018</a>; <a href="#ref-cohenTreatmentSelectionDepression2018" role="doc-biblioref">Cohen and DeRubeis 2018</a>)</span>.</p>
-<p>Initial testing showed that GLMNet outperformed or performed comparably to models fit using several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals. <!-- from KW: consider as footnote --></p>
+<p>Initial testing showed that GLMNet outperformed or performed comparably to models fit using several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals. <!-- from KW: consider as footnote instead of main text --></p>
 </section>
 <section id="feature-engineering" class="level5">
 <h5 class="anchored" data-anchor-id="feature-engineering">Feature engineering</h5>
@@ -504,16 +914,339 @@ div.csl-indent {
 <section id="sample-characteristics" class="level3">
 <h3 class="anchored" data-anchor-id="sample-characteristics">Sample characteristics</h3>
 <p>All 1086 participants who were randomized to treatment in the comparative effectiveness trial <span class="citation" data-cites="bakerEffectsNicotinePatch2016">(<a href="#ref-bakerEffectsNicotinePatch2016" role="doc-biblioref">Baker et al. 2016</a>)</span> were included in our analysis sample.</p>
-<p>Demographic characteristics of this sample appear in Table 2. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including almost one third of the sample reporting annual income lower than $20,000.</p>
-<p>Smoking-related characteristics of this sample appear in Table 3. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up.</p>
+<p>Demographic characteristics of this sample appear in <span><a href="#tbl-demohtml" class="quarto-xref">Table&nbsp;2</a></span>. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including almost one third of the sample reporting annual income lower than $20,000.</p>
+<div class="quarto-embed-nb-cell">
+<div class="cell">
+<div id="tbl-demohtml" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-demohtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Demographic Characteristics
+</figcaption>
+<div aria-describedby="tbl-demohtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Characteristic</th>
+<th style="text-align: left;">N (%)</th>
+<th style="text-align: left;">Mean (SD)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">48.13 (11.6)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">566 (52.12%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">520 (47.88%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Asian</td>
+<td style="text-align: left;">3 (0.28%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Black/African American</td>
+<td style="text-align: left;">309 (28.45%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multiracial</td>
+<td style="text-align: left;">22 (2.03%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Native American/Alaska Native</td>
+<td style="text-align: left;">6 (0.55%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other</td>
+<td style="text-align: left;">18 (1.66%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">728 (67.03%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ethnicity</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hispanic or Latino/a</td>
+<td style="text-align: left;">27 (2.49%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Non-Hispanic</td>
+<td style="text-align: left;">1059 (97.51%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marital Status</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Divorced</td>
+<td style="text-align: left;">224 (20.63%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Living with a domestic partner</td>
+<td style="text-align: left;">87 (8.01%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Married</td>
+<td style="text-align: left;">384 (35.36%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Never married</td>
+<td style="text-align: left;">299 (27.53%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Separated</td>
+<td style="text-align: left;">53 (4.88%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Widowed</td>
+<td style="text-align: left;">34 (3.13%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Did not respond</td>
+<td style="text-align: left;">5 (0.46%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Employment</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Employed (full-time)</td>
+<td style="text-align: left;">474 (43.65%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Employed (part-time)</td>
+<td style="text-align: left;">283 (26.06%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Unemployed</td>
+<td style="text-align: left;">329 (30.29%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Income</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt; $10,000</td>
+<td style="text-align: left;">210 (19.34%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$10,000 - $19,999</td>
+<td style="text-align: left;">135 (12.43%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$20,000 - $24,999</td>
+<td style="text-align: left;">83 (7.64%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$25,000 - $34,999</td>
+<td style="text-align: left;">129 (11.88%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$35,000 - $49,999</td>
+<td style="text-align: left;">149 (13.72%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$50,000 - $74,999</td>
+<td style="text-align: left;">160 (14.73%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$75,000+</td>
+<td style="text-align: left;">167 (15.38%)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Did not respond</td>
+<td style="text-align: left;">53 (4.88%)</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-2" href="notebooks\mak_tables-preview.html#cell-tbl-demohtml">Source: Make Demographic, ID Characteristic, &amp; Feature Category Tables</a></div>
+<p>Smoking-related characteristics of this sample appear in <a href="#tbl-smoking-chars" class="quarto-xref">Table&nbsp;3</a>. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up.</p>
+<div class="quarto-embed-nb-cell">
+<div class="cell">
+<div id="tbl-smoking-chars" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-smoking-chars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Smoking-related ID Characteristics
+</figcaption>
+<div aria-describedby="tbl-smoking-chars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell table table-sm table-striped small">
+<colgroup>
+<col style="width: 60%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Characteristic</th>
+<th style="text-align: left;">Mean (SD)</th>
+<th style="text-align: left;">N (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Age of first cigarette</td>
+<td style="text-align: left;">14.6 (3.42)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Age became daily smoker</td>
+<td style="text-align: left;">17.56 (4.62)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Years smoking</td>
+<td style="text-align: left;">28.65 (12.03)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cigarettes per day (heaviest)</td>
+<td style="text-align: left;">22.74 (10.67)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of previous quit attempts</td>
+<td style="text-align: left;">3.91 (6.03)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cigarettes per day (current)</td>
+<td style="text-align: left;">17.03 (8.31)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of DSM5 tobacco use disorder symptoms</td>
+<td style="text-align: left;">4.57 (2.17)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WISDM37 Total Score</td>
+<td style="text-align: left;">3.99 (1.17)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WSWS Total Score</td>
+<td style="text-align: left;">48.82 (19.91)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time to first cigarette upon waking</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">After 60 minutes</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">82 (7.55%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31 - 60 minutes</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">157 (14.46%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6 - 30 minutes</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">477 (43.92%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Within 5 minutes</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">366 (33.7%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Did not respond</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">4 (0.37%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-3" href="notebooks\mak_tables-preview.html#cell-tbl-smoking-chars">Source: Make Demographic, ID Characteristic, &amp; Feature Category Tables</a></div>
 </section>
 <section id="aim-1-results-prediction-models" class="level3">
 <h3 class="anchored" data-anchor-id="aim-1-results-prediction-models">AIM 1 results: Prediction models</h3>
 <section id="model-performance" class="level4">
 <h4 class="anchored" data-anchor-id="model-performance">Model performance</h4>
 <p>We selected the best model configurations using auROCs from the <em>validation sets</em> (among models that met our satisficing metric of at least 50 retained treatment interaction features). We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using <em>test set</em> performance to remove optimization bias present in performance metrics from validation sets [krstajicCrossvalidationPitfallsWhen2014].</p>
-<p>The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 <span class="citation" data-cites="laiDevelopmentMachineLearning2021">(<a href="#ref-laiDevelopmentMachineLearning2021" role="doc-biblioref">Lai et al. 2021</a>)</span>). Figure 1, Panel A shows the ROC curve for held-out test set performance.</p>
-<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. Figure 1, Panel B displays the posterior probability distribution for the auROC.</p>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-combined" class="cell" data-fig-height="10">
+<div class="cell-output cell-output-display">
+<div id="fig-combined" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Gaylen
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-4" href="notebooks\mak_fig_1-preview.html#cell-fig-combined">Source: Make Figure 1: Model Performance (3-Panel)</a></div>
+<p>The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 <span class="citation" data-cites="laiDevelopmentMachineLearning2021">(<a href="#ref-laiDevelopmentMachineLearning2021" role="doc-biblioref">Lai et al. 2021</a>)</span>). <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, Panel A shows the ROC curve for held-out test set performance.</p>
+<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, Panel B displays the posterior probability distribution for the auROC.</p>
 <!-- move to supp
 #### Bayesian model comparisons
 
@@ -524,7 +1257,7 @@ is the probability allowed to be 100%...?
 </section>
 <section id="model-calibration" class="level4">
 <h4 class="anchored" data-anchor-id="model-calibration">Model calibration</h4>
-<p>In Figure 1, panel C, we display our model’s calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.</p>
+<p>In <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, panel C, we display our model’s calibration from leave-one-out. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. <!-- add brier score --></p>
 </section>
 <section id="model-interpretation-1" class="level4">
 <h4 class="anchored" data-anchor-id="model-interpretation-1">Model interpretation</h4>
@@ -541,49 +1274,77 @@ is the probability allowed to be 100%...?
 </section>
 <section id="aim-2-results-clinical-benefit" class="level3">
 <h3 class="anchored" data-anchor-id="aim-2-results-clinical-benefit">AIM 2 results: Clinical benefit</h3>
-<p>There was a significant fixed effect of treatment matching on abstinence (OR = XX, <em>z</em> = 2.862, <em>p</em> = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent. There was also a significant fixed effect of time (OR = XX, <em>z</em> = -10.053, <em>p</em> &lt; 0.001) such that the probability of abstinence declined over time.</p>
+<p>There was a significant fixed effect of treatment matching on abstinence (OR = XX, <em>z</em> = 2.862, <em>p</em> = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = XX, <em>z</em> = -10.053, <em>p</em> &lt; 0.001) such that the probability of abstinence declined over time.</p>
 <p>There was not a significant interaction between treatment matching and time (<em>p</em> = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used <span class="citation" data-cites="karaca-mandicInteractionTermsNonlinear2012 collinsOptimizationBehavioralBiobehavioral2018">(<a href="#ref-karaca-mandicInteractionTermsNonlinear2012" role="doc-biblioref">Karaca-Mandic, Norton, and Dowd 2012</a>; <a href="#ref-collinsOptimizationBehavioralBiobehavioral2018" role="doc-biblioref">Collins 2018</a>)</span>. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.</p>
-<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, <em>z</em> = 2.452, <em>p</em> = 0.014). The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). Figure 3 shows the mean abstinence rate by treatment matching at each time point.</p>
+<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, <em>z</em> = 2.452, <em>p</em> = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). Figure 3 shows the mean abstinence rate by treatment matching at each time point.</p>
 <!-- embed figure 3 fig-clin-ben-wk4 from eval_benefit_4wk.qmd notebook -->
 </section>
 </section>
 <section id="discussion" class="level2">
-
-<!-- 
-rather than having its own section:
-1. weave throughout (eg talking about vulnerable pops in smoking cessation tx, genetics/bio variables inequitable)
-2. implementation focus (rather than equity solely)
-3. discussion section including future directions re: algorithmic fairness
-
-Critically, the combination of machine learning methods with the precision mental health paradigm may be able to mitigate health disparities in our current treatment pipeline [@maceachernMachineLearningPrecision2021]. Treatments are rarely designed or evaluated in diverse samples; input directly from patient shareholders is incorporated even less often. Although the NIH has launched some new initiatives to improve effort in these areas, when it comes to treatments, we still rely almost exclusively on treatments developed decades ago that were effective in homogeneous samples. KW: I would add parenthetical example of what this homogenous sample looked like (e.g., white, male, middle class)
-
-In some ways, these problems have been amplified by early work in precision medicine and precision mental health. Studies often begin with retrospective samples before bringing the models built in those samples to new patients. Thus, these models may be likely to fail for the same people for whom our initial treatments fail - the model can only be as good as the data with which it was developed [@aldridgeResearchTrainingRecommendations2019]. However, when this research is done thoughtfully, there are clear opportunities to address health disparities.
-
-First, we can make a concerted effort to build treatment selection models using data from previously completed trials where there was good representation across as many marginalized characteristics as possible. This may include demographic variables such as sex, gender identity, race, or ethnicity, among others. Other important characteristics to consider include income, access to insurance, and geographic region.
-
-In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race would be discriminatory (e.g., [@farayolaEthicsTrustworthinessAI2023]). However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes across vulnerable subpopulations. keep a lot of this paragraph but tbd where
-
-An additional way in which this approach can help mitigate health disparities is through access. Access to treatment is a known barrier in mental healthcare and a contributing factor driving mental healthcare disparities [@jacobsonDigitalTherapeuticsMental2022]. Many individual difference features that could help build treatment selection models may be easily measured via self-report, and dimensionality reduction approaches employed within machine learning can limit the number of features that need to be assessed. Consequently, treatment selection models might require sparse assessment of only a handful of readily available items and could even be implemented online. In cases where treatments are available over-the-counter, completing the assessment remotely means that individuals without insurance or access to in-person medical care can still give themselves the best chance of treatment success.
--->
-<!-- IGNORE FOR NOW
-
-we are not in the business of picking smoking cessation meds, we are in the business of improving treatments
-
-discussion: remember to discuss chronic diseases, need for time-varying tx and personalizing/adapting OVER TIME cite oncology vs addiction paper
-
-from nrsa innovation & impact:
-
-The proposed project combines machine learning with precision mental health to select among treatments for cigarette smoking cessation. Machine learning remains novel and underused in substance use and, to some degree, clinical psychology broadly16. Further, prior machine learning research for SUDs has prioritized diagnosis and screening17–20 over treatment selection, highlighting the novelty of this project.
-
-This project is also innovative in that it will consider a wide variety of features within and across domains (e.g., smoking history, other substance use, psychological traits/conditions, physical health, demographics, social environment). Machine learning methods allow me to incorporate these features simultaneously and build high-dimensional models that capture real-world complexities. Including features across domains invites interactions among features and subsequent integration of knowledge across domains. The proposed project will allow features often considered disparate to interact with one another, permitting combinations of features that are both guided by domain expertise and driven by less intuitive patterns in the data.
-
-This project could provide immediate impact by offering a decision-making tool for selecting among smoking cessation treatments. My model would provide patient-level guidance for treatment selection among smoking cessation treatments, which would reduce health risks and societal burdens. Critically, this approach could offer those benefits without requiring new treatment development, which is time- and resource-intensive. Instead, we can improve treatment effectiveness by optimizing therapeutic benefit of existing treatments. 
-
-I aim to increase potential impact by allowing feasibility to guide model development. I will prioritize sparse models with readily available, easy-to-measure features to the degree that these models yield robust treatment selection. The available features set can be easily measured via self-report. Easy measurement would allow our decision-making tool to be implemented without blood draws, expensive or otherwise inaccessible testing (e.g., neuroimaging), formal clinical interviewing, or even in-person doctors’ visits. In fact, prioritizing feasibility is a primary rationale for excluding genetic features from the present project; genetic features would require specialty materials and/or in-person medical appointments during clinical implementation. An assessment constructed entirely from self-report measurements is particularly valuable because two treatments in the model (nicotine patch, combination NRT) are widely available over the counter, offering scalable implementation even when medical access is limited. This focus on feasibility (i.e., using low burden, low-cost features) could maximize potential clinical benefit. These efforts are especially warranted when applying the precision mental health paradigm to SUDs, for which large health disparities on the bases of race, ethnicity, socioeconomic status, and geographic location persist.
-
-lots of stuff in baker arcp re: meds are not nearly as effective in real-world settings. NEED LONGER TERM SUPPORT!!!
-
-main effect of time also supports need for continuing care
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>In this project, we have produced a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using several first-line medications. We can identify the best treatment for a specific individual at the moment in time that they are looking to quit. This treatment selection model can accomplish the goals of the precision mental health paradigm: the right treatment, for the right person, at the right time <span class="citation" data-cites="kaiserObamaGivesEast2015">(<a href="#ref-kaiserObamaGivesEast2015" role="doc-biblioref">Kaiser 2015</a>)</span>.</p>
+<section id="benefit-of-treatment-selection" class="level3">
+<h3 class="anchored" data-anchor-id="benefit-of-treatment-selection">Benefit of treatment selection</h3>
+<p>Individuals who received their model-predicted best treatment in the original trial had a mean abstinence rate of 39% at 4 weeks. The mean abstinence rate at 4 weeks in this study (among people who did and did not receive their best treatment, as might be expected using current treatment selection procedures) was 34%. Although this difference may seem somewhat small numerically, this represents a vast improvement. The best available smoking cessation treatments (i.e., varenicline or C-NRT plus psychosocial counseling) double the likelihood that an individual will quit successfully <span class="citation" data-cites="bakerSmokingTreatmentReport2021">(<a href="#ref-bakerSmokingTreatmentReport2021" role="doc-biblioref">Baker and McCarthy 2021</a>)</span>. Thus, we might expect that these individuals would have had a 17% abstinence rate without any treatment. Using our model yields another 5% increase on top of this 17% increase - almost another third beyond what our <em>best</em> treatments currently offer.</p>
+<p>We can achieve this benefit using an assessment that is both low-burden and accessible. Implementing this treatment selection model would require assessing approximately 50 multiple choice and yes/no questions. These types of questions take 10-15 seconds each to answer on average <span class="citation" data-cites="lenznerCognitiveBurdenSurvey2010">(<a href="#ref-lenznerCognitiveBurdenSurvey2010" role="doc-biblioref">Lenzner, Kaczmirek, and Lenzner 2010</a>)</span>, meaning a 52-item assessment would be expected to take approximately 11-12 minutes. Additionally, because all items are self-report questions, this assessment can be completed remotely (e.g., administered online). Consequently, it can be made available to people who are un- or under-insured or who do not have access to in-person medical care. This assessment tool is particularly valuable in this context because two treatments in the model (C-NRT, nicotine patch) are widely available over-the-counter, offering scalable implementation when healthcare access is limited.</p>
+<p>This focus on accessibility is particularly important given disparities in mental healthcare. Access to treatment is a known barrier in mental healthcare and a contributing factor driving healthcare disparities <span class="citation" data-cites="jacobsonDigitalTherapeuticsMental2022">(<a href="#ref-jacobsonDigitalTherapeuticsMental2022" role="doc-biblioref">Jacobson, Kowatsch, and Marsch 2022</a>)</span>. Cigarette smoking rates remain higher in many marginalized populations <span class="citation" data-cites="bakerSmokingTreatmentReport2021 jamalCurrentCigaretteSmoking2015a corneliusTobaccoProductUse2020 kellyPrevalenceSmokingOther2012 cropseySmokingFemalePrisoners2004 harrisonCigaretteSmokingMental2020 baggettTobaccoUseHomeless2013 soarSmokingAmongstAdults2020">(<a href="#ref-bakerSmokingTreatmentReport2021" role="doc-biblioref">Baker and McCarthy 2021</a>; <a href="#ref-jamalCurrentCigaretteSmoking2015a" role="doc-biblioref">Jamal et al. 2015</a>; <a href="#ref-corneliusTobaccoProductUse2020" role="doc-biblioref">Cornelius 2020</a>; <a href="#ref-kellyPrevalenceSmokingOther2012" role="doc-biblioref">Kelly et al. 2012</a>; <a href="#ref-cropseySmokingFemalePrisoners2004" role="doc-biblioref">K. Cropsey, Eldridge, and Ladner 2004</a>; <a href="#ref-harrisonCigaretteSmokingMental2020" role="doc-biblioref">Harrison et al. 2020</a>; <a href="#ref-baggettTobaccoUseHomeless2013" role="doc-biblioref">Baggett, Tobey Matthew L., and Rigotti Nancy A. 2013</a>; <a href="#ref-soarSmokingAmongstAdults2020" role="doc-biblioref">Soar et al. 2020</a>)</span>. Precision mental health approaches must aim to mitigate rather than exacerbate health disparities in our treatment pipeline; prioritizing accessibility in implementation is a critical first step towards this goal <span class="citation" data-cites="maceachernMachineLearningPrecision2021">(<a href="#ref-maceachernMachineLearningPrecision2021" role="doc-biblioref">MacEachern and Forkert 2021</a>)</span>.</p>
+</section>
+<section id="predictive-performance" class="level3">
+<h3 class="anchored" data-anchor-id="predictive-performance">Predictive performance</h3>
+<p>We evaluated our model based on performance across held-out test sets. We observed a median auROC of 0.695, and the Bayesian CI around the auROC indicated that our model is capturing predictive signal. However, this is not particularly strong performance. It is possible that we could have improved prediction if we incorporated biological markers or genetic data given extant literature suggesting their value <span class="citation" data-cites="chenPathwaysPrecisionMedicine2018">(<a href="#ref-chenPathwaysPrecisionMedicine2018" role="doc-biblioref">Chen, Horton, and Bierut 2018</a>)</span>. This potential improvement would have come at a cost to implementation given the relative inaccessibility of genetic and biological testing <span class="citation" data-cites="maceachernMachineLearningPrecision2021">(<a href="#ref-maceachernMachineLearningPrecision2021" role="doc-biblioref">MacEachern and Forkert 2021</a>)</span>.</p>
+<p>Although we used auROC to select among and evaluate our model’s performance, our primary goal was not overall prediction. Capturing some signal with our model was necessary to yield credible predictions and establish the relevance of features, but it was insufficient for our purpose. A model that predicted abstinence perfectly (i.e., auROC of 1.0) but included no interactions would be useless for treatment selection. Indeed, this fact motivated our use of a satisficing metric for a minimum number of interaction terms retained in our models, even though it is possible that we sacrificed some level of predictive power by imposing that additional criterion.</p>
+<p>Perhaps more important than auROC for our purpose, then, is our model’s calibration. Our predictions were well-calibrated such that we can trust their ordinal ranking. This is critical because what is used in our treatment selection process is the <em>order</em> of predicted probabilities for each person rather than the values themselves.</p>
+</section>
+<section id="interpreting-our-treatment-selection-model" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-our-treatment-selection-model">Interpreting our treatment selection model</h3>
+<p>Several recent reviews have noted that the low interpretability of “black box” machine learning models may impede their utility for clinical and public health goals <span class="citation" data-cites="maceachernMachineLearningPrecision2021 mooneyBigDataPublic2018 cohenTreatmentSelectionDepression2018">(<a href="#ref-maceachernMachineLearningPrecision2021" role="doc-biblioref">MacEachern and Forkert 2021</a>; <a href="#ref-mooneyBigDataPublic2018" role="doc-biblioref">Mooney and Pejaver 2018</a>; <a href="#ref-cohenTreatmentSelectionDepression2018" role="doc-biblioref">Cohen and DeRubeis 2018</a>)</span>. Consequently, we aimed to make our model as interpretable as possible. We used a relatively interpretable statistical algorithm, GLMNet, which outputs parameter estimates and reduces dimensionality of the feature set. We also calculated Shapley values to understand relative feature importance among the predictors in our model.</p>
+<section id="prescriptive-factors-for-treatment-selection" class="level4">
+<h4 class="anchored" data-anchor-id="prescriptive-factors-for-treatment-selection">Prescriptive factors for treatment selection</h4>
+<p>Using these methods for interpretable machine learning, we were able to identify <em>prescriptive</em> factors that predict differential success (i.e., features that interact with treatment). Our best selected model configuration retained 74 interaction terms that spanned 52 unique items. Each feature’s associated global Shapley value, which indicates overall magnitude of feature importance, was relatively small. This finding supports what has long been suspected in precision mental health: there is no one factor that explains sufficient variance to make differential predictions by treatment on its own. Rather, we need to consider many features simultaneously, each of which offers only a small contribution but which together can guide treatment selection.</p>
+<p>All the features considered in this model were expected to be relevant to predicting smoking cessation overall. The selection of baseline characteristics to be assessed in the original trial was guided by domain expertise and decades of research. For example, it makes sense that having most of your friends or family smoke would decrease the probability of quitting successfully. What may be less immediately intuitive, however, is why this characteristic further decreases the probability of quitting successfully specifically when treated with varenicline. This example demonstrates the value of the suite of machine learning tools: models can be built with high-dimensional data, allowing us to identify unexpected relationships, which we can then elucidate and understand using interpretable machine learning techniques.</p>
+</section>
+<section id="prognostic-factors-for-treatment-development" class="level4">
+<h4 class="anchored" data-anchor-id="prognostic-factors-for-treatment-development">Prognostic factors for treatment development</h4>
+<p>In addition to prescriptive factors, we identified <em>prognostic</em> factors that predict smoking cessation overall (i.e., features with “main effects”). Although these features are not useful for selecting among the treatments in our model, they are valuable in several other ways.</p>
+<p>These features contribute to the literature on prognostic factors that predict smoking cessation. In particular, they support the conclusion from a recent review that predictors of smoking cessation span many categories <span class="citation" data-cites="bickelPredictorsSmokingCessation2023">(<a href="#ref-bickelPredictorsSmokingCessation2023" role="doc-biblioref">Bickel et al. 2023</a>)</span>. We found similar breadth in important features in this model: economic (e.g., income), environmental (e.g., living with another smoker), sociodemographic (e.g., marital status), psychological (e.g., depression diagnosis), physical health (e.g., pain interfering with daily activities), and smoking use/history (e.g., longest previous quit attempt) characteristics all contributed to predicting smoking cessation.</p>
+<p>Additionally, these prognostic factors may yet help to advance precision mental health goals. These factors may represent mechanisms underlying smoking cessation success and thus offer targeted areas for future treatment development. They also may be used to tailor existing treatments to increase success across individuals. For example, greater life satisfaction and higher importance of quitting predicted a greater chance of successfully quitting. Perhaps motivational interviewing/motivational enhancement therapy techniques that might address these factors could be used in pre-cessation counseling. These improvements could be made more scalable by offering psychoeducation and support tool links in a website where people complete the remote assessment for treatment selection.</p>
+<p>It is also possible that features that emerged as prognostic factors in our model may serve as prescriptive factors related to other treatments not included in this study. For example, buproprion is another first-line smoking cessation medication. It may be that some features in this model do not differentiate among C-NRT, nicotine patch, or varenicline but would differentiate between one of these treatments and buproprion.</p>
+<p>Finally, it is important to remember that because GLMNet aims to reduce dimensionality by removing highly correlated features, features that were not retained are not necessarily unimportant. Thus, we cannot conclude that the features that make up our final model are the only ones that are important, or that the features that were excluded offer no predictive value.</p>
+</section>
+<section id="the-role-of-demographic-features" class="level4">
+<h4 class="anchored" data-anchor-id="the-role-of-demographic-features">The role of demographic features</h4>
+<p>Several demographic features emerged as important prognostic and prescriptive factors: race, gender, income, and marital status. Ethnicity did not emerge as an important feature, and race-based features were specifically related to identifying as a Black or White individual. However, the limited representation of Hispanic, Latino/a, Asian, Multiracial, and Native American/Alaska Native individuals in this sample warrants caution in drawing conclusions about the predictive utility of ethnicity- and race-based features.</p>
+<p>In some contexts, it would be problematic to use predictors that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn’t) and who gets released earlier from prison (or doesn’t) based on race is discriminatory (e.g., <span class="citation" data-cites="farayolaEthicsTrustworthinessAI2023">(<a href="#ref-farayolaEthicsTrustworthinessAI2023" role="doc-biblioref">Farayola et al. 2023</a>)</span>). However, in the precision mental health landscape, we are not deciding <em>who</em> gets treatment. Rather, we are deciding <em>which</em> treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes across vulnerable subpopulations.</p>
+</section>
+</section>
+<section id="future-directions" class="level3">
+<h3 class="anchored" data-anchor-id="future-directions">Future directions</h3>
+<section id="algorithmic-fairness" class="level4">
+<h4 class="anchored" data-anchor-id="algorithmic-fairness">Algorithmic fairness</h4>
+<p>Our sample was representative across several demographic characteristics; however, as noted above, we had poor representation of several racial minority groups and of Hispanic and Latino/a individuals. Our model can only be as good as the data with which it was developed <span class="citation" data-cites="aldridgeResearchTrainingRecommendations2019">(<a href="#ref-aldridgeResearchTrainingRecommendations2019" role="doc-biblioref">Aldridge 2019</a>)</span>. We must make a concerted effort to build treatment selection models using data where there was good representation across as many marginalized characteristics as possible. Otherwise, we run the risk of exacerbating rather than mitigating mental healthcare disparities.</p>
+<p>There are also tools to examine the fairness of a prediction algorithm across sub-populations. For example, we could assess whether our model performs as well for White and non-White individuals. We could similarly examine whether our treatment selection benefit differs by any demographic characteristics in our sample. We plan to pursue both these analyses to identify biases at play in our prediction and treatment selection models.</p>
+</section>
+<section id="prospective-clinical-trial" class="level4">
+<h4 class="anchored" data-anchor-id="prospective-clinical-trial">Prospective clinical trial</h4>
+<p>We made a concerted effort in this project to evaluate how our treatment selection model would perform for new patients. Specifically, we used leave-one-out cross-validation to calculate predictions for each held-out individual that were then used to select that person’s best treatment.</p>
+<p>Regardless, the ultimate test of this model’s clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether using this model is feasible and acceptable to patients and clinicians in clinical practice. There may be opportunities to incorporate input directly from these stakeholders. Second, we can compare treatment success among individuals who receive a model-assigned best treatment to treatment success when using traditional treatment selection. This will assess the clinical benefit of our treatment selection model in an entirely new sample.</p>
+</section>
+<section id="precision-mental-health-for-chronic-relapsing-disorders" class="level4">
+<h4 class="anchored" data-anchor-id="precision-mental-health-for-chronic-relapsing-disorders">Precision mental health for chronic, relapsing disorders</h4>
+<p>Alongside many exciting findings, this project also demonstrates that it is difficult to predict complex outcomes like treatment success using distal predictors. Indeed, our model predicting point-prevalence abstinence at 4 weeks was not particularly accurate, but model performance became even worse when we built models predicting 6-month abstinence rates (median auROC across held-out test sets: XXX; see Supplement). Our model fitting, selection, and evaluation process was identical for these models, suggesting that the greater distance between our baseline predictors and abstinence outcomes was the cause of the degraded performance.</p>
+<p>Relatedly, the benefit of our treatment selection model is short-lived. There was an overall effect of treatment matching, though this seems to be carried primarily by the significant simple effect at 4 weeks. There is no longer statistically significant benefit at 12 weeks, though there is a numeric difference, and there is no statistical or numeric difference at all by 6 months.</p>
+<p>Initial treatment success is critical, especially for cigarette smoking where even reducing smoking or quitting for some period of time can improve health outcomes and life expectancy <span class="citation" data-cites="jhaprabhat21stCenturyHazardsSmoking2013">(<a href="#ref-jhaprabhat21stCenturyHazardsSmoking2013" role="doc-biblioref">Jha Prabhat et al. 2013</a>)</span>. Additionally, smoking early in a quit attempt can have strong negative consequences: decreased self-efficacy (shown to be a prognostic factor predicting smoking cessation), reduced treatment adherence, and premature treatment cessation <span class="citation" data-cites="schlamInterventionsTobaccoSmoking2013">(<a href="#ref-schlamInterventionsTobaccoSmoking2013" role="doc-biblioref">Schlam and Baker 2013</a>)</span>. Findings such as these highlight that selecting a treatment that increases abstinence in early recovery (i.e., at 4 weeks) is still quite useful.</p>
+<p>Nevertheless, we were of course hopeful that treatment matching benefits would endure. However, it is perhaps unsurprising that they do not. Many of the baseline characteristics used for prediction in this model were based on a single assessment of <em>current</em> states - withdrawal, dependence, confidence/motivation to quit, time around other smokers, distress tolerance, depression symptoms, among others. Even predictors that feel more “static” like employment or marital status can be subject to change.</p>
+<p>Thus, there are several possibilities for the lack of benefit at later assessment points. First, it may be that the factors that predict differential treatment success at 4 weeks are qualitatively different than those that predict differential treatment success later on. We have the opportunity to examine these potential differences by comparing feature importance for our 4-week models with feature importance from models built to predict later outcomes.</p>
+<p>Second, it may be that there are consistent relationships among predictors and outcomes over time, but because these characteristics can change dynamically <em>within an individual</em>, what was the right treatment for them based on their pre-quit characteristics is no longer the right treatment by 12 weeks, 6 months, or beyond. Consider the example of the feature that assesses whether someone lives with another smoker other than their spouse/partner. The same answer to this question increases the likelihood of quitting using C-NRT and decreases the likelihood of quitting using varenicline in our model. What if this was an important factor that led to C-NRT being selected as an individual’s best treatment - and then they move?</p>
+<p>Examples like these are the rule rather than the exception when it comes to chronic diseases like substance use disorders. Tobacco and other substance use disorders are dynamic and relapsing; both risk for use and the factors driving that risk fluctuate over time <span class="citation" data-cites="brandonRelapseRelapsePrevention2007">(<a href="#ref-brandonRelapseRelapsePrevention2007" role="doc-biblioref">Brandon, Vidrine, and Litvin 2007</a>)</span>. This change over time has been identified as a key barrier that we must overcome to succeed with precision mental health goals in addiction: “an unspoken assumption underlying much research in this area has been that the purported mechanism of a given addiction treatment is static over time… research on this topic has not typically paid appropriate attention to the dynamic nature of addictive behavior and the complexity of the relapse process” <span class="citation" data-cites="oliverPrecisionMedicineAddiction2017">(<a href="#ref-oliverPrecisionMedicineAddiction2017" role="doc-biblioref">Oliver and McClernon 2017</a>)</span>.</p>
+<p>Thus, though important, initial treatment selection is insufficient for chronic, relapsing disorders. Conditions like these require long-term, continuing care - a fact supported by our finding that abstinence rates declined over time (i.e., main effect of time), which is consistent with decades of research <span class="citation" data-cites="bakerSmokingTreatmentReport2021">(<a href="#ref-bakerSmokingTreatmentReport2021" role="doc-biblioref">Baker and McCarthy 2021</a>)</span>. Future precision mental health research must take into account both this need for long-term care and the reality of the dynamic nature of tobacco and other substance use disorders. This will require ongoing assessment of key risk factors as well as treatment selection that adapts over time. Adaptations may include adjustments to medications (e.g., changing doses, changing medications), offering other traditional treatments (e.g., psychosocial counseling), and incorporating alternative treatments and supports (e.g., mobile health apps).</p>
+</section>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Overall, this study has potential for immediate benefit to individuals looking to quit smoking. Our treatment selection model can improve the probability of abstinence during early recovery by a statistically significant and clinically meaningful margin. Moreover, it can do so with a relatively low-burden assessment that uses widely accessible features. The ultimate test of this treatment selection model will be in a prospective trial that assesses the feasibility, acceptability, and effectiveness of this tool in clinical practice. We are optimistic about the promise our model holds to improve the public health burden of cigarette smoking.</p>
+<!-- notes to self
 
 notes from john meeting:
 
@@ -626,42 +1387,6 @@ start with 37 unique things to assess - why do we only need to assess those and 
 
 harm reduction in smoking?
 
-
-DISCUSSION OUTLINE
-
-1. We built a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using first-line medications
-  - Be really excited about the benefit, explain the magnitude in digestible terms (eg compare probability of quitting without tx to probability of quitting with best tx - how much does this add on top of that?)
-  - Can do so with a low burden (quantity), accessible (self-report) assessment -> benefits for accessibility and equity especially given mhc disparities
-  - Interpretable model 
-
-2. In addition to identifying factors that predict differential treatment success (i.e., permit treatment selection; interaction terms), we have added to the literature on prognostic factors that predict smoking cessation
-  - May be able to use these to guide precessation support, treatment development, etc.
-  - These features that did not interact with treatment here may interact with other FDA-approved treatments (e.g., buproprion)
-
-3. Our prediction model auROC was not particularly high
-  - There is signal (PPD does not include 0.5), but not very strong performance
-  - Comparable to performance from other models predicting smoking cessation
-  - May have been able to improve performance if we incorporated biological markers or genetic data, but this would come at a cost to implementation and accessibility
-  - Also ok that the auROC is not particularly high because our purpose here is not overall prediction. Distinction between models that PREDICT better and models that PREDICT DIFFERENTIALLY better - a model that predicted abstinence perfectly but included no interactions would be useless for a treatment selection goal
-  - Important that our predictions are well-calibrated such that we can trust their ordinal ranking (which is then used in our treatment selection process)
-  
-4. What do our deficits in benefit/performance tell us?
-  - It is difficult to predict smoking cessation at 4 weeks using baseline characteristics
-  - It is even more difficult to predict smoking cessation at 6 months using those same baseline characteristics (supplement)
-  - The benefit of being assigned the right treatment endures while on-treatment (same endpoint used in several other PMH studies biomarker and otherwise Kaye) but does not persist beyond it
-  - SINGLE ASSESSMENT AND SHORT-LIVED TREATMENT WITHOUT ONGOING SUPPORT ARE INSUFFICIENT FOR CHRONIC DISEASES!!
-  
-5. Need for ongoing, dynamic assessment and adaptive, continuing care
-
-6. Future directions
-  - fairness analyses
-  - prospective trial!! critical
-
--->
-<!-- TBD:
-The additivity property of Shapley values allowed us also to examine the relative importance of categories of features. We created two kinds of feature categories. First, we examined feature importance within a single self-report measure (e.g., all features derived from items from a specific measure). Second, we examined feature importance within a domain: demographic features, mental health features, physical health features, smoking use history, and social/environmental features. To calculate the local importance for each category of features, we added Shapley values across all features in a category, separately for each observation. To calculate global feature importance for each feature category, we averaged the absolute value of the Shapley values of all features in the category across all observations.
-
-nts: "domain" grouping (second idea in above paragraph) was used similarly by PATH paper, and i liked it there
 -->
 <!-- notes on unique item assessment:
 
@@ -745,12 +1470,22 @@ used e cigs (MC)
 - requires assessing 13 unique items for tx selection
 
 -->
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Gaylen</span>
+</div>
 
 </section>
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Discussion</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-adjeiCO110ComparativeEffectiveness2022" class="csl-entry" role="listitem">
 Adjei, K., and A. A. Ali. 2022. <span>“<span>CO110 Comparative Effectiveness</span> of <span>Sertraline</span>, <span>Fluoxetine Vs Escitalopram Among Adults</span> with <span>Depression</span> in the <span>United States</span>.”</span> <em>Value in Health</em> 25 (7): S324–25. <a href="https://doi.org/10.1016/j.jval.2022.04.206">https://doi.org/10.1016/j.jval.2022.04.206</a>.
+</div>
+<div id="ref-aldridgeResearchTrainingRecommendations2019" class="csl-entry" role="listitem">
+Aldridge, Robert W. 2019. <span>“Research and Training Recommendations for Public Health Data Science.”</span> <em>The Lancet. Public Health</em> 4 (8): e373. <a href="https://doi.org/10.1016/S2468-2667(19)30112-4">https://doi.org/10.1016/S2468-2667(19)30112-4</a>.
+</div>
+<div id="ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" class="csl-entry" role="listitem">
+American Psychiatric Association. 2013. <em>Diagnostic and <span>Statistical Manual</span> of <span>Mental Disorders</span></em>. Fifth Edition. American Psychiatric Association. <a href="https://doi.org/10.1176/appi.books.9780890425596">https://doi.org/10.1176/appi.books.9780890425596</a>.
 </div>
 <div id="ref-baggettTobaccoUseHomeless2013" class="csl-entry" role="listitem">
 Baggett, Travis P., Tobey Matthew L., and Rigotti Nancy A. 2013. <span>“Tobacco <span>Use</span> Among <span>Homeless People</span> — <span>Addressing</span> the <span>Neglected Addiction</span>.”</span> <em>New England Journal of Medicine</em> 369 (3): 201–4. <a href="https://doi.org/10.1056/NEJMp1301935">https://doi.org/10.1056/NEJMp1301935</a>.
@@ -778,6 +1513,9 @@ Biecek, Przemyslaw. 2018. <span>“<span>DALEX</span>: <span>Explainers</span> f
 </div>
 <div id="ref-bogdanPolygenicRiskScores2018" class="csl-entry" role="listitem">
 Bogdan, Ryan, David A. A. Baranger, and Arpana Agrawal. 2018. <span>“Polygenic <span>Risk Scores</span> in <span>Clinical Psychology</span>: <span>Bridging Genomic Risk</span> to <span>Individual Differences</span>.”</span> <em>Annual Review of Clinical Psychology</em> 14 (1): 119–57. <a href="https://doi.org/10.1146/annurev-clinpsy-050817-084847">https://doi.org/10.1146/annurev-clinpsy-050817-084847</a>.
+</div>
+<div id="ref-brandonRelapseRelapsePrevention2007" class="csl-entry" role="listitem">
+Brandon, Thomas H., Jennifer Irvin Vidrine, and Erika B. Litvin. 2007. <span>“Relapse and Relapse Prevention.”</span> <em>Annual Review of Clinical Psychology</em> 3 (1): 257–84. <a href="https://doi.org/10.1146/annurev.clinpsy.3.022806.091455">https://doi.org/10.1146/annurev.clinpsy.3.022806.091455</a>.
 </div>
 <div id="ref-cahillNicotineReceptorPartial2016" class="csl-entry" role="listitem">
 Cahill, Kate, Nicola Lindson-Hawley, Kyla H Thomas, Thomas R Fanshawe, and Tim Lancaster. 2016. <span>“Nicotine Receptor Partial Agonists for Smoking Cessation.”</span> <em>The Cochrane Database of Systematic Reviews</em> 2016 (5). <a href="https://doi.org/10.1002/14651858.CD006103.pub7">https://doi.org/10.1002/14651858.CD006103.pub7</a>.
@@ -818,6 +1556,9 @@ Cornelius, Monica E. 2020. <span>“Tobacco <span>Product Use Among Adults</span
 <div id="ref-coughlinMachineLearningApproachPredicting2020a" class="csl-entry" role="listitem">
 Coughlin, Lara N, Allison N Tegge, Christine E Sheffer, and Warren K Bickel. 2020. <span>“A <span>Machine-Learning Approach</span> to <span>Predicting Smoking Cessation Treatment Outcomes</span>.”</span> <em>Nicotine &amp; Tobacco Research</em> 22 (3): 415–22. <a href="https://doi.org/10.1093/ntr/nty259">https://doi.org/10.1093/ntr/nty259</a>.
 </div>
+<div id="ref-crawfordPositiveNegativeAffect2004a" class="csl-entry" role="listitem">
+Crawford, John R., and Julie D. Henry. 2004. <span>“The <span>Positive</span> and <span>Negative Affect Schedule</span> (<span>PANAS</span>): <span>Construct</span> Validity, Measurement Properties and Normative Data in a Large Non-Clinical Sample.”</span> <em>British Journal of Clinical Psychology</em> 43 (3): 245–65. <a href="https://doi.org/10.1348/0144665031752934">https://doi.org/10.1348/0144665031752934</a>.
+</div>
 <div id="ref-cropseyPilotTrialVivo2017" class="csl-entry" role="listitem">
 Cropsey, Karen L., Peter S. Hendricks, Samantha Schiavon, Aaron Sellers, Morgan Froelich, Richard C. Shelton, and Matthew J. Carpenter. 2017. <span>“A Pilot Trial of <span>In</span> Vivo <span>NRT</span> Sampling to Increase Medication Adherence in Community Corrections Smokers.”</span> <em>Addictive Behaviors</em> 67 (April): 92–99. <a href="https://doi.org/10.1016/j.addbeh.2016.12.011">https://doi.org/10.1016/j.addbeh.2016.12.011</a>.
 </div>
@@ -838,6 +1579,9 @@ Dwyer, Dominic B., Peter Falkai, and Nikolaos Koutsouleris. 2018. <span>“Machi
 </div>
 <div id="ref-etterPredictingSmokingCessation2023" class="csl-entry" role="listitem">
 Etter, Jean-François, Germano Vera Cruz, and Yasser Khazaal. 2023. <span>“Predicting Smoking Cessation, Reduction and Relapse Six Months After Using the <span>Stop-Tabac</span> App for Smartphones: A Machine Learning Analysis.”</span> <em>BMC Public Health</em> 23 (1): 1076. <a href="https://doi.org/10.1186/s12889-023-15859-6">https://doi.org/10.1186/s12889-023-15859-6</a>.
+</div>
+<div id="ref-farayolaEthicsTrustworthinessAI2023" class="csl-entry" role="listitem">
+Farayola, Michael Mayowa, Irina Tal, Regina Connolly, Takfarinas Saber, and Malika Bendechache. 2023. <span>“Ethics and <span>Trustworthiness</span> of <span>AI</span> for <span>Predicting</span> the <span>Risk</span> of <span>Recidivism</span>: <span>A Systematic Literature Review</span>.”</span> <em>Information</em> 14 (8): 426. <a href="https://doi.org/10.3390/info14080426">https://doi.org/10.3390/info14080426</a>.
 </div>
 <div id="ref-feczkoMethodsChallengesAssessing2020" class="csl-entry" role="listitem">
 Feczko, Eric, and Damien A. Fair. 2020. <span>“Methods and <span>Challenges</span> for <span>Assessing Heterogeneity</span>.”</span> <em>Biological Psychiatry</em>, Convergence and <span>Heterogeneity</span> in <span>Psychopathology</span>, 88 (1): 9–17. <a href="https://doi.org/10.1016/j.biopsych.2020.02.015">https://doi.org/10.1016/j.biopsych.2020.02.015</a>.
@@ -862,6 +1606,9 @@ Goodrich, Ben, Jonah Gabry, Imad Ali, and Sam Brilleman. 2023. <span>“Rstanarm
 </div>
 <div id="ref-harrisonCigaretteSmokingMental2020" class="csl-entry" role="listitem">
 Harrison, Anna, Danielle Ramo, Sharon M. Hall, Vanessa Estrada-Gonzalez, and Marina Tolou-Shams. 2020. <span>“Cigarette <span>Smoking</span>, <span>Mental Health</span>, and <span>Other Substance Use</span> Among <span>Court-Involved Youth</span>.”</span> <em>Substance Use &amp; Misuse</em> 55 (4): 572–81. <a href="https://doi.org/10.1080/10826084.2019.1691593">https://doi.org/10.1080/10826084.2019.1691593</a>.
+</div>
+<div id="ref-heathertonFagerstromTestNicotine1991" class="csl-entry" role="listitem">
+Heatherton, Todd F, Lynn T Kozlowski, Richard C Frecker, and Karl Olov Fagerström. 1991. <span>“The <span class="nocase">Fagerstr<span class="nocase">ö</span>m Test</span> for <span>Nicotine Dependence</span>: <span>A</span> Revision of the <span class="nocase">Fagerstr<span class="nocase">ö</span>m Tolerance Questionnaire</span>.”</span> <em>British Journal of Addiction</em> 86 (9): 1119–27.
 </div>
 <div id="ref-heckmanEffectivenessSwitchingSmokingCessation2017" class="csl-entry" role="listitem">
 Heckman, Bryan W., K. Michael Cummings, Karin A. Kasza, Ron Borland, Jessica L. Burris, Geoffrey T. Fong, Ann McNeill, and Matthew J. Carpenter. 2017. <span>“Effectiveness of <span>Switching Smoking-Cessation Medications Following Relapse</span>.”</span> <em>American Journal of Preventive Medicine</em> 53 (2): e63–70. <a href="https://doi.org/10.1016/j.amepre.2017.01.038">https://doi.org/10.1016/j.amepre.2017.01.038</a>.
@@ -893,6 +1640,9 @@ Jonathan, P., W. J. Krzanowski, and W. V. McCarthy. 2000. <span>“On the Use of
 <div id="ref-jordanDiscoveryDevelopmentVarenicline2018" class="csl-entry" role="listitem">
 Jordan, Chloe J., and Zheng-Xiong Xi. 2018. <span>“Discovery and Development of Varenicline for Smoking Cessation.”</span> <em>Expert Opinion on Drug Discovery</em> 13 (7): 671–83. <a href="https://doi.org/10.1080/17460441.2018.1458090">https://doi.org/10.1080/17460441.2018.1458090</a>.
 </div>
+<div id="ref-kaiserObamaGivesEast2015" class="csl-entry" role="listitem">
+Kaiser, Jocelyn. 2015. <span>“Obama Gives <span>East Room</span> Rollout to <span>Precision Medicine Initiative</span>.”</span> <em>Science</em>. https://www.science.org/content/article/obama-gives-east-room-rollout-precision-medicine-initiative.
+</div>
 <div id="ref-karaca-mandicInteractionTermsNonlinear2012" class="csl-entry" role="listitem">
 Karaca-Mandic, Pinar, Edward C. Norton, and Bryan Dowd. 2012. <span>“Interaction <span>Terms</span> in <span>Nonlinear Models</span>.”</span> <em>Health Services Research</em> 47 (1pt1): 255–74. <a href="https://doi.org/10.1111/j.1475-6773.2011.01314.x">https://doi.org/10.1111/j.1475-6773.2011.01314.x</a>.
 </div>
@@ -908,8 +1658,14 @@ Kelly, Peter J., Amanda L. Baker, Frank P. Deane, Frances J. Kay-Lambkin, Billie
 <div id="ref-kesslerPragmaticPrecisionPsychiatry2021" class="csl-entry" role="listitem">
 Kessler, Ronald C., and Alex Luedtke. 2021. <span>“Pragmatic <span>Precision Psychiatry</span>—<span>A New Direction</span> for <span>Optimizing Treatment Selection</span>.”</span> <em>JAMA Psychiatry</em> 78 (12): 1384–90. <a href="https://doi.org/10.1001/jamapsychiatry.2021.2500">https://doi.org/10.1001/jamapsychiatry.2021.2500</a>.
 </div>
+<div id="ref-kilukShortInventoryProblems2013" class="csl-entry" role="listitem">
+Kiluk, Brian D., Jessica A. Dreifuss, Roger D. Weiss, Jon Morgenstern, and Kathleen M. Carroll. 2013. <span>“The <span>Short Inventory</span> of <span>Problems</span> – <span>Revised</span> (<span>SIP-R</span>): <span>Psychometric</span> Properties Within a Large, Diverse Sample of Substance Use Disorder Treatment Seekers.”</span> <em>Psychology of Addictive Behaviors : Journal of the Society of Psychologists in Addictive Behaviors</em> 27 (1): 307–14. <a href="https://doi.org/10.1037/a0028445">https://doi.org/10.1037/a0028445</a>.
+</div>
 <div id="ref-kranzlerPrecisionMedicinePharmacogenetics2017" class="csl-entry" role="listitem">
 Kranzler, Henry R., Rachel V. Smith, Robert Schnoll, Afaf Moustafa, and Emma Greenstreet-Akman. 2017. <span>“Precision Medicine and Pharmacogenetics: What Does Oncology Have That Addiction Medicine Does Not?”</span> <em>Addiction</em> 112 (12): 2086–94. <a href="https://doi.org/10.1111/add.13818">https://doi.org/10.1111/add.13818</a>.
+</div>
+<div id="ref-kroenkePHQ9ValidityBrief2001a" class="csl-entry" role="listitem">
+Kroenke, K., R. L. Spitzer, and J. B. Williams. 2001. <span>“The <span>PHQ-9</span>: Validity of a Brief Depression Severity Measure.”</span> <em>Journal of General Internal Medicine</em> 16 (9): 606–13. <a href="https://doi.org/10.1046/j.1525-1497.2001.016009606.x">https://doi.org/10.1046/j.1525-1497.2001.016009606.x</a>.
 </div>
 <div id="ref-krstajicCrossvalidationPitfallsWhen2014" class="csl-entry" role="listitem">
 Krstajic, Damjan, Ljubomir J Buturovic, David E Leahy, and Simon Thomas. 2014. <span>“Cross-Validation Pitfalls When Selecting and Assessing Regression and Classification Models.”</span> <em>Journal of Cheminformatics</em> 6 (March). <a href="https://doi.org/10.1186/1758-2946-6-10">https://doi.org/10.1186/1758-2946-6-10</a>.
@@ -925,6 +1681,9 @@ Kuhn, Max, and Kjell Johnson. 2018. <em>Applied <span>Predictive Modeling</span>
 </div>
 <div id="ref-laiDevelopmentMachineLearning2021" class="csl-entry" role="listitem">
 Lai, Cheng-Chien, Wei-Hsin Huang, Betty Chia-Chen Chang, and Lee-Ching Hwang. 2021. <span>“Development of <span>Machine Learning Models</span> for <span>Prediction</span> of <span>Smoking Cessation Outcome</span>.”</span> <em>International Journal of Environmental Research and Public Health</em> 18 (5): 2584. <a href="https://doi.org/10.3390/ijerph18052584">https://doi.org/10.3390/ijerph18052584</a>.
+</div>
+<div id="ref-lenznerCognitiveBurdenSurvey2010" class="csl-entry" role="listitem">
+Lenzner, Timo, Lars Kaczmirek, and Alwine Lenzner. 2010. <span>“Cognitive Burden of Survey Questions and Response Times: <span>A</span> Psycholinguistic Experiment.”</span> <em>Applied Cognitive Psychology</em> 24 (7): 1003–20. <a href="https://doi.org/10.1002/acp.1602">https://doi.org/10.1002/acp.1602</a>.
 </div>
 <div id="ref-lermanUseNicotineMetabolite2015" class="csl-entry" role="listitem">
 Lerman, Caryn, Robert A. Schnoll, Larry W. Hawk, Paul Cinciripini, Tony P. George, E. Paul Wileyto, Gary E. Swan, et al. 2015. <span>“Use of the Nicotine Metabolite Ratio as a Genetically Informed Biomarker of Response to Nicotine Patch or Varenicline for Smoking Cessation: A Randomised, Double-Blind Placebo-Controlled Trial.”</span> <em>The Lancet. Respiratory Medicine</em> 3 (2): 131–38. <a href="https://doi.org/10.1016/S2213-2600(14)70294-2">https://doi.org/10.1016/S2213-2600(14)70294-2</a>.
@@ -956,8 +1715,14 @@ Mooney, Stephen J, and Vikas Pejaver. 2018. <span>“Big <span>Data</span> in <s
 <div id="ref-moralesCallActionAddress2020" class="csl-entry" role="listitem">
 Morales, Dawn A., Crystal L. Barksdale, and Andrea C. Beckel-Mitchener. 2020. <span>“A Call to Action to Address Rural Mental Health Disparities.”</span> <em>Journal of Clinical and Translational Science</em> 4 (5): 463–67. <a href="https://doi.org/10.1017/cts.2020.42">https://doi.org/10.1017/cts.2020.42</a>.
 </div>
+<div id="ref-moriartyCDCStudiesCommunity1996" class="csl-entry" role="listitem">
+Moriarty, D. 1996. <span>“<span>CDC Studies Community Quality</span> of <span>Life</span>.”</span> <em>NACCHO News</em> 12(3) (10): 13.
+</div>
 <div id="ref-nationalcenterforchronicdiseasepreventionandhealthpromotionusofficeonsmokingandhealthHealthConsequencesSmoking2014" class="csl-entry" role="listitem">
 National Center for Chronic Disease Prevention and Health Promotion (US) Office on Smoking and Health. 2014. <em><a href="https://www.ncbi.nlm.nih.gov/pubmed/24455788">The <span>Health Consequences</span> of <span>Smoking</span>—50 <span>Years</span> of <span>Progress</span>: <span>A Report</span> of the <span>Surgeon General</span></a></em>. Reports of the <span>Surgeon General</span>. Atlanta (GA): <span>Centers for Disease Control and Prevention (US)</span>.
+</div>
+<div id="ref-netzerUsingBerlinQuestionnaire1999" class="csl-entry" role="listitem">
+Netzer, N. C., R. A. Stoohs, C. M. Netzer, K. Clark, and K. P. Strohl. 1999. <span>“Using the <span>Berlin Questionnaire</span> to Identify Patients at Risk for the Sleep Apnea Syndrome.”</span> <em>Annals of Internal Medicine</em> 131 (7): 485–91. <a href="https://doi.org/10.7326/0003-4819-131-7-199910050-00002">https://doi.org/10.7326/0003-4819-131-7-199910050-00002</a>.
 </div>
 <div id="ref-ngMachineLearningYearning2018" class="csl-entry" role="listitem">
 Ng, Andrew. 2018. <span>“Machine <span>Learning Yearning</span>,”</span> 1–118.
@@ -1013,6 +1778,21 @@ Shahab, Lion, Linda Bauld, Ann McNeill, and Rachel F. Tyndale. 2019. <span>“Do
 <div id="ref-siegelUseNicotineMetabolite2020" class="csl-entry" role="listitem">
 Siegel, Scott D., Caryn Lerman, Alex Flitter, and Robert A. Schnoll. 2020. <span>“The <span>Use</span> of the <span>Nicotine Metabolite Ratio</span> as a <span>Biomarker</span> to <span>Personalize Smoking Cessation Treatment</span>: <span>Current Evidence</span> and <span>Future Directions</span>.”</span> <em>Cancer Prevention Research</em> 13 (3): 261–72. <a href="https://doi.org/10.1158/1940-6207.CAPR-19-0259">https://doi.org/10.1158/1940-6207.CAPR-19-0259</a>.
 </div>
+<div id="ref-simonsDistressToleranceScale2005a" class="csl-entry" role="listitem">
+Simons, Jeffrey S., and Raluca M. Gaher. 2005. <span>“The <span>Distress Tolerance Scale</span>: <span>Development</span> and Validation of a Self-Report Measure.”</span> <em>Motivation and Emotion</em> 29 (2): 83–102. <a href="https://doi.org/10.1007/s11031-005-7955-3">https://doi.org/10.1007/s11031-005-7955-3</a>.
+</div>
+<div id="ref-smetsMultidimensionalFatigueInventory1995" class="csl-entry" role="listitem">
+Smets, E. M. A., B. Garssen, B. Bonke, and J. C. J. M. De Haes. 1995. <span>“The Multidimensional <span>Fatigue Inventory</span> (<span>MFI</span>) Psychometric Qualities of an Instrument to Assess Fatigue.”</span> <em>Journal of Psychosomatic Research</em> 39 (3): 315–25. <a href="https://doi.org/10.1016/0022-3999(94)00125-O">https://doi.org/10.1016/0022-3999(94)00125-O</a>.
+</div>
+<div id="ref-smithRevisionWisconsinSmoking2021" class="csl-entry" role="listitem">
+Smith, Stevens S., Megan E. Piper, Daniel M. Bolt, Jesse T. Kaye, Michael C. Fiore, and Timothy B. Baker. 2021. <span>“Revision of the <span>Wisconsin Smoking Withdrawal Scale</span>: <span>Development</span> of <span>Brief</span> and <span>Long Forms</span>.”</span> <em>Psychological Assessment</em> 33 (3): 255–66. <a href="https://doi.org/10.1037/pas0000978">https://doi.org/10.1037/pas0000978</a>.
+</div>
+<div id="ref-smithDevelopmentBriefWisconsin2010" class="csl-entry" role="listitem">
+Smith, Stevens S, Megan E Piper, Daniel M Bolt, Michael C Fiore, David W Wetter, Paul M Cinciripini, and Timothy B Baker. 2010. <span>“Development of the <span>Brief Wisconsin Inventory</span> of <span>Smoking Dependence Motives</span>.”</span> <em>Nicotine &amp; Tobacco Research</em> 12 (5): 489–99. <a href="https://doi.org/10.1093/ntr/ntq032">https://doi.org/10.1093/ntr/ntq032</a>.
+</div>
+<div id="ref-snaithScaleAssessmentHedonic1995a" class="csl-entry" role="listitem">
+Snaith, R. P., M. Hamilton, S. Morley, A. Humayan, D. Hargreaves, and P. Trigwell. 1995. <span>“A Scale for the Assessment of Hedonic Tone the <span>Snaith-Hamilton Pleasure Scale</span>.”</span> <em>The British Journal of Psychiatry: The Journal of Mental Science</em> 167 (1): 99–103. <a href="https://doi.org/10.1192/bjp.167.1.99">https://doi.org/10.1192/bjp.167.1.99</a>.
+</div>
 <div id="ref-soarSmokingAmongstAdults2020" class="csl-entry" role="listitem">
 Soar, Kirstie, Lynne Dawkins, Deborah Robson, and Sharon Cox. 2020. <span>“Smoking Amongst Adults Experiencing Homelessness: A Systematic Review of Prevalence Rates, Interventions and the Barriers and Facilitators to Quitting and Staying Quit.”</span> <em>Journal of Smoking Cessation</em> 15 (2): 94–108. <a href="https://doi.org/10.1017/jsc.2020.11">https://doi.org/10.1017/jsc.2020.11</a>.
 </div>
@@ -1021,6 +1801,12 @@ Substance Abuse and Mental Health Services Administration. 2023. <span>“Key Su
 </div>
 <div id="ref-substanceabuseandmentalhealthservicesadministrationusFacingAddictionAmerica2016" class="csl-entry" role="listitem">
 Substance Abuse and Mental Health Services Administration (US), and Office of the Surgeon General (US). 2016. <em><a href="https://www.ncbi.nlm.nih.gov/pubmed/28252892">Facing <span>Addiction</span> in <span>America</span></a></em>. <span>US Department of Health and Human Services</span>.
+</div>
+<div id="ref-taylorRobustDimensionsAnxiety2007a" class="csl-entry" role="listitem">
+Taylor, Steven, Michael J. Zvolensky, Brian J. Cox, Brett Deacon, Richard G. Heimberg, Deborah Roth Ledley, Jonathan S. Abramowitz, et al. 2007. <span>“Robust Dimensions of Anxiety Sensitivity: Development and Initial Validation of the <span>Anxiety Sensitivity Index-3</span>.”</span> <em>Psychological Assessment</em> 19 (2): 176–88. <a href="https://doi.org/10.1037/1040-3590.19.2.176">https://doi.org/10.1037/1040-3590.19.2.176</a>.
+</div>
+<div id="ref-taylorMeasuringHealthyDays2000" class="csl-entry" role="listitem">
+Taylor, Virginia Ross, and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health. 2000. <span>“Measuring Healthy Days: <span>Population</span> Assessment of Health-Related Quality of Life.”</span> Atlanta, Georgia:CDC.
 </div>
 <div id="ref-tonnesenRecyclingNicotinePatches1993" class="csl-entry" role="listitem">
 Tønnesen, P., J. Nørregaard, U. Säwe, and K. Simonsen. 1993. <span>“Recycling with Nicotine Patches in Smoking Cessation.”</span> <em>Addiction (Abingdon, England)</em> 88 (4): 533–39. <a href="https://doi.org/10.1111/j.1360-0443.1993.tb02060.x">https://doi.org/10.1111/j.1360-0443.1993.tb02060.x</a>.
@@ -1464,6 +2250,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 

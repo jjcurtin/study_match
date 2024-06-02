@@ -6,11 +6,6 @@ output:
   html_document:
     toc: true 
     toc_depth: 4
-params:
-  study: "match"
-  version: "v5"
-  cv: "kfold"
-  y_col_name: "pp_hybrid_wk26_outcome" 
 format:
   html:
     embed-resources: true
@@ -21,10 +16,10 @@ editor_options:
 ### Set Up Environment
 
 ```{r set_variables}
-study <- params$study
-version <- params$version
-cv <- params$cv
-y_col_name <- params$y_col_name
+study <- "match"
+version <- "v6"
+cv <- "kfold"
+y_col_name <- "pp_hybrid_wk26_outcome"
 
 ```
 
@@ -98,7 +93,7 @@ Selected in 1_metrics_inner (k-fold CV)
 
 ```{r}
 best_config <- read_csv(file.path(path_models, 
-                                  str_c("best_config_none_", version, ".csv")),
+                                  str_c("best_config_", version, ".csv")),
                         show_col_types = FALSE)
 
 glimpse(best_config)
@@ -128,16 +123,15 @@ d <- format_data(d)
 
 rec <- build_recipe(d = d, config = best_config)
 
-rec_prepped <- rec |> 
+rec_prepped_full <- rec |> 
   prep(training = d, strings_as_factors = FALSE)
 
-feat_all <- rec_prepped |> 
+feat_all <- rec_prepped_full |> 
   bake(new_data = NULL)
 
-model_best <- fit_best_model(best_model = best_config, 
-                             feat = feat_all, 
-                             ml_mode = "classification")
-
+model_best_full <- fit_best_model(best_model = best_config, 
+                                  feat = feat_all, 
+                                  ml_mode = "classification")
 
 ```
 
@@ -150,11 +144,12 @@ A *positive coefficient* indicates that increases in the feature *increase* the 
 A *negative coefficient* indicates that increases in the feature *decrease* the likelihood of smoking. For example, increases in carbon monoxide ("co") *decrease* the likelihood of abstinence.
 
 ```{r}
-model_tidy <- tidy(model_best)
+model_tidy <- tidy(model_best_full)
 ```
 
 
-```{r tab-retained-vars}
+```{r tbl-retained-vars}
+#| label: tbl-retained-vars-26wk
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 
   filter(abs(estimate) > 0) |> 
@@ -165,7 +160,8 @@ print_kbl(retained_vars, digits = 4)
 ```
 `r round((nrow(retained_vars) / nrow(model_tidy)) * 100, digits = 2)`% of features were retained by the glmnet solution (`r nrow(retained_vars)` features of a total considered `r nrow(model_tidy)` features).
 
-```{r tab-retained-int}
+```{r tbl-retained-int}
+#| label: tbl-retained-tx-26wk
 retained_vars_tx <- retained_vars |> 
   filter(str_detect(term, "treatment_")) |> 
   arrange(desc(abs(estimate))) 
@@ -288,18 +284,18 @@ get_triple_probs <- function(i_sub, best_config, d, d_trip){
 Map over participants so that each is held-out once
 ```{r}
 if(file.exists(file.path(path_models, 
-                         str_c("trip_probs_none_", version, ".csv")))) {
+                         str_c("trip_probs_", version, ".csv")))) {
   all_probs <- read_csv(file.path(path_models, 
-                                  str_c("trip_probs_none_", version, ".csv")),
+                                  str_c("trip_probs_", version, ".csv")),
                         show_col_types = FALSE)
 } else {
   all_probs <- d$subid |> 
-  map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
-  list_rbind()
+    map(\(i_sub) get_triple_probs(i_sub, best_config, d, d_trip)) |> 
+    list_rbind()
   
   all_probs |> 
     write_csv(file.path(path_models, 
-                        str_c("trip_probs_none_", version, ".csv")))
+                        str_c("trip_probs_", version, ".csv")))
 }
 
 ```
@@ -323,19 +319,21 @@ set.seed(52592)
 d_aim_2 <- d |> 
   select(subid, tx_rct = treatment, outcome_rct_wk26 = y) |> 
   left_join(raw_probs_wide, by = "subid") |> 
-  mutate(tx_best = case_when(
+    mutate(tx_best = case_when(
     prob_patch > prob_combo_nrt & prob_patch > prob_varenicline ~ "patch",
     prob_combo_nrt > prob_patch & prob_combo_nrt > prob_varenicline ~ "combo_nrt",
     prob_varenicline > prob_patch & prob_varenicline > prob_combo_nrt ~ "varenicline",
     TRUE ~ NA_character_
   )) |> 
+  # handle ties (prefer CNRT and varenicline per clinical guidelines)
+  # sample among those if tied
   mutate(tx_best = if_else(is.na(tx_best), case_when(
     prob_patch == prob_combo_nrt ~ "combo_nrt",
     prob_patch == prob_varenicline ~ "varenicline",
     prob_combo_nrt == prob_varenicline ~ sample(c("combo_nrt",
                                                   "varenicline"), 1),
     TRUE ~ NA_character_
-  ), tx_best)) |> 
+  ), tx_best)) |>  
   mutate(prob_best = case_when(
     tx_best == "patch" ~ prob_patch,
     tx_best == "combo_nrt" ~ prob_combo_nrt,
@@ -349,9 +347,10 @@ d_aim_2 <- d |>
                             "combo_nrt"))) |> 
   mutate(tx_match = if_else(tx_best == tx_rct, TRUE, FALSE)) |> 
   left_join(d_outcomes, by = "subid") |> 
-  select(-pp_hybrid_wk26_outcome, -pp_hybrid_wk1_outcome, -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> # already in there from d
+  select(-pp_hybrid_wk26_outcome, -pp_hybrid_wk1_outcome, 
+         -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> 
   rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
-         outcome_rct_wk4 = pp_hybrid_wk4_outcome) |> 
+         outcome_rct_wk26 = pp_hybrid_wk26_outcome) |> 
   relocate(subid, tx_rct, tx_best, tx_match,
            prob_best, starts_with("outcome"), starts_with("prob"))
 
@@ -365,7 +364,7 @@ head(d_aim_2)
 
 # check on variability of best tx
 d_aim_2 |> 
-  tab(tx_best) # note: no one gets assigned to patch
+  tab(tx_best)
 
 # check on variability of tx matching
 d_aim_2 |> 
@@ -381,11 +380,7 @@ Write out
 ```{r}
 d_aim_2 |> 
   write_csv(file.path(path_models, str_c("aim_2_", version, "_", 
-                                   y_col_name, ".csv")))
-
-# d_aim_2 |> 
-#   write_csv(here("/objects", str_c("aim_2_", version, "_", 
-#                                    y_col_name, ".csv")))
+                                         y_col_name, ".csv")))
 ```
 
 ### Validity check: Model Calibration
@@ -446,7 +441,7 @@ d_valid |>
             mean_logi = mean(logistic),
             mean_raw = mean(raw))
 ```
-Raw probabilities appear to match the outcome best.
+Raw probabilities match best, though beta and logistic calibration are close.
 
 #### Plots
 
@@ -466,13 +461,13 @@ d_plot |>
   cal_plot_breaks(truth = outcome_rct_wk26, 
                   estimate = .pred_abstinent,
                   .by = method)
-  
+
 d_plot |> 
   cal_plot_windowed(truth = outcome_rct_wk26, 
-                  estimate = .pred_abstinent,
-                  .by = method)
+                    estimate = .pred_abstinent,
+                    .by = method)
 ```
-Logistic and raw probabilities follow the diagonal line for the longest. Both jump off the line around the midpoint, with logistic probabilities jumping up, and raw probabilities jumping in both directions.
+Raw and beta look best. Raw follows the diagonal more closely for longer.
 
 #### Brier score
 
@@ -499,3 +494,6 @@ Raw calibration
 brier_class_vec(truth = d_valid$outcome_rct_wk26,
                 estimate = d_valid$raw)
 ```
+
+Raw calibration has the lowest Brier score (though all are relatively similar). In keeping with the other methods above, beta and logistic are next-best followed by isotonic last.
+

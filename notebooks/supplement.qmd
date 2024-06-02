@@ -19,7 +19,7 @@ editor_options:
 
 #### Model building
 
-We built supplemental models to predict biologically confirmed, 7-day point-prevalence abstinence at 12 weeks and 26 weeks. The 12-week outcome represents the end-of-treatment and has been used as a primary outcome for this reason in extant precision mental health research [CITE kaye and others]. The 26-week (6 month) outcome is a typical outcome used in smoking cessation research to evaluate treatments because it serves as a feasible proxy for long-term abstinence [CITE fiore probably, maybe cahill].
+We built supplemental models to predict biologically confirmed, 7-day point-prevalence abstinence at 12 weeks and 26 weeks. The 12-week outcome represents the end-of-treatment and has been used as a primary outcome for this reason in extant precision mental health research (e.g., @chenGeneticVariantCHRNA52020). The 26-week (6 month) outcome is a typical outcome used in smoking cessation research to evaluate treatments because it serves as a feasible proxy for long-term abstinence [@fioreClinicalPracticeGuideline2008].
 
 We followed our model fitting, selection, and evaluation procedures from the main manuscript to fit these additional models. Briefly, we considered model configurations that all used the GLMNet statistical algorithm and varied by hyperparameter values and feature sets. We used nested cross-validation with 1 repeat of 10-fold cross-validation in the inner loop and 3 repeats of 10-fold cross-validation in the outer loop. 
 

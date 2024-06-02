@@ -61,6 +61,14 @@ We used the posterior probability distributions for the auROCs to compare the 4-
 
 In Figure X, we display the calibration for the 12- and 26-week models from leave-one-out cross-validation. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence for both the 12- and 26-week models. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
 
+#### Model interpretation
+
+The names of retained features and their parameter estimates from the best final model appear in Table X (4-week), Table X (12-week), and Table X (26-week). Retained features for the 4-week model are discussed in the main manuscript. 
+
+Our final 12-week model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+
+Our final 26-week model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+
 ### AIM 2 results: Clinical benefit
 
 #### 12-week model

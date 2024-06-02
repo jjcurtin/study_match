@@ -13,4 +13,72 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Supplemental Methods
 
+### AIM 1 analytic strategy
+
+#### Model building
+
+We built supplemental models to predict biologically confirmed, 7-day point-prevalence abstinence at 12 weeks and 26 weeks. The 12-week outcome represents the end-of-treatment and has been used as a primary outcome for this reason in extant precision mental health research [CITE kaye and others]. The 26-week (6 month) outcome is a typical outcome used in smoking cessation research to evaluate treatments because it serves as a feasible proxy for long-term abstinence [CITE fiore probably, maybe cahill].
+
+We followed our model fitting, selection, and evaluation procedures from the main manuscript to fit these additional models. Briefly, we considered model configurations that all used the GLMNet statistical algorithm and varied by hyperparameter values and feature sets. We used nested cross-validation with 1 repeat of 10-fold cross-validation in the inner loop and 3 repeats of 10-fold cross-validation in the outer loop. 
+
+#### Metrics
+
+Models were evaluated using area under the Receiver Operating Characteristic Curve (auROC) from held-out folds (test sets) in the outer loop. We used the same satisficing criterion of retaining 50 or more treatment interactions. We opted to keep this threshold consistent across models, though we confirmed that this value was still reasonable based on inner fold distributions and number of remaining model configurations for selection in each outer fold.
+
+#### Bayesian analysis of mdoel performance
+
+We followed our same procedure to evaluate model performance using Bayesian hierarchical linear models. We estimated posterior probability distributions and 95% Bayesian credible intervals (CIs). 
+
+Following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022], we regressed the auROCs (logit transformed) from the 30 test sets as a function of prediction outcome (4 week, 12 week, 26 week) with two random intercepts for repeat and fold within repeat. We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our models' auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. We also report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for the difference in performance between our models. If the 95% Bayesian CIs around the model contrast do not include 0, we can conclude that the models' performance differs as a function of prediction outcome.
+
+### AIM 2 analytic strategy
+
+We followed our exact methods from the main manuscript to select final model configurations, identify model-predicted best treatment using leave-one-out cross-validation, categorize treatment matching, and evaluate clinical benefit of these treatment selection models.
+
+Although we did not preregister completing these analyses with 12-week and 26-week models, we followed our preregistered analyses. We made the same two changes to these preregistered analyses that we did in our main manuscript. First, we used log base 2 for our log transformation of week instead of our preregistered log base e due to convergence issues. Second, we conducted simple effects analyses for the effect of treatment matching at each time point even when the interaction between treatment matching and time was not significant given known issues with calculating and interpreting interactions in logistic models [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. 
+
+## Supplemental Results
+
+### AIM 1 results: Prediction models
+
+#### Model performance
+
+We selected the best momdel configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). The median auROCs across the validation sets were as follows: 4-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX); 12-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX); and 26-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX). 
+
+We evaluated these best model configurations using *test set* performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was XXX (IQR = XXX - XXX, range = XXX - XXX). The median auROC across the 30 test sets for the 26-week model was XXX (IQR = XXX - XXX, range = XXX - XXX). The 30 auROCs (one per held-out fold) for the 4-, 12-, and 26-week models are plotted as individual ROC curves in Figure X.
+
+We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX [Bayesian CI: XXX - XXX] for the 12-week model and XXX [Bayesian CI: XXX - XXX] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). Figure X displays the posterior probability distributions for these models' auROCs.
+
+add individual ROC plots
+
+#### Model comparisons
+
+We used the posterior probability distributions for the auROCs to compare the 4-, 12-, and 26-week models. The median increase in auROC for the 4- vs. 12-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 4-week model had superior performance. The median increase in auROC for the 4- vs. 26-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 4-week model had superior performance. The median increase in auROC for the 12- vs. 26-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 12-week model had superior performance. Supplemental Figure X presents histograms of the posterior probability distributions for these model contrasts.
+
+#### Model calibration
+
+In Figure X, we display the calibration for the 12- and 26-week models from leave-one-out cross-validation. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence for both the 12- and 26-week models. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
+
+### AIM 2 results: Clinical benefit
+
+#### 12-week model
+
+There was a significant fixed effect of treatment matching on abstinence (OR = XX, *z* = XX, *p* = XX). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = XX, *z* = XX, *p* = XX) such that the probability of abstinence declined over time. 
+
+There was not a significant interaction between treatment matching and time (*p* = XX). However, we conducted simple effects analyses of the effect of treatment matching at each time point to characterize our results more fully and to understand our effects in their original probability terms.
+
+There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, *z* = XX, *p* = XX) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = XX) or at the 26-week follow-up assessment (*p* = XX). Figure X shows the mean abstinence rate by treatment matching at each time point.
+
+<!-- embed figure 3 fig-clin-ben-wk4 from eval_benefit_4wk.qmd notebook -->
+
+#### 26-week model
+
+There was a significant fixed effect of treatment matching on abstinence (OR = XX, *z* = XX, *p* = XX). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = XX, *z* = XX, *p* = XX) such that the probability of abstinence declined over time. 
+
+There was not a significant interaction between treatment matching and time (*p* = XX). However, we conducted simple effects analyses of the effect of treatment matching at each time point to characterize our results more fully and to understand our effects in their original probability terms.
+
+There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, *z* = XX, *p* = XX) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = XX) or at the 26-week follow-up assessment (*p* = XX). Figure X shows the mean abstinence rate by treatment matching at each time point.
+
+<!-- embed figure 3 fig-clin-ben-wk4 from eval_benefit_4wk.qmd notebook -->

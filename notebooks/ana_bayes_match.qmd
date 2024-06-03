@@ -35,7 +35,7 @@ Can review online docs for
 
 ```{r}
 study <- "match"
-version <- "v5"
+version <- "v6"
 cv <- "nested"
 ```
 
@@ -95,6 +95,15 @@ auc_wk4 <- read_rds(file.path(path_models, "pp_hybrid_wk4_outcome",
   select(repeat_num, fold_num, roc_auc) |> 
   glimpse()
 
+auc_wk12 <- read_rds(file.path(path_models, "pp_hybrid_wk12_outcome",
+                               str_c("outer_metrics_", 
+                                     version, "_", cv, ".rds"))) |> 
+  arrange(outer_split_num) |> 
+  mutate(repeat_num = rep(str_c("repeat", 1:3), each = 10),
+         fold_num = rep(str_c("fold", 1:10), 3)) |>   # assumes 3x10 fold
+  select(repeat_num, fold_num, roc_auc) |> 
+  glimpse()
+
 auc_wk26 <- read_rds(file.path(path_models, "pp_hybrid_wk26_outcome",
                                str_c("outer_metrics_", 
                                      version, "_", cv, ".rds"))) |> 
@@ -106,13 +115,18 @@ auc_wk26 <- read_rds(file.path(path_models, "pp_hybrid_wk26_outcome",
 
 auc <- auc_wk4 |> 
   rename(week_4 = roc_auc) |> 
-  mutate(week_26 = auc_wk26$roc_auc) |> 
+  mutate(week_12 = auc_wk12$roc_auc,
+         week_26 = auc_wk26$roc_auc) |> 
   glimpse()
 
 ```
 
 ```{r auc_plots}
 auc_wk4 %>% 
+  ggplot() + 
+  geom_histogram(aes(x = roc_auc), bins = 10)
+
+auc_wk12 %>% 
   ggplot() + 
   geom_histogram(aes(x = roc_auc), bins = 10)
 
@@ -136,7 +150,7 @@ pp <- auc |>
            # prior = rstanarm::student_t(autoscale = TRUE),
            transform = tidyposterior::logit_trans,  # for skewed & bounded AUC
            iter = 2000, chains = 4,  
-           adapt_delta = .99,
+           adapt_delta = .999,
            # cores = 4, seed = 12345,
            family = gaussian, 
   )  
@@ -171,8 +185,8 @@ pp_tidy |>
   summarize(median = quantile(posterior, probs = q[2]),
             lower = quantile(posterior, probs = q[1]), 
             upper = quantile(posterior, probs = q[3])) |> 
-  mutate(model = factor(model, levels = c("week_26", "week_4"),
-                        labels = c("Week 26", "Week 4")),
+  mutate(model = factor(model, levels = c("week_26", "week_12", "week_4"),
+                        labels = c("Week 26", "Week 12", "Week 4")),
          y = 1000) |> 
   arrange(model)
 
@@ -182,18 +196,34 @@ pp_tidy |>
 
 ```{r}
 pp_contrasts <- contrast_models(pp, 
-                                list("week_4"), 
-                                list("week_26"))
+                                list("week_4", "week_4", "week_12"), 
+                                list("week_12", "week_26", "week_26"))
 summary(pp_contrasts, size = .01, prob = 0.95)
 pp_contrasts |> autoplot(size = .01)
 ```
 
 Here are contrasts against 0 rather than using ROPE
 ```{r}
+
 pp_contrasts |> 
+  filter(contrast == "week_4 vs. week_12") |> 
+  mutate(wk4_gt_wk12 = if_else(difference > 0, 1, 0)) |>
+  pull(wk4_gt_wk12) |> 
+  mean()
+
+pp_contrasts |> 
+  filter(contrast == "week_4 vs. week_26") |> 
   mutate(wk4_gt_wk26 = if_else(difference > 0, 1, 0)) |>
   pull(wk4_gt_wk26) |> 
   mean()
+
+pp_contrasts |> 
+  filter(contrast == "week_12 vs. week_26") |> 
+  mutate(wk12_gt_wk26 = if_else(difference > 0, 1, 0)) |>
+  pull(wk12_gt_wk26) |> 
+  mean()
+
+
 ```
 
 ### Plots
@@ -202,17 +232,16 @@ Model posteriors
 ```{r}
 ci <- pp_tidy |> 
   summary() |> 
-  mutate(model = factor(model, levels = c("week_4", "week_26")),
+  mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
+                        labels = c("Week 4", "Week 12", "Week 26")),
          y = 1000) 
-
-ci_week4 <- ci |> 
-  filter(model == "week_4")
 ```
 
 ```{r}
 #| label: fig-posteriors
 fig_posteriors <- pp_tidy |> 
-  mutate(model = factor(model, levels = c("week_4", "week_26"))) |> 
+  mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
+                        labels = c("Week 4", "Week 12", "Week 26"))) |> 
   ggplot() + 
   geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
                  bins = 30) +
@@ -224,8 +253,11 @@ fig_posteriors <- pp_tidy |>
                data = ci) +
   facet_wrap(~model, ncol = 1) +
   scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
-  # ylab("Posterior Probability Density") +
-  xlab("Area Under ROC Curve")
+  labs(
+    x = "Area Under ROC Curve (auROC)",
+    fill = "Model",
+    color = "Model"
+  )
 
 fig_posteriors
 ```
@@ -233,36 +265,44 @@ fig_posteriors
 ```{r}
 #| label: fig-week4
 
+ci_week4 <- ci |> 
+  filter(model == "Week 4")
+
 pp_tidy |> 
-  mutate(model = factor(model, levels = c("week_4", "week_26"))) |> 
-  filter(model == "week_4") |> 
+  mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
+                        labels = c("Week 4", "Week 12", "Week 26"))) |> 
+  filter(model == "Week 4") |> 
   ggplot() + 
   geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
                  bins = 30) +
-  geom_segment(mapping = aes(y = y + 100, yend = y - 100, x = mean, xend = mean,
+  geom_segment(mapping = aes(y = y, yend = y - 200, x = mean, xend = mean,
                              color = model),
                data = ci_week4) +
-  geom_segment(mapping = aes(y = y, yend = y, 
+  geom_segment(mapping = aes(y = y - 100, yend = y - 100, 
                              x = lower, xend = upper, color = model),
                data = ci_week4) +
-  scale_y_continuous("Posterior Probability", breaks = c(0, 500, 1000)) +
-  # ylab("Posterior Probability Density") +
-  xlab("Area Under ROC Curve") +
+  scale_y_continuous("Posterior Probability") +
+  labs(
+    x = "Area Under ROC Curve (auROC)",
+  ) +
   theme(legend.position = "none")
 ```
-
 
 model contrast posteriors
 
 ```{r model_contrast_posteriors}
 ci_con <- pp |>
-  contrast_models(list("week_4"), 
-                  list("week_26")) |> 
+  contrast_models(list("week_4", "week_4", "week_12"), 
+                  list("week_12", "week_26", "week_26")) |> 
   summary(size = .01) |> 
   mutate(contrast = factor(contrast, 
-                           levels = c("week_4 vs week_26"),
-                           labels = c("week 4 vs. week 26")),
-         y = 700)
+                           levels = c("week_4 vs week_12",
+                                      "week_4 vs week_26",
+                                      "week_12 vs week_26"),
+                           labels = c("Week 4 vs. Week 12",
+                                      "Week 4 vs. Week 26",
+                                      "Week 12 vs. Week 26")),
+         y = 800)
 ```
 
 ```{r}
@@ -274,22 +314,35 @@ fig_contrasts <- pp |>
   mutate(sample = row_number()) |> 
   ungroup() |> 
   pivot_wider(names_from = model, values_from = posterior) |> 
-  mutate(posterior = week_4 - week_26) |> 
+  mutate(wk4_vs_wk26 = week_4 - week_26,
+         wk4_vs_wk12 = week_4 - week_12,
+         wk12_vs_wk26 = week_12 - week_26) |> 
+  pivot_longer(cols = c(wk4_vs_wk12, wk4_vs_wk26, wk12_vs_wk26),
+               names_to = "contrast",
+               values_to = "posterior") |> 
+  mutate(contrast = factor(contrast,
+                           levels = c("wk4_vs_wk12", "wk4_vs_wk26", "wk12_vs_wk26"),
+                           labels = c("Week 4 vs. Week 12",
+                                      "Week 4 vs. Week 26",
+                                      "Week 12 vs. Week 26"))) |> 
   ggplot() +
-  geom_histogram(aes(x = posterior), 
+  geom_histogram(aes(x = posterior, fill = contrast), 
                  color = "black", alpha = .4, bins = 30) +
   geom_vline(xintercept = 0, color = "yellow", 
              linetype = "dashed", linewidth = 1) +
-  # geom_vline(xintercept = .01, color = "yellow", 
-  #            linetype = "dashed", linewidth = 1) +
   geom_segment(mapping = aes(y = y+50, yend = y-50, 
-                             x = mean, xend = mean), 
+                             x = mean, xend = mean, color = contrast), 
                data = ci_con) +
   geom_segment(mapping = aes(y = y, yend = y, 
-                             x = lower, xend = upper), 
+                             x = lower, xend = upper, color = contrast), 
                data = ci_con) +
-  ylab("Posterior Probability") +
-  xlab("Model Contrast for auROC (Week 4 vs. Week 26)")
+  facet_wrap(~contrast, ncol = 1) +
+  labs(
+    x = "Model Contrast for auROC",
+    y = "Posterior Probability",
+    fill = "Contrast",
+    color = "Contrast"
+  )
 
 fig_contrasts
 ```

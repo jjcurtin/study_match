@@ -199,7 +199,7 @@ summary(model_26wk)
 Primary figure
 ```{r}
 #| label: fig-clin-ben-wk4
-d |> 
+fig_clin_ben_wk4 <- d |> 
   mutate(week_cat = factor(week,
                            levels = c(4, 12, 26),
                            labels = c("Week 4", "Week 12", "Week 26")),
@@ -215,6 +215,8 @@ d |>
     y = "Mean Abstinence Rate",
     fill = "Treatment Matching"
   )
+
+fig_clin_ben_wk4
 ```
 
 Make predicted dataset

@@ -65,6 +65,12 @@ In Figure X, we display the calibration for the 12- and 26-week models from leav
 
 The names of retained features and their parameter estimates from the best final model appear in Table X (4-week), Table X (12-week), and Table X (26-week). Retained features for the 4-week model are discussed in the main manuscript. 
 
+{{< embed fit_final_model_4wk.qmd#tbl-retained-vars-4wk >}} 
+
+{{< embed fit_final_model_4wk.qmd#tbl-retained-tx-4wk >}} 
+
+
+
 Our final 12-week model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
 Our final 26-week model fit with the full dataset retained retained XX features. Of these, XX were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only XX unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 

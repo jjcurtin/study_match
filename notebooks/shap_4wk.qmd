@@ -156,7 +156,7 @@ fig_shap_global_tx
 Paneled Global figure
 ```{r}
 #| label: fig-shap-global
-#| fig-height: 7
+#| fig-height: 9
 #| fig-cap: "Global Shapley values for the 25 features with the highest importance. Bar represents magnitude of the overall feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance among all features. B) Global feature importance among treatment interaction features."
 #| 
 fig_panel_shap_global <- (fig_shap_global / fig_shap_global_tx / guide_area()) +
@@ -237,7 +237,7 @@ fig_shap_local_tx
 Paneled local figure
 ```{r}
 #| label: fig-shap-local
-#| fig-height: 7
+#| fig-height: 9
 #| fig-cap: "Local Shapley values for features with the highest global importance. Each dot represents the influence of that feature on a specific observation. A) Local feature importance among all features. B) Local feature importance among treatment interaction features."
 #| 
 fig_panel_shap_local <- (fig_shap_local_all / fig_shap_local_tx / guide_area()) +

@@ -18,7 +18,7 @@ editor_options:
 
 ```{r set_variables}
 study <- "match"
-version <- "v5"
+version <- "v6"
 y_col_name <- "pp_hybrid_wk4_outcome"
 ```
 
@@ -28,6 +28,7 @@ y_col_name <- "pp_hybrid_wk4_outcome"
 
 # packages for script
 library(tidyverse)
+library(patchwork)
 
 theme_set(theme_classic()) 
 ```
@@ -68,6 +69,7 @@ options(tibble.print_max = Inf)
 
 ## Read in data
 
+SHAP obtained with LOOCV at CHTC
 ```{r}
 local <- read_csv(file.path(path_data, str_c("shap_loocv_", version), 
                             "output", "batch_results.csv"),
@@ -75,15 +77,16 @@ local <- read_csv(file.path(path_data, str_c("shap_loocv_", version),
 
 glimpse(local)
 ```
-This is already local SHAP values because we have one observation per subid per variable.
+This dataset is already local SHAP values because we have one observation per subid per variable.
 
 ## Get global Shapley values
 
 ```{r}
 global <- local |> 
+  mutate(abs_contribution = abs(contribution)) |> 
   group_by(variable_name) |> 
-  summarize(abs_shap = abs(mean(contribution))) |> 
-  arrange(desc(abs_shap))
+  summarize(mean_contribution = mean(abs_contribution)) |> 
+  arrange(desc(mean_contribution))
 
 glimpse(global)
 
@@ -102,46 +105,47 @@ local <- local |>
 
 Overall
 ```{r}
-#| label: fig-shap-global
 
 fig_shap_global <- global |> 
-  arrange(desc(abs_shap)) |> 
+  arrange(desc(mean_contribution)) |> 
   slice(1:25) |> 
-  arrange(abs_shap) |> 
+  arrange(mean_contribution) |> 
   mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
   mutate(variable_name = fct_inorder(variable_name)) |> 
-  ggplot(mapping = aes(x = variable_name, y = abs_shap, color = tx_int)) +
+  ggplot(mapping = aes(x = variable_name, y = mean_contribution, color = tx_int)) +
   geom_point(size = 2) +
-  geom_segment(aes(x = variable_name, y = abs_shap, xend = variable_name),
+  geom_segment(aes(x = variable_name, y = mean_contribution, xend = variable_name),
                yend = 0) +
   labs(
-    x = "Feature Name",
+    x = "",
     y = "Mean |Shapley value|",
-    color = "Feature Type"
+    color = "Feature Type",
+    title = "All Features"
   ) +
-  coord_flip()
+  coord_flip() +
+  theme(legend.position = "bottom")
 
 fig_shap_global
 ```
 
 Global Shapley values among treatment interactions
 ```{r}
-#| label: fig-shap-global-tx
 
 fig_shap_global_tx <- global |> 
   filter(tx_int == "Interaction") |> 
-  arrange(desc(abs_shap)) |> 
+  arrange(desc(mean_contribution)) |> 
   slice(1:25) |> 
-  arrange(abs_shap) |> 
+  arrange(mean_contribution) |> 
   mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
   mutate(variable_name = fct_inorder(variable_name)) |> 
-  ggplot(mapping = aes(x = variable_name, y = abs_shap, color = tx_int)) +
+  ggplot(mapping = aes(x = variable_name, y = mean_contribution, color = tx_int)) +
   geom_point(size = 2) +
-  geom_segment(aes(x = variable_name, y = abs_shap, xend = variable_name),
+  geom_segment(aes(x = variable_name, y = mean_contribution, xend = variable_name),
                yend = 0) +
   labs(
-    x = "Feature Name",
-    y = "Mean |Shapley value|"
+    x = "",
+    y = "Mean |Shapley value|",
+    title = "Interaction Features"
   ) +
   coord_flip() +
   theme(legend.position = "none")
@@ -149,31 +153,57 @@ fig_shap_global_tx <- global |>
 fig_shap_global_tx
 ```
 
+Paneled Global figure
+```{r}
+#| label: fig-shap-global
+#| fig-height: 7
+#| fig-cap: "Global Shapley values for the 25 features with the highest importance. Bar represents magnitude of the overall feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance among all features. B) Global feature importance among treatment interaction features."
+#| 
+fig_panel_shap_global <- (fig_shap_global / fig_shap_global_tx / guide_area()) +
+  plot_layout(guides = "collect", axes = "collect", ncol = 1,
+              heights = unit(c(3, 3, 0.5), "in")) +
+  plot_annotation(tag_levels = "A",
+                  title = "Top Global Shapley Values")
+
+fig_panel_shap_global
+```
+
 ## Make Sina plots (local) 
+
+Set up data
+```{r}
+local_fig <- global |>
+  arrange(desc(mean_contribution)) |> 
+  slice(1:25) |> 
+  left_join(local, by = c("variable_name", "tx_int"))
+
+local_fig_tx <- global |> 
+  filter(tx_int == "Interaction") |> 
+  arrange(desc(mean_contribution)) |> 
+  slice(1:25) |> 
+  left_join(local, by = c("variable_name", "tx_int"))
+```
+
 
 Overall
 ```{r}
-# get levels in order from global plot
-levels_all <- global |>
-  arrange(desc(abs_shap)) |> 
-  slice(1:25) |> 
-  pull(variable_name)
-
-fig_shap_local_all <- local |>
-  filter(variable_name %in% levels_all) |>
-  mutate(variable_name = factor(variable_name, levels = levels_all)) |>
+fig_shap_local_all <- local_fig |>
+  arrange(mean_contribution) |> 
   mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
+  mutate(variable_name = fct_inorder(variable_name)) |> 
   ggplot(mapping = aes(x = variable_name, y = contribution,
                        color = tx_int)) +
   ggforce::geom_sina(method = "counts", maxwidth = 0.7, alpha = 0.4) +
   geom_hline(yintercept = 0) +
-  #scale_y_continuous(limits = c(-2, 5), breaks = seq(-2, 5)) +
+  scale_y_continuous(limits = c(-0.15, 0.2)) +
   labs(
     x = "",
     y = "Shapley Value",
-    color = "Feature Type"
+    color = "Feature Type",
+    title = "All Features"
   ) +
-  theme(axis.text = element_text(size = 9.5)) +
+  theme(axis.text = element_text(size = 9.5),
+        legend.position = "bottom") +
   coord_flip()
 
 fig_shap_local_all
@@ -182,26 +212,20 @@ fig_shap_local_all
 
 Local Shapley values among treatment interactions
 ```{r}
-# get levels in order from global plot
-levels_tx <- global |>
-  filter(tx_int == "Interaction") |> 
-  arrange(desc(abs_shap)) |> 
-  slice(1:25) |> 
-  pull(variable_name)
 
-fig_shap_local_tx <- local |> 
-  filter(tx_int == "Interaction") |> 
-  filter(variable_name %in% levels_tx) |>
-  mutate(variable_name = factor(variable_name, levels = levels_tx)) |>
+fig_shap_local_tx <- local_fig_tx |> 
+  arrange(mean_contribution) |> 
   mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
+  mutate(variable_name = fct_inorder(variable_name)) |> 
   ggplot(mapping = aes(x = variable_name, y = contribution,
                        color = tx_int)) +
   ggforce::geom_sina(method = "counts", maxwidth = 0.7, alpha = 0.4) +
   geom_hline(yintercept = 0) +
-  #scale_y_continuous(limits = c(-2, 5), breaks = seq(-2, 5)) +
+  scale_y_continuous(limits = c(-0.15, 0.2)) +
   labs(
     x = "",
     y = "Shapley Value",
+    title = "Interaction Features"
   ) +
   theme(axis.text = element_text(size = 9.5),
         legend.position = "none") +
@@ -210,30 +234,19 @@ fig_shap_local_tx <- local |>
 fig_shap_local_tx
 ```
 
-from ema
+Paneled local figure
 ```{r}
+#| label: fig-shap-local
+#| fig-height: 7
+#| fig-cap: "Local Shapley values for features with the highest global importance. Each dot represents the influence of that feature on a specific observation. A) Local feature importance among all features. B) Local feature importance among treatment interaction features."
+#| 
+fig_panel_shap_local <- (fig_shap_local_all / fig_shap_local_tx / guide_area()) +
+  plot_layout(guides = "collect", axes = "collect", ncol = 1,
+              heights = unit(c(3, 3, 0.5), "in")) +
+  plot_annotation(tag_levels = "A",
+                  title = "Local Shapley Values")
 
-#
-# # order features to match global plot
-# shap_levels <- shap_global_all |>
-#   mutate(variable_grp = reorder(variable_grp, mean_value, sum)) |>
-#   pull(variable_grp) |>
-#   levels()
-#
-
-```
-
-## Combine
-
-```{r}
-library(patchwork)
-
-(fig_shap_global / fig_shap_global_tx) +
-  plot_layout(guides = "collect")
-
-fig_shap_global + fig_shap_local_all + fig_shap_global_tx + fig_shap_local_tx +
-  plot_layout(guides = "collect",
-              ncol = 2)
+fig_panel_shap_local
 ```
 
 

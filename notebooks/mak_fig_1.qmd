@@ -19,7 +19,7 @@ editor_options:
 ## Setup
 
 ```{r set_values}
-version <- "v5"
+version <- "v6"
 cv <- "nested"
 y_col_name <- "pp_hybrid_wk4_outcome"
 ```
@@ -126,40 +126,54 @@ fig_roc
 
 ### Panel B: Posterior Probability Distribution
 
+Read in posteriors
+```{r}
+pp <- read_rds(file.path("P:/studydata/match/models/", 
+                         str_c("posteriors_", version, "_nested.rds")))
+```
 
+Set up data
+```{r}
+pp_tidy <- pp |> 
+  tidy(seed = 123) |> 
+  glimpse()
+
+ci <- pp_tidy |> 
+  summary() |> 
+  mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
+                        labels = c("Week 4", "Week 12", "Week 26")),
+         y = 1000) |> 
+  filter(model == "Week 4")
+```
 
 Create plot
 ```{r}
 
 #| label: fig-pp-wk4
-#| fig-cap: "Posterior Probabilities Distribution"
+#| fig-cap: "Posterior Probability Distribution"
 
 fig_pp <- pp_tidy |> 
-  mutate(model = factor(model, 
-                        levels = "roc_auc",
-                        labels = "Week 4")) |> 
+  mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
+                        labels = c("Week 4", "Week 12", "Week 26"))) |> 
+  filter(model == "Week 4") |> 
   ggplot() + 
-  geom_histogram(aes(x = posterior, fill = model), 
-                 color = "black", alpha = .4, 
+  geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
                  bins = 30) +
-  geom_segment(mapping = aes(y = y + 100, yend = y - 100, 
-                             x = mean, xend = mean,
+  geom_segment(mapping = aes(y = y, yend = y - 200, x = mean, xend = mean,
                              color = model),
-               data = ci_week4) +
-  geom_segment(mapping = aes(y = y, yend = y, 
-                             x = lower, xend = upper, 
-                             color = model),
-               data = ci_week4) +
-  scale_y_continuous("Posterior Probability", 
-                     breaks = c(0, 250, 500, 750)) +
-  xlab("Area Under ROC Curve") +
+               data = ci) +
+  geom_segment(mapping = aes(y = y - 100, yend = y - 100, 
+                             x = lower, xend = upper, color = model),
+               data = ci) +
+  scale_y_continuous("Posterior Probability") +
+  labs(
+    x = "Area Under ROC Curve (auROC)",
+  ) +
   theme(legend.position = "none")
 
+fig_pp
 
 ```
-
-
-
 
 ### Panel C: Prediction Calibration
 
@@ -186,30 +200,6 @@ d_cal <- d_cal |>
   glimpse()
 ```
 
-Create breaks plot
-```{r}
-#| label: fig-cal-breaks
-#| fig-cap: "Breaks Plot"
-
-fig_cal_breaks <- d_cal |> 
-  cal_plot_breaks(truth = outcome_rct, 
-                  estimate = .pred_abstinent)
-
-fig_cal_breaks
-```
-
-Create windowed plot
-```{r}
-#| label: fig-cal-window
-#| fig-cap: "Windowed Plot"
-
-fig_cal_window <- d_cal |> 
-  cal_plot_windowed(truth = outcome_rct, 
-                    estimate = .pred_abstinent)
-fig_cal_window
-
-```
-
 Created binned plot
 ```{r}
 #| label: fig-cal-bins
@@ -227,30 +217,29 @@ fig_cal_bins <- d_cal |>
   mutate(bins = as.numeric(bins),
          midpoints = bin_width/2 + bin_width * (bins - 1))  |> 
   ggplot(data = _, aes(x = midpoints, y = mean_abstinent)) +
-    geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
-    geom_line() +
-    geom_point() +
-    xlab("Predicted Abstinence Probability (bin mid-point)") +
-    ylab("Observed Abstinence Probability") +
-    scale_x_continuous(breaks = seq(0, 1, bin_width),
-                       limits = c(0, 1)) +
-    scale_y_continuous(breaks = seq(0, 1, bin_width),
-                       limits = c(0, 1)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_line() +
+  geom_point() +
+  xlab("Predicted Abstinence Probability (bin mid-point)") +
+  ylab("Observed Abstinence Probability") +
+  scale_x_continuous(breaks = seq(0, 1, bin_width),
+                     limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, bin_width),
+                     limits = c(0, 1)) +
   theme(axis.text = element_text(size = rel(1)),
         axis.title = element_text(size = rel(1)))
 
 fig_cal_bins
 ```
 
-
 ## Combine into single figure
 
 ```{r}
 #| label: fig-combined
 #| fig-height: 10
-#| fig-cap: "Gaylen"
+#| fig-cap: "Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration."
 
-patchwork <- fig_roc + fig_contrasts + fig_cal_bins 
+patchwork <- fig_roc + fig_pp + fig_cal_bins 
 
 patchwork + plot_annotation(
   title = "Model Performance",

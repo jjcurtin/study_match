@@ -27,7 +27,7 @@ We followed our model fitting, selection, and evaluation procedures from the mai
 
 Models were evaluated using area under the Receiver Operating Characteristic Curve (auROC) from held-out folds (test sets) in the outer loop. We used the same satisficing criterion of retaining 50 or more treatment interactions. We opted to keep this threshold consistent across models, though we confirmed that this value was still reasonable based on inner fold distributions and number of remaining model configurations for selection in each outer fold.
 
-#### Bayesian analysis of mdoel performance
+#### Bayesian analysis of model performance
 
 We followed our same procedure to evaluate model performance using Bayesian hierarchical linear models. We estimated posterior probability distributions and 95% Bayesian credible intervals (CIs). 
 
@@ -45,21 +45,27 @@ Although we did not preregister completing these analyses with 12-week and 26-we
 
 #### Model performance
 
-We selected the best momdel configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). The median auROCs across the validation sets were as follows: 4-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX); 12-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX); and 26-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX). 
+We selected the best momdel configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). The median auROCs across the validation sets were as follows: 4-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX); 12-week model median auROC = 0.685 (IQR = 0.679 - 0.691, range = 0.658 - 0.704); and 26-week model median auROC = XXX (IQR = XXX - XXX, range = XXX - XXX). 
 
-We evaluated these best model configurations using *test set* performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was XXX (IQR = XXX - XXX, range = XXX - XXX). The median auROC across the 30 test sets for the 26-week model was XXX (IQR = XXX - XXX, range = XXX - XXX). The 30 auROCs (one per held-out fold) for the 4-, 12-, and 26-week models are plotted as individual ROC curves in Figure X.
+We evaluated these best model configurations using *test set* performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was 0.665 (IQR = 0.628 - 0.697, range = 0.535 - 0.788). The median auROC across the 30 test sets for the 26-week model was XXX (IQR = XXX - XXX, range = XXX - XXX). The 30 auROCs (one per held-out fold) for the 4-, 12-, and 26-week models are plotted as individual ROC curves in Figure X.
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX [Bayesian CI: XXX - XXX] for the 12-week model and XXX [Bayesian CI: XXX - XXX] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). Figure X displays the posterior probability distributions for these models' auROCs.
 
-add individual ROC plots
+<!-- add individual ROC plots -->
+
+<!-- add PPD model auROCs -->
 
 #### Model comparisons
 
 We used the posterior probability distributions for the auROCs to compare the 4-, 12-, and 26-week models. The median increase in auROC for the 4- vs. 12-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 4-week model had superior performance. The median increase in auROC for the 4- vs. 26-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 4-week model had superior performance. The median increase in auROC for the 12- vs. 26-week model was XXX (95% CI = XXX - XXX), yielding a probability of XX% that the 12-week model had superior performance. Supplemental Figure X presents histograms of the posterior probability distributions for these model contrasts.
 
+<!-- add PPD model contrasts -->
+
 #### Model calibration
 
 In Figure X, we display the calibration for the 12- and 26-week models from leave-one-out cross-validation. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence for both the 12- and 26-week models. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
+
+<!-- add model calibrations by model -->
 
 #### Model interpretation
 

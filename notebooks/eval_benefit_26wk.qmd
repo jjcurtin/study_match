@@ -1,0 +1,261 @@
+---
+title: "Evaluation of Clinical Benefit: Week 26 Model"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r set_variables}
+study <- "match"
+version <- "v6"
+y_col_name <- "pp_hybrid_wk26_outcome"
+```
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+# packages for script
+library(tidyverse)
+library(blme)
+library(lme4)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+theme_set(theme_classic()) 
+```
+
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+```
+
+```{r, absolute paths}
+
+# absolute paths
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- str_c("P:/studydata/match/models/", y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_models <- str_c("/Volumes/private/studydata/match/models/", y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_models <- str_c("~/mnt/private/studydata/match/models/", y_col_name)}
+)
+```
+
+```{r defaults}
+
+# chunk defaults
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+Read in aim 2 dataset
+```{r}
+
+d <- read_csv(file.path(path_models, 
+                        str_c("aim_2_", version, "_", y_col_name, ".csv")),
+              show_col_types = FALSE) |> 
+  mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
+         outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
+         outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
+         tx_worst = case_when(
+           prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
+           prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
+           prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
+           TRUE ~ NA_character_),
+         tx_second = case_when(
+           tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
+           tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
+           tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
+           tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
+           TRUE ~ NA_character_)) |> 
+  mutate(tx_rank = case_when(
+    tx_rct == tx_best ~ "first",
+    tx_rct == tx_second ~ "second",
+    tx_rct == tx_worst ~ "third",
+    TRUE ~ NA_character_)) |> 
+  select(subid, starts_with("tx_"), starts_with("prob_"),
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(c_tx_match = if_else(tx_match == TRUE, 0.5, -0.5), # center
+         week = as.numeric(week)) |> 
+  # log transformation
+  mutate(week_log_2 = log(week, base = 2)) |> 
+  # week 4-centered log transformation
+  mutate(c4_week_log_2 = week_log_2 - log(4, base = 2))
+
+glimpse(d)
+
+```
+
+## Analyses
+
+### Primary model
+
+*NOTE*: differs from preregistration (base 2 instead of base e)
+
+4-week-centered, log-transformed week (base 2)
+```{r}
+if(file.exists(file.path(path_models, 
+                         str_c("model_clin_benefit_", version, ".rds")))){
+  message(str_c("Model already exists for version ", 
+                version, ". Reading in existing model"))
+  
+  model_bayes <- read_rds(file.path(path_models, 
+                                    str_c("model_clin_benefit_", version, ".rds")))
+  
+} else {
+  message("Fitting new model & saving out")
+  model_bayes <- blme::bglmer(outcome_rct_num ~ c_tx_match * c4_week_log_2 + 
+                                (1 + c4_week_log_2 | subid),
+                              data = d,
+                              family = binomial(link = "logit"),
+                              control = glmerControl(optCtrl = list(maxfun = 3e6)))
+  
+  model_bayes |> 
+    write_rds(file.path(path_models, 
+                        str_c("model_clin_benefit_", version, ".rds")))
+}
+
+```
+
+Evaluate model
+```{r}
+summary(model_bayes)
+```
+
+### Follow-up analyses: Simple Effects
+
+From preregistration: If the interaction between `tx_match` and `week` is significant (*p* < 0.05), we will conduct follow-up analyses to test the simple effect of `tx_match` at each time point.
+
+Interaction between `tx_match` and `week` was not significant (*p* = 0.83); however, we have opted to conduct simple effects analyses to more fully characterize our findings in probability terms and given known issues with conducting and interpreting interactions in logistic regression models.
+
+Simple effect at 4 weeks
+```{r}
+d_4 <- d |> 
+  filter(week == 4)
+
+model_4wk <- glm(outcome_rct_num ~ c_tx_match, 
+                 data = d_4,
+                 family = binomial(link = "logit"))
+
+summary(model_4wk)
+```
+
+Simple effect at 12 weeks
+```{r}
+d_12 <- d |> 
+  filter(week == 12)
+
+model_12wk <- glm(outcome_rct_num ~ c_tx_match, 
+                  data = d_12,
+                  family = binomial(link = "logit"))
+
+summary(model_12wk)
+```
+
+Simple effect at 26 weeks
+```{r}
+d_26 <- d |> 
+  filter(week == 26)
+
+model_26wk <- glm(outcome_rct_num ~ c_tx_match, 
+                  data = d_26,
+                  family = binomial(link = "logit"))
+
+summary(model_26wk)
+```
+
+## Figure
+
+Primary figure
+```{r}
+#| label: fig-clin-ben-wk26
+d |> 
+  mutate(week_cat = factor(week,
+                           levels = c(4, 12, 26),
+                           labels = c("Week 4", "Week 12", "Week 26")),
+         tx_match = factor(tx_match, 
+                           levels = c(TRUE, FALSE),
+                           labels = c("Matched to Best", "Unmatched"))) |> 
+  group_by(week_cat, tx_match) |> 
+  summarize(mean_outcome = mean(outcome_rct_num)) |> 
+  ggplot(aes(x = week_cat, y = mean_outcome, fill = tx_match)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Week On-Study",
+    y = "Mean Abstinence Rate",
+    fill = "Treatment Matching"
+  )
+```
+
+Make predicted dataset
+```{r}
+
+d_fig_alt <- d |> 
+  select(subid, c_tx_match, c4_week_log_2) |> 
+  mutate(pred_logodds = predict(model_bayes, d)) |> 
+  mutate(pred_probs = predict(model_bayes, d, type = "response")) |> 
+  mutate(week_cat = factor(c4_week_log_2,
+                           levels = c(0, (log(12, base = 2) - 2), 
+                                      (log(26, base = 2) - 2)),
+                           labels = c("Week 4", "Week 12", "Week 26")),
+         tx_match = factor(c_tx_match, 
+                           levels = c(0.5, -0.5),
+                           labels = c("Matched to Best", "Unmatched"))) |> 
+  group_by(week_cat, tx_match) |> 
+  summarize(mean_pred_logodds = mean(pred_logodds),
+            mean_pred_probs = mean(pred_probs))
+```
+
+Log odds figure
+```{r}
+d_fig_alt |> 
+  ggplot(aes(x = week_cat, y = mean_pred_logodds, fill = tx_match)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Week On-Study",
+    y = "Log Odds",
+    fill = "Treatment Matching"
+  )
+```
+
+Predicted probabilities figure
+```{r}
+d_fig_alt |> 
+  ggplot(aes(x = week_cat, y = mean_pred_probs, fill = tx_match)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Week On-Study",
+    y = "Predicted Probabilities",
+    fill = "Treatment Matching"
+  )
+```

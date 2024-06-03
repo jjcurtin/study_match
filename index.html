@@ -1234,7 +1234,7 @@ Table&nbsp;3: Smoking-related ID Characteristics
 <div id="fig-combined" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.
@@ -1261,12 +1261,12 @@ Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted acro
 <h5 class="anchored" data-anchor-id="feature-importance-via-shapley-values">Feature importance via Shapley values</h5>
 <p>Global feature importance (mean |Shapley value|) from our model appear in <a href="#fig-shap-global" class="quarto-xref">Figure&nbsp;2</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). The five most important feature globally were baseline carbon monoxide, identifying as White, items 2 (“Cigarettes control me.”) and 30 (“Most of my friends and acquaintances smoke.”) from the WISDM-37 measure <span class="citation" data-cites="smithDevelopmentBriefWisconsin2010">(<a href="#ref-smithDevelopmentBriefWisconsin2010" role="doc-biblioref">Stevens S. Smith et al. 2010</a>)</span>, and motivation to quit. Six of the top 25 most globally important features were treatment interactions. The five most important treatment interaction features were C-NRT X living with another smoker (Response selection: “I live alone or only with a partner”), C-NRT X item 22 from the WISDM-37 measure (“Sometimes I feel like cigarettes are my best friends”), C-NRT X item 5 of the Distress Tolerance Scale (“There’s nothing worse than feeling distressed or upset.”) <span class="citation" data-cites="simonsDistressToleranceScale2005a">(<a href="#ref-simonsDistressToleranceScale2005a" role="doc-biblioref">Simons and Gaher 2005</a>)</span>, varenicline X living with another smoker (Response selection: “I live alone or only with a partner”), and C-NRT X smoking menthol cigarettes (Response selection: “No”).</p>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-shap-global" class="cell" data-fig-height="7">
+<div id="cell-fig-shap-global" class="cell" data-fig-height="9">
 <div class="cell-output cell-output-display">
 <div id="fig-shap-global" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="672" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Global Shapley values for the 25 features with the highest importance. Bar represents magnitude of the overall feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance among all features. B) Global feature importance among treatment interaction features.
@@ -1278,12 +1278,12 @@ Figure&nbsp;2: Global Shapley values for the 25 features with the highest import
 <a class="quarto-notebook-link" id="nblink-5" href="notebooks\shap_4wk-preview.html#cell-fig-shap-global">Source: SHAP for 4-Week Model</a></div>
 <p>Local feature importance (i.e., the influence of features on individual observations) from our model are displayed with Sina plots in <a href="#fig-shap-local" class="quarto-xref">Figure&nbsp;3</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). These plots help to show the directionality of the contribution each feature makes to a single prediction. Some features (e.g., motivation to quit, C-NRT X living with another smoker) have effects more narrowly in one direction, whereas other features affect predictions more equally in both directions (e.g., carbon monoxide, longest quit attempt).</p>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-shap-local" class="cell" data-fig-height="7">
+<div id="cell-fig-shap-local" class="cell" data-fig-height="9">
 <div class="cell-output cell-output-display">
 <div id="fig-shap-local" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-local-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-local-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-local-output-1.png" width="672" height="672" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-local-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-local-output-1.png" width="672" height="864" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-local-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Local Shapley values for features with the highest global importance. Each dot represents the influence of that feature on a specific observation. A) Local feature importance among all features. B) Local feature importance among treatment interaction features.
@@ -1304,10 +1304,10 @@ Figure&nbsp;3: Local Shapley values for features with the highest global importa
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk4" class="cell">
 <div class="cell-output cell-output-display">
-<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" height="480" width="672">
+<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672" height="480">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4
@@ -2298,7 +2298,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -21,7 +21,7 @@ keywords:
   - Machine learning  
   - Treatment selection  
 abstract: |
-  Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs. smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of 0.695 in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = XX). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.
+  Precision mental health seeks to select the right treatment for a patient given personal characteristics. The purpose of this project was to build a machine learning model that could select among first-line medication treatments for cigarette smoking cessation. We used data from a previously completed comparative effectiveness trial in which participants were richly characterized at baseline before being randomly assigned to varenicline, combination nicotine replacement therapy, or nicotine patch. We built a model predicting smoking cessation (abstinent vs. smoking) using baseline characteristics and their interactions with treatment. Models were fit, selected, and evaluated using nested cross-validation and the performance metric area under the receiving operator characteristic curve (auROC). Our best models had a median auROC of 0.695 in held-out test sets. We used this model to calculcate probabilities of smoking cessation success for each participant on each of the three treatments to identify their model-predicted best treatment. Individuals who received their model-predicted best treatment during the original trial were more likely to quit successfully than individuals who did not (OR = XX, p = 0.004). This project produces a clinically implementable treatment selection model to assist people quitting cigarette smoking.
 key-points:
   - Take away point 1 
   - Take away point 2
@@ -250,7 +250,7 @@ We used a Bayesian hierarchical generalized linear model to estimate the posteri
 
 We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. We regressed the auROCs (logit transformed) from the 30 test sets on two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3X10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our model's auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. 
 
-Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting. Specifically, the priors were set as follows: residual standard deviation ~ normal(location=XX, scale=exp(XX)), intercept (after centering predictors) ~ normal(location=XX, scale=XX), the two coefficients for window width contrasts ~ normal (location=XX, scale=XX), and covariance ~ decov(regularization=XX, concentration=XX, shape=XX, scale=XX). <!-- UPDATE PRIORS, i don't know if i use specified priors or adjusted priors -->
+Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting. 
 
 #### Model interpretation
 
@@ -300,8 +300,6 @@ We identified the main effect of treatment match *a priori* as our focal effect;
 
 ## Results
 
-<!-- need to update values & insert figure numbers -->
-
 ### Sample characteristics
 
 All 1086 participants who were randomized to treatment in the comparative effectiveness trial [@bakerEffectsNicotinePatch2016] were included in our analysis sample. 
@@ -340,16 +338,7 @@ We selected the best model configurations using auROCs from the *validation sets
 
 The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance.
 
-We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was XXX. This value represents our best estimates for the magnitude of the auROC parameter for each model. The 95% Bayesian CI for the auROC was relatively narrow [XXX - XXX] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
-
-
-<!-- move to supp
-#### Bayesian model comparisons
-
-We used the posterior probability distributions for the auROCs to compare formally the 4- and 26-week models. The median increase in auROC for the 4- vs. 26-week model was 0.047 (95% CI = 0.030 - 0.065), yielding a probability of 100% that the 4-week model had superior performance. Figure X presents histograms of the posterior probability distribution for this model contrast.
-
-is the probability allowed to be 100%...?
--->
+We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
 #### Model calibration
 
@@ -363,19 +352,25 @@ Our final model fit with the full dataset retained retained 155 features. Of the
 
 ##### Feature importance via Shapley values
 
-Global importance (mean |Shapley value|) for features for our model appear in Panel A of Figure X. XX was the most important feature. XX, XX, and XX were also globally important features. XX, XX, and XX were the most relatively important treatment interaction features. 
+Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). The five most important feature globally were baseline carbon monoxide, identifying as White, items 2 ("Cigarettes control me.") and 30 ("Most of my friends and acquaintances smoke.") from the WISDM-37 measure [@smithDevelopmentBriefWisconsin2010], and motivation to quit. Six of the top 25 most globally important features were treatment interactions. The five most important treatment interaction features were C-NRT X living with another smoker (Response selection: "I live alone or only with a partner"), C-NRT X item 22 from the WISDM-37 measure ("Sometimes I feel like cigarettes are my best friends"), C-NRT X item 5 of the Distress Tolerance Scale ("There's nothing worse than feeling distressed or upset.") [@simonsDistressToleranceScale2005a], varenicline X living with another smoker (Response selection: "I live alone or only with a partner"), and C-NRT X smoking menthol cigarettes (Response selection: "No").
 
-Sina plots of local Shapley values (i.e., the influence of features on individual observations) for each model show that some features (e.g., XX, XX, XX) impact abstinence probability for specific individuals even if they are not globally important across all observations (Figure X, Panel B). <!-- emphasize directionality! -->
+{{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
+
+Local feature importance (i.e., the influence of features on individual observations) from our model are displayed with Sina plots in @fig-shap-local, both overall (Panel A) and for treatment interaction features specifically (Panel B). These plots help to show the directionality of the contribution each feature makes to a single prediction. Some features (e.g., motivation to quit, C-NRT X living with another smoker) have effects more narrowly in one direction, whereas other features affect predictions more equally in both directions (e.g., carbon monoxide, longest quit attempt). 
+
+{{< embed notebooks/shap_4wk.qmd#fig-shap-local >}}
 
 ### AIM 2 results: Clinical benefit
 
 There was a significant fixed effect of treatment matching on abstinence (OR = XX, *z* = 2.862, *p* = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = XX, *z* = -10.053, *p* < 0.001) such that the probability of abstinence declined over time. 
 
-There was not a significant interaction between treatment matching and time (*p* = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point <!-- add a footnote that this differed from our preregistration (models/analysis code the same as preregistered, but we said we'd do them only if interaction was significant) -->. This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
+There was not a significant interaction between treatment matching and time (*p* = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point.[^1] This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
 
-There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). Figure 3 shows the mean abstinence rate by treatment matching at each time point.
+There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). @fig-clin-ben-wk4 shows the mean abstinence rate by treatment matching at each time point.
 
-<!-- embed figure 3 fig-clin-ben-wk4 from eval_benefit_4wk.qmd notebook -->
+{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}} 
+
+[^1]: We followed our preregistered analysis code to fit these simple effect models; however, we preregistered that we would conduct them only if the interaction effect was significant.
 
 ## Discussion
 
@@ -441,7 +436,7 @@ Regardless, the ultimate test of this model's clinical benefit will be in a pros
 
 #### Precision mental health for chronic, relapsing disorders
   
-Alongside many exciting findings, this project also demonstrates that it is difficult to predict complex outcomes like treatment success using distal predictors. Indeed, our model predicting point-prevalence abstinence at 4 weeks was not particularly accurate, but model performance became even worse when we built models predicting 6-month abstinence rates (median auROC across held-out test sets: XXX; see Supplement). Our model fitting, selection, and evaluation process was identical for these models, suggesting that the greater distance between our baseline predictors and abstinence outcomes was the cause of the degraded performance. 
+Alongside many exciting findings, this project also demonstrates that it is difficult to predict complex outcomes like treatment success using distal predictors. Indeed, our model predicting point-prevalence abstinence at 4 weeks was not particularly accurate, but model performance became even worse when we built models predicting 6-month abstinence rates (median auROC across held-out test sets: 0.629; see Supplement). Our model fitting, selection, and evaluation process was identical for these models, suggesting that the greater distance between our baseline predictors and abstinence outcomes was the cause of the degraded performance. 
   
 Relatedly, the benefit of our treatment selection model is short-lived. There was an overall effect of treatment matching, though this seems to be carried primarily by the significant simple effect at 4 weeks. There is no longer statistically significant benefit at 12 weeks, though there is a numeric difference, and there is no statistical or numeric difference at all by 6 months. 
 

@@ -350,7 +350,7 @@ d_aim_2 <- d |>
   select(-pp_hybrid_wk26_outcome, -pp_hybrid_wk1_outcome, 
          -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> 
   rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
-         outcome_rct_wk26 = pp_hybrid_wk26_outcome) |> 
+         outcome_rct_wk4 = pp_hybrid_wk4_outcome) |> 
   relocate(subid, tx_rct, tx_best, tx_match,
            prob_best, starts_with("outcome"), starts_with("prob"))
 

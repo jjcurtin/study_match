@@ -156,7 +156,7 @@ retained_vars <- model_tidy |>
   select(-penalty) |> 
   arrange(desc(abs(estimate)))
 
-print_kbl(retained_vars, digits = 4)
+knitr::kable(retained_vars, digits = 4)
 ```
 `r round((nrow(retained_vars) / nrow(model_tidy)) * 100, digits = 2)`% of features were retained by the glmnet solution (`r nrow(retained_vars)` features of a total considered `r nrow(model_tidy)` features).
 
@@ -166,7 +166,7 @@ retained_vars_tx <- retained_vars |>
   filter(str_detect(term, "treatment_")) |> 
   arrange(desc(abs(estimate))) 
 
-print_kbl(retained_vars_tx, digits = 4)
+knitr::kable(retained_vars_tx, digits = 4)
 ```
 `r round((nrow(retained_vars_tx) / nrow(retained_vars)) * 100, digits = 2)`% of the retained features were treatment interaction features (`r nrow(retained_vars_tx)` treatment features of `r nrow(retained_vars)` retained features). Of the `r nrow(model_tidy |> filter(str_detect(term, "treatment_")))` available treatment interaction features, `r round((nrow(retained_vars_tx) / nrow(model_tidy |> filter(str_detect(term, "treatment_")))) * 100)`% were retained.
 

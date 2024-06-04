@@ -1,5 +1,5 @@
 ---
-title: "Make Demographic, ID Characteristic, & Feature Category Tables"
+title: "Make All Tables for Main Manuscript"
 author: "Gaylen Fronk"
 date: "`r lubridate::today()`"
 number-sections: true
@@ -44,15 +44,18 @@ options(conflicts.policy = "depends.ok")
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_data <- str_c("P:/studydata/match/processed_data/")},
+          path_data <- str_c("P:/studydata/match/processed_data/")
+          path_models <- str_c("P:/studydata/match/models/pp_hybrid_wk4_outcome")},
         
         # IOS paths
         Darwin = {
-          path_data <- str_c("/Volumes/private/studydata/match/processed_data/")},
+          path_data <- str_c("/Volumes/private/studydata/match/processed_data/")
+          path_models <- str_c("/Volumes/private/studydata/match/models/pp_hybrid_wk4_outcome")},
         
         # Linux paths
         Linux = {
-          path_data <- str_c("~/mnt/private/studydata/match/processed_data/")}
+          path_data <- str_c("~/mnt/private/studydata/match/processed_data/")
+          path_models <- str_c("~/mnt/private/studydata/match/models/pp_hybrid_wk4_outcome")}
 )
 ```
 
@@ -64,7 +67,7 @@ options(tibble.width = Inf)
 options(tibble.print_max = Inf)
 ```
 
-## Read in processed data
+## Tables 1, 2, & 3 (Features & Sample Characteristics)
 
 ```{r}
 d <- read_csv(file.path(path_data, "match_cln.csv"),
@@ -72,7 +75,7 @@ d <- read_csv(file.path(path_data, "match_cln.csv"),
 ```
 
 
-## Table 1: Feature Categories
+### Table 1: Feature Categories
 
 Set up data
 ```{r}
@@ -254,7 +257,7 @@ tail(-1) |>
    knitr::kable(align = "lllc") 
 ```
 
-## Table 2: Demographic Characteristics
+### Table 2: Demographic Characteristics
 
 Select down data
 ```{r}
@@ -415,7 +418,7 @@ t2_demo |>
 ```
 
 
-## Table 3: Smoking-related ID Characteristics
+### Table 3: Smoking-related ID Characteristics
 
 Select down data
 ```{r}
@@ -496,5 +499,173 @@ Table 3
 t3_idchars |>
   knitr::kable()
 
+
+```
+
+## Tables 4, 5, & 6 (Treatment Interactions)
+
+Read in data
+```{r}
+model_tidy <- read_csv(file.path(path_models, "model_best_tidy_v6.csv"),
+                       show_col_types = FALSE) |> 
+  glimpse()
+```
+
+Make overall starting table
+```{r}
+retained_vars_tx <- model_tidy |> 
+  mutate(estimate = estimate * -1) |> 
+  filter(abs(estimate) > 0) |> 
+  select(-penalty) |> 
+  filter(str_detect(term, "treatment_")) |> 
+  arrange(desc(abs(estimate)))
+
+print_kbl(retained_vars_tx, digits = 4)
+```
+
+### Table 4: Varenicline Interactions
+
+Make table
+```{r}
+varenicline <- retained_vars_tx |> 
+  filter(str_detect(term, "varenicline")) |> 
+  mutate(term = str_replace(term, "treatment_varenicline_x_", "")) |> 
+  arrange(desc(abs(estimate))) |> 
+  mutate(direction = if_else(estimate > 0, "+", "-")) |> 
+  mutate(Feature = c(
+    "Lives alone or only with a partner",
+    "Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
+    "Does not think they do a lot in a day (MFI Item 6)",
+    "Income (Increasing income bracket)",
+    "Has a spouse/partner who does not smoke",
+    "No close relative who smokes",
+    "Kept smoking despite relationship problems (DSM-5 Item 3)",
+    "Has never tried cigars",
+    "Has a depression diagnosis",
+    "Does not live with another smoker",
+    "Smoking helps them think better (WISDM-37 Item 32)",
+    "Feels tired, fatigued, or not up to par (Berlin Item 7)",
+    "Has tried cigars but has never used regularly",
+    "A lot of friends or family members smoke (WISDM-37 Item 27)",
+    "Has a close relative who smokes",
+    "Bothered by constipation (WSWS-2 Item 'Constipation')",
+    "Smoked to get rid of withdrawal feelings (DSM-5 Item 7)",
+    "Tried nicotine gum during previous quit attempt",
+    "Has a spouse/partner who smokes",
+    "Has not tried nicotine gum during a previous quit attempt",
+    "Feeling hopeless or discouraged (WSWS-2 Item 19)",
+    "Most of the people they spend time with are smokers (WISDM-37 Item 18)",
+    "Doesn't live with a spouse/partner",
+    "Smoking only allowed in some parts of workplace"
+  )) |> 
+  select(Feature, `Effect Direction` = direction)
+
+```
+
+```{r}
+#| label: tbl-int-varenicline
+#| tbl-cap-location: bottom
+#| tbl-cap: "Retained features that interact with varenicline. Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using varenicline (compared to C-NRT and nicotine patch)."
+
+varenicline |> 
+  knitr::kable(align = "lc")
+
+```
+
+### Table 5: Combo-NRT Interactions
+
+Make table
+```{r}
+combo_nrt <- retained_vars_tx |> 
+  filter(str_detect(term, "combo_nrt")) |> 
+  mutate(term = str_replace(term, "treatment_combo_nrt_x_", "")) |> 
+  arrange(desc(abs(estimate))) |> 
+  mutate(direction = if_else(estimate > 0, "+", "-")) |> 
+  mutate(Feature = c(
+    "Lives alone or only with a partner",
+    "Identifies as Black or African American",
+    "Sometimes feels like cigarattes are their best friends (WISDM-37 Item 22)",
+    "Has never smoked menthol cigarettes",
+    "Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
+    "Most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "Divorced",
+    "Does not endorse withdrawal symptoms (DSM-5 Item 6)",
+    "Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)",
+    "Identifies as White",
+    "Married",
+    "Has spent a lot of time obtaining, smoking, or recovering from cigarettes (DSM-5 Item 10)",
+    "Currently smokes menthol cigarettes",
+    "Endorses weight control as a major reason they smoke (WISDM-37 Item 19)",
+    "Does not feel it takes a lot of effort to concentrate (MFI Item 13)",
+    "Does not smoke when so ill they are in bed most of the day (FTND Item 6)",
+    "Lives with another smoker",
+    "Satisfied with their life as a whole",
+    "Bothered by constipation (WSWS-2 Item 'Constipation')",
+    "Has tried a pipe but has never used regularly",
+    "Amount of time since most recent quit attempt",
+    "Can handle feeling distressed or upset (DTS Item 3)",
+    "Smokes when so ill they are in bed most of the day (FTND Item 6)",
+    "Has never been diagnosed with sleep apnea (Berlin Item 9)",
+    "Bothered by waking frequently during the night (WSWS-2 Item 5)",
+    "Bothered by having urges to smoke (WSWS-2 Item 9)",
+    "More days in past month feeling worried, tense, or anxious (HDSM Item `Tense`)",
+    "Bothered by wanting to smoke (WSWS-2 Item 'Want Cigarette')",
+    "Kept smoking knowing it was causing or worsening a health problem (DSM-5 Item 12)",
+    "Does not find feeling distressed or upset to be unbearable (DTS Item 1)",
+    "Tried Zyban (bupropion) during previous attempt"
+  )) |> 
+  select(Feature, `Effect Direction` = direction)
+```
+
+```{r}
+#| label: tbl-int-cnrt
+#| tbl-cap-location: bottom
+#| tbl-cap: "Retained features that interact with combination nicotine replacement therapy (C-NRT). Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using C-NRT (compared to varenicline and nicotine patch)."
+
+combo_nrt |> 
+  knitr::kable(align = "lc")
+
+```
+
+### Table 6: Patch Interactions
+
+Make table
+```{r}
+patch <- retained_vars_tx |> 
+  filter(str_detect(term, "patch")) |> 
+  mutate(term = str_replace(term, "treatment_patch_x_", "")) |> 
+  arrange(desc(abs(estimate))) |> 
+  mutate(direction = if_else(estimate > 0, "+", "-")) |> 
+  mutate(Feature = c(
+    "Has never tried cigars",
+    "No close friend who smokes",
+    "Has tried cigars but has never used regularly",
+    "Has a close co-worker who smokes",
+    "No smoking allowed anywhere at their workplace",
+    "Bothered by craving a cigarette (WSWS-2 Item `Crave`)",
+    "Endorses feeling alone without their cigarettes (WISDM-37 Item 26)",
+    "Has a close friend who smokes",
+    "Has never been married",
+    "Identifies as female",
+    "Finds it difficult to refrain from smoking where it is forbidden (FTND Item 2)",
+    "Endorses feeling that cigarettes rule their life (WISDM-37 Item 16)",
+    "Identifies as White",
+    "Does not work outside the home",
+    "Bothered by coughing (WSWS-2 Item `Coughing`)",
+    "Does not have a lot of plans (MFI Item 15)",
+    "Identifies as male",
+    "Bothered by having trouble getting cigarettes of their mind (WSWS-2 Item 26)",
+    "Greater total number of previous quit attempts"
+  )) |> 
+  select(Feature, `Effect Direction` = direction)
+```
+
+```{r}
+#| label: tbl-int-patch
+#| tbl-cap-location: bottom
+#| tbl-cap: "Retained features that interact with nicotine patch. Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using nicotine patch (compared to varenicline and C-NRT)."
+
+patch |> 
+  knitr::kable(align = "lc")
 
 ```

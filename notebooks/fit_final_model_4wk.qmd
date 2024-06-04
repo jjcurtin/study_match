@@ -145,6 +145,10 @@ A *negative coefficient* indicates that increases in the feature *decrease* the 
 
 ```{r}
 model_tidy <- tidy(model_best_full)
+
+model_tidy |> 
+  write_csv(file.path(path_models, str_c("model_best_tidy_", version, ".csv")))
+  
 ```
 
 

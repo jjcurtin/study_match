@@ -349,7 +349,7 @@ d_aim_2 <- d |>
   left_join(d_outcomes, by = "subid") |> 
   select(-pp_hybrid_wk12_outcome, -pp_hybrid_wk1_outcome, 
          -pp_hybrid_yr3_outcome, -pp_hybrid_wk52_outcome) |> 
-  rename(outcome_rct_wk12 = pp_hybrid_wk12_outcome,
+  rename(outcome_rct_wk4 = pp_hybrid_wk4_outcome,
          outcome_rct_wk26 = pp_hybrid_wk26_outcome) |> 
   relocate(subid, tx_rct, tx_best, tx_match,
            prob_best, starts_with("outcome"), starts_with("prob"))
@@ -467,7 +467,7 @@ d_plot |>
                     estimate = .pred_abstinent,
                     .by = method)
 ```
-Raw and beta look best. Raw follows the diagonal more closely for longer.
+Raw and logistic look best. Raw follows the diagonal more closely in the first half, but logistic spans the full range. Upper half of logistic range has a very wide confidence interval/spread.
 
 #### Brier score
 

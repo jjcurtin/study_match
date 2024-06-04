@@ -344,17 +344,23 @@ In @fig-combined, panel C, we display our model's calibration from leave-one-out
 
 ##### Retained features
 
-Our final model fit with the full dataset retained retained 155 features. Of these, 74 were treatment interaction features. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). Supplemental table X presents the retained features and their parameter estimates. 
+Our final model fit with the full dataset retained retained 155 features. Tables with all retained features as well as their precise parameter estimates appear in the Supplement.
+
+Of the retained features, 74 were treatment interaction features. Retained features that interacted with varenicline appear in @tbl-int-varenicline. Retained features that interacted with C-NRT appear in @tbl-int-cnrt. Retained features that interacted with nicotine patch appear in @tbl-int-patch. Across these three tables, the effect direction indicates whether that feature increased or decreased abstinence when using that specific treatment (vs. the other two treatments). 
+
+{{< embed notebooks/mak_tables.qmd#tbl-int-varenicline >}}
+
+{{< embed notebooks/mak_tables.qmd#tbl-int-cnrt >}}
+
+{{< embed notebooks/mak_tables.qmd#tbl-int-patch >}}
+
+To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
 ##### Feature importance via Shapley values
 
-Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). The five most important feature globally were baseline carbon monoxide, identifying as White, items 2 ("Cigarettes control me.") and 30 ("Most of my friends and acquaintances smoke.") from the WISDM-37 measure [@smithDevelopmentBriefWisconsin2010], and motivation to quit. Six of the top 25 most globally important features were treatment interactions. The five most important treatment interaction features were C-NRT X living with another smoker (Response selection: "I live alone or only with a partner"), C-NRT X item 22 from the WISDM-37 measure ("Sometimes I feel like cigarettes are my best friends"), C-NRT X item 5 of the Distress Tolerance Scale ("There's nothing worse than feeling distressed or upset.") [@simonsDistressToleranceScale2005a], varenicline X living with another smoker (Response selection: "I live alone or only with a partner"), and C-NRT X smoking menthol cigarettes (Response selection: "No").
+Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of features. Six of the top 25 most globally important features were treatment interactions.
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
-
-Local feature importance (i.e., the influence of features on individual observations) from our model are displayed with Sina plots in @fig-shap-local, both overall (Panel A) and for treatment interaction features specifically (Panel B). These plots help to show the directionality of the contribution each feature makes to a single prediction. Some features (e.g., motivation to quit, C-NRT X living with another smoker) have effects more narrowly in one direction, whereas other features affect predictions more equally in both directions (e.g., carbon monoxide, longest quit attempt). 
-
-{{< embed notebooks/shap_4wk.qmd#fig-shap-local >}}
 
 ### AIM 2 results: Clinical benefit
 

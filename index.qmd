@@ -306,9 +306,6 @@ All 1086 participants who were randomized to treatment in the comparative effect
 
 Demographic characteristics of this sample appear in [@tbl-demohtml]{.content-visible when-format="html"}[@tbl-demopdf]{.content-visible unless-format="html"}. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including almost one third of the sample reporting annual income lower than $20,000. 
 
-
-
-
 ::: {.content-hidden unless-format="html"}
 
 {{< embed notebooks/mak_tables.qmd#tbl-demohtml >}} 
@@ -327,7 +324,6 @@ Smoking-related characteristics of this sample appear in @tbl-smoking-chars. On 
 
 {{< embed notebooks/mak_tables.qmd#tbl-smoking-chars >}} 
 
-
 ### AIM 1 results: Prediction models
 
 #### Model performance
@@ -336,13 +332,13 @@ We selected the best model configurations using auROCs from the *validation sets
 
 {{< embed notebooks/mak_fig_1.qmd#fig-combined >}}
 
-The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). These values are comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance.
+The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
 #### Model calibration
 
-In @fig-combined, panel C, we display our model's calibration from leave-one-out cross-validation. Predicted lapse probabilities are binned (bind width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed probability of 0.05, bin from 10 - 20 with an observed probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. 
+In @fig-combined, panel C, we display our model's calibration from leave-one-out cross-validation. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. 
 
 #### Model interpretation
 

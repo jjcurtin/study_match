@@ -96,9 +96,77 @@ Delineate treatment interactions
 ```{r}
 global <- global |> 
   mutate(tx_int = if_else(str_detect(variable_name, "treatment_"), "Interaction", "Main Effect"))
+```
 
-local <- local |> 
-  mutate(tx_int = if_else(str_detect(variable_name, "treatment_"), "Interaction", "Main Effect"))
+Add interpretable names
+```{r}
+global_tx <- global |> 
+  filter(tx_int == "Interaction") |> 
+  arrange(desc(mean_contribution)) |> 
+  slice(1:25) |> 
+  arrange(mean_contribution) |> 
+  mutate(Feature = c(
+    "C-NRT X Divorced",
+    "C-NRT X Currently smokes menthol cigarettes",
+    "Patch X Bothered by craving a cigarette (WSWS-2 Item `Crave`)",
+    "Varenicline X Kept smoking despite relationship problems (DSM-5 Item 3)",
+    "C-NRT X Married",
+    "Varenicline X Does not live with another smoker",
+    "Varenicline X Has never tried cigars",
+    "C-NRT X Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)",
+    "C-NRT X Does not endorse withdrawal symptoms (DSM-5 Item 6)",
+    "Patch X Has never tried cigars",
+    "C-NRT X Identifies as White",
+    "C-NRT X Most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "Varenicline X No close relative who smokes",
+    "Patch X Has tried cigars but has never used regularly",
+    "Varenicline X Does not think they do a lot in a day (MFI Item 6)",
+    "Patch X No close friend who smokes",
+    "Varenicline X Has a spouse/partner who does not smoke",
+    "Varenicline X Greater income",
+    "Varenicline X Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
+    "C-NRT X Identifies as Black or African American",
+    "C-NRT X Has never smoked menthol cigarettes",
+    "Varenicline X Lives alone or only with a partner",
+    "C-NRT X Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
+    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37 Item 22)",
+    "C-NRT X Lives alone or only with a partner"
+  )) |> 
+  mutate(Feature = fct_inorder(Feature))
+
+global <- global |> 
+  arrange(desc(mean_contribution)) |> 
+  slice(1:25) |> 
+  arrange(mean_contribution) |> 
+  mutate(Feature = c(
+    "C-NRT X Identifies as Black or African American",
+    "A lot of friends or family members smoke (WISDM-37 Item 27)",
+    "C-NRT X Has never smoked menthol cigarettes",
+    "Varenicline X Lives alone or only with a partner",
+    "C-NRT X Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
+    "Does not dread having to do things (MFI Item 9)",
+    "Endorses that the flavor of a cigarette is pleasing (WISDM-37 Item 5)",
+    "More satisfied with their life as a whole",
+    "Currently smokes menthol cigarettes",
+    "Does not have a lot of plans (MFI Item 15)",
+    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37 Item 22)",
+    "Greater income",
+    "More time around smokers on the weekend",
+    "Won't do much to stop feeling distessed or upset (DTS Item 13)",
+    "Identifies as Black or African American",
+    "Enjoys being with their family or close friends (SHP Item 2)",
+    "Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
+    "C-NRT X Lives alone or only with a partner",
+    "Bothered by wanting to smoke (WSWS-2 Item 'Want Cigarette')",
+    "Greater duration of longest previous quit attempt",
+    "Most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "Greater motivation to quit",
+    "Endorses feeling cigarettes control them (WISDM-37 Item 2)",
+    "Identifies as White",
+    "Greater exhaled carbon monoxide"
+  )) |> 
+  mutate(Feature = fct_inorder(Feature))
+
 ```
 
 ## Make global figures
@@ -107,20 +175,15 @@ Overall
 ```{r}
 
 fig_shap_global <- global |> 
-  arrange(desc(mean_contribution)) |> 
-  slice(1:25) |> 
-  arrange(mean_contribution) |> 
-  mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
-  mutate(variable_name = fct_inorder(variable_name)) |> 
-  ggplot(mapping = aes(x = variable_name, y = mean_contribution, color = tx_int)) +
+  ggplot(mapping = aes(x = Feature, y = mean_contribution, color = tx_int)) +
   geom_point(size = 2) +
-  geom_segment(aes(x = variable_name, y = mean_contribution, xend = variable_name),
+  geom_segment(aes(x = Feature, y = mean_contribution, xend = Feature),
                yend = 0) +
   labs(
     x = "",
     y = "Mean |Shapley value|",
     color = "Feature Type",
-    title = "All Features"
+    title = "Top Features Overall"
   ) +
   coord_flip() +
   theme(legend.position = "bottom")
@@ -131,21 +194,15 @@ fig_shap_global
 Global Shapley values among treatment interactions
 ```{r}
 
-fig_shap_global_tx <- global |> 
-  filter(tx_int == "Interaction") |> 
-  arrange(desc(mean_contribution)) |> 
-  slice(1:25) |> 
-  arrange(mean_contribution) |> 
-  mutate(variable_name = str_replace(variable_name, "treatment_", "")) |> 
-  mutate(variable_name = fct_inorder(variable_name)) |> 
-  ggplot(mapping = aes(x = variable_name, y = mean_contribution, color = tx_int)) +
+fig_shap_global_tx <- global_tx |> 
+  ggplot(mapping = aes(x = Feature, y = mean_contribution, color = tx_int)) +
   geom_point(size = 2) +
-  geom_segment(aes(x = variable_name, y = mean_contribution, xend = variable_name),
+  geom_segment(aes(x = Feature, y = mean_contribution, xend = Feature),
                yend = 0) +
   labs(
     x = "",
     y = "Mean |Shapley value|",
-    title = "Interaction Features"
+    title = "Top Interaction Features"
   ) +
   coord_flip() +
   theme(legend.position = "none")
@@ -157,8 +214,8 @@ Paneled Global figure
 ```{r}
 #| label: fig-shap-global
 #| fig-height: 9
-#| fig-cap: "Global Shapley values for the 25 features with the highest importance. Bar represents magnitude of the overall feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance among all features. B) Global feature importance among treatment interaction features."
-#| 
+#| fig-cap: "Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features."
+ 
 fig_panel_shap_global <- (fig_shap_global / fig_shap_global_tx / guide_area()) +
   plot_layout(guides = "collect", axes = "collect", ncol = 1,
               heights = unit(c(3, 3, 0.5), "in")) +

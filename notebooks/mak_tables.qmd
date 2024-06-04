@@ -565,7 +565,7 @@ varenicline <- retained_vars_tx |>
 ```{r}
 #| label: tbl-int-varenicline
 #| tbl-cap-location: bottom
-#| tbl-cap: "Retained features that interact with varenicline. Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using varenicline (compared to C-NRT and nicotine patch)."
+#| tbl-cap: "Retained features that interact with varenicline. Direction of effect indicates whether that feature increases or decreases abstinence when using varenicline (compared to C-NRT and nicotine patch)."
 
 varenicline |> 
   knitr::kable(align = "lc")
@@ -620,7 +620,7 @@ combo_nrt <- retained_vars_tx |>
 ```{r}
 #| label: tbl-int-cnrt
 #| tbl-cap-location: bottom
-#| tbl-cap: "Retained features that interact with combination nicotine replacement therapy (C-NRT). Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using C-NRT (compared to varenicline and nicotine patch)."
+#| tbl-cap: "Retained features that interact with combination nicotine replacement therapy (C-NRT). Direction of effect indicates whether that feature increases or decreases abstinence when using C-NRT (compared to varenicline and nicotine patch)."
 
 combo_nrt |> 
   knitr::kable(align = "lc")
@@ -663,7 +663,7 @@ patch <- retained_vars_tx |>
 ```{r}
 #| label: tbl-int-patch
 #| tbl-cap-location: bottom
-#| tbl-cap: "Retained features that interact with nicotine patch. Direction of effect indicates whether that feature increases or decreases the probability of abstinence when using nicotine patch (compared to varenicline and C-NRT)."
+#| tbl-cap: "Retained features that interact with nicotine patch. Direction of effect indicates whether that feature increases or decreases abstinence when using nicotine patch (compared to varenicline and C-NRT)."
 
 patch |> 
   knitr::kable(align = "lc")

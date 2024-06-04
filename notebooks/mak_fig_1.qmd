@@ -24,11 +24,6 @@ cv <- "nested"
 y_col_name <- "pp_hybrid_wk4_outcome"
 ```
 
-Read in posterior probabilities for Panel B
-
-{{< include ana_bayes_match.qmd >}}
-
-
 ```{r, packages_script_1}
 #| message: false
 #| warning: false

@@ -1,5 +1,5 @@
 ---
-title: "Make 30-fold ROC Plots"
+title: "Make 30-fold ROC Figure (Supplement)"
 author: "Gaylen Fronk & John Curtin"
 date: "`r lubridate::today()`"
 number-sections: true

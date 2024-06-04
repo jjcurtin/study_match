@@ -1,0 +1,18 @@
+---
+title: "Make Calibration Figures (Supplement)"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+

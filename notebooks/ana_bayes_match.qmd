@@ -202,6 +202,25 @@ summary(pp_contrasts, size = .01, prob = 0.95)
 pp_contrasts |> autoplot(size = .01)
 ```
 
+Medians
+```{r}
+pp_contrasts |> 
+  filter(contrast == "week_4 vs. week_12") |> 
+  pull(difference) |> 
+  median()
+
+pp_contrasts |> 
+  filter(contrast == "week_4 vs. week_26") |> 
+  pull(difference) |> 
+  median()
+
+pp_contrasts |> 
+  filter(contrast == "week_12 vs. week_26") |> 
+  pull(difference) |> 
+  median()
+```
+
+
 Here are contrasts against 0 rather than using ROPE
 ```{r}
 

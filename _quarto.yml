@@ -13,6 +13,12 @@ format:
 #   documentmode: jou #preprint
 #  pdf: default
 #  jats: default
+format-links:
+  - html
+  - docx
+  - format: apaish-typst
+    text: PDF
+    icon: file-pdf
 
 execute:
   freeze: auto 

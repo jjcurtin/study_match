@@ -378,18 +378,22 @@ In @fig-combined, panel C, we display our model's calibration. Predicted lapse p
 
 Our final model fit with the full dataset retained retained 155 features. Tables with all retained features as well as their precise parameter estimates appear in the Supplement.
 
-Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased abstinence when using that specific treatment (vs. the other two treatments).
+Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased the probability of treatment success when using that specific treatment (vs. the other two treatments).
 
 {{< embed notebooks/mak_tables.qmd#tbl-int-features >}}
 
-To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
 ##### Feature importance via Shapley values
 
 
-Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of features. Six of the top 25 most globally important features were treatment interactions.
+Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
+
+Global feature importance grouped by feature type (main effect or interaction) appear in @fig-shap-grouped. Main effect features were relatively more important than treatment interaction features for predicting overall treatment success. 
+
+{{< embed notebooks/shap_4wk.qmd#fig-shap-grouped >}}
 
 ### AIM 2 results: Clinical benefit
 

@@ -156,12 +156,12 @@ last rct quit
 
 #### 12-week model
 
-There was no significant fixed effect of treatment matching on abstinence (*p* = 0.279). There was a significant fixed effect of time (OR = XX, *z* = -9.973, *p* < 0.001) such that the probability of abstinence declined over time. There was not a significant interaction between treatment matching and time (*p* = 0.660). Supplemental Figure 5 shows the mean abstinence rate by treatment matching at each time point.
+There was no significant fixed effect of treatment matching on abstinence (*p* = 0.279). There was a significant fixed effect of time (odds ratio [OR] = 0.210, *z* = -9.973, *p* < 0.001) such that the probability of abstinence declined over time. There was not a significant interaction between treatment matching and time (*p* = 0.660). Supplemental Figure 5 shows the mean abstinence rate by treatment matching at each time point.
 
 {{< embed eval_benefit_12wk.qmd#fig-clin-ben-wk12 >}}
 
 #### 26-week model
 
-There was no significant fixed effect of treatment matching on abstinence (*p* = 0.967). There was a significant fixed effect of time (OR = XX, *z* = -10.050, *p* < 0.001) such that the probability of abstinence declined over time. There was not a significant interaction between treatment matching and time (*p* = 0.402). Supplemental Figure 6 shows the mean abstinence rate by treatment matching at each time point.
+There was no significant fixed effect of treatment matching on abstinence (*p* = 0.967). There was a significant fixed effect of time (OR = 0.208, *z* = -10.050, *p* < 0.001) such that the probability of abstinence declined over time. There was not a significant interaction between treatment matching and time (*p* = 0.402). Supplemental Figure 6 shows the mean abstinence rate by treatment matching at each time point.
 
 {{< embed eval_benefit_26wk.qmd#fig-clin-ben-wk26 >}}

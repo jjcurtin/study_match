@@ -186,7 +186,9 @@ fig_shap_global <- global |>
     title = "Top Features Overall"
   ) +
   coord_flip() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        axis.text = element_text(size = rel(0.75)),
+        axis.title = element_text(size = rel(1)))
 
 fig_shap_global
 ```
@@ -205,7 +207,9 @@ fig_shap_global_tx <- global_tx |>
     title = "Top Interaction Features"
   ) +
   coord_flip() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        axis.text = element_text(size = rel(0.75)),
+        axis.title = element_text(size = rel(1)))
 
 fig_shap_global_tx
 ```

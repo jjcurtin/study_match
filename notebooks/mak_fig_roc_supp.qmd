@@ -134,7 +134,7 @@ roc_folds4 <- preds4 %>%
 
 fig_roc_folds4 <- roc_data4 %>%  # plot region from full concatenated data 
   ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
-  geom_abline(lty = 3) +
+  geom_abline(lty = 3, color = "black") +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
   labs(x = "False Positive Rate",
        y = "True Positive Rate") +
@@ -181,7 +181,7 @@ roc_folds12 <- preds12 %>%
 
 fig_roc_folds12 <- roc_data12 %>%  # plot region from full concatenated data 
   ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
-  geom_abline(lty = 3) +
+  geom_abline(lty = 3, color = "black") +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
   labs(x = "False Positive Rate",
        y = "True Positive Rate") +
@@ -228,7 +228,7 @@ roc_folds26 <- preds26 %>%
 
 fig_roc_folds26 <- roc_data26 %>%  # plot region from full concatenated data 
   ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
-  geom_abline(lty = 3) +
+  geom_abline(lty = 3, color = "black") +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
   labs(x = "False Positive Rate",
        y = "True Positive Rate") +
@@ -264,7 +264,7 @@ fig_roc_all_wk26
 
 ```{r}
 #| label: fig-roc-all
-#| fig-cap: "Supplemental Figure 1: ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model."
+#| fig-cap: "(Supplemental) ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model."
 #| fig-height: 10
 
 fig_roc_all <- fig_roc_all_wk4 + fig_roc_all_wk12 + fig_roc_all_wk26 + 

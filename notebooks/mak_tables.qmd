@@ -211,7 +211,7 @@ t1_feat <- bind_rows(t1_feat_demo, t1_feat_smoking) |>
 Table 1
 ```{r tbl-featureshtml}
 #| label: tbl-featureshtml
-#| tbl-cap: "Individual Differences"
+#| tbl-cap: "Individual Differences Characteristics Available for Model Features"
 
 t1_feat |>
   mutate(across(where(is.numeric), as.character)) |>
@@ -223,7 +223,7 @@ t1_feat |>
 Table 1, formatted for Typst/PDF output
 ```{r tbl-featurespdf}
 #| label: tbl-featurespdf
-#| tbl-cap: "Individual Differences"
+#| tbl-cap: "Individual Differences Characteristics Available for Model Features"
 
 t1_feat_demo |>
   mutate(feat_cat = " ") |>
@@ -432,7 +432,7 @@ t2_demo <- bind_rows(tab_gender, tab_race) |>
 Table 2
 ```{r}
 #| label: tbl-demohtml
-#| tbl-cap: Demographic Characteristics
+#| tbl-cap: "Demographic Characteristics"
 
 t2_demo |>
   knitr::kable()
@@ -441,7 +441,7 @@ t2_demo |>
 
 ```{r}
 #| label: tbl-demopdf
-#| tbl-cap: Demographic Characteristics
+#| tbl-cap: "Demographic Characteristics"
 
 t2_demo |>
   head(-9) |>
@@ -535,7 +535,7 @@ t3_idchars <- full_join(tab3_means, tab3_sds, by = "var_name") |>
 Table 3
 ```{r}
 #| label: tbl-smoking-chars
-#| tbl-cap: Smoking-related ID Characteristics
+#| tbl-cap: "Smoking Use & History Characteristics"
 
 t3_idchars |>
   knitr::kable()

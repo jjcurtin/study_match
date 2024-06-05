@@ -794,7 +794,13 @@ int_effects <- full_join(varenicline, combo_nrt, by = c("Category", "Feature")) 
 ```
 
 ```{r}
-knitr::kable(int_effects)
+#| label: tbl-int-features
+#| tbl-cap: Retained Interaction Features
+#| tbl-cap-location: top
+
+
+knitr::kable(int_effects,
+             align = "llccc")
 ```
 
 

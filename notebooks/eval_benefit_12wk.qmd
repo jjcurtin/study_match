@@ -199,6 +199,7 @@ summary(model_26wk)
 Primary figure
 ```{r}
 #| label: fig-clin-ben-wk12
+#| fig-cap: "Supplemental Figure 5: Evaluation of clinical benefit of 12-week prediction model"
 fig_clin_ben_wk12 <- d |> 
   mutate(week_cat = factor(week,
                            levels = c(4, 12, 26),

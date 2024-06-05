@@ -87,7 +87,7 @@ Build table
 t1_feat_misc <- tibble(
   feat_cat = NA_character_,
   feat_name = c("Treatment", "Incarcerated", "Works Third Shift"),
-  type = c("Categorical", "Dichotomous", "Dichotomous"),
+  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)"),
   n_feat = c(1, 1, 1)
 ) |> 
   add_row(feat_cat = "Miscellaneous",
@@ -98,9 +98,20 @@ t1_feat_misc <- tibble(
 
 t1_feat_psych_sud <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Frequency of Drinking Alcohol", "Quantity of Alcohol", "Binge Drinking", "Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]", "Life Satisfaction", "Life Enjoyment", "Psychological Disorder Diagnoses", "Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]", "Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]", "Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]", "Distress Tolerance Scale [@simonsDistressToleranceScale2005a]", "Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]"),
-  type = c("Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Ordinal"),
-  n_feat = c(1, 1, 1, 16, 1, 1, 7, 8, 15, 22, 20, 11)
+  feat_name = c("Frequency of Drinking Alcohol", 
+                "Quantity of Alcohol", 
+                "Binge Drinking", 
+                "Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]", 
+                "Life Satisfaction", 
+                "Life Enjoyment", 
+                "Psychological Disorder Diagnoses", 
+                "Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]", 
+                "Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]", 
+                "Anxiety Sensitivity Index-3 [@taylorRobustDimensionsAnxiety2007a]", 
+                "Distress Tolerance Scale [@simonsDistressToleranceScale2005a]", 
+                "Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]"),
+  type = c("Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (unordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)"),
+  n_feat = c(1, 1, 1, 15, 1, 1, 7, 6, 14, 18, 15, 9)
 ) |> 
   add_row(feat_cat = "Mental Health & Psychological Traits",
   feat_name = NA_character_,
@@ -110,9 +121,29 @@ t1_feat_psych_sud <- tibble(
 
 t1_feat_smoking <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Baseline Carbon Monoxide", "Carbon Monoxide Exposure", "Age of 1st Cigarette", "Age Became Daily Smoker", "Years Smoking", "Cigarettes Per Day (Heaviest)", "Use of Other Tobacco Products", "Number of Previous Quit Attempts", "Last Recent Quit Attempt", "Longest Quit Attempt", "Previous Quit Methods Used", "Cigarettes Per Day (Current)", "Motivation to Quit", "Self-Efficacy for Quitting in Next 30 Days", "Confidence to Quit", "Importance to Quit", "DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]", "Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]", "Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]", "Smoke Menthol Cigarettes", "Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]"),
-  type = c("Numeric", "Dichotomous", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (Unordered)", "Numeric", "Ordinal", "Ordinal", "Dichotomous", "Numeric", "Ordinal", "Ordinal", "Ordinal", "Ordinal", "Dichotomous", "Dichotomous, Ordinal", "Ordinal", "Categorical (Unordered)", "Ordinal"),
-  n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 14, 6, 49, 1, 45)
+  feat_name = c("Baseline Carbon Monoxide", 
+                "Carbon Monoxide Exposure", 
+                "Age of 1st Cigarette", 
+                "Age Became Daily Smoker", 
+                "Years Smoking", 
+                "Cigarettes Per Day (Heaviest)", 
+                "Use of Other Tobacco Products", 
+                "Number of Previous Quit Attempts", 
+                "Last Recent Quit Attempt", 
+                "Longest Quit Attempt", 
+                "Previous Quit Methods Used", 
+                "Cigarettes Per Day (Current)", 
+                "Motivation to Quit", 
+                "Self-Efficacy for Quitting in Next 30 Days", 
+                "Confidence to Quit", 
+                "Importance to Quit", 
+                "DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]", 
+                "Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]", 
+                "Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]", 
+                "Smoke Menthol Cigarettes", 
+                "Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]"),
+  type = c("Numeric", "Categorical (unordered)", "Numeric", "Numeric", "Numeric", "Numeric", "Categorical (unordered)", "Numeric", "Categorical (ordered)", "Categorical (ordered)", "Categorical (unordered)", "Numeric", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (ordered)", "Categorical (unordered)", "Categorical (unordered); Categorical (ordered)", "Categorical (ordered)", "Categorical (unordered)", "Categorical (ordered)"),
+  n_feat = c(1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 1, 13, 6, 37, 1, 38)
 ) |> 
   add_row(feat_cat = "Smoking Use & History",
   feat_name = NA_character_,
@@ -122,9 +153,14 @@ t1_feat_smoking <- tibble(
 
 t1_feat_medical <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Diabetes Diagnosis", "Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]", "Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]", "Body Mass Index", "Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]", "Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]"),
-  type = c("Dichotomous", "Ordinal", "Ordinal, Dichotomous", "Numeric", "Ordinal, Numeric", "Numeric"),
-  n_feat = c(1, 26, 3, 1, 4, 5)
+  feat_name = c("Diabetes Diagnosis", 
+                "Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]", 
+                "Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]", 
+                "Body Mass Index", 
+                "Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]", 
+                "Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]"),
+  type = c("Categorical (unordered)", "Categorical (ordered)", "Categorical (ordered), Categorical (unordered)", "Numeric", "Categorical (ordered), Numeric", "Numeric"),
+  n_feat = c(1, 20, 3, 1, 4, 5)
 ) |> 
   add_row(feat_cat = "Medical & Physical Health",
   feat_name = NA_character_,
@@ -134,8 +170,13 @@ t1_feat_medical <- tibble(
 
 t1_feat_social_environ <- tibble(
   feat_cat = NA_character_,
-  feat_name = c("Spouse Smokes", "Live with Another Smoker", "People Close to You Who Smoke", "Ban on Smoking at Home", "Ban on Smoking at Work", "Time Around Other Smokers"),
-  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Dichotomous", "Categorical (unordered)", "Ordinal"),
+  feat_name = c("Spouse Smokes", 
+                "Live with Another Smoker", 
+                "People Close to You Who Smoke", 
+                "Ban on Smoking at Home", 
+                "Ban on Smoking at Work", 
+                "Time Around Other Smokers"),
+  type = c("Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Categorical (unordered)", "Categorical (ordered)"),
   n_feat = c(1, 1, 5, 1, 1, 2)
 ) |> 
   add_row(feat_cat = "Social & Environmental Characteristics",
@@ -147,7 +188,7 @@ t1_feat_social_environ <- tibble(
 t1_feat_demo <- tibble(
   feat_cat = NA_character_,
   feat_name = c("Gender", "Age", "Race", "Marital Status", "Income", "Ethnicity", "Employment"),
-  type = c("Categorical (unordered)", "Numeric", "Categorical (unordered)", "Categorical (unordered)", "Ordinal", "Categorical (Unordered)", "Categorical (unordered)"),
+  type = c("Categorical (unordered)", "Numeric", "Categorical (unordered)", "Categorical (unordered)", "Categorical (ordered)", "Categorical (unordered)", "Categorical (unordered)"),
   n_feat = c(1, 1, 1, 1, 1, 1, 1)
 ) |> 
   add_row(feat_cat = "Demographic Characteristics",
@@ -164,7 +205,7 @@ t1_feat <- bind_rows(t1_feat_demo, t1_feat_smoking) |>
   rename(Category = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `Number of Features` = n_feat)
+         `Number of Items` = n_feat)
 ```
 
 Table 1
@@ -189,7 +230,7 @@ t1_feat_demo |>
   rename(`Demographic Characteristics` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
   knitr::kable(align = "lllc") 
 
@@ -204,7 +245,7 @@ t1_feat_smoking |>
   rename(`Smoking Use/History` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
   knitr::kable(align = "lllc") 
 
@@ -219,7 +260,7 @@ t1_feat_social_environ |>
   rename(`Social & Environmental Characteristics` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
   knitr::kable(align = "lllc") 
 
@@ -228,7 +269,7 @@ t1_feat_psych_sud |>
   rename(`Mental Health & Psychological Traits` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
   knitr::kable(align = "lllc") 
 
@@ -243,7 +284,7 @@ t1_feat_medical |>
   rename(`Medical & Physical Health` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
   knitr::kable(align = "lllc") 
 
@@ -252,7 +293,7 @@ t1_feat_misc |>
   rename(`Miscellaneous Features` = feat_cat,
          `Feature Name` = feat_name,
          Type = type,
-         `# Features` = n_feat) |>
+         `# Items` = n_feat) |>
 tail(-1) |>
    knitr::kable(align = "lllc") 
 ```
@@ -534,27 +575,27 @@ varenicline <- retained_vars_tx |>
   mutate(direction = if_else(estimate > 0, "+", "-")) |> 
   mutate(Feature = c(
     "Lives alone or only with a partner",
-    "Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
-    "Does not think they do a lot in a day (MFI Item 6)",
+    "ASI-3: Worries they will choke to death when their throat feels tight",
+    "MFI: Does not think they do a lot in a day",
     "Greater income",
     "Has a spouse/partner who does not smoke",
     "No close relative who smokes",
-    "Smoked despite relationship problems (DSM-5 Item 3)",
+    "DSM-5: Smoked despite relationship problems",
     "Has never tried cigars",
     "Has a depression diagnosis",
     "Does not live with another smoker",
-    "Endorses smoking helps them think better (WISDM-37 Item 32)",
-    "Feels tired, fatigued, or not up to par (Berlin Item 7)",
+    "WISDM-37: Endorses smoking helps them think better",
+    "Berlin: Feels tired, fatigued, or not up to par",
     "Has tried cigars but has never used regularly",
-    "Endorses having a lot of friends or family members smoke (WISDM-37 Item 27)",
+    "WISDM-37: Endorses having a lot of friends or family members smoke",
     "Has a close relative who smokes",
-    "Bothered by constipation (WSWS-2 Item 'Constipation')",
-    "Smoked to get rid of withdrawal feelings (DSM-5 Item 7)",
+    "WSWS-2: Bothered by constipation",
+    "DSM-5: Smoked to get rid of withdrawal feelings",
     "Tried nicotine gum during previous quit attempt",
     "Has a spouse/partner who smokes",
     "Has not tried nicotine gum during a previous quit attempt",
-    "Bothered by feeling hopeless or discouraged (WSWS-2 Item 19)",
-    "Endorses most of the people they spend time with are smokers (WISDM-37 Item 18)",
+    "WSWS-2: Bothered by feeling hopeless or discouraged",
+    "WISDM-37: Endorses most of the people they spend time with are smokers",
     "Does not live with a spouse/partner",
     "Smoking only allowed in some parts of workplace"
   )) |> 
@@ -610,34 +651,34 @@ combo_nrt <- retained_vars_tx |>
   mutate(Feature = c(
     "Lives alone or only with a partner",
     "Identifies as Black or African American",
-    "Endorses feeling like cigarattes are their best friends (WISDM-37 Item 22)",
+    "WISDM-37: Endorses feeling like cigarattes are their best friends",
     "Has never smoked menthol cigarettes",
-    "Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
-    "Endorses that most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "DTS: Disagrees that there is nothing worse than feeling distressed or upset",
+    "WISDM-37: Endorses that most of their friends and acquaintances smoke",
     "Divorced",
-    "Does not endorse withdrawal symptoms (DSM-5 Item 6)",
-    "Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)",
+    "DSM-5: Does not endorse withdrawal symptoms",
+    "ASI-3: Worries they are going crazy when they cannot keep their mind on a task",
     "Identifies as White",
     "Married",
-    "Has spent a lot of time obtaining, smoking, or recovering from cigarettes (DSM-5 Item 10)",
+    "DSM-5: Has spent a lot of time obtaining, smoking, or recovering from cigarettes",
     "Currently smokes menthol cigarettes",
-    "Endorses weight control as a major reason they smoke (WISDM-37 Item 19)",
-    "Does not feel it takes a lot of effort to concentrate (MFI Item 13)",
-    "Does not smoke when so ill they are in bed most of the day (FTND Item 6)",
+    "WISDM-37: Endorses weight control as a major reason they smoke",
+    "MFI: Does not feel it takes a lot of effort to concentrate",
+    "FTND: Does not smoke when so ill they are in bed most of the day",
     "Lives with another smoker",
     "More satisfied with their life as a whole",
-    "Bothered by constipation (WSWS-2 Item 'Constipation')",
+    "WSWS-2: Bothered by constipation",
     "Has tried a pipe but has never used regularly",
     "Greater duration of time since most recent quit attempt",
-    "Can handle feeling distressed or upset (DTS Item 3)",
-    "Smokes when so ill they are in bed most of the day (FTND Item 6)",
-    "No sleep apnea diagnosis (Berlin Item 9)",
-    "Bothered by waking frequently during the night (WSWS-2 Item 5)",
-    "Bothered by having urges to smoke (WSWS-2 Item 9)",
-    "More days in past month feeling worried, tense, or anxious (HDSM Item 'Tense')",
-    "Bothered by wanting to smoke (WSWS-2 Item 'Want Cigarette')",
-    "Smoked knowing it was causing or worsening a health problem (DSM-5 Item 12)",
-    "Does not find feeling distressed or upset to be unbearable (DTS Item 1)",
+    "DTS: Can handle feeling distressed or upset",
+    "FTND: Smokes when so ill they are in bed most of the day",
+    "Berlin: No sleep apnea diagnosis",
+    "WSWS-2: Bothered by waking frequently during the night",
+    "WSWS-2: Bothered by having urges to smoke",
+    "HDSM: More days in past month feeling worried, tense, or anxious",
+    "WSWS-2: Bothered by wanting to smoke",
+    "DSM-5: Smoked knowing it was causing or worsening a health problem",
+    "DTS: Does not find feeling distressed or upset to be unbearable",
     "Tried Zyban (bupropion) during previous attempt"
   )) |> 
   mutate(Category = c(
@@ -701,19 +742,19 @@ patch <- retained_vars_tx |>
     "Has tried cigars but has never used regularly",
     "Has a close co-worker who smokes",
     "No smoking allowed anywhere at their workplace",
-    "Bothered by craving a cigarette (WSWS-2 Item 'Crave')",
-    "Endorses feeling alone without their cigarettes (WISDM-37 Item 26)",
+    "WSWS-2: Bothered by craving a cigarette",
+    "WISDM-37: Endorses feeling alone without their cigarettes",
     "Has a close friend who smokes",
     "Has never been married",
     "Identifies as female",
-    "Finds it difficult to refrain from smoking where it is forbidden (FTND Item 2)",
-    "Endorses feeling that cigarettes rule their life (WISDM-37 Item 16)",
+    "FTND: Finds it difficult to refrain from smoking where it is forbidden",
+    "WISDM-37: Endorses feeling that cigarettes rule their life",
     "Identifies as White",
     "Does not work outside the home",
-    "Bothered by coughing (WSWS-2 Item 'Coughing')",
-    "Does not have a lot of plans (MFI Item 15)",
+    "WSWS-2: Bothered by coughing",
+    "MFI: Does not have a lot of plans",
     "Identifies as male",
-    "Bothered by having trouble getting cigarettes of their mind (WSWS-2 Item 26)",
+    "WSWS-2: Bothered by having trouble getting cigarettes of their mind",
     "Greater total number of previous quit attempts"
   )) |> 
   mutate(Category = c(
@@ -795,7 +836,7 @@ int_effects <- full_join(varenicline, combo_nrt, by = c("Category", "Feature")) 
 
 ```{r}
 #| label: tbl-int-features
-#| tbl-cap: Retained Interaction Features
+#| tbl-cap: "Retained Interaction Features"
 #| tbl-cap-location: top
 
 

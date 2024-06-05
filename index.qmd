@@ -328,17 +328,13 @@ Smoking-related characteristics of this sample appear in @tbl-smoking-chars. On 
 
 #### Model performance
 
-We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of at least 50 retained treatment interaction features). We report the median and IQR auROCs from the validation sets for these best model configurations in the Supplement. We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [krstajicCrossvalidationPitfallsWhen2014].
-
-{{< embed notebooks/mak_fig_1.qmd#fig-combined >}}
-
-The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).
+We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features across inner folds). We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [@krstajicCrossvalidationPitfallsWhen2014]. The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting treatment success using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
 #### Model calibration
 
-In @fig-combined, panel C, we display our model's calibration from leave-one-out cross-validation. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. 
+In @fig-combined, panel C, we display our model's calibration when calculating predictions for held-out participants in leave-one-out cross-validation. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. 
 
 #### Model interpretation
 
@@ -346,13 +342,9 @@ In @fig-combined, panel C, we display our model's calibration from leave-one-out
 
 Our final model fit with the full dataset retained retained 155 features. Tables with all retained features as well as their precise parameter estimates appear in the Supplement.
 
-Of the retained features, 74 were treatment interaction features. Retained features that interacted with varenicline appear in @tbl-int-varenicline. Retained features that interacted with C-NRT appear in @tbl-int-cnrt. Retained features that interacted with nicotine patch appear in @tbl-int-patch. Across these three tables, the effect direction indicates whether that feature increased or decreased abstinence when using that specific treatment (vs. the other two treatments). 
+Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased abstinence when using that specific treatment (vs. the other two treatments).
 
-{{< embed notebooks/mak_tables.qmd#tbl-int-varenicline >}}
-
-{{< embed notebooks/mak_tables.qmd#tbl-int-cnrt >}}
-
-{{< embed notebooks/mak_tables.qmd#tbl-int-patch >}}
+{{< embed notebooks/mak_tables.qmd#tbl-int-features >}}
 
 To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 

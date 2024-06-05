@@ -144,7 +144,7 @@ Created binned plot
 
 bin_width = 0.10
 
-fig_cal_bins <- d_cal_4 |> 
+fig_cal_bins_4 <- d_cal_4 |> 
   rename(prob_raw = .pred_abstinent) |> 
   mutate(bins = cut(prob_raw, breaks = seq(0, 1, bin_width)),
          abstinent = if_else(outcome_rct == "abstinent", 1, 0)) |> 

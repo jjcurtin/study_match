@@ -49,7 +49,7 @@ Although we did not preregister completing these analyses with 12-week and 26-we
 
 We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features in inner folds). We evaluated these best model configurations using *test set* performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was 0.665 (IQR = 0.628 - 0.697, range = 0.535 - 0.788). The median auROC across the 30 test sets for the 26-week model was 0.629 (IQR = 0.573 - 0.658, range = 0.474 - 0.743). The single, concatenated ROC curve and the 30 individual ROC curves (one per held-out fold) for the 4-, 12-, and 26-week models appear in Supplemental Figure 1.
 
-{{ < embed mak_fig_roc_supp.qmd#fig-roc-all >}}
+{{< embed mak_fig_roc_supp.qmd#fig-roc-all >}}
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.663 [Bayesian CI: 0.640 - 0.685] for the 12-week model and 0.620 [Bayesian CI: 0.596 - 0.644] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). Supplemental Figure 2 displays the posterior probability distributions for these models' auROCs alongside the posterior probability distribution for the 4-week model's auROCs.
 
@@ -75,11 +75,9 @@ The names of all retained features and their parameter estimates from the final 
 
 {{< embed fit_final_model_4wk.qmd#tbl-retained-vars-4wk >}} 
 
-Our final 12-week model fit with the full dataset retained retained 111 features (Supplemental Table 2). Of these, 47 were treatment interaction features (Supplemental Table 3). Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction terms. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 29 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+Our final 12-week model fit with the full dataset retained retained 111 features (Supplemental Table 2). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction terms. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 29 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
 {{< embed fit_final_model_12wk.qmd#tbl-retained-vars-12wk >}} 
-
-{{< embed fit_final_model_12wk.qmd#tbl-retained-tx-12wk >}} 
 
 <!-- 
 unique items needed to select: 29
@@ -116,11 +114,9 @@ berlin 6
 
 -->
 
-Our final 26-week model fit with the full dataset retained retained 107 features (Supplemental Table 4). Of these, 45 were treatment interaction features (Supplemental Table 5). Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction terms. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 36 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+Our final 26-week model fit with the full dataset retained retained 107 features (Supplemental Table 3). Of these, 45 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction terms. To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 36 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
 {{< embed fit_final_model_26wk.qmd#tbl-retained-vars-26wk >}} 
-
-{{< embed fit_final_model_26wk.qmd#tbl-retained-tx-26wk >}} 
 
 <!--
 unique items needed to select: 

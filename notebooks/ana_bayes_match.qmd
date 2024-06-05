@@ -258,6 +258,10 @@ ci <- pp_tidy |>
 
 ```{r}
 #| label: fig-posteriors
+#| fig-cap: "Supplemental Figure 2: Posterior Probability Distributions around model auROCs"
+#| fig-cap-location: top
+
+
 fig_posteriors <- pp_tidy |> 
   mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
                         labels = c("Week 4", "Week 12", "Week 26"))) |> 
@@ -326,6 +330,8 @@ ci_con <- pp |>
 
 ```{r}
 #| label: fig-contrasts
+#| fig-cap: "Supplemental Figure 3: Posterior Probability Distributions around Model Contrasts"
+#| fig-cap-location: top
 
 fig_contrasts <- pp |> 
   tidy(seed = 123) |>   

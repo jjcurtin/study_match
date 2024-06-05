@@ -217,7 +217,7 @@ d_pred <- x_pred |>
 Primary figure
 ```{r}
 #| label: fig-clin-ben-wk4
-#| fig-cap: ""
+#| fig-cap: "Benefit of treatment matching. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors."
 
 fig_clin_ben_wk4 <- d |> 
   mutate(week_cat = factor(week,
@@ -251,7 +251,7 @@ fig_clin_ben_wk4
 Primary figure
 ```{r}
 #| label: fig-clin-ben-wk4-supp
-#| fig-cap: ""
+#| fig-cap: "(Supplemental; reproduced from main text) Benefit of treatment matching from 4-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors."
 
 fig_clin_ben_wk4_supp <- d |> 
   mutate(week_cat = factor(week,

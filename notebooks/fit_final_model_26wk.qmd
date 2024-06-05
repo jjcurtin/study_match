@@ -153,7 +153,7 @@ model_tidy |>
 
 ```{r}
 #| label: tbl-retained-vars-wk26
-#| tbl-cap: "Supplemental Table 3: Retained features in 26-week final model"
+#| tbl-cap: "(Supplemental) Retained features in 26-week final model"
 
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 

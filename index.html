@@ -1234,7 +1234,7 @@ Table&nbsp;3: Smoking-related ID Characteristics
 <div id="fig-combined" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.
@@ -1820,7 +1820,7 @@ Table&nbsp;4: Retained Interaction Features
 <div id="fig-shap-global" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.
@@ -1841,10 +1841,10 @@ Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magn
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk4" class="cell">
 <div class="cell-output cell-output-display">
-<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672" height="480">
+<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" height="480" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3
@@ -1910,7 +1910,7 @@ Figure&nbsp;3
 <section id="prospective-clinical-trial" class="level4">
 <h4 class="anchored" data-anchor-id="prospective-clinical-trial">Prospective clinical trial</h4>
 <p>We made a concerted effort in this project to evaluate how our treatment selection model would perform for new patients. Specifically, we used leave-one-out cross-validation to calculate predictions for each held-out individual that were then used to select that person’s best treatment.</p>
-<p>Regardless, the ultimate test of this model’s clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether using this model is feasible and acceptable to patients and clinicians in clinical practice. There may be opportunities to incorporate input directly from these stakeholders. Second, we can evaluate the benefit of our treatment selection model in an entirely new sample. Individuals who receive a model-assigned best treatment could be compared to any one of several possible comparison groups. Individuals in the comparison group could receive a random treatment assignment (mimicking clinical trials). Alternatively, they could receive clinician-assigned treatment to mirror traditional treatment selection (and best current clinical practice). Another option is that we could compare to a simpler model. For example, there is evidence that treatment success is lower when people are re-treated with the same treatment [] and that treatment adherence is higher when people choose their preferred treatment []. Thus, treatments could be assigned based on patient preference and re-treatment status. Each comparison offers different advantages and disadvantages that should be considered thoughtfully when designing a prospective trial.</p>
+<p>Regardless, the ultimate test of this model’s clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether using this model is feasible and acceptable to patients and clinicians in clinical practice. There may be opportunities to incorporate input directly from these stakeholders. Second, we can evaluate the benefit of our treatment selection model in an entirely new sample. Individuals who receive a model-assigned best treatment could be compared to any one of several possible comparison groups. Individuals in the comparison group could receive a random treatment assignment (mimicking clinical trials). Alternatively, they could receive clinician-assigned treatment to mirror traditional treatment selection (and best current clinical practice). Another option is that we could compare to a simpler model. For example, there is evidence that treatment success is lower when people are re-treated with the same treatment <span class="citation" data-cites="heckmanEffectivenessSwitchingSmokingCessation2017 fioreClinicalPracticeGuideline2008 tonnesenRecyclingNicotinePatches1993 gonzalesRetreatmentVareniclineSmoking2014">(<a href="#ref-heckmanEffectivenessSwitchingSmokingCessation2017" role="doc-biblioref">Heckman et al. 2017</a>; <a href="#ref-fioreClinicalPracticeGuideline2008" role="doc-biblioref">Fiore et al. 2008</a>; <a href="#ref-tonnesenRecyclingNicotinePatches1993" role="doc-biblioref">Tønnesen et al. 1993</a>; <a href="#ref-gonzalesRetreatmentVareniclineSmoking2014" role="doc-biblioref">Gonzales et al. 2014</a>)</span> and that treatment adherence is higher when people choose their preferred treatment <span class="citation" data-cites="cropseyPilotTrialVivo2017">(<a href="#ref-cropseyPilotTrialVivo2017" role="doc-biblioref">K. L. Cropsey et al. 2017</a>)</span>. Thus, treatments could be assigned based on patient preference and re-treatment status. Each comparison offers different advantages and disadvantages that should be considered thoughtfully when designing a prospective trial.</p>
 </section>
 </section>
 <section id="conclusion" class="level3">
@@ -2744,7 +2744,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

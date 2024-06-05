@@ -151,8 +151,10 @@ model_tidy |>
 ```
 
 
-```{r tbl-retained-vars}
+```{r}
 #| label: tbl-retained-vars-wk26
+#| tbl-cap: "Supplemental Table 3: Retained features in 26-week final model"
+
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 
   filter(abs(estimate) > 0) |> 
@@ -165,7 +167,7 @@ knitr::kable(retained_vars, digits = 4)
 
 ```{r tbl-retained-int}
 #| label: tbl-retained-tx-wk26
-#| fig-cap: "Supplemental Table 3: Retained features in 26-week final model"
+
 retained_vars_tx <- retained_vars |> 
   filter(str_detect(term, "treatment_")) |> 
   arrange(desc(abs(estimate))) 

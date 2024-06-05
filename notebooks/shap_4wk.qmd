@@ -73,7 +73,8 @@ SHAP obtained with LOOCV at CHTC
 ```{r}
 local <- read_csv(file.path(path_data, str_c("shap_loocv_", version), 
                             "output", "batch_results.csv"),
-                  col_types = "cddd")
+                  col_types = "cddd") |> 
+  mutate(tx_int = if_else(str_detect(variable_name, "treatment_"), "Interactions", "Main Effects"))
 
 glimpse(local)
 ```
@@ -86,82 +87,77 @@ global <- local |>
   mutate(abs_contribution = abs(contribution)) |> 
   group_by(variable_name) |> 
   summarize(mean_contribution = mean(abs_contribution)) |> 
+  mutate(tx_int = if_else(str_detect(variable_name, "treatment_"), "Interactions", "Main Effects"))|> 
   arrange(desc(mean_contribution))
 
 glimpse(global)
 
 ```
 
-Delineate treatment interactions
-```{r}
-global <- global |> 
-  mutate(tx_int = if_else(str_detect(variable_name, "treatment_"), "Interaction", "Main Effect"))
-```
-
 Add interpretable names
 ```{r}
 global_tx <- global |> 
-  filter(tx_int == "Interaction") |> 
+  filter(tx_int == "Interactions") |> 
   arrange(desc(mean_contribution)) |> 
   slice(1:25) |> 
   arrange(mean_contribution) |> 
   mutate(Feature = c(
     "C-NRT X Divorced",
     "C-NRT X Currently smokes menthol cigarettes",
-    "Patch X Bothered by craving a cigarette (WSWS-2 Item `Crave`)",
-    "Varenicline X Kept smoking despite relationship problems (DSM-5 Item 3)",
+    "Patch X Bothered by craving a cigarette (WSWS-2)",
+    "Varenicline X Kept smoking despite relationship problems (DSM-5)",
     "C-NRT X Married",
     "Varenicline X Does not live with another smoker",
     "Varenicline X Has never tried cigars",
-    "C-NRT X Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)",
-    "C-NRT X Does not endorse withdrawal symptoms (DSM-5 Item 6)",
+    "C-NRT X Worries they're going crazy if they can't keep their mind on a task (ASI-3)",
+    "C-NRT X Does not endorse withdrawal symptoms (DSM-5)",
     "Patch X Has never tried cigars",
     "C-NRT X Identifies as White",
-    "C-NRT X Most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "C-NRT X Most of their friends and acquaintances smoke (WISDM-37)",
     "Varenicline X No close relative who smokes",
     "Patch X Has tried cigars but has never used regularly",
-    "Varenicline X Does not think they do a lot in a day (MFI Item 6)",
+    "Varenicline X Does not think they do a lot in a day (MFI)",
     "Patch X No close friend who smokes",
     "Varenicline X Has a spouse/partner who does not smoke",
     "Varenicline X Greater income",
-    "Varenicline X Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
+    "Varenicline X Worries they'll choke to death when their throat feels tight (ASI-3)",
     "C-NRT X Identifies as Black or African American",
     "C-NRT X Has never smoked menthol cigarettes",
     "Varenicline X Lives alone or only with a partner",
-    "C-NRT X Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
-    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37 Item 22)",
+    "C-NRT X Disagrees that there's nothing worse than feeling distressed/upset (DTS)",
+    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37)",
     "C-NRT X Lives alone or only with a partner"
   )) |> 
   mutate(Feature = fct_inorder(Feature))
 
-global <- global |> 
+global_fig <- global |> 
   arrange(desc(mean_contribution)) |> 
   slice(1:25) |> 
   arrange(mean_contribution) |> 
   mutate(Feature = c(
     "C-NRT X Identifies as Black or African American",
-    "A lot of friends or family members smoke (WISDM-37 Item 27)",
+    "A lot of friends or family members smoke (WISDM-37)",
     "C-NRT X Has never smoked menthol cigarettes",
     "Varenicline X Lives alone or only with a partner",
-    "C-NRT X Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)",
+    "C-NRT X Disagrees that there's nothing worse than feeling distressed/upset (DTS)",
     "Does not dread having to do things (MFI Item 9)",
-    "Endorses that the flavor of a cigarette is pleasing (WISDM-37 Item 5)",
+    "Endorses that the flavor of a cigarette is pleasing (WISDM-37)",
     "More satisfied with their life as a whole",
     "Currently smokes menthol cigarettes",
-    "Does not have a lot of plans (MFI Item 15)",
-    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37 Item 22)",
+    "Does not have a lot of plans (MFI)",
+    "C-NRT X Sometimes feels like cigarattes are their best friends (WISDM-37)",
     "Greater income",
     "More time around smokers on the weekend",
-    "Won't do much to stop feeling distessed or upset (DTS Item 13)",
+    "Won't do much to stop feeling distessed or upset (DTS)",
     "Identifies as Black or African American",
-    "Enjoys being with their family or close friends (SHP Item 2)",
-    "Worries they will choke to death when their throat feels tight (ASI-3 Item 15)",
+    "Enjoys being with their family or close friends (SHP)",
+    "Worries they will choke to death when their throat feels tight (ASI-3)",
     "C-NRT X Lives alone or only with a partner",
-    "Bothered by wanting to smoke (WSWS-2 Item 'Want Cigarette')",
+    "Bothered by wanting to smoke (WSWS-2)",
     "Greater duration of longest previous quit attempt",
-    "Most of their friends and acquaintances smoke (WISDM-37 Item 30)",
+    "Most of their friends and acquaintances smoke (WISDM-37)",
     "Greater motivation to quit",
-    "Endorses feeling cigarettes control them (WISDM-37 Item 2)",
+    "Endorses feeling cigarettes control them (WISDM-37)",
     "Identifies as White",
     "Greater exhaled carbon monoxide"
   )) |> 
@@ -174,7 +170,7 @@ global <- global |>
 Overall
 ```{r}
 
-fig_shap_global <- global |> 
+fig_shap_global <- global_fig |> 
   ggplot(mapping = aes(x = Feature, y = mean_contribution, color = tx_int)) +
   geom_point(size = 2) +
   geom_segment(aes(x = Feature, y = mean_contribution, xend = Feature),
@@ -228,6 +224,46 @@ fig_panel_shap_global <- (fig_shap_global / fig_shap_global_tx / guide_area()) +
 
 fig_panel_shap_global
 ```
+
+## Make grouped figure
+
+Get grouped Shapley values
+```{r}
+global_grouped <- local |> 
+  group_by(subid, tx_int) |> 
+  summarize(group_contribution = sum(contribution), .groups = "drop") |> 
+  group_by(tx_int) |> 
+  summarize(group_mean_contribution = mean(abs(group_contribution)), .groups = "drop")
+
+glimpse(global_grouped)
+
+```
+
+
+```{r}
+#| label: fig-shap-grouped
+#| fig-cap: "Global feature importance via Shapley values grouped by feature type (main effect or interaction feature)"
+
+fig_shap_grouped <- global_grouped |> 
+  ggplot(mapping = aes(x = tx_int, y = group_mean_contribution, color = tx_int)) +
+  geom_point(size = 3) +
+  geom_segment(aes(x = tx_int, y = group_mean_contribution, xend = tx_int),
+               yend = 0) +
+  labs(
+    x = "",
+    y = "Mean |Shapley value|",
+    color = "Feature Type",
+    title = "Grouped Shapley values"
+  ) +
+  scale_y_continuous(limits = c(0.01, 0.12)) +
+  coord_flip() +
+  theme(legend.position = "none",
+        axis.text = element_text(size = rel(1.25)),
+        axis.title = element_text(size = rel(1.5)))
+
+fig_shap_grouped
+```
+
 
 
 

@@ -258,7 +258,7 @@ ci <- pp_tidy |>
 
 ```{r}
 #| label: fig-posteriors
-#| fig-cap: "Supplemental Figure 2: Posterior Probability Distributions around model auROCs"
+#| fig-cap: "(Supplemental) Posterior probability distributions for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval."
 #| fig-cap-location: top
 
 
@@ -330,7 +330,7 @@ ci_con <- pp |>
 
 ```{r}
 #| label: fig-contrasts
-#| fig-cap: "Supplemental Figure 3: Posterior Probability Distributions around Model Contrasts"
+#| fig-cap: "(Supplemental) Posterior probability distributions for the model contrasts. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval."
 #| fig-cap-location: top
 
 fig_contrasts <- pp |> 

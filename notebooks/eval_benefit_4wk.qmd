@@ -248,6 +248,40 @@ fig_clin_ben_wk4 <- d |>
 fig_clin_ben_wk4
 ```
 
+Primary figure
+```{r}
+#| label: fig-clin-ben-wk4-supp
+#| fig-cap: ""
+
+fig_clin_ben_wk4_supp <- d |> 
+  mutate(week_cat = factor(week,
+                           levels = c(4, 12, 26),
+                           labels = c("Week 4", "Week 12", "Week 26")),
+         tx_match = factor(tx_match, 
+                           levels = c(TRUE, FALSE),
+                           labels = c("Best Treatment", "Other Treatment"))) |> 
+  group_by(week_cat, tx_match) |> 
+  summarize(mean_outcome = mean(outcome_rct_num),
+            sd_outcome = sd(outcome_rct_num),
+            n_group = n()) |> 
+  mutate(se_outcome = (sd_outcome / sqrt(n_group))) |> 
+  ggplot(aes(x = week_cat, y = mean_outcome, fill = tx_match)) +
+  geom_col(position = "dodge") +
+  geom_errorbar(aes(ymin = mean_outcome - se_outcome, 
+                    ymax = mean_outcome + se_outcome,
+                    x = week_cat),
+                position = position_dodge(width = 0.9),
+                width = 0.5) +
+  scale_y_continuous(limits = c(0, 0.425)) +
+  labs(
+    x = "Week On-Study",
+    y = "Mean Abstinence Rate",
+    fill = "Treatment Matching"
+  )
+
+fig_clin_ben_wk4_supp
+```
+
 Make predicted dataset
 ```{r}
 

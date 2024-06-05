@@ -154,6 +154,7 @@ model_tidy |>
 
 ```{r tbl-retained-vars}
 #| label: tbl-retained-vars-4wk
+#| fig-cap: "Supplemental Table 1: Retained features in 4-week final model"
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 
   filter(abs(estimate) > 0) |> 

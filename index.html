@@ -1227,12 +1227,28 @@ Table&nbsp;3: Smoking-related ID Characteristics
 <h3 class="anchored" data-anchor-id="aim-1-results-prediction-models">AIM 1 results: Prediction models</h3>
 <section id="model-performance" class="level4">
 <h4 class="anchored" data-anchor-id="model-performance">Model performance</h4>
-<p>We selected the best model configurations using auROCs from the <em>validation sets</em> (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features across inner folds). We evaluated these best model configurations using <em>test set</em> performance to remove optimization bias present in performance metrics from validation sets <span class="citation" data-cites="krstajicCrossvalidationPitfallsWhen2014">(<a href="#ref-krstajicCrossvalidationPitfallsWhen2014" role="doc-biblioref">Krstajic et al. 2014</a>)</span>. The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting treatment success using machine learning (e.g., auROC = 0.660 <span class="citation" data-cites="laiDevelopmentMachineLearning2021">(<a href="#ref-laiDevelopmentMachineLearning2021" role="doc-biblioref">Lai et al. 2021</a>)</span>). <strong>?@fig-combined</strong>, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).</p>
-<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. <strong>?@fig-combined</strong>, Panel B displays the posterior probability distribution for the auROC.</p>
+<p>We selected the best model configurations using auROCs from the <em>validation sets</em> (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features across inner folds). We evaluated these best model configurations using <em>test set</em> performance to remove optimization bias present in performance metrics from validation sets <span class="citation" data-cites="krstajicCrossvalidationPitfallsWhen2014">(<a href="#ref-krstajicCrossvalidationPitfallsWhen2014" role="doc-biblioref">Krstajic et al. 2014</a>)</span>. The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 <span class="citation" data-cites="laiDevelopmentMachineLearning2021">(<a href="#ref-laiDevelopmentMachineLearning2021" role="doc-biblioref">Lai et al. 2021</a>)</span>). <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).</p>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-combined" class="cell" data-fig-height="10">
+<div class="cell-output cell-output-display">
+<div id="fig-combined" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-4" href="notebooks\mak_fig_1-preview.html#cell-fig-combined">Source: Make Figure 1: Model Performance (3-Panel)</a></div>
+<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, Panel B displays the posterior probability distribution for the auROC.</p>
 </section>
 <section id="model-calibration" class="level4">
 <h4 class="anchored" data-anchor-id="model-calibration">Model calibration</h4>
-<p>In <strong>?@fig-combined</strong>, panel C, we display our model’s calibration when calculating predictions for held-out participants in leave-one-out cross-validation. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.</p>
+<p>In <a href="#fig-combined" class="quarto-xref">Figure&nbsp;1</a>, panel C, we display our model’s calibration. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.</p>
 </section>
 <section id="model-interpretation-1" class="level4">
 <h4 class="anchored" data-anchor-id="model-interpretation-1">Model interpretation</h4>
@@ -1792,28 +1808,28 @@ Table&nbsp;4: Retained Interaction Features
 </figure>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-4" href="notebooks\mak_tables-preview.html#cell-tbl-int-features">Source: Make All Tables for Main Manuscript</a></div>
+<a class="quarto-notebook-link" id="nblink-5" href="notebooks\mak_tables-preview.html#cell-tbl-int-features">Source: Make All Tables for Main Manuscript</a></div>
 <p>To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment).</p>
 </section>
 <section id="feature-importance-via-shapley-values" class="level5">
 <h5 class="anchored" data-anchor-id="feature-importance-via-shapley-values">Feature importance via Shapley values</h5>
-<p>Global feature importance (mean |Shapley value|) from our model appear in <a href="#fig-shap-global" class="quarto-xref">Figure&nbsp;1</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of features. Six of the top 25 most globally important features were treatment interactions.</p>
+<p>Global feature importance (mean |Shapley value|) from our model appear in <a href="#fig-shap-global" class="quarto-xref">Figure&nbsp;2</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of features. Six of the top 25 most globally important features were treatment interactions.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-shap-global" class="cell" data-fig-height="9">
 <div class="cell-output cell-output-display">
 <div id="fig-shap-global" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.
+Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-5" href="notebooks\shap_4wk-preview.html#cell-fig-shap-global">Source: SHAP for 4-Week Model</a></div>
+<a class="quarto-notebook-link" id="nblink-6" href="notebooks\shap_4wk-preview.html#cell-fig-shap-global">Source: SHAP for 4-Week Model</a></div>
 </section>
 </section>
 </section>
@@ -1821,23 +1837,23 @@ Figure&nbsp;1: Global feature importance via Shapley values. Bar represents magn
 <h3 class="anchored" data-anchor-id="aim-2-results-clinical-benefit">AIM 2 results: Clinical benefit</h3>
 <p>There was a significant fixed effect of treatment matching on abstinence (OR = XX, <em>z</em> = 2.862, <em>p</em> = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = XX, <em>z</em> = -10.053, <em>p</em> &lt; 0.001) such that the probability of abstinence declined over time.</p>
 <p>There was not a significant interaction between treatment matching and time (<em>p</em> = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used <span class="citation" data-cites="karaca-mandicInteractionTermsNonlinear2012 collinsOptimizationBehavioralBiobehavioral2018">(<a href="#ref-karaca-mandicInteractionTermsNonlinear2012" role="doc-biblioref">Karaca-Mandic, Norton, and Dowd 2012</a>; <a href="#ref-collinsOptimizationBehavioralBiobehavioral2018" role="doc-biblioref">Collins 2018</a>)</span>. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This allowed us to characterize our results more fully and to understand our effects in their original probability terms.</p>
-<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, <em>z</em> = 2.452, <em>p</em> = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). <a href="#fig-clin-ben-wk4" class="quarto-xref">Figure&nbsp;2</a> shows the mean abstinence rate by treatment matching at each time point.</p>
+<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = XX, <em>z</em> = 2.452, <em>p</em> = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). <a href="#fig-clin-ben-wk4" class="quarto-xref">Figure&nbsp;3</a> shows the mean abstinence rate by treatment matching at each time point.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk4" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" height="480" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2
+Figure&nbsp;3
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-6" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
+<a class="quarto-notebook-link" id="nblink-7" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
 </section>
 </section>
 <section id="discussion" class="level2">
@@ -2031,8 +2047,9 @@ used e cigs (MC)
 
 -->
 <div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.</span>
-<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: </span>
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.</span>
+<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: </span>
 </div>
 
 </section>
@@ -2817,7 +2834,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -561,27 +561,27 @@ Each figure plots the probabilities from our held-out predictions (made with lea
 #### Model interpretation
 
 
-The names of all retained features and their parameter estimates from the final 4-week model appear in @tbl-retained-vars-4wk. Retained features for the 4-week model are discussed in detail in the main manuscript. 
+The names of all retained features and their parameter estimates from the final 4-week model appear in @tbl-retained-vars-wk4. Retained features for the 4-week model are discussed in detail in the main manuscript. 
 
-{{< embed notebooks/fit_final_model_4wk.qmd#tbl-retained-vars-4wk >}} 
+{{< embed notebooks/fit_final_model_4wk.qmd#tbl-retained-vars-wk4 >}} 
 
-Our final 12-week model fit with the full dataset retained retained 111 features (@tbl-retained-vars-12wk). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction features. 
+Our final 12-week model fit with the full dataset retained retained 111 features (@tbl-retained-vars-wk12). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction features. 
 
 To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 29 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-{{< embed notebooks/fit_final_model_12wk.qmd#tbl-retained-vars-12wk >}} 
+{{< embed notebooks/fit_final_model_12wk.qmd#tbl-retained-vars-wk12 >}} 
 
-Our final 26-week model fit with the full dataset retained retained 107 features (@tbl-retained-vars-26wk). Of these, 45 were treatment interaction features. Like above, variability among folds led to the final model having slightly fewer than 50 retained interaction features. 
+Our final 26-week model fit with the full dataset retained retained 107 features (@tbl-retained-vars-wk26). Of these, 45 were treatment interaction features. Like above, variability among folds led to the final model having slightly fewer than 50 retained interaction features. 
 
 To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 36 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-{{< embed notebooks/fit_final_model_26wk.qmd#tbl-retained-vars-26wk >}} 
+{{< embed notebooks/fit_final_model_26wk.qmd#tbl-retained-vars-wk26 >}} 
 
 ### AIM 2 results: Clinical benefit
 
-There was no significant fixed effect of treatment matching for the 12-week (*p* = 0.279) or the 26-week (*p* = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (*p* = 0.660) or the 26-week (*p* = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, *z* = -9.973, *p* < 0.001; 26-week model: OR = 0.208, *z* = -10.050, *p* < 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes; @fig-clin-ben-wk12 and @fig-clin-ben-wk26 follow the same figure format for the 12- and 26-week models, respectively.
+There was no significant fixed effect of treatment matching for the 12-week (*p* = 0.279) or the 26-week (*p* = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (*p* = 0.660) or the 26-week (*p* = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, *z* = -9.973, *p* < 0.001; 26-week model: OR = 0.208, *z* = -10.050, *p* < 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes in @fig-clin-ben-wk4-supp. @fig-clin-ben-wk12 and @fig-clin-ben-wk26 follow the same figure format for the 12- and 26-week models, respectively.
 
-{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}}
+{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4-supp >}}
 
 {{< embed notebooks/eval_benefit_12wk.qmd#fig-clin-ben-wk12 >}}
 

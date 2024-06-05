@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Gaylen Fronk">
-    <meta name="dcterms.date" content="2024-06-04">
+    <meta name="dcterms.date" content="2024-06-05">
 
     <title>Make All Tables for Main Manuscript</title>
     <style>
@@ -1362,7 +1362,7 @@ border: 0;
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">June 4, 2024</p>
+              <p class="date">June 5, 2024</p>
             </div>
           </div>
           
@@ -1474,7 +1474,7 @@ border: 0;
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t1_feat_misc <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Treatment&quot;</span>, <span class="st">&quot;Incarcerated&quot;</span>, <span class="st">&quot;Works Third Shift&quot;</span>),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>),</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Miscellaneous&quot;</span>,</span>
@@ -1485,73 +1485,114 @@ border: 0;
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>t1_feat_psych_sud <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Frequency of Drinking Alcohol&quot;</span>, <span class="st">&quot;Quantity of Alcohol&quot;</span>, <span class="st">&quot;Binge Drinking&quot;</span>, <span class="st">&quot;Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]&quot;</span>, <span class="st">&quot;Life Satisfaction&quot;</span>, <span class="st">&quot;Life Enjoyment&quot;</span>, <span class="st">&quot;Psychological Disorder Diagnoses&quot;</span>, <span class="st">&quot;Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]&quot;</span>, <span class="st">&quot;Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]&quot;</span>, <span class="st">&quot;Anxiety Severity Index-3 [@taylorRobustDimensionsAnxiety2007a]&quot;</span>, <span class="st">&quot;Distress Tolerance Scale [@simonsDistressToleranceScale2005a]&quot;</span>, <span class="st">&quot;Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]&quot;</span>),</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>),</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">16</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">22</span>, <span class="dv">20</span>, <span class="dv">11</span>)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Mental Health &amp; Psychological Traits&quot;</span>,</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>t1_feat_smoking <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Baseline Carbon Monoxide&quot;</span>, <span class="st">&quot;Carbon Monoxide Exposure&quot;</span>, <span class="st">&quot;Age of 1st Cigarette&quot;</span>, <span class="st">&quot;Age Became Daily Smoker&quot;</span>, <span class="st">&quot;Years Smoking&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Heaviest)&quot;</span>, <span class="st">&quot;Use of Other Tobacco Products&quot;</span>, <span class="st">&quot;Number of Previous Quit Attempts&quot;</span>, <span class="st">&quot;Last Recent Quit Attempt&quot;</span>, <span class="st">&quot;Longest Quit Attempt&quot;</span>, <span class="st">&quot;Previous Quit Methods Used&quot;</span>, <span class="st">&quot;Cigarettes Per Day (Current)&quot;</span>, <span class="st">&quot;Motivation to Quit&quot;</span>, <span class="st">&quot;Self-Efficacy for Quitting in Next 30 Days&quot;</span>, <span class="st">&quot;Confidence to Quit&quot;</span>, <span class="st">&quot;Importance to Quit&quot;</span>, <span class="st">&quot;DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]&quot;</span>, <span class="st">&quot;Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]&quot;</span>, <span class="st">&quot;Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]&quot;</span>, <span class="st">&quot;Smoke Menthol Cigarettes&quot;</span>, <span class="st">&quot;Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]&quot;</span>),</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (Unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Dichotomous, Ordinal&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Categorical (Unordered)&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>),</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">14</span>, <span class="dv">6</span>, <span class="dv">49</span>, <span class="dv">1</span>, <span class="dv">45</span>)</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Smoking Use &amp; History&quot;</span>,</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>t1_feat_medical <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Diabetes Diagnosis&quot;</span>, <span class="st">&quot;Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]&quot;</span>, <span class="st">&quot;Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]&quot;</span>, <span class="st">&quot;Body Mass Index&quot;</span>, <span class="st">&quot;Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]&quot;</span>, <span class="st">&quot;Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]&quot;</span>),</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Ordinal, Dichotomous&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Ordinal, Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>),</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">26</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Medical &amp; Physical Health&quot;</span>,</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>t1_feat_social_environ <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Spouse Smokes&quot;</span>, <span class="st">&quot;Live with Another Smoker&quot;</span>, <span class="st">&quot;People Close to You Who Smoke&quot;</span>, <span class="st">&quot;Ban on Smoking at Home&quot;</span>, <span class="st">&quot;Ban on Smoking at Work&quot;</span>, <span class="st">&quot;Time Around Other Smokers&quot;</span>),</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Dichotomous&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>),</span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Social &amp; Environmental Characteristics&quot;</span>,</span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>t1_feat_demo <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Race&quot;</span>, <span class="st">&quot;Marital Status&quot;</span>, <span class="st">&quot;Income&quot;</span>, <span class="st">&quot;Ethnicity&quot;</span>, <span class="st">&quot;Employment&quot;</span>),</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Ordinal&quot;</span>, <span class="st">&quot;Categorical (Unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>),</span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Demographic Characteristics&quot;</span>,</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>t1_feat <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(t1_feat_demo, t1_feat_smoking) <span class="sc">|&gt;</span> </span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_social_environ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_psych_sud) <span class="sc">|&gt;</span> </span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_medical) <span class="sc">|&gt;</span> </span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_misc) <span class="sc">|&gt;</span> </span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Category =</span> feat_cat,</span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Number of Features</span><span class="st">`</span> <span class="ot">=</span> n_feat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Frequency of Drinking Alcohol&quot;</span>, </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Quantity of Alcohol&quot;</span>, </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Binge Drinking&quot;</span>, </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Short Inventory of Problems-2 (Revised) [@kilukShortInventoryProblems2013]&quot;</span>, </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Life Satisfaction&quot;</span>, </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Life Enjoyment&quot;</span>, </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Psychological Disorder Diagnoses&quot;</span>, </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Positive and Negative Affect Schedule [@crawfordPositiveNegativeAffect2004a]&quot;</span>, </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Snaith-Hamilton Pleasure Scale [@snaithScaleAssessmentHedonic1995a]&quot;</span>, </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Anxiety Sensitivity Index-3 [@taylorRobustDimensionsAnxiety2007a]&quot;</span>, </span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Distress Tolerance Scale [@simonsDistressToleranceScale2005a]&quot;</span>, </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Patient History Questionnaire-9 [@kroenkePHQ9ValidityBrief2001a]&quot;</span>),</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>),</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">15</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">14</span>, <span class="dv">18</span>, <span class="dv">15</span>, <span class="dv">9</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Mental Health &amp; Psychological Traits&quot;</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>t1_feat_smoking <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Baseline Carbon Monoxide&quot;</span>, </span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Carbon Monoxide Exposure&quot;</span>, </span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Age of 1st Cigarette&quot;</span>, </span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Age Became Daily Smoker&quot;</span>, </span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Years Smoking&quot;</span>, </span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Cigarettes Per Day (Heaviest)&quot;</span>, </span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Use of Other Tobacco Products&quot;</span>, </span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Number of Previous Quit Attempts&quot;</span>, </span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Last Recent Quit Attempt&quot;</span>, </span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Longest Quit Attempt&quot;</span>, </span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Previous Quit Methods Used&quot;</span>, </span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Cigarettes Per Day (Current)&quot;</span>, </span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Motivation to Quit&quot;</span>, </span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Self-Efficacy for Quitting in Next 30 Days&quot;</span>, </span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Confidence to Quit&quot;</span>, </span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Importance to Quit&quot;</span>, </span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;DSM5 Tobacco Use Disorder [@americanpsychiatricassociationDiagnosticStatisticalManual2013c]&quot;</span>, </span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Fagerstrom Test of Nicotine Dependence [@heathertonFagerstromTestNicotine1991]&quot;</span>, </span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Wisconsin Inventory of Smoking Dependence Motives-37 [@smithDevelopmentBriefWisconsin2010]&quot;</span>, </span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Smoke Menthol Cigarettes&quot;</span>, </span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Wisconsin Smoking Withdrawal Scale-2 [@smithRevisionWisconsinSmoking2021]&quot;</span>),</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered); Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>),</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">13</span>, <span class="dv">6</span>, <span class="dv">37</span>, <span class="dv">1</span>, <span class="dv">38</span>)</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Smoking Use &amp; History&quot;</span>,</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>t1_feat_medical <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Diabetes Diagnosis&quot;</span>, </span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Multidimensional Fatigue Inventory [@smetsMultidimensionalFatigueInventory1995]&quot;</span>, </span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Berlin Sleep Questionnaire [@netzerUsingBerlinQuestionnaire1999]&quot;</span>, </span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Body Mass Index&quot;</span>, </span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Health-related Quality of Life Scale [@taylorMeasuringHealthyDays2000]&quot;</span>, </span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Healthy Days Symptoms Module [@moriartyCDCStudiesCommunity1996]&quot;</span>),</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (ordered), Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (ordered), Numeric&quot;</span>, <span class="st">&quot;Numeric&quot;</span>),</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Medical &amp; Physical Health&quot;</span>,</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>t1_feat_social_environ <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Spouse Smokes&quot;</span>, </span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Live with Another Smoker&quot;</span>, </span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;People Close to You Who Smoke&quot;</span>, </span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Ban on Smoking at Home&quot;</span>, </span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Ban on Smoking at Work&quot;</span>, </span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Time Around Other Smokers&quot;</span>),</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>),</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Social &amp; Environmental Characteristics&quot;</span>,</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>t1_feat_demo <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_cat =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="fu">c</span>(<span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Race&quot;</span>, <span class="st">&quot;Marital Status&quot;</span>, <span class="st">&quot;Income&quot;</span>, <span class="st">&quot;Ethnicity&quot;</span>, <span class="st">&quot;Employment&quot;</span>),</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Numeric&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (ordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>, <span class="st">&quot;Categorical (unordered)&quot;</span>),</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">feat_cat =</span> <span class="st">&quot;Demographic Characteristics&quot;</span>,</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>  <span class="at">feat_name =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(),</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_feat =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> <span class="dv">1</span>)</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>t1_feat <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(t1_feat_demo, t1_feat_smoking) <span class="sc">|&gt;</span> </span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_social_environ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_psych_sud) <span class="sc">|&gt;</span> </span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_medical) <span class="sc">|&gt;</span> </span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(t1_feat_misc) <span class="sc">|&gt;</span> </span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Category =</span> feat_cat,</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Number of Items</span><span class="st">`</span> <span class="ot">=</span> n_feat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Table 1</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
@@ -1569,17 +1610,17 @@ Individual Differences
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 52%">
-<col style="width: 13%">
-<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 47%">
+<col style="width: 24%">
+<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Category</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: left;">Number of Features</th>
+<th style="text-align: left;">Number of Items</th>
 </tr>
 </thead>
 <tbody>
@@ -1616,13 +1657,13 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Income</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Ethnicity</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
@@ -1646,7 +1687,7 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Carbon Monoxide Exposure</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
@@ -1676,7 +1717,7 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Use of Other Tobacco Products</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">5</td>
 </tr>
 <tr class="odd">
@@ -1688,19 +1729,19 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Last Recent Quit Attempt</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Longest Quit Attempt</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Previous Quit Methods Used</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">6</td>
 </tr>
 <tr class="odd">
@@ -1712,56 +1753,56 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Motivation to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Self-Efficacy for Quitting in Next 30 Days</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Confidence to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Importance to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">DSM5 Tobacco Use Disorder <span class="citation" data-cites="americanpsychiatricassociationDiagnosticStatisticalManual2013c">(<a href="#ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" role="doc-biblioref">American Psychiatric Association 2013</a>)</span></td>
-<td style="text-align: left;">Dichotomous</td>
-<td style="text-align: left;">14</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: left;">13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Fagerstrom Test of Nicotine Dependence <span class="citation" data-cites="heathertonFagerstromTestNicotine1991">(<a href="#ref-heathertonFagerstromTestNicotine1991" role="doc-biblioref">Heatherton et al. 1991</a>)</span></td>
-<td style="text-align: left;">Dichotomous, Ordinal</td>
+<td style="text-align: left;">Categorical (unordered); Categorical (ordered)</td>
 <td style="text-align: left;">6</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Wisconsin Inventory of Smoking Dependence Motives-37 <span class="citation" data-cites="smithDevelopmentBriefWisconsin2010">(<a href="#ref-smithDevelopmentBriefWisconsin2010" role="doc-biblioref">Stevens S. Smith et al. 2010</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">49</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">37</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Smoke Menthol Cigarettes</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Wisconsin Smoking Withdrawal Scale-2 <span class="citation" data-cites="smithRevisionWisconsinSmoking2021">(<a href="#ref-smithRevisionWisconsinSmoking2021" role="doc-biblioref">Stevens S. Smith et al. 2021</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">45</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">38</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Social &amp; Environmental Characteristics</td>
@@ -1790,7 +1831,7 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Ban on Smoking at Home</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
@@ -1802,7 +1843,7 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Time Around Other Smokers</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
@@ -1814,74 +1855,74 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Frequency of Drinking Alcohol</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Quantity of Alcohol</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Binge Drinking</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Short Inventory of Problems-2 (Revised) <span class="citation" data-cites="kilukShortInventoryProblems2013">(<a href="#ref-kilukShortInventoryProblems2013" role="doc-biblioref">Kiluk et al. 2013</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">16</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">15</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Life Enjoyment</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Psychological Disorder Diagnoses</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Positive and Negative Affect Schedule <span class="citation" data-cites="crawfordPositiveNegativeAffect2004a">(<a href="#ref-crawfordPositiveNegativeAffect2004a" role="doc-biblioref">Crawford and Henry 2004</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">8</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">6</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Snaith-Hamilton Pleasure Scale <span class="citation" data-cites="snaithScaleAssessmentHedonic1995a">(<a href="#ref-snaithScaleAssessmentHedonic1995a" role="doc-biblioref">Snaith et al. 1995</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">15</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">14</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Anxiety Severity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">22</td>
+<td style="text-align: left;">Anxiety Sensitivity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">18</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Distress Tolerance Scale <span class="citation" data-cites="simonsDistressToleranceScale2005a">(<a href="#ref-simonsDistressToleranceScale2005a" role="doc-biblioref">Simons and Gaher 2005</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">20</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">15</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Patient History Questionnaire-9 <span class="citation" data-cites="kroenkePHQ9ValidityBrief2001a">(<a href="#ref-kroenkePHQ9ValidityBrief2001a" role="doc-biblioref">Kroenke, Spitzer, and Williams 2001</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">11</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">9</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Medical &amp; Physical Health</td>
@@ -1892,19 +1933,19 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Diabetes Diagnosis</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Multidimensional Fatigue Inventory <span class="citation" data-cites="smetsMultidimensionalFatigueInventory1995">(<a href="#ref-smetsMultidimensionalFatigueInventory1995" role="doc-biblioref">Smets et al. 1995</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: left;">26</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: left;">20</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Berlin Sleep Questionnaire <span class="citation" data-cites="netzerUsingBerlinQuestionnaire1999">(<a href="#ref-netzerUsingBerlinQuestionnaire1999" role="doc-biblioref">Netzer et al. 1999</a>)</span></td>
-<td style="text-align: left;">Ordinal, Dichotomous</td>
+<td style="text-align: left;">Categorical (ordered), Categorical (unordered)</td>
 <td style="text-align: left;">3</td>
 </tr>
 <tr class="odd">
@@ -1916,7 +1957,7 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Health-related Quality of Life Scale <span class="citation" data-cites="taylorMeasuringHealthyDays2000">(<a href="#ref-taylorMeasuringHealthyDays2000" role="doc-biblioref">V. R. Taylor and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health 2000</a>)</span></td>
-<td style="text-align: left;">Ordinal, Numeric</td>
+<td style="text-align: left;">Categorical (ordered), Numeric</td>
 <td style="text-align: left;">4</td>
 </tr>
 <tr class="odd">
@@ -1934,19 +1975,19 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Treatment</td>
-<td style="text-align: left;">Categorical</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Incarcerated</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Works Third Shift</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -1965,7 +2006,7 @@ Individual Differences
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Demographic Characteristics</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-featurespdf" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1976,17 +2017,17 @@ Individual Differences
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 35%">
-<col style="width: 18%">
-<col style="width: 30%">
-<col style="width: 15%">
+<col style="width: 36%">
+<col style="width: 19%">
+<col style="width: 31%">
+<col style="width: 11%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Demographic Characteristics</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
@@ -2017,13 +2058,13 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Income</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Ethnicity</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
@@ -2046,23 +2087,23 @@ Individual Differences
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Smoking Use/History</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 62%">
-<col style="width: 16%">
-<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 54%">
+<col style="width: 27%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Smoking Use/History</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
@@ -2075,7 +2116,7 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Carbon Monoxide Exposure</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
@@ -2105,7 +2146,7 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Use of Other Tobacco Products</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">5</td>
 </tr>
 <tr class="even">
@@ -2117,19 +2158,19 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Last Recent Quit Attempt</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Longest Quit Attempt</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Previous Quit Methods Used</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">6</td>
 </tr>
 <tr class="even">
@@ -2141,56 +2182,56 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Motivation to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Self-Efficacy for Quitting in Next 30 Days</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Confidence to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Importance to Quit</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">DSM5 Tobacco Use Disorder <span class="citation" data-cites="americanpsychiatricassociationDiagnosticStatisticalManual2013c">(<a href="#ref-americanpsychiatricassociationDiagnosticStatisticalManual2013c" role="doc-biblioref">American Psychiatric Association 2013</a>)</span></td>
-<td style="text-align: left;">Dichotomous</td>
-<td style="text-align: center;">14</td>
+<td style="text-align: left;">Categorical (unordered)</td>
+<td style="text-align: center;">13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Fagerstrom Test of Nicotine Dependence <span class="citation" data-cites="heathertonFagerstromTestNicotine1991">(<a href="#ref-heathertonFagerstromTestNicotine1991" role="doc-biblioref">Heatherton et al. 1991</a>)</span></td>
-<td style="text-align: left;">Dichotomous, Ordinal</td>
+<td style="text-align: left;">Categorical (unordered); Categorical (ordered)</td>
 <td style="text-align: center;">6</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Wisconsin Inventory of Smoking Dependence Motives-37 <span class="citation" data-cites="smithDevelopmentBriefWisconsin2010">(<a href="#ref-smithDevelopmentBriefWisconsin2010" role="doc-biblioref">Stevens S. Smith et al. 2010</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">49</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">37</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Smoke Menthol Cigarettes</td>
-<td style="text-align: left;">Categorical (Unordered)</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Wisconsin Smoking Withdrawal Scale-2 <span class="citation" data-cites="smithRevisionWisconsinSmoking2021">(<a href="#ref-smithRevisionWisconsinSmoking2021" role="doc-biblioref">Stevens S. Smith et al. 2021</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">45</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">38</td>
 </tr>
 </tbody>
 </table>
@@ -2203,23 +2244,23 @@ Individual Differences
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Social &amp; Environmental Characteristics</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 28%">
-<col style="width: 22%">
-<col style="width: 11%">
+<col style="width: 38%">
+<col style="width: 29%">
+<col style="width: 23%">
+<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Social &amp; Environmental Characteristics</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
@@ -2244,7 +2285,7 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Ban on Smoking at Home</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
@@ -2256,7 +2297,7 @@ Individual Differences
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Time Around Other Smokers</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">2</td>
 </tr>
 </tbody>
@@ -2268,97 +2309,97 @@ Individual Differences
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Mental Health &amp; Psychological Traits</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 55%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 25%">
+<col style="width: 52%">
+<col style="width: 16%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Mental Health &amp; Psychological Traits</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Frequency of Drinking Alcohol</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Quantity of Alcohol</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Binge Drinking</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Short Inventory of Problems-2 (Revised) <span class="citation" data-cites="kilukShortInventoryProblems2013">(<a href="#ref-kilukShortInventoryProblems2013" role="doc-biblioref">Kiluk et al. 2013</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">16</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">15</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Life Enjoyment</td>
-<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Categorical (ordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Psychological Disorder Diagnoses</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Positive and Negative Affect Schedule <span class="citation" data-cites="crawfordPositiveNegativeAffect2004a">(<a href="#ref-crawfordPositiveNegativeAffect2004a" role="doc-biblioref">Crawford and Henry 2004</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">6</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Snaith-Hamilton Pleasure Scale <span class="citation" data-cites="snaithScaleAssessmentHedonic1995a">(<a href="#ref-snaithScaleAssessmentHedonic1995a" role="doc-biblioref">Snaith et al. 1995</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">15</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">14</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Anxiety Severity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">22</td>
+<td style="text-align: left;">Anxiety Sensitivity Index-3 <span class="citation" data-cites="taylorRobustDimensionsAnxiety2007a">(<a href="#ref-taylorRobustDimensionsAnxiety2007a" role="doc-biblioref">S. Taylor et al. 2007</a>)</span></td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">18</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Distress Tolerance Scale <span class="citation" data-cites="simonsDistressToleranceScale2005a">(<a href="#ref-simonsDistressToleranceScale2005a" role="doc-biblioref">Simons and Gaher 2005</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">20</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">15</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Patient History Questionnaire-9 <span class="citation" data-cites="kroenkePHQ9ValidityBrief2001a">(<a href="#ref-kroenkePHQ9ValidityBrief2001a" role="doc-biblioref">Kroenke, Spitzer, and Williams 2001</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">11</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">9</td>
 </tr>
 </tbody>
 </table>
@@ -2371,42 +2412,42 @@ Individual Differences
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Medical &amp; Physical Health</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 18%">
-<col style="width: 57%">
-<col style="width: 15%">
-<col style="width: 8%">
+<col style="width: 16%">
+<col style="width: 49%">
+<col style="width: 29%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Medical &amp; Physical Health</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Diabetes Diagnosis</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Multidimensional Fatigue Inventory <span class="citation" data-cites="smetsMultidimensionalFatigueInventory1995">(<a href="#ref-smetsMultidimensionalFatigueInventory1995" role="doc-biblioref">Smets et al. 1995</a>)</span></td>
-<td style="text-align: left;">Ordinal</td>
-<td style="text-align: center;">26</td>
+<td style="text-align: left;">Categorical (ordered)</td>
+<td style="text-align: center;">20</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Berlin Sleep Questionnaire <span class="citation" data-cites="netzerUsingBerlinQuestionnaire1999">(<a href="#ref-netzerUsingBerlinQuestionnaire1999" role="doc-biblioref">Netzer et al. 1999</a>)</span></td>
-<td style="text-align: left;">Ordinal, Dichotomous</td>
+<td style="text-align: left;">Categorical (ordered), Categorical (unordered)</td>
 <td style="text-align: center;">3</td>
 </tr>
 <tr class="even">
@@ -2418,7 +2459,7 @@ Individual Differences
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Health-related Quality of Life Scale <span class="citation" data-cites="taylorMeasuringHealthyDays2000">(<a href="#ref-taylorMeasuringHealthyDays2000" role="doc-biblioref">V. R. Taylor and National Center for Chronic Disease Prevention and Health Promotion (U.S.). Division of Adult and Community Health 2000</a>)</span></td>
-<td style="text-align: left;">Ordinal, Numeric</td>
+<td style="text-align: left;">Categorical (ordered), Numeric</td>
 <td style="text-align: center;">4</td>
 </tr>
 <tr class="even">
@@ -2436,36 +2477,42 @@ Individual Differences
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Miscellaneous Features</span><span class="st">`</span> <span class="ot">=</span> feat_cat,</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Feature Name</span><span class="st">`</span> <span class="ot">=</span> feat_name,</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Type =</span> type,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Features</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"># Items</span><span class="st">`</span> <span class="ot">=</span> n_feat) <span class="sc">|&gt;</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>   knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;lllc&quot;</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 24%">
+<col style="width: 32%">
+<col style="width: 12%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Miscellaneous Features</th>
 <th style="text-align: left;">Feature Name</th>
 <th style="text-align: left;">Type</th>
-<th style="text-align: center;"># Features</th>
+<th style="text-align: center;"># Items</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Treatment</td>
-<td style="text-align: left;">Categorical</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Incarcerated</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Works Third Shift</td>
-<td style="text-align: left;">Dichotomous</td>
+<td style="text-align: left;">Categorical (unordered)</td>
 <td style="text-align: center;">1</td>
 </tr>
 </tbody>
@@ -3564,27 +3611,27 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">direction =</span> <span class="fu">if_else</span>(estimate <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Feature =</span> <span class="fu">c</span>(</span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Lives alone or only with a partner&quot;</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Worries they will choke to death when their throat feels tight (ASI-3 Item 15)&quot;</span>,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not think they do a lot in a day (MFI Item 6)&quot;</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ASI-3: Worries they will choke to death when their throat feels tight&quot;</span>,</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;MFI: Does not think they do a lot in a day&quot;</span>,</span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Greater income&quot;</span>,</span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a spouse/partner who does not smoke&quot;</span>,</span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No close relative who smokes&quot;</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Smoked despite relationship problems (DSM-5 Item 3)&quot;</span>,</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DSM-5: Smoked despite relationship problems&quot;</span>,</span>
 <span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has never tried cigars&quot;</span>,</span>
 <span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a depression diagnosis&quot;</span>,</span>
 <span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not live with another smoker&quot;</span>,</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses smoking helps them think better (WISDM-37 Item 32)&quot;</span>,</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Feels tired, fatigued, or not up to par (Berlin Item 7)&quot;</span>,</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses smoking helps them think better&quot;</span>,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Berlin: Feels tired, fatigued, or not up to par&quot;</span>,</span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has tried cigars but has never used regularly&quot;</span>,</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses having a lot of friends or family members smoke (WISDM-37 Item 27)&quot;</span>,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses having a lot of friends or family members smoke&quot;</span>,</span>
 <span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a close relative who smokes&quot;</span>,</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by constipation (WSWS-2 Item &#39;Constipation&#39;)&quot;</span>,</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Smoked to get rid of withdrawal feelings (DSM-5 Item 7)&quot;</span>,</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by constipation&quot;</span>,</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DSM-5: Smoked to get rid of withdrawal feelings&quot;</span>,</span>
 <span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Tried nicotine gum during previous quit attempt&quot;</span>,</span>
 <span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a spouse/partner who smokes&quot;</span>,</span>
 <span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has not tried nicotine gum during a previous quit attempt&quot;</span>,</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by feeling hopeless or discouraged (WSWS-2 Item 19)&quot;</span>,</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses most of the people they spend time with are smokers (WISDM-37 Item 18)&quot;</span>,</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by feeling hopeless or discouraged&quot;</span>,</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses most of the people they spend time with are smokers&quot;</span>,</span>
 <span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not live with a spouse/partner&quot;</span>,</span>
 <span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Smoking only allowed in some parts of workplace&quot;</span></span>
 <span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
@@ -3626,9 +3673,9 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 60%">
-<col style="width: 23%">
+<col style="width: 16%">
+<col style="width: 58%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -3645,12 +3692,12 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="even">
 <td style="text-align: left;">Psychological</td>
-<td style="text-align: center;">Worries they will choke to death when their throat feels tight (ASI-3 Item 15)</td>
+<td style="text-align: center;">ASI-3: Worries they will choke to death when their throat feels tight</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">Does not think they do a lot in a day (MFI Item 6)</td>
+<td style="text-align: center;">MFI: Does not think they do a lot in a day</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
@@ -3670,7 +3717,7 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Smoked despite relationship problems (DSM-5 Item 3)</td>
+<td style="text-align: center;">DSM-5: Smoked despite relationship problems</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
@@ -3690,12 +3737,12 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses smoking helps them think better (WISDM-37 Item 32)</td>
+<td style="text-align: center;">WISDM-37: Endorses smoking helps them think better</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">Feels tired, fatigued, or not up to par (Berlin Item 7)</td>
+<td style="text-align: center;">Berlin: Feels tired, fatigued, or not up to par</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -3705,7 +3752,7 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses having a lot of friends or family members smoke (WISDM-37 Item 27)</td>
+<td style="text-align: center;">WISDM-37: Endorses having a lot of friends or family members smoke</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -3715,12 +3762,12 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by constipation (WSWS-2 Item ‘Constipation’)</td>
+<td style="text-align: center;">WSWS-2: Bothered by constipation</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Smoked to get rid of withdrawal feelings (DSM-5 Item 7)</td>
+<td style="text-align: center;">DSM-5: Smoked to get rid of withdrawal feelings</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
@@ -3740,12 +3787,12 @@ $ penalty  &lt;dbl&gt; 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.1140801, 0.
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by feeling hopeless or discouraged (WSWS-2 Item 19)</td>
+<td style="text-align: center;">WSWS-2: Bothered by feeling hopeless or discouraged</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses most of the people they spend time with are smokers (WISDM-37 Item 18)</td>
+<td style="text-align: center;">WISDM-37: Endorses most of the people they spend time with are smokers</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -3781,34 +3828,34 @@ Retained features that interact with varenicline. Direction of effect indicates 
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Feature =</span> <span class="fu">c</span>(</span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Lives alone or only with a partner&quot;</span>,</span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Identifies as Black or African American&quot;</span>,</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses feeling like cigarattes are their best friends (WISDM-37 Item 22)&quot;</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses feeling like cigarattes are their best friends&quot;</span>,</span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has never smoked menthol cigarettes&quot;</span>,</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)&quot;</span>,</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses that most of their friends and acquaintances smoke (WISDM-37 Item 30)&quot;</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DTS: Disagrees that there is nothing worse than feeling distressed or upset&quot;</span>,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses that most of their friends and acquaintances smoke&quot;</span>,</span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Divorced&quot;</span>,</span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not endorse withdrawal symptoms (DSM-5 Item 6)&quot;</span>,</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)&quot;</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DSM-5: Does not endorse withdrawal symptoms&quot;</span>,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ASI-3: Worries they are going crazy when they cannot keep their mind on a task&quot;</span>,</span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Identifies as White&quot;</span>,</span>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Married&quot;</span>,</span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has spent a lot of time obtaining, smoking, or recovering from cigarettes (DSM-5 Item 10)&quot;</span>,</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DSM-5: Has spent a lot of time obtaining, smoking, or recovering from cigarettes&quot;</span>,</span>
 <span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Currently smokes menthol cigarettes&quot;</span>,</span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses weight control as a major reason they smoke (WISDM-37 Item 19)&quot;</span>,</span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not feel it takes a lot of effort to concentrate (MFI Item 13)&quot;</span>,</span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not smoke when so ill they are in bed most of the day (FTND Item 6)&quot;</span>,</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses weight control as a major reason they smoke&quot;</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;MFI: Does not feel it takes a lot of effort to concentrate&quot;</span>,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;FTND: Does not smoke when so ill they are in bed most of the day&quot;</span>,</span>
 <span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Lives with another smoker&quot;</span>,</span>
 <span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;More satisfied with their life as a whole&quot;</span>,</span>
-<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by constipation (WSWS-2 Item &#39;Constipation&#39;)&quot;</span>,</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by constipation&quot;</span>,</span>
 <span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has tried a pipe but has never used regularly&quot;</span>,</span>
 <span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Greater duration of time since most recent quit attempt&quot;</span>,</span>
-<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Can handle feeling distressed or upset (DTS Item 3)&quot;</span>,</span>
-<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Smokes when so ill they are in bed most of the day (FTND Item 6)&quot;</span>,</span>
-<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No sleep apnea diagnosis (Berlin Item 9)&quot;</span>,</span>
-<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by waking frequently during the night (WSWS-2 Item 5)&quot;</span>,</span>
-<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by having urges to smoke (WSWS-2 Item 9)&quot;</span>,</span>
-<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;More days in past month feeling worried, tense, or anxious (HDSM Item &#39;Tense&#39;)&quot;</span>,</span>
-<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by wanting to smoke (WSWS-2 Item &#39;Want Cigarette&#39;)&quot;</span>,</span>
-<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Smoked knowing it was causing or worsening a health problem (DSM-5 Item 12)&quot;</span>,</span>
-<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not find feeling distressed or upset to be unbearable (DTS Item 1)&quot;</span>,</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DTS: Can handle feeling distressed or upset&quot;</span>,</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;FTND: Smokes when so ill they are in bed most of the day&quot;</span>,</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Berlin: No sleep apnea diagnosis&quot;</span>,</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by waking frequently during the night&quot;</span>,</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by having urges to smoke&quot;</span>,</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HDSM: More days in past month feeling worried, tense, or anxious&quot;</span>,</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by wanting to smoke&quot;</span>,</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DSM-5: Smoked knowing it was causing or worsening a health problem&quot;</span>,</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DTS: Does not find feeling distressed or upset to be unbearable&quot;</span>,</span>
 <span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Tried Zyban (bupropion) during previous attempt&quot;</span></span>
 <span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
 <span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Category =</span> <span class="fu">c</span>(</span>
@@ -3856,9 +3903,9 @@ Retained features that interact with varenicline. Direction of effect indicates 
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 66%">
-<col style="width: 18%">
+<col style="width: 16%">
+<col style="width: 64%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -3880,7 +3927,7 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses feeling like cigarattes are their best friends (WISDM-37 Item 22)</td>
+<td style="text-align: center;">WISDM-37: Endorses feeling like cigarattes are their best friends</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
@@ -3890,12 +3937,12 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Psychological</td>
-<td style="text-align: center;">Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)</td>
+<td style="text-align: center;">DTS: Disagrees that there is nothing worse than feeling distressed or upset</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses that most of their friends and acquaintances smoke (WISDM-37 Item 30)</td>
+<td style="text-align: center;">WISDM-37: Endorses that most of their friends and acquaintances smoke</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -3905,12 +3952,12 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Does not endorse withdrawal symptoms (DSM-5 Item 6)</td>
+<td style="text-align: center;">DSM-5: Does not endorse withdrawal symptoms</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Psychological</td>
-<td style="text-align: center;">Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)</td>
+<td style="text-align: center;">ASI-3: Worries they are going crazy when they cannot keep their mind on a task</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
@@ -3925,7 +3972,7 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Has spent a lot of time obtaining, smoking, or recovering from cigarettes (DSM-5 Item 10)</td>
+<td style="text-align: center;">DSM-5: Has spent a lot of time obtaining, smoking, or recovering from cigarettes</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -3935,17 +3982,17 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses weight control as a major reason they smoke (WISDM-37 Item 19)</td>
+<td style="text-align: center;">WISDM-37: Endorses weight control as a major reason they smoke</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">Does not feel it takes a lot of effort to concentrate (MFI Item 13)</td>
+<td style="text-align: center;">MFI: Does not feel it takes a lot of effort to concentrate</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Does not smoke when so ill they are in bed most of the day (FTND Item 6)</td>
+<td style="text-align: center;">FTND: Does not smoke when so ill they are in bed most of the day</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
@@ -3960,7 +4007,7 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by constipation (WSWS-2 Item ‘Constipation’)</td>
+<td style="text-align: center;">WSWS-2: Bothered by constipation</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
@@ -3975,47 +4022,47 @@ Retained features that interact with varenicline. Direction of effect indicates 
 </tr>
 <tr class="even">
 <td style="text-align: left;">Psychological</td>
-<td style="text-align: center;">Can handle feeling distressed or upset (DTS Item 3)</td>
+<td style="text-align: center;">DTS: Can handle feeling distressed or upset</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Smokes when so ill they are in bed most of the day (FTND Item 6)</td>
+<td style="text-align: center;">FTND: Smokes when so ill they are in bed most of the day</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">No sleep apnea diagnosis (Berlin Item 9)</td>
+<td style="text-align: center;">Berlin: No sleep apnea diagnosis</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by waking frequently during the night (WSWS-2 Item 5)</td>
+<td style="text-align: center;">WSWS-2: Bothered by waking frequently during the night</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by having urges to smoke (WSWS-2 Item 9)</td>
+<td style="text-align: center;">WSWS-2: Bothered by having urges to smoke</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">More days in past month feeling worried, tense, or anxious (HDSM Item ‘Tense’)</td>
+<td style="text-align: center;">HDSM: More days in past month feeling worried, tense, or anxious</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by wanting to smoke (WSWS-2 Item ‘Want Cigarette’)</td>
+<td style="text-align: center;">WSWS-2: Bothered by wanting to smoke</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Smoked knowing it was causing or worsening a health problem (DSM-5 Item 12)</td>
+<td style="text-align: center;">DSM-5: Smoked knowing it was causing or worsening a health problem</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Psychological</td>
-<td style="text-align: center;">Does not find feeling distressed or upset to be unbearable (DTS Item 1)</td>
+<td style="text-align: center;">DTS: Does not find feeling distressed or upset to be unbearable</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
@@ -4049,19 +4096,19 @@ Retained features that interact with combination nicotine replacement therapy (C
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has tried cigars but has never used regularly&quot;</span>,</span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a close co-worker who smokes&quot;</span>,</span>
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No smoking allowed anywhere at their workplace&quot;</span>,</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by craving a cigarette (WSWS-2 Item &#39;Crave&#39;)&quot;</span>,</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses feeling alone without their cigarettes (WISDM-37 Item 26)&quot;</span>,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by craving a cigarette&quot;</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses feeling alone without their cigarettes&quot;</span>,</span>
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has a close friend who smokes&quot;</span>,</span>
 <span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Has never been married&quot;</span>,</span>
 <span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Identifies as female&quot;</span>,</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Finds it difficult to refrain from smoking where it is forbidden (FTND Item 2)&quot;</span>,</span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Endorses feeling that cigarettes rule their life (WISDM-37 Item 16)&quot;</span>,</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;FTND: Finds it difficult to refrain from smoking where it is forbidden&quot;</span>,</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WISDM-37: Endorses feeling that cigarettes rule their life&quot;</span>,</span>
 <span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Identifies as White&quot;</span>,</span>
 <span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not work outside the home&quot;</span>,</span>
-<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by coughing (WSWS-2 Item &#39;Coughing&#39;)&quot;</span>,</span>
-<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Does not have a lot of plans (MFI Item 15)&quot;</span>,</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by coughing&quot;</span>,</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;MFI: Does not have a lot of plans&quot;</span>,</span>
 <span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Identifies as male&quot;</span>,</span>
-<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Bothered by having trouble getting cigarettes of their mind (WSWS-2 Item 26)&quot;</span>,</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WSWS-2: Bothered by having trouble getting cigarettes of their mind&quot;</span>,</span>
 <span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Greater total number of previous quit attempts&quot;</span></span>
 <span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
 <span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Category =</span> <span class="fu">c</span>(</span>
@@ -4097,9 +4144,9 @@ Retained features that interact with combination nicotine replacement therapy (C
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 63%">
-<col style="width: 19%">
+<col style="width: 17%">
+<col style="width: 61%">
+<col style="width: 21%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -4136,12 +4183,12 @@ Retained features that interact with combination nicotine replacement therapy (C
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by craving a cigarette (WSWS-2 Item ‘Crave’)</td>
+<td style="text-align: center;">WSWS-2: Bothered by craving a cigarette</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses feeling alone without their cigarettes (WISDM-37 Item 26)</td>
+<td style="text-align: center;">WISDM-37: Endorses feeling alone without their cigarettes</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
@@ -4161,12 +4208,12 @@ Retained features that interact with combination nicotine replacement therapy (C
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Finds it difficult to refrain from smoking where it is forbidden (FTND Item 2)</td>
+<td style="text-align: center;">FTND: Finds it difficult to refrain from smoking where it is forbidden</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Endorses feeling that cigarettes rule their life (WISDM-37 Item 16)</td>
+<td style="text-align: center;">WISDM-37: Endorses feeling that cigarettes rule their life</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
@@ -4181,12 +4228,12 @@ Retained features that interact with combination nicotine replacement therapy (C
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by coughing (WSWS-2 Item ‘Coughing’)</td>
+<td style="text-align: center;">WSWS-2: Bothered by coughing</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Medical</td>
-<td style="text-align: center;">Does not have a lot of plans (MFI Item 15)</td>
+<td style="text-align: center;">MFI: Does not have a lot of plans</td>
 <td style="text-align: left;">+</td>
 </tr>
 <tr class="odd">
@@ -4196,7 +4243,7 @@ Retained features that interact with combination nicotine replacement therapy (C
 </tr>
 <tr class="even">
 <td style="text-align: left;">Smoking Use/History</td>
-<td style="text-align: center;">Bothered by having trouble getting cigarettes of their mind (WSWS-2 Item 26)</td>
+<td style="text-align: center;">WSWS-2: Bothered by having trouble getting cigarettes of their mind</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr class="odd">
@@ -4270,9 +4317,9 @@ Retained Interaction Features
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 10%">
-<col style="width: 46%">
-<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 43%">
+<col style="width: 17%">
 <col style="width: 13%">
 <col style="width: 13%">
 </colgroup>
@@ -4358,44 +4405,44 @@ Retained Interaction Features
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Does not feel it takes a lot of effort to concentrate (MFI Item 13)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Does not have a lot of plans (MFI Item 15)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Does not think they do a lot in a day (MFI Item 6)</td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Feels tired, fatigued, or not up to par (Berlin Item 7)</td>
+<td style="text-align: left;">Berlin: Feels tired, fatigued, or not up to par</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Berlin: No sleep apnea diagnosis</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">More days in past month feeling worried, tense, or anxious (HDSM Item ‘Tense’)</td>
+<td style="text-align: left;">HDSM: More days in past month feeling worried, tense, or anxious</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">No sleep apnea diagnosis (Berlin Item 9)</td>
+<td style="text-align: left;">MFI: Does not feel it takes a lot of effort to concentrate</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">MFI: Does not have a lot of plans</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">MFI: Does not think they do a lot in a day</td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
@@ -4407,21 +4454,35 @@ Retained Interaction Features
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Can handle feeling distressed or upset (DTS Item 3)</td>
+<td style="text-align: left;">ASI-3: Worries they are going crazy when they cannot keep their mind on a task</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ASI-3: Worries they will choke to death when their throat feels tight</td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">DTS: Can handle feeling distressed or upset</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Disagrees that there is nothing worse than feeling distressed or upset (DTS Item 5)</td>
+<td style="text-align: left;">DTS: Disagrees that there is nothing worse than feeling distressed or upset</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Does not find feeling distressed or upset to be unbearable (DTS Item 1)</td>
+<td style="text-align: left;">DTS: Does not find feeling distressed or upset to be unbearable</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
@@ -4441,80 +4502,10 @@ Retained Interaction Features
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Worries they are going crazy when they cannot keep their mind on a task (ASI-3 Item 2)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Worries they will choke to death when their throat feels tight (ASI-3 Item 15)</td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">Smoking Use/History</td>
 <td style="text-align: left;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by constipation (WSWS-2 Item ‘Constipation’)</td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by coughing (WSWS-2 Item ‘Coughing’)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by craving a cigarette (WSWS-2 Item ‘Crave’)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by feeling hopeless or discouraged (WSWS-2 Item 19)</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by having trouble getting cigarettes of their mind (WSWS-2 Item 26)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by having urges to smoke (WSWS-2 Item 9)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by waking frequently during the night (WSWS-2 Item 5)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Bothered by wanting to smoke (WSWS-2 Item ‘Want Cigarette’)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
@@ -4526,121 +4517,93 @@ Retained Interaction Features
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Does not endorse withdrawal symptoms (DSM-5 Item 6)</td>
+<td style="text-align: left;">DSM-5: Does not endorse withdrawal symptoms</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Does not smoke when so ill they are in bed most of the day (FTND Item 6)</td>
+<td style="text-align: left;">DSM-5: Has spent a lot of time obtaining, smoking, or recovering from cigarettes</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">DSM-5: Smoked despite relationship problems</td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">DSM-5: Smoked knowing it was causing or worsening a health problem</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses feeling alone without their cigarettes (WISDM-37 Item 26)</td>
+<td style="text-align: left;">DSM-5: Smoked to get rid of withdrawal feelings</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FTND: Does not smoke when so ill they are in bed most of the day</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FTND: Finds it difficult to refrain from smoking where it is forbidden</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses feeling like cigarattes are their best friends (WISDM-37 Item 22)</td>
+<td style="text-align: left;">FTND: Smokes when so ill they are in bed most of the day</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses feeling that cigarettes rule their life (WISDM-37 Item 16)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses having a lot of friends or family members smoke (WISDM-37 Item 27)</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses most of the people they spend time with are smokers (WISDM-37 Item 18)</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses smoking helps them think better (WISDM-37 Item 32)</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses that most of their friends and acquaintances smoke (WISDM-37 Item 30)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Endorses weight control as a major reason they smoke (WISDM-37 Item 19)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Finds it difficult to refrain from smoking where it is forbidden (FTND Item 2)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Greater duration of time since most recent quit attempt</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Greater total number of previous quit attempts</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Has never smoked menthol cigarettes</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Has never tried cigars</td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Has not tried nicotine gum during a previous quit attempt</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Has spent a lot of time obtaining, smoking, or recovering from cigarettes (DSM-5 Item 10)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
@@ -4659,34 +4622,6 @@ Retained Interaction Features
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">Smoked despite relationship problems (DSM-5 Item 3)</td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Smoked knowing it was causing or worsening a health problem (DSM-5 Item 12)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">+</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Smoked to get rid of withdrawal feelings (DSM-5 Item 7)</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Smokes when so ill they are in bed most of the day (FTND Item 6)</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
 <td style="text-align: left;">Tried Zyban (bupropion) during previous attempt</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-</td>
@@ -4697,6 +4632,118 @@ Retained Interaction Features
 <td style="text-align: left;">Tried nicotine gum during previous quit attempt</td>
 <td style="text-align: center;">+</td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses feeling alone without their cigarettes</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses feeling like cigarattes are their best friends</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses feeling that cigarettes rule their life</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses having a lot of friends or family members smoke</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses most of the people they spend time with are smokers</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses smoking helps them think better</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses that most of their friends and acquaintances smoke</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WISDM-37: Endorses weight control as a major reason they smoke</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by constipation</td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by coughing</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by craving a cigarette</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by feeling hopeless or discouraged</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by having trouble getting cigarettes of their mind</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by having urges to smoke</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by waking frequently during the night</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">WSWS-2: Bothered by wanting to smoke</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">

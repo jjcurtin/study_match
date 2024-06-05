@@ -78,8 +78,14 @@ options(tibble.print_max = Inf)
 
 Read in final model predictions (LOOCV)
 ```{r}
+y_col_4 <- "pp_hybrid_wk4_outcome"
 y_col_12 <- "pp_hybrid_wk12_outcome"
 y_col_26 <- "pp_hybrid_wk26_outcome"
+
+d_cal_4 <- read_csv(file.path(path_models, y_col_4,
+                               str_c("aim_2_", version, "_", y_col_4, ".csv")),
+                     show_col_types = FALSE) |> 
+  glimpse()
 
 d_cal_12 <- read_csv(file.path(path_models, y_col_12,
                                str_c("aim_2_", version, "_", y_col_12, ".csv")),
@@ -95,6 +101,18 @@ d_cal_26 <- read_csv(file.path(path_models, y_col_26,
 
 Set up data
 ```{r}
+d_cal_4 <- d_cal_4 |> 
+  mutate(.pred_abstinent = case_when(
+    tx_rct == "patch" ~ prob_patch,
+    tx_rct == "combo_nrt" ~ prob_combo_nrt,
+    tx_rct == "varenicline" ~ prob_varenicline,
+    TRUE ~ NA_real_
+  )) |> 
+  select(outcome_rct = outcome_rct_wk4, .pred_abstinent) |> 
+  mutate(outcome_rct = factor(outcome_rct,
+                              levels = c("abstinent", "smoking"))) |> 
+  glimpse()
+
 d_cal_12 <- d_cal_12 |> 
   mutate(.pred_abstinent = case_when(
     tx_rct == "patch" ~ prob_patch,
@@ -118,6 +136,37 @@ d_cal_26 <- d_cal_26 |>
   mutate(outcome_rct = factor(outcome_rct,
                               levels = c("abstinent", "smoking"))) |> 
   glimpse()
+```
+
+Created binned plot
+```{r}
+#| label: fig-cal-bins-wk4
+
+bin_width = 0.10
+
+fig_cal_bins <- d_cal_4 |> 
+  rename(prob_raw = .pred_abstinent) |> 
+  mutate(bins = cut(prob_raw, breaks = seq(0, 1, bin_width)),
+         abstinent = if_else(outcome_rct == "abstinent", 1, 0)) |> 
+  group_by(bins)  |> 
+  summarize(mean_abstinent = mean(abstinent),
+            .groups = "drop") |>
+  mutate(bins = as.numeric(bins),
+         midpoints = bin_width/2 + bin_width * (bins - 1))  |> 
+  ggplot(data = _, aes(x = midpoints, y = mean_abstinent)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_line() +
+  geom_point() +
+  xlab("Predicted Abstinence Probability (bin mid-point)") +
+  ylab("Observed Abstinence Probability") +
+  scale_x_continuous(breaks = seq(0, 1, bin_width),
+                     limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, bin_width),
+                     limits = c(0, 1)) +
+  theme(axis.text = element_text(size = rel(1)),
+        axis.title = element_text(size = rel(1)))
+
+fig_cal_bins_4
 ```
 
 Created binned plot week 12
@@ -190,13 +239,13 @@ fig_cal_bins_26
 
 ```{r}
 #| label: fig-cal-supp
-#| fig-cap: "Supplemental Figure 4: Binned calibration plots. A) 12-week model. B) 26-week model"
+#| fig-cap: "Figure 7 (Supplemental): Binned calibration plots. A) 4-week model. B) 12-week model. C) 26-week model."
 #| fig-height: 9
 
-fig_cal_supp <- (fig_cal_bins_12 / fig_cal_bins_26) +
+fig_cal_supp <- (fig_cal_bins_4 / fig_cal_bins_12 / fig_cal_bins_26) +
   plot_layout(ncol = 1,
-              heights = unit(c(3, 3), "in"),
-              widths = unit(c(4, 4), "in")) +
+              heights = unit(c(2.5, 2.5, 2.5), "in"),
+              widths = unit(c(3.5, 3.5, 3.5), "in")) +
   plot_annotation(tag_levels = "A")
 
 fig_cal_supp

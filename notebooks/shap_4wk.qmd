@@ -181,6 +181,7 @@ fig_shap_global <- global_fig |>
     color = "Feature Type",
     title = "Top Features Overall"
   ) +
+  scale_y_continuous(breaks = c(0.01, 0.02, 0.03)) +
   coord_flip() +
   theme(legend.position = "bottom",
         axis.text = element_text(size = rel(0.75)),
@@ -202,6 +203,7 @@ fig_shap_global_tx <- global_tx |>
     y = "Mean |Shapley value|",
     title = "Top Interaction Features"
   ) +
+  scale_y_continuous(breaks = c(0.005, 0.01)) +
   coord_flip() +
   theme(legend.position = "none",
         axis.text = element_text(size = rel(0.75)),

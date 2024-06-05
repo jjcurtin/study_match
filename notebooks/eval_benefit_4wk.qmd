@@ -210,8 +210,7 @@ x_pred <- tibble(
 y_pred <- predict(model_bayes, x_pred, type = "response")
 
 d_pred <- x_pred |> 
-  mutate(pred_value = y_pred) |> 
-  mutate(c4_week = )
+  mutate(pred_value = y_pred) 
 ```
 
 

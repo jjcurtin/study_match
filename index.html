@@ -428,7 +428,7 @@ div.csl-indent {
 <div id="tbl-featureshtml" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-featureshtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Individual Differences
+Table&nbsp;1: Individual Differences Characteristics Available for Model Features
 </figcaption>
 <div aria-describedby="tbl-featureshtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -1129,7 +1129,7 @@ Table&nbsp;2: Demographic Characteristics
 <div id="tbl-smoking-chars" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-smoking-chars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Smoking-related ID Characteristics
+Table&nbsp;3: Smoking Use &amp; History Characteristics
 </figcaption>
 <div aria-describedby="tbl-smoking-chars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -1242,10 +1242,10 @@ Table&nbsp;3: Smoking-related ID Characteristics
 <div id="fig-combined" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="index_files/figure-html/notebooks-mak_fig_1-fig-combined-output-1.png" width="672" height="960" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.
+Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their randomly-assigned treatment from the trial. Dotted line indicates perfect calibration.
 </figcaption>
 </figure>
 </div>
@@ -1263,7 +1263,7 @@ Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted acro
 <section id="retained-features" class="level5">
 <h5 class="anchored" data-anchor-id="retained-features">Retained features</h5>
 <p>Our final model fit with the full dataset retained retained 155 features. Tables with all retained features as well as their precise parameter estimates appear in the Supplement.</p>
-<p>Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in <a href="#tbl-int-features" class="quarto-xref">Table&nbsp;4</a>, grouped by feature category from <span><a href="#tbl-featureshtml" class="quarto-xref">Table&nbsp;1</a></span>. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased abstinence when using that specific treatment (vs.&nbsp;the other two treatments).</p>
+<p>Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in <a href="#tbl-int-features" class="quarto-xref">Table&nbsp;4</a>, grouped by feature category from <span><a href="#tbl-featureshtml" class="quarto-xref">Table&nbsp;1</a></span>. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased the probability of treatment success when using that specific treatment (vs.&nbsp;the other two treatments).</p>
 <div class="quarto-embed-nb-cell">
 <div class="cell" data-tbl-cap-location="top">
 <div id="tbl-int-features" class="cell quarto-float anchored" data-tbl-cap-location="top">
@@ -1817,18 +1817,18 @@ Table&nbsp;4: Retained Interaction Features
 </div>
 </div>
 <a class="quarto-notebook-link" id="nblink-5" href="notebooks\mak_tables-preview.html#cell-tbl-int-features">Source: Make All Tables for Main Manuscript</a></div>
-<p>To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment).</p>
+<p>To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment).</p>
 </section>
 <section id="feature-importance-via-shapley-values" class="level5">
 <h5 class="anchored" data-anchor-id="feature-importance-via-shapley-values">Feature importance via Shapley values</h5>
-<p>Global feature importance (mean |Shapley value|) from our model appear in <a href="#fig-shap-global" class="quarto-xref">Figure&nbsp;2</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of features. Six of the top 25 most globally important features were treatment interactions.</p>
+<p>Global feature importance (mean |Shapley value|) from our model appear in <a href="#fig-shap-global" class="quarto-xref">Figure&nbsp;2</a>, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-shap-global" class="cell" data-fig-height="9">
 <div class="cell-output cell-output-display">
 <div id="fig-shap-global" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-global-output-1.png" width="672" height="864" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.
@@ -1838,6 +1838,23 @@ Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magn
 </div>
 </div>
 <a class="quarto-notebook-link" id="nblink-6" href="notebooks\shap_4wk-preview.html#cell-fig-shap-global">Source: SHAP for 4-Week Model</a></div>
+<p>Global feature importance grouped by feature type (main effect or interaction) appear in <a href="#fig-shap-grouped" class="quarto-xref">Figure&nbsp;3</a>. Main effect features were relatively more important than treatment interaction features for predicting overall treatment success.</p>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-shap-grouped" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-shap-grouped" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shap-grouped-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-shap_4wk-fig-shap-grouped-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="index_files/figure-html/notebooks-shap_4wk-fig-shap-grouped-output-1.png" width="672" height="480" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-grouped-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Global feature importance via Shapley values grouped by feature type (main effect or interaction feature)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-7" href="notebooks\shap_4wk-preview.html#cell-fig-shap-grouped">Source: SHAP for 4-Week Model</a></div>
 </section>
 </section>
 </section>
@@ -1845,23 +1862,23 @@ Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magn
 <h3 class="anchored" data-anchor-id="aim-2-results-clinical-benefit">AIM 2 results: Clinical benefit</h3>
 <p>There was a significant fixed effect of treatment matching on abstinence (odds ratio [OR] = 1.851, <em>z</em> = 2.862, <em>p</em> = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = 0.210, <em>z</em> = -10.053, <em>p</em> &lt; 0.001) such that the probability of abstinence declined over time.</p>
 <p>There was not a significant interaction between treatment matching and time (<em>p</em> = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used <span class="citation" data-cites="karaca-mandicInteractionTermsNonlinear2012 collinsOptimizationBehavioralBiobehavioral2018">(<a href="#ref-karaca-mandicInteractionTermsNonlinear2012" role="doc-biblioref">Karaca-Mandic, Norton, and Dowd 2012</a>; <a href="#ref-collinsOptimizationBehavioralBiobehavioral2018" role="doc-biblioref">Collins 2018</a>)</span>. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This allowed us to characterize our results more fully and to understand our effects in their original probability terms.</p>
-<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = 1.382, <em>z</em> = 2.452, <em>p</em> = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). <a href="#fig-clin-ben-wk4" class="quarto-xref">Figure&nbsp;3</a> shows the mean abstinence rate by treatment matching at each time point.</p>
+<p>There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = 1.382, <em>z</em> = 2.452, <em>p</em> = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (<em>p</em> = 0.232) or at the 26-week follow-up assessment (<em>p</em> = 0.943). <a href="#fig-clin-ben-wk4" class="quarto-xref">Figure&nbsp;4</a> shows the mean abstinence rate by treatment matching at each time point.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk4" class="cell">
 <div class="cell-output cell-output-display">
-<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored" width="672" height="480">
+<div id="fig-clin-ben-wk4" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" id="fig-clin-ben-wk4" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-output-2.png" width="672" height="480" class="figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clin-ben-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Benefit of treatment matching. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-7" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
+<a class="quarto-notebook-link" id="nblink-8" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
 </section>
 </section>
 <section id="discussion" class="level2">
@@ -1960,89 +1977,95 @@ Figure&nbsp;3
 <h3 class="anchored" data-anchor-id="aim-1-results-prediction-models-1">AIM 1 results: Prediction models</h3>
 <section id="model-performance-1" class="level4">
 <h4 class="anchored" data-anchor-id="model-performance-1">Model performance</h4>
-<p>We selected the best model configurations using auROCs from the <em>validation sets</em> (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features in inner folds). We evaluated these best model configurations using <em>test set</em> performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was 0.665 (IQR = 0.628 - 0.697, range = 0.535 - 0.788). The median auROC across the 30 test sets for the 26-week model was 0.629 (IQR = 0.573 - 0.658, range = 0.474 - 0.743). The single, concatenated ROC curve and the 30 individual ROC curves (one per held-out fold) for the 4-, 12-, and 26-week models appear in <a href="#fig-roc-all" class="quarto-xref">Figure&nbsp;4</a>.</p>
+<p>We selected the best model configurations using auROCs from the <em>validation sets</em> (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features in inner folds). We evaluated these best model configurations using <em>test set</em> performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was 0.665 (IQR = 0.628 - 0.697, range = 0.535 - 0.788). The median auROC across the 30 test sets for the 26-week model was 0.629 (IQR = 0.573 - 0.658, range = 0.474 - 0.743). The single, concatenated ROC curve and the 30 individual ROC curves (one per held-out fold) for the 4-, 12-, and 26-week models appear in <a href="#fig-roc-all" class="quarto-xref">Figure&nbsp;5</a>.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-roc-all" class="cell" data-fig-height="10">
 <div class="cell-output cell-output-display">
 <div id="fig-roc-all" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-roc-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-mak_fig_roc_supp-fig-roc-all-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="index_files/figure-html/notebooks-mak_fig_roc_supp-fig-roc-all-output-1.png" width="672" height="960" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-mak_fig_roc_supp-fig-roc-all-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" data-glightbox="description: .lightbox-desc-5"><img src="index_files/figure-html/notebooks-mak_fig_roc_supp-fig-roc-all-output-1.png" width="672" height="960" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Supplemental Figure 1: ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model.
+Figure&nbsp;5: (Supplemental) ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-8" href="notebooks\mak_fig_roc_supp-preview.html#cell-fig-roc-all">Source: Make 30-fold ROC Figure (Supplement)</a></div>
-<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.663 [Bayesian CI: 0.640 - 0.685] for the 12-week model and 0.620 [Bayesian CI: 0.596 - 0.644] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). <a href="#fig-posteriors" class="quarto-xref">Figure&nbsp;5</a> displays the posterior probability distributions for these models’ auROCs alongside the posterior probability distribution for the 4-week model’s auROCs.</p>
+<a class="quarto-notebook-link" id="nblink-9" href="notebooks\mak_fig_roc_supp-preview.html#cell-fig-roc-all">Source: Make 30-fold ROC Figure (Supplement)</a></div>
+<p>We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.663 [Bayesian CI: 0.640 - 0.685] for the 12-week model and 0.620 [Bayesian CI: 0.596 - 0.644] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). <a href="#fig-posteriors" class="quarto-xref">Figure&nbsp;6</a> displays the posterior probability distributions for these models’ auROCs alongside the posterior probability distribution for the 4-week model’s auROCs.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-posteriors" class="cell fig-cap-location-top">
 <div class="cell-output cell-output-display">
 <div id="fig-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored" data-cap-location="top">
 <figure class="quarto-float quarto-float-fig figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Supplemental Figure 2: Posterior Probability Distributions around model auROCs
+Figure&nbsp;6: (Supplemental) Posterior probability distributions for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval.
 </figcaption>
 <div aria-describedby="fig-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-ana_bayes_match-fig-posteriors-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5"><img src="index_files/figure-html/notebooks-ana_bayes_match-fig-posteriors-output-1.png" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-ana_bayes_match-fig-posteriors-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" data-glightbox="description: .lightbox-desc-6"><img src="index_files/figure-html/notebooks-ana_bayes_match-fig-posteriors-output-1.png" width="672" height="480" class="figure-img"></a>
 </div>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-9" href="notebooks\ana_bayes_match-preview.html#cell-fig-posteriors">Source: Posterior probabilities across models for MATCH study</a></div>
+<a class="quarto-notebook-link" id="nblink-10" href="notebooks\ana_bayes_match-preview.html#cell-fig-posteriors">Source: Posterior probabilities across models for MATCH study</a></div>
 </section>
 <section id="model-comparisons" class="level4">
 <h4 class="anchored" data-anchor-id="model-comparisons">Model comparisons</h4>
-<p>We used the posterior probability distributions for the auROCs to compare the 4-, 12-, and 26-week models. The median increase in auROC for the 4- vs.&nbsp;12-week model was 0.029 (95% CI = 0.010 - 0.049), yielding a probability of 99.8% that the 4-week model had superior performance. The median increase in auROC for the 4- vs.&nbsp;26-week model was 0.072 (95% CI = 0.052 - 0.092), yielding a probability of 100% that the 4-week model had superior performance. The median increase in auROC for the 12- vs.&nbsp;26-week model was 0.043 (95% CI = 0.022 - 0.064), yielding a probability of 100% that the 12-week model had superior performance. <a href="#fig-contrasts" class="quarto-xref">Figure&nbsp;6</a> presents histograms of the posterior probability distributions for these model contrasts.</p>
+<p>We used the posterior probability distributions for the auROCs to compare the 4-, 12-, and 26-week models. The median increase in auROC for the 4- vs.&nbsp;12-week model was 0.029 (95% CI = 0.010 - 0.049), yielding a probability of 99.8% that the 4-week model had superior performance. The median increase in auROC for the 4- vs.&nbsp;26-week model was 0.072 (95% CI = 0.052 - 0.092), yielding a probability of 100% that the 4-week model had superior performance. The median increase in auROC for the 12- vs.&nbsp;26-week model was 0.043 (95% CI = 0.022 - 0.064), yielding a probability of 100% that the 12-week model had superior performance. <a href="#fig-contrasts" class="quarto-xref">Figure&nbsp;7</a> presents histograms of the posterior probability distributions for these model contrasts.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-contrasts" class="cell fig-cap-location-top">
 <div class="cell-output cell-output-display">
 <div id="fig-contrasts" class="quarto-figure quarto-figure-center quarto-float anchored" data-cap-location="top">
 <figure class="quarto-float quarto-float-fig figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-contrasts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Supplemental Figure 3: Posterior Probability Distributions around Model Contrasts
+Figure&nbsp;7: (Supplemental) Posterior probability distributions for the model contrasts. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval.
 </figcaption>
 <div aria-describedby="fig-contrasts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-ana_bayes_match-fig-contrasts-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-6" data-gallery="quarto-lightbox-gallery-6"><img src="index_files/figure-html/notebooks-ana_bayes_match-fig-contrasts-output-1.png" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-ana_bayes_match-fig-contrasts-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" data-glightbox="description: .lightbox-desc-7"><img src="index_files/figure-html/notebooks-ana_bayes_match-fig-contrasts-output-1.png" width="672" height="480" class="figure-img"></a>
 </div>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-10" href="notebooks\ana_bayes_match-preview.html#cell-fig-contrasts">Source: Posterior probabilities across models for MATCH study</a></div>
+<a class="quarto-notebook-link" id="nblink-11" href="notebooks\ana_bayes_match-preview.html#cell-fig-contrasts">Source: Posterior probabilities across models for MATCH study</a></div>
 </section>
 <section id="model-calibration-1" class="level4">
 <h4 class="anchored" data-anchor-id="model-calibration-1">Model calibration</h4>
-<p>In <a href="#fig-cal-supp" class="quarto-xref">Figure&nbsp;7</a>, we display the calibration for the 4-week model (reproduced from main text; Panel A), the 12-week model (Panel B) and 26-week model (Panel C). Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15).</p>
+<p>In <a href="#fig-cal-supp" class="quarto-xref">Figure&nbsp;8</a>, we display the calibration for the 4-week model (reproduced from main text; Panel A), the 12-week model (Panel B) and 26-week model (Panel C). Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15).</p>
 <p>Each figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities were relatively well calibrated and ordinal in their relationship with the true probability of abstinence for both the 12- and 26-week models. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.</p>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-cal-supp" class="cell" data-fig-height="9">
+<div id="cell-fig-cal-supp" class="cell" data-fig-height="11">
 <div class="cell-output cell-output-display">
 <div id="fig-cal-supp" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cal-supp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-mak_fig_cal_supp-fig-cal-supp-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-7" data-gallery="quarto-lightbox-gallery-7"><img src="index_files/figure-html/notebooks-mak_fig_cal_supp-fig-cal-supp-output-1.png" width="672" height="864" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-mak_fig_cal_supp-fig-cal-supp-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" data-glightbox="description: .lightbox-desc-8"><img src="index_files/figure-html/notebooks-mak_fig_cal_supp-fig-cal-supp-output-1.png" width="672" height="1056" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cal-supp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Figure 7 (Supplemental): Binned calibration plots. A) 4-week model. B) 12-week model. C) 26-week model.
+Figure&nbsp;8: (Supplemental) Binned calibration plots. A) 4-week model. B) 12-week model. C) 26-week model.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-11" href="notebooks\mak_fig_cal_supp-preview.html#cell-fig-cal-supp">Source: Make Calibration Figures (Supplement)</a></div>
+<a class="quarto-notebook-link" id="nblink-12" href="notebooks\mak_fig_cal_supp-preview.html#cell-fig-cal-supp">Source: Make Calibration Figures (Supplement)</a></div>
 </section>
 <section id="model-interpretation-2" class="level4">
 <h4 class="anchored" data-anchor-id="model-interpretation-2">Model interpretation</h4>
-<p>The names of all retained features and their parameter estimates from the final 4-week model appear in <strong>?@tbl-retained-vars-wk4</strong>. Retained features for the 4-week model are discussed in detail in the main manuscript.</p>
+<p>The names of all retained features and their parameter estimates from the final 4-week model appear in <a href="#tbl-retained-vars-wk4" class="quarto-xref">Table&nbsp;5</a>. Retained features for the 4-week model are discussed in detail in the main manuscript.</p>
 <div class="quarto-embed-nb-cell">
-<div id="tbl-retained-vars-wk4" class="cell anchored">
+<div class="cell">
+<div id="tbl-retained-vars-wk4" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-retained-vars-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Supplemental Table 1: Retained features in 4-week final model
+</figcaption>
+<div aria-describedby="tbl-retained-vars-wk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
-<table class="table table-sm table-striped small">
+<table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
 <col style="width: 85%">
 <col style="width: 12%">
@@ -2676,16 +2699,24 @@ Figure&nbsp;7: Figure 7 (Supplemental): Binned calibration plots. A) 4-week mode
 </tr>
 </tbody>
 </table>
-<p>Supplemental Table 1: Retained features in 4-week final model</p>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-12" href="notebooks\fit_final_model_4wk-preview.html#cell-tbl-retained-vars-wk4">Source: Fits and characterizes final model for 4-week outcome</a></div>
-<p>Our final 12-week model fit with the full dataset retained retained 111 features (<strong>?@tbl-retained-vars-wk12</strong>). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction features.</p>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-13" href="notebooks\fit_final_model_4wk-preview.html#cell-tbl-retained-vars-wk4">Source: Fits and characterizes final model for 4-week outcome</a></div>
+<p>Our final 12-week model fit with the full dataset retained retained 111 features (<a href="#tbl-retained-vars-wk12" class="quarto-xref">Table&nbsp;6</a>). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction features.</p>
 <p>To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 29 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment).</p>
 <div class="quarto-embed-nb-cell">
-<div id="tbl-retained-vars-wk12" class="cell anchored">
+<div class="cell">
+<div id="tbl-retained-vars-wk12" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-retained-vars-wk12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Supplemental Table 2: Retained features in 12-week final model
+</figcaption>
+<div aria-describedby="tbl-retained-vars-wk12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
-<table class="table table-sm table-striped small">
+<table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
 <col style="width: 84%">
 <col style="width: 12%">
@@ -3143,16 +3174,24 @@ Figure&nbsp;7: Figure 7 (Supplemental): Binned calibration plots. A) 4-week mode
 </tr>
 </tbody>
 </table>
-<p>Supplemental Table 2: Retained features in 12-week final model</p>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-13" href="notebooks\fit_final_model_12wk-preview.html#cell-tbl-retained-vars-wk12">Source: Fits and characterizes final model for 12-week outcome</a></div>
-<p>Our final 26-week model fit with the full dataset retained retained 107 features (<strong>?@tbl-retained-vars-wk26</strong>). Of these, 45 were treatment interaction features. Like above, variability among folds led to the final model having slightly fewer than 50 retained interaction features.</p>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-14" href="notebooks\fit_final_model_12wk-preview.html#cell-tbl-retained-vars-wk12">Source: Fits and characterizes final model for 12-week outcome</a></div>
+<p>Our final 26-week model fit with the full dataset retained retained 107 features (<a href="#tbl-retained-vars-wk26" class="quarto-xref">Table&nbsp;7</a>). Of these, 45 were treatment interaction features. Like above, variability among folds led to the final model having slightly fewer than 50 retained interaction features.</p>
 <p>To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 36 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment).</p>
 <div class="quarto-embed-nb-cell">
-<div id="tbl-retained-vars-wk26" class="cell anchored">
+<div class="cell">
+<div id="tbl-retained-vars-wk26" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-retained-vars-wk26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Supplemental Table 3: Retained features in 26-week final model
+</figcaption>
+<div aria-describedby="tbl-retained-vars-wk26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
-<table class="table table-sm table-striped small">
+<table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
 <col style="width: 85%">
 <col style="width: 12%">
@@ -3596,71 +3635,75 @@ Figure&nbsp;7: Figure 7 (Supplemental): Binned calibration plots. A) 4-week mode
 </table>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-14" href="notebooks\fit_final_model_26wk-preview.html#cell-tbl-retained-vars-wk26">Source: Fits and characterizes final model for 26-week outcome</a></div>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-15" href="notebooks\fit_final_model_26wk-preview.html#cell-tbl-retained-vars-wk26">Source: Fits and characterizes final model for 26-week outcome</a></div>
 </section>
 </section>
 <section id="aim-2-results-clinical-benefit-1" class="level3">
 <h3 class="anchored" data-anchor-id="aim-2-results-clinical-benefit-1">AIM 2 results: Clinical benefit</h3>
-<p>There was no significant fixed effect of treatment matching for the 12-week (<em>p</em> = 0.279) or the 26-week (<em>p</em> = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (<em>p</em> = 0.660) or the 26-week (<em>p</em> = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, <em>z</em> = -9.973, <em>p</em> &lt; 0.001; 26-week model: OR = 0.208, <em>z</em> = -10.050, <em>p</em> &lt; 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes in <a href="#fig-clin-ben-wk4-supp" class="quarto-xref">Figure&nbsp;8</a>. <a href="#fig-clin-ben-wk12" class="quarto-xref">Figure&nbsp;9</a> and <a href="#fig-clin-ben-wk26" class="quarto-xref">Figure&nbsp;10</a> follow the same figure format for the 12- and 26-week models, respectively.</p>
+<p>There was no significant fixed effect of treatment matching for the 12-week (<em>p</em> = 0.279) or the 26-week (<em>p</em> = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (<em>p</em> = 0.660) or the 26-week (<em>p</em> = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, <em>z</em> = -9.973, <em>p</em> &lt; 0.001; 26-week model: OR = 0.208, <em>z</em> = -10.050, <em>p</em> &lt; 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes in <a href="#fig-clin-ben-wk4-supp" class="quarto-xref">Figure&nbsp;9</a>. <a href="#fig-clin-ben-wk12" class="quarto-xref">Figure&nbsp;10</a> and <a href="#fig-clin-ben-wk26" class="quarto-xref">Figure&nbsp;11</a> follow the same figure format for the 12- and 26-week models, respectively.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk4-supp" class="cell">
 <div class="cell-output cell-output-display">
-<div id="fig-clin-ben-wk4-supp" class="quarto-figure quarto-figure-center quarto-float anchored" width="672" height="480">
+<div id="fig-clin-ben-wk4-supp" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk4-supp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-supp-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-8" data-gallery="quarto-lightbox-gallery-8"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-supp-output-2.png" id="fig-clin-ben-wk4-supp" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-supp-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" data-glightbox="description: .lightbox-desc-9"><img src="index_files/figure-html/notebooks-eval_benefit_4wk-fig-clin-ben-wk4-supp-output-2.png" width="672" height="480" class="figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-clin-ben-wk4-supp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clin-ben-wk4-supp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: (Supplemental; reproduced from main text) Benefit of treatment matching from 4-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-15" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4-supp">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
+<a class="quarto-notebook-link" id="nblink-16" href="notebooks\eval_benefit_4wk-preview.html#cell-fig-clin-ben-wk4-supp">Source: Evaluation of Clinical Benefit: Week 4 Model</a></div>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk12" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-clin-ben-wk12" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_12wk-fig-clin-ben-wk12-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-9" data-gallery="quarto-lightbox-gallery-9"><img src="index_files/figure-html/notebooks-eval_benefit_12wk-fig-clin-ben-wk12-output-2.png" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_12wk-fig-clin-ben-wk12-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" data-glightbox="description: .lightbox-desc-10"><img src="index_files/figure-html/notebooks-eval_benefit_12wk-fig-clin-ben-wk12-output-2.png" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clin-ben-wk12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Supplemental Figure 5: Evaluation of clinical benefit of 12-week prediction model
+Figure&nbsp;10: (Supplemental) Benefit of treatment matching from 12-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-16" href="notebooks\eval_benefit_12wk-preview.html#cell-fig-clin-ben-wk12">Source: Evaluation of Clinical Benefit: Week 12 Model</a></div>
+<a class="quarto-notebook-link" id="nblink-17" href="notebooks\eval_benefit_12wk-preview.html#cell-fig-clin-ben-wk12">Source: Evaluation of Clinical Benefit: Week 12 Model</a></div>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-clin-ben-wk26" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-clin-ben-wk26" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clin-ben-wk26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eval_benefit_26wk-fig-clin-ben-wk26-output-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-10" data-gallery="quarto-lightbox-gallery-10"><img src="index_files/figure-html/notebooks-eval_benefit_26wk-fig-clin-ben-wk26-output-2.png" width="672" height="480" class="figure-img"></a>
+<a href="index_files/figure-html/notebooks-eval_benefit_26wk-fig-clin-ben-wk26-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" data-glightbox="description: .lightbox-desc-11"><img src="index_files/figure-html/notebooks-eval_benefit_26wk-fig-clin-ben-wk26-output-2.png" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clin-ben-wk26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Supplemental Figure 6: Evaluation of clinical benefit of 26-week prediction model
+Figure&nbsp;11: (Supplemental) Benefit of treatment matching from 12-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<a class="quarto-notebook-link" id="nblink-17" href="notebooks\eval_benefit_26wk-preview.html#cell-fig-clin-ben-wk26">Source: Evaluation of Clinical Benefit: Week 26 Model</a></div>
+<a class="quarto-notebook-link" id="nblink-18" href="notebooks\eval_benefit_26wk-preview.html#cell-fig-clin-ben-wk26">Source: Evaluation of Clinical Benefit: Week 26 Model</a></div>
 <div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration.</span>
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their randomly-assigned treatment from the trial. Dotted line indicates perfect calibration.</span>
 <span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features.</span>
-<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: </span>
-<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;4: Supplemental Figure 1: ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model.</span>
-<span class="glightbox-desc lightbox-desc-5">Figure&nbsp;5: Supplemental Figure 2: Posterior Probability Distributions around model auROCs</span>
-<span class="glightbox-desc lightbox-desc-6">Figure&nbsp;6: Supplemental Figure 3: Posterior Probability Distributions around Model Contrasts</span>
-<span class="glightbox-desc lightbox-desc-7">Figure&nbsp;7: Figure 7 (Supplemental): Binned calibration plots. A) 4-week model. B) 12-week model. C) 26-week model.</span>
-<span class="glightbox-desc lightbox-desc-8">Figure&nbsp;8: </span>
-<span class="glightbox-desc lightbox-desc-9">Figure&nbsp;9: Supplemental Figure 5: Evaluation of clinical benefit of 12-week prediction model</span>
-<span class="glightbox-desc lightbox-desc-10">Figure&nbsp;10: Supplemental Figure 6: Evaluation of clinical benefit of 26-week prediction model</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: Global feature importance via Shapley values grouped by feature type (main effect or interaction feature)</span>
+<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;4: Benefit of treatment matching. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.</span>
+<span class="glightbox-desc lightbox-desc-5">Figure&nbsp;5: (Supplemental) ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model.</span>
+<span class="glightbox-desc lightbox-desc-6">Figure&nbsp;6: (Supplemental) Posterior probability distributions for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval.</span>
+<span class="glightbox-desc lightbox-desc-7">Figure&nbsp;7: (Supplemental) Posterior probability distributions for the model contrasts. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval.</span>
+<span class="glightbox-desc lightbox-desc-8">Figure&nbsp;8: (Supplemental) Binned calibration plots. A) 4-week model. B) 12-week model. C) 26-week model.</span>
+<span class="glightbox-desc lightbox-desc-9">Figure&nbsp;9: (Supplemental; reproduced from main text) Benefit of treatment matching from 4-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.</span>
+<span class="glightbox-desc lightbox-desc-10">Figure&nbsp;10: (Supplemental) Benefit of treatment matching from 12-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.</span>
+<span class="glightbox-desc lightbox-desc-11">Figure&nbsp;11: (Supplemental) Benefit of treatment matching from 12-week prediction model. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors.</span>
 </div>
 
 </section>
@@ -4436,7 +4479,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

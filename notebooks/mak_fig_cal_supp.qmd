@@ -190,7 +190,8 @@ fig_cal_bins_26
 
 ```{r}
 #| label: fig-cal-supp
-#| fig-cap: "Binned calibration plots. A) 12-week model. B) 26-week model"
+#| fig-cap: "Supplemental Figure 4: Binned calibration plots. A) 12-week model. B) 26-week model"
+#| fig-height: 9
 
 fig_cal_supp <- (fig_cal_bins_12 / fig_cal_bins_26) +
   plot_layout(ncol = 1,

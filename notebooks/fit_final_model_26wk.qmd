@@ -152,7 +152,7 @@ model_tidy |>
 
 
 ```{r tbl-retained-vars}
-#| label: tbl-retained-vars-26wk
+#| label: tbl-retained-vars-wk26
 retained_vars <- model_tidy |> 
   mutate(estimate = estimate * -1) |> 
   filter(abs(estimate) > 0) |> 
@@ -164,7 +164,7 @@ knitr::kable(retained_vars, digits = 4)
 `r round((nrow(retained_vars) / nrow(model_tidy)) * 100, digits = 2)`% of features were retained by the glmnet solution (`r nrow(retained_vars)` features of a total considered `r nrow(model_tidy)` features).
 
 ```{r tbl-retained-int}
-#| label: tbl-retained-tx-26wk
+#| label: tbl-retained-tx-wk26
 #| fig-cap: "Supplemental Table 3: Retained features in 26-week final model"
 retained_vars_tx <- retained_vars |> 
   filter(str_detect(term, "treatment_")) |> 

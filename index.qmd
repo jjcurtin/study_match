@@ -581,7 +581,7 @@ To perform treatment selection, only interactive features would need to be asses
 
 There was no significant fixed effect of treatment matching for the 12-week (*p* = 0.279) or the 26-week (*p* = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (*p* = 0.660) or the 26-week (*p* = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, *z* = -9.973, *p* < 0.001; 26-week model: OR = 0.208, *z* = -10.050, *p* < 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes; @fig-clin-ben-wk12 and @fig-clin-ben-wk26 follow the same figure format for the 12- and 26-week models, respectively.
 
-{{< embed notebooks/eval_benefit_12wk.qmd#fig-clin-ben-wk4 >}}
+{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}}
 
 {{< embed notebooks/eval_benefit_12wk.qmd#fig-clin-ben-wk12 >}}
 

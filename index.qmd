@@ -137,11 +137,11 @@ In summary, many opportunities exist for differential treatment selection among 
 
 The goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. Specifically, we pursued the following aims:
 
-**AIM 1: Build a machine learning model to predict cigarette smoking cessation.** We built a model that could predict smoking cessation treatment success (i.e., point-prevalence abstinence) at 4 weeks post-quit. This model used retrospective data from a previously completed comparative effectiveness trial wherein individuals who smoke were randomized to treatments, richly characterized at baseline, and followed to assess short- and long-term abstinence [@bakerEffectsNicotinePatch2016]. 
+**AIM 1: Build a machine learning model to predict cigarette smoking cessation.** We built a model that could predict treatment success at 4 weeks post-quit. This model used retrospective data from a previously completed comparative effectiveness trial wherein individuals who smoke were randomized to treatments, richly characterized at baseline, and followed to assess short- and long-term treatment success [@bakerEffectsNicotinePatch2016]. 
 
 **AIM 2: Evaluate the clinical benefit of using our prediction model for differential treatment selection.** We used the prediction model to identify the best treatment for each person and evaluate whether individuals who received their best treatment were more likely to be abstinent in the original trial at 4 weeks, 12 weeks (end-of-treatment), and 6 months post-quit. 
 
-Across both Aims, we used rigorous resampling techniques to ensure that we evaluated our model's capacity to predict smoking cessation outcomes and select treatments in *new* patients. Additionally, we incorporated easy-to-collect self-report data as model inputs, and we employed a statistical algorithm that can reduce assessment requirements. These choices position our model for accessible clinical implementation.
+Across both AIMS, we used rigorous resampling techniques to ensure that we evaluated our model's capacity to predict smoking cessation outcomes and select treatments in *new* patients. Additionally, we incorporated easy-to-collect self-report data as model inputs, and we employed a statistical algorithm that can reduce assessment requirements. These choices position our model for accessible clinical implementation.
 
 ## Methods
 

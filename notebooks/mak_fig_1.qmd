@@ -231,12 +231,11 @@ fig_cal_bins
 ```{r}
 #| label: fig-combined
 #| fig-height: 10
-#| fig-cap: "Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the auROC. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their RCT-assigned treatment. Dotted line indicates perfect calibration."
+#| fig-cap: "Model performance for prediction model. A) ROC curve plotted across all values of sensitivity (true positive rate) and specificity (1 - false positive rate). Dotted line indicates chance performance. B) Posterior probability distribution for the median auROC in test sets. Histogram represents posterior probability distribution. Horizontal line displays 95% Bayesian credible interval. C) Model calibration between predicted probabilities and observed values. Predicted probabilities obtained via leave-one-out cross-validation for each participant for their randomly-assigned treatment from the trial. Dotted line indicates perfect calibration."
 
 patchwork <- fig_roc + fig_pp + fig_cal_bins 
 
 patchwork + plot_annotation(
-  title = "Model Performance",
   tag_levels = c("A", "B", "C")
 ) +
   plot_layout(ncol = 1, heights = unit(c(2.5,2.5,2.5), 'in'))

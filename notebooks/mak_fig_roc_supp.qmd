@@ -157,11 +157,11 @@ for (i in 1:nrow(roc_folds4)) {
 #add full concatenated curve
 fig_roc_all_wk4 <- fig_roc_folds4 +
   geom_path(data = roc_data4,
-            mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
+            mapping = aes(x = 1 - specificity, y = sensitivity, color = "red"),
             linewidth = 2) +
-  scale_color_gradient(low="blue", high="red") +
-  labs(color = "Threshold",
-       x = "False Positive Rate")
+  labs(x = "False Positive Rate",
+       title = "Week 4 ROC Curves") +
+  theme(legend.position = "none")
 
 fig_roc_all_wk4
 ```
@@ -204,11 +204,11 @@ for (i in 1:nrow(roc_folds12)) {
 #add full concatenated curve
 fig_roc_all_wk12 <- fig_roc_folds12 +
   geom_path(data = roc_data12,
-            mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
+            mapping = aes(x = 1 - specificity, y = sensitivity, color = "red"),
             linewidth = 2) +
-  scale_color_gradient(low="blue", high="red") +
-  labs(color = "Threshold",
-       x = "False Positive Rate")
+  labs(x = "False Positive Rate",
+       title = "Week 12 ROC Curves") +
+  theme(legend.position = "none")
 
 fig_roc_all_wk12
 ```
@@ -251,11 +251,11 @@ for (i in 1:nrow(roc_folds26)) {
 #add full concatenated curve
 fig_roc_all_wk26 <- fig_roc_folds26 +
   geom_path(data = roc_data26,
-            mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
+            mapping = aes(x = 1 - specificity, y = sensitivity, color = "red"),
             linewidth = 2) +
-  scale_color_gradient(low="blue", high="red") +
-  labs(color = "Threshold",
-       x = "False Positive Rate")
+  labs(x = "False Positive Rate",
+       title = "Week 26 ROC Curves") +
+  theme(legend.position = "none")
 
 fig_roc_all_wk26
 ```
@@ -264,11 +264,11 @@ fig_roc_all_wk26
 
 ```{r}
 #| label: fig-roc-all
-#| fig-cap: "ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, colored line displays ROC curve concatenated across all 30 held-out folds. ROC curves are plotted over all possible decision thresholds. A) 4-week model. B) 12-week model. C) 26-week model."
+#| fig-cap: "ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model."
+#| fig-height: 10
 
 fig_roc_all <- fig_roc_all_wk4 + fig_roc_all_wk12 + fig_roc_all_wk26 + 
-  plot_layout(ncol = 1,
-              guides = "keep") +
+  plot_layout(ncol = 1) +
   plot_annotation(tag_levels = "A")
 
 fig_roc_all

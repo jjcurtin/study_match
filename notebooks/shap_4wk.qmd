@@ -257,7 +257,7 @@ fig_shap_grouped <- global_grouped |>
     color = "Feature Type",
     title = "Grouped Shapley values"
   ) +
-  scale_y_continuous(limits = c(0.01, 0.12)) +
+  scale_y_continuous(limits = c(0.01, 0.12), breaks = c(0.025, 0.050, 0.075, 0.1)) +
   coord_flip() +
   theme(legend.position = "none",
         axis.text = element_text(size = rel(1.25)),

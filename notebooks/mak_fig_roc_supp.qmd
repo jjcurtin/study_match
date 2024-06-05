@@ -264,7 +264,7 @@ fig_roc_all_wk26
 
 ```{r}
 #| label: fig-roc-all
-#| fig-cap: "ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model."
+#| fig-cap: "Supplemental Figure 1: ROC Curves. Dotted, diagonal line represents chance performance (0.5). Grey lines display individual ROC curves from each of 30 held-out folds. Thick, red line displays ROC curve concatenated across all 30 held-out folds. A) 4-week model. B) 12-week model. C) 26-week model."
 #| fig-height: 10
 
 fig_roc_all <- fig_roc_all_wk4 + fig_roc_all_wk12 + fig_roc_all_wk26 + 

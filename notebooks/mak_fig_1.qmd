@@ -110,7 +110,7 @@ fig_roc <- roc_data %>%
   labs(x = "False Positive Rate",
        y = "True Positive Rate") +
   scale_x_continuous(breaks = seq(0,1,.25),
-                     labels = sprintf("%.2f", seq(1,0,-.25))) +
+                     labels = sprintf("%.2f", seq(0,1,.25))) +
   theme(axis.text = element_text(size = rel(1)),
         axis.title = element_text(size = rel(1)),
         legend.position = "none")
@@ -136,7 +136,7 @@ ci <- pp_tidy |>
   summary() |> 
   mutate(model = factor(model, levels = c("week_4", "week_12", "week_26"),
                         labels = c("Week 4", "Week 12", "Week 26")),
-         y = 1000) |> 
+         y = 1100) |> 
   filter(model == "Week 4")
 ```
 
@@ -152,13 +152,16 @@ fig_pp <- pp_tidy |>
   filter(model == "Week 4") |> 
   ggplot() + 
   geom_histogram(aes(x = posterior, fill = model), color = "black", alpha = .4, 
-                 bins = 30) +
-  geom_segment(mapping = aes(y = y, yend = y - 200, x = mean, xend = mean,
+                 bins = 50) +
+  geom_segment(mapping = aes(y = y - 100, yend = y + 100, x = mean, xend = mean,
                              color = model),
                data = ci) +
-  geom_segment(mapping = aes(y = y - 100, yend = y - 100, 
+  geom_segment(mapping = aes(y = y, yend = y, 
                              x = lower, xend = upper, color = model),
                data = ci) +
+  geom_vline(xintercept = 0.5, color = "yellow", 
+             linetype = "dashed", linewidth = 1) +
+  scale_x_continuous(limits = c(0.5, 0.8)) +
   scale_y_continuous("Posterior Probability") +
   labs(
     x = "Area Under ROC Curve (auROC)",

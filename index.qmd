@@ -134,36 +134,26 @@ Finally, there is some evidence that individuals respond differently to differen
 
 In summary, many opportunities exist for differential treatment selection among smoking cessation treatments. Pharmacological and behavioral factors may guide selection alone or interaction with one another. The features that previous research has identified that can predict treatment success may interact with specific treatment effects to guide selection, and unanticipated features or interactions may also come to light. Using machine learning analytic techniques allows us to explore these many categories of features simultaneously to capture the many, small effects that may combine to permit treatment selection.
 
-## Specific Aims
+## Purpose
 
-
-The goal of this project was to produce a model that can serve as a decision-making tool to select among medication treatments for smoking cessation. Specifically, we pursued the following aims:
-
-**AIM 1: Build a machine learning model to predict cigarette smoking cessation.** We built a model that could predict treatment success at 4 weeks post-quit. This model used retrospective data from a previously completed comparative effectiveness trial wherein individuals who smoke were randomized to treatments, richly characterized at baseline, and followed to assess short- and long-term treatment success [@bakerEffectsNicotinePatch2016]. 
-
-**AIM 2: Evaluate the clinical benefit of using our prediction model for differential treatment selection.** We used the prediction model to identify the best treatment for each person and evaluate whether individuals who received their best treatment were more likely to be abstinent in the original trial at 4 weeks, 12 weeks (end-of-treatment), and 6 months post-quit. 
-
-Across both AIMS, we used rigorous resampling techniques to ensure that we evaluated our model's capacity to predict smoking cessation outcomes and select treatments in *new* patients. Additionally, we incorporated easy-to-collect self-report data as model inputs, and we employed a statistical algorithm that can reduce assessment requirements. These choices position our model for accessible clinical implementation.
+The goal of this project was to produce and evaluate a treatment selection model to select among medications for smoking cessation. Specifically, we built a model to predict treatment success using rich baseline characteristics and treatment assignments from a previously completed comparative effectiveness trial [@bakerEffectsNicotinePatch2016]. Using our model, we identified the best treatment for each person and evaluated whether individuals who received their best treatment were more likely to be abstinent in the original trial at 4, 12, and 26 weeks post-quit. Throughout the project, we used rigorous resampling techniques to ensure that we evaluated our model's capacity to predict smoking cessation outcomes and select treatments in *new* patients. Additionally, we incorporated easy-to-collect self-report data as model inputs, and we employed a statistical algorithm that can reduce assessment requirements. These choices position our model for accessible clinical implementation.
 
 ## Methods
 
 ### Transparency & openness
 
-<!-- NTS: already correct OSF page -->
 
+We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data and other study materials are publicly available on our [OSF page](https://osf.io/qad4n/), and our annotated analysis scripts and results are publicly available on our [study website](https://jjcurtin.github.io/study_match/). 
 
-We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data, analysis scripts, annotated results, questionnaires, and other study materials are publicly available on our [OSF page](https://osf.io/qad4n/) and as analysis notebooks on our [study website](https://jjcurtin.github.io/study_match/). 
-
-We preregistered our analyses to evaluate clinical benefit that relied on significance testing. The preregistration can be found on our [OSF page](https://osf.io/qad4n/). These analyses also closely followed published research evaluating treatment selection models [@derubeisPersonalizedAdvantageIndex2014]. For our Bayesian hierarchical generalized linear models, we followed guidelines from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022] that we have followed in other published research from our laboratory [@wyantMachineLearningModels2023]. For all other analyses, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication: models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
-
-<!-- add TRIPOD reporting here if we do it - probably not for dissertation but maybe for published paper -->
+To evaluate clinical benefit, we followed published research evaluating treatment selection models [@derubeisPersonalizedAdvantageIndex2014; @derubeisHistoryCurrentStatus2019]. For our Bayesian hierarchical generalized linear models, we followed guidelines from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022] that we have followed in other published research from our laboratory [@wyantMachineLearningModels2023]. For all other analyses, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication: models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
 
 ### Data
-
+<!-- add in megan's suggestions -->
 
 The data for this project came from a completed randomized controlled trial conducted by the University of Wisconsin (UW) Center for Tobacco Research and Intervention (CTRI) [@bakerEffectsNicotinePatch2016]. This trial compared the effectiveness of three cigarette smoking cessation treatments (varenicline, combination nicotine replacement therapy [C-NRT], and nicotine patch). Briefly, 1086 daily cigarette smokers looking to quit smoking were enrolled in Madison, WI, USA and Milwaukee, WI, USA. Exclusion criteria included contraindicated medical (e.g., severe hypertension) or psychiatric (e.g., severe and persistent mental illness) conditions; current use of contraindicated medications; and pregnancy or unwillingness to use appropriate methods of contraception while taking a study medication. Participants set a quit date with study staff and were enrolled for several weeks prior to the target quit date through at least 6 months following quitting smoking. 
 
 #### Treatment conditions
+<!-- make megan's fixes -->
 
 
 Participants were randomly assigned to one of three medication conditions: varenicline, C-NRT, or nicotine patch. Each medication treatment lasted 12 weeks. For varenicline, participants began medication use prior to their quit attempt, starting with 0.5 mg once daily for 3 days, followed by 0.5 mg twice daily for 4 days, and 1 mg twice daily for 3 days. They continued use of 1 mg twice daily for 11 weeks following their quit date except in response to adverse effects. For C-NRT or nicotine patch, participants began using the patch on their quit date, starting with 21 mg for 8 weeks, followed by 14 mg for 2 weeks, and 7 mg for 2 weeks. All individuals who received C-NRT were also instructed to use 5 lozenges per day (2 or 4 mg nicotine lozenges determined by time to first daily cigarette) for the full 12 weeks except in the case of adverse effects.
@@ -203,132 +193,87 @@ Participants were comprehensively assessed for individual difference characteris
 
 Throughout study participation, treatment success was assessed via biologically confirmed, 7-day point-prevalence abstinence. Point-prevalence abstinence assesses for any smoking (here, in the previous 7 days) and yields a single, dichotomous outcome of "abstinent" or "smoking." Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; [@bakerEffectsNicotinePatch2016]). If participants self-reported any smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." 
 
-Assessments of treatment success were used in two separate ways across our two AIMS.
+Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). 
 
-In AIM 1, treatment success served as the *prediction outcome for our models*. For our primary analyses, we built prediction models to predict treatment success at 4 weeks post-quit (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We also conducted supplemental analyses where we built models predicting treatment success at 12 and 26 weeks post-quit (see Supplement).
+<!-- add justification: 1) models are worse at later outcomes; 2) allows for earlier changes; 3) evaluating treatment effects WHILE taking treatment -->
 
-In AIM 2, treatment success served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
+Treatment success also served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
 
-### AIM 1 analytic strategy
+### Model building
 
-#### Model configurations
-
-
-Machine learning seeks to optimize the bias-variance trade-off: too many features can yield high-variance models that do not generalize well to new data; too few features can yield biased models that miss important predictive relationships. It is difficult to determine *a priori* the optimal trade-off between bias and variance. Consequently, we considered many model configurations that differed across characteristics expected to affect bias and variance. These characteristics include feature engineering steps, dimensionality reduction approaches, different size feature sets, and hyperparameter values. The model configuration that most closely captures the optimal bias-variance trade-off will perform best in new data.
-
-##### Statistical algorithm
+#### Statistical algorithm and hyperparameters
 
 
-We used the statistical algorithm Elastic Net Logistic Regression (GLMNet). This algorithm aligns with our primary goal of building a treatment selection model in several ways. 
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet) and differed across sensible values for the associated hyperparameters, alpha and lambda. This algorithm aligned with our application goals: GLMNet allows including interation terms explicitly (i.e., interactions between treatment and all other features), and it reduces dimensionality by penalizing model complexity. Additional details appear in the Supplement.
 
-First, it allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other features). This permits considering many interactions that each account for a small portion of variance, which may be necessary to capture the complexity of clinical phenomena like treatment success. 
-
-Second, GLMNet performs a degree of dimensionality reduction that may be helpful for implementation. It penalizes model complexity via two hyperparameters (alpha and lambda) such that features are retained in the model only when their contribution to prediction outweighs the cost of adding another parameter to the model. A model using this algorithm may ultimately require assessing fewer features than are initially considered in the model. This characteristic aligns with our intention to implement this model in clinical practice, where highly burdensome assessments are impractical and thereby not feasible. 
-
-Finally, linear models such as GLMNet are often more interpretable and transparent. As an additive linear model, the predictions come from the sum of the retained features multiplied by their parameter estimates. This makes it easier to understand how the model is making its predictions, as compared to "black box" statistical algorithms that offer no insight as to what is happening under the hood [@kuhnAppliedPredictiveModeling2018]. The dimensionality reduction that GLMNet performs also increases its interpretability by reducing the high-dimensional feature space to a more manageable set of features. We aimed to prioritize interpretability to avoid a potential barrier to using machine learning approaches for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018].
-
-Initial testing showed that GLMNet outperformed or performed comparably to models fit using several other well-established statistical algorithms (XGBoost, Random Forest). Thus, we had no reason not to prefer an algorithm that aligned well with our ultimate clinical goals.
-
-##### Feature engineering
+#### Feature engineering
 
 
-Feature engineering is the process of converting raw data into meaningful features that improve model effectiveness [@kuhnFeatureEngineeringSelection2019]. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
+Feature engineering is the process of converting raw data into meaningful features that improve model effectiveness [@kuhnFeatureEngineeringSelection2019]. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)).
 
-Our generic feature engineering steps included: 1) imputing missing data (median imputation for numeric data, mode imputation for categorical [ordered and unordered] data); 2) removing zero-variance features; 3) using a Yeo-Johnson transformation on all numeric features to normalize distributions; 4) one-hot-coding unordered categorical data; and 5) standardizing all features to have a mean of 0 and standard deviation of 1 (as a requirement of the GLMNet algorithm). Medians/modes for missing data imputation, identification of zero variance features, and means and standard deviations for normalization and standardization were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
+Generic feature engineering steps included: 1) imputing missing data (median imputation for numeric data, mode imputation for categorical [ordered and unordered] data); 2) removing zero-variance features; 3) using a Yeo-Johnson transformation of all numeric features to normalize distributions; 4) one-hot-coding of unordered categorical data; and 5) standardizing all features to have a mean of 0 and standard deviation of 1 (required for GLMNet). Medians/modes for missing data imputation, identification of zero variance features, and means/standard deviations for normalization and standardization were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). Ordered categorical data (e.g., Likert scale items on self-report measures) could be ordinal scored (treated as numeric data) or one-hot coded (treated as unordered categorical data). Model configurations included either individual items within a self-report measure or total scale/sub-scale scores derived from items.
 
 Treatment was also one-hot-coded such that there were three features, one corresponding to each treatment (varenicline, C-NRT, nicotine patch). The three treatment features were allowed to interact with all other features to permit differential prediction. 
 
-Feature sets differed in two ways across model configurations. First, ordered categorical data (e.g., Likert scale items on self-report measures) could be ordinal scored (i.e., treated as numeric features) or one-hot-coded (i.e., treated as unordered categorical features). Ordinal scoring may decrease variance as it would create fewer features (e.g., single numeric feature ranging from 1 - 7) compared to one-hot-coding (e.g., 7 features for an item with 7 response levels). However, one-hot-coding allows for non-linear relationships and thus more flexibility in predictive patterns, potentially decreasing bias. Second, we included *either* items (i.e., individual items within a self-report measure) or scale scores (i.e., total scale and sub-scale scores derived from items in a self-report measure). Feature sets with items had far more features and allowed for unequal weighting of items within a single scale, decreasing bias. Feature sets with scale scores had fewer features and required that all items that comprised the scale score were weighted equally (e.g., sum score), decreasing variance.
-
-##### Dimensionality reduction
+#### Cross-validation
 
 
-Dimensionality reduction approaches offer additional ways to produce lower-variance solutions that may generalize better to new data. We used several data-driven methods for dimensionality reduction such as: removing near-zero variance features, removing highly correlated features (via GLMNet penalization), and including lower-dimensional feature sets. We also used several non-data-driven approaches for dimensionality reduction. First, we removed variables that conflicted with our ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests). This reduced the overall number of features in the model. Second, we removed variables that lacked face validity for predicting abstinence (e.g., detailed questions about snoring used to diagnose sleep apnea; retained sleep apnea diagnosis) or overlapped conceptually with other features (e.g., including body mass index instead of height and weight separately). 
+We used nested *k*-fold cross-validation for model training, selection, and evaluation [@jonathanUseCrossvalidationAssess2000; @krstajicCrossvalidationPitfallsWhen2014]. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models (held-in data), select the best models (held-out validation sets), and evaluate those best models (held-out test sets). Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000; @krstajicCrossvalidationPitfallsWhen2014]. We used 1 repeat of 10-fold cross-validation (i.e., *k* = 10) for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop. Best model configurations were selected using median model performance across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median performance across the 30 *test sets*.
 
-#### Model fitting, selection, & evaluation
+We used leave-one-out cross-validation (LOOCV) when computing Shapley values and identifying model-predicted best treatments (see below). In LOOCV, the value of *k* is set to *N* (sample size) such that each test set consists of a single held-out participant. We fit *N* = 1086 models, where each participant served as the test set once for a model fit with the other 1085 participants. 
 
-##### Cross-validation
-
-
-Cross-validation allows for rigorous consideration of many model configurations and prioritizes performance in new data not used for model training [@jonathanUseCrossvalidationAssess2000]. Specifically, we used nested cross-validation for model training, selection, and evaluation [@krstajicCrossvalidationPitfallsWhen2014]. 
-
-Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models (held-in data), select the best models (held-out validation sets), and evaluate those best models (held-out test sets). Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000; @krstajicCrossvalidationPitfallsWhen2014].
-
-We used 1 repeat of 10-fold cross-validation for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop. Best model configurations were selected using median model performance across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median performance across the 30 *test sets*.
-
-##### Metrics
+#### Metrics
 
 
-Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. In simplest terms, auROC measures how well our model discriminates between positive (abstinent) and negative (smoking) cases. More specifically, auROC indexes the probability that the model will predict a higher score for a randomly selected positive case relative to a randomly selected negative case. It ranges from 0.5 (chance prediction) to 1.0 (perfect prediction). This metric was selected because it 1) combines sensitivity and specificity, which are both important characteristics for clinical implementation; 2) is unaffected by class imbalance; and 3) does not automatically use a threshold, which is not needed when working with predicted probabilities rather than class predictions.
+Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (abstinent) relative to a randomly selected negative case (smoking). 
 
-Although we can only optimize on one metric (i.e., auROC), we can define other relevant criteria as "satisficing metrics" ([@ngMachineLearningYearning2018], p. 22). We can require that our models meet a specific value for the satisficing metric and then optimize among those models. Specifically, because our goal was treatment selection, it was important that our models retain interaction features. Although retaining interaction features does not guarantee that our models will be able to select among treatments, *not* retaining any interactions *prevents* treatment selection. 
+It was important that our model retained interaction features. We defined a "satisficing metric" of 50 or more treatment interaction features retained using the inner loop of nested cross-validation ([@ngMachineLearningYearning2018], p. 22). As with auROC, we calculated the median number of treatment interaction features retained for each model configuration (i.e., averaged across the 10 validation sets). We chose this criterion because: 1) 50 interactions represented approximately the 50th percentile in the distribution of median interaction terms retained across model configurations; and 2) using this threshold ensured there were sufficient model configurations among which to choose in each outer fold.
 
-We defined a satisficing metric of 50 or more treatment interaction features retained. This value was derived from the inner loop of nested cross-validation. As with auROC, we calculated the median number of treatment interaction features retained for each model configuration (i.e., averaged across the 10 validation sets). We arrived at a criterion of 50 interaction terms retained because: 1) this represented approximately the 50th percentile in the distribution of median interaction terms retained across model configurations; and 2) using this threshold still ensured there were sufficient model configurations among which to choose in each outer fold.
+We selected our best model among models that 1) had the highest median auROC across folds, while 2) retaining a minimum median 50 treatment interaction features. We report median auROC for our best model configurations in the test sets. 
 
-Thus, we selected as our best models the models which 1) had the highest median auROC across folds, while 2) retaining a minimum median 50 treatment interaction features. We report median auROC for our best model configurations in the test sets. For completeness, we also report auROCs from the validation sets in the Supplement.
-
-##### Bayesian analysis of model performance
+#### Bayesian analysis of model performance
 
 
-We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for the best models. The posterior probability updates a prior probability (derived from a distribution) using new evidence provided by our data. A posterior probability distribution around a given parameter (e.g., median auROC) is the estimated distribution of these probabilities that allow us to make statements about the likelihood of observing our results.
+We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for the best models. We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. We regressed the auROCs (logit transformed) from the 30 test sets on two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3X10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our model's auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. More details on these analyses appear in the Supplement.
 
-We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. We regressed the auROCs (logit transformed) from the 30 test sets on two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3X10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our model's auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. 
-
-Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting. 
-
-#### Model interpretation
+### Model interpretation
 
 
-Interpretability is important for several reasons when using machine learning approaches for clinical applications [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. First, understanding how the model is making predictions, including identifying important features, can help advance theory. For example, determining factors that predict smoking cessation may help to guide novel treatment development by identifying maintaining mechanisms or predictors of success. Second, interpretability may help support implementation, as patients or clinicians may be more likely to use a model that they understand. 
+Interpretability is important when using machine learning for clinical applications to identify important features and encourage implementation [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We interpreted our model using two methods. First, we examined the parameter estimates from our best model. Features are retained in a GLMNet model only if their contribution outweighs the additional complexity. We reviewed the retained features and their parameter estimates as a metric of feature importance. 
 
-We pursued model interpretation in two ways. First, as described above, the GLMNet statistical algorithm offers several advantages for interpretability. It is a linear model that outputs parameter estimates for each feature. It also performs regularization by shrinking parameter estimates and/or removing unnecessary or highly correlated features from the model entirely. Features are retained in the model only if their contribution to performance outweighs the cost of having an additional parameter in the model. Consequently, we can review the retained features and their parameter estimates as a metric of feature importance.
+Second, we computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of features. We calculated Shapley values using LOOCV with the final, best selected model configuration. We used the DALEX and DALEXtra packages [@biecekDALEXExplainersComplex2018] in R, which provide local Shapley values (i.e., for each observation) in log-odds units for binary classification models. To calculate global importance, we averaged the absolute value of the local Shapley values of each feature across observations. These global importance scores allow us to answer questions of *relative feature importance*; however, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not yet available for Shapley values.
 
-Second, we computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of features. Shapley values possess several useful properties including: Additivity (Shapley values for each feature can be computed independently and summed); Efficiency (the sum of Shapley values across features must add up to the difference between predicted and observed outcomes for each observation); Symmetry (Shapley values for two features should be equal if the two features contribute equally to all possible coalitions); and Dummy (a feature that does not change the predicted value in any coalition will have a Shapley value of 0).
+Shapley values are additive, which allowed us to create two feature categories, Main Effects and Interactions, to assess the relative overall contribution of treatment interaction features and main effect (non-interaction) features.
 
-We calculated Shapley values by conducting leave-one-out cross-validation using the final, best selected model configuration. Leave-one-out cross-validation works identically to *k*-fold cross-validation described above. The value of *k* is set to *N* (sample size) such that each test set consists of a single held-out participant. We fit *N* = 1086 models, where each participant served as the test set once for a model fit with the other 1085 participants. This method allowed us to calculate Shapley values in held-out data, while ensuring our model stayed as close as possible to the final model (using the full dataset) that we would disseminate going forward (see "Select final model configuration" below).
-
-We used the DALEX and DALEXtra packages [@biecekDALEXExplainersComplex2018] in R, which provide Shapley values in log-odds units for binary classification models. These Shapley values estimate local importance (i.e., for each observation). To calculate global importance (i.e., across all observations), we averaged the absolute value of the Shapley values of each feature across observations. These global importance scores based on Shapley values allow us to answer questions of *relative feature importance*; however, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not yet available for Shapley values.
-
-The additivity property of Shapley values also allowed us to create two feature categories, Main Effects and Interactions. Therefore, in addition to identifying the most important individual features, we were able to assess the relative contribution of treatment interaction features and main effect (non-interaction) features.
-
-### AIM 2 analytic strategy
-
-
-We followed methods described and used previously for evaluating the potential clinical benefit of treatment selection models [@derubeisPersonalizedAdvantageIndex2014; @derubeisHistoryCurrentStatus2019]. All analyses for Aim 2 were preregistered. The preregistration can be found on our OSF page ([https://osf.io/qad4n/](https://osf.io/qad4n/)). 
+### Clinical benefit evaluation
 
 #### Select final model configuration
 
 
-Nested cross-validation evaluates how well a model selected with cross-validation will perform on a held-out test set [@krstajicCrossvalidationPitfallsWhen2014]. To get a single, final model, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds. 
-
-A final model was fit on the full dataset using this best selected model configuration. This model was used to obtain parameter estimates to aid with interpretation, and it would serve as the model disseminated for ultimate implementation.
+To get a single, final model, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds. A final model was fit on the full dataset using this best selected model configuration. This model was used to obtain parameter estimates for interpretation, and it would serve as the model disseminated for ultimate implementation.
 
 #### Identify model-predicted best treatment
 
 
-As we did for feature importance with Shapley values, we conducted leave-one-out cross-validation such that we fit 1086 models using the best model configuration (selected in 1x-10-fold cross-validation) with each participant held-out from model fitting once. For each participant, we fit a model using the other 1085 participants and made predictions for the single held-out participant. This ensured that we were making predictions for a new patient (i.e., one that our model had not seen) to match most closely how this model would be ultimately implemented. 
+Using LOOCV, we fit a series of models with 1085 participants and made predictions for the single held-out participant. This ensured that we were making predictions for a new patient (i.e., one that our model had not seen) to match most closely how this model would be ultimately implemented. 
 
-We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produces one prediction per person per treatment. These substitutions affected the model's predicted probabilities through any main effect of treatment and any interactions of treatment with other features. The treatment that yields the highest model-predicted probability of abstinence is identified as that participant's "best" treatment. 
+We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produced one prediction per person per treatment. These substitutions affected the model's predicted probabilities through any main effect of treatment and any interactions of treatment with other features. The treatment that yielded the highest model-predicted probability of abstinence was identified as that participant's "best" treatment. 
 
-For example, an individual may have received varenicline in the original trial. We calculated their probability of abstinence using their data (i.e., with varenicline as the "treatment" feature), and then we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. Among these three predicted probabilities, their probability of abstinence may be highest when C-NRT is substituted in as their treatment. This would mean C-NRT is identified as the best treatment for that individual.
+For example, an individual may have received varenicline in the original trial. We calculated their probability of abstinence using their data (i.e., with varenicline as the "treatment" feature), and then we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. Among these three predicted probabilities, their probability of abstinence may have been highest when C-NRT was substituted in as their treatment, meaning C-NRT was identified as their best treatment.
 
 #### Categorize treatment matching
 
 
-Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants' RCT-assigned treatment can be categorized by whether it "matched" their model-selected treatment. 
+Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants could be categorized by whether they received their best treatment or another treatment in the original trial. 
 
-For example, the individual described above received varenicline in the original trial, but their model-predicted probability of abstinence was highest when C-NRT was substituted in as their treatment. This participant's best treatment did not match their trial treatment, so they would be labeled as "unmatched."
+For example, the individual described above received varenicline in the original trial, but their model-predicted probability of abstinence was highest when C-NRT was substituted in as their treatment. This participant's best treatment did not match their trial treatment, so they would be labeled as being matched to "other treatment."
 
 #### Evaluate clinical benefit
 
 
-Our primary analysis evaluated the clinical benefit of our model-selected treatment by comparing the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who did or did not receive their best treatment (i.e., matched or unmatched). Treatment matching was therefore a between-subjects predictor and was coded as 0.5 (TRUE, "matched") vs. -0.5 (FALSE, "unmatched"). 
+Our primary analysis evaluated the clinical benefit of our model-selected treatment by comparing the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who were matched to their best treatment or to another treatment (between-subjects; 0.5 ["best treatment"] vs. -0.5 ["other treatment"]). 
 
-We examined this effect over time at 4, 12, and 26 weeks by allowing the effect of treatment match to interact with time (i.e., week). Time was a within-subjects variable with three repeated measures for each participant. We treated time numerically, and we used a log transformation to meet linearity assumptions. We preregistered using a log transformation with base *e*, but due to issues of convergence, we switched to log base 2. 
-
-Our model included treatment match, time, the interaction between treatment match and time, a by-subject random slope for time, and a by-subject random intercept. We followed a mixed-effects modeling approach using the blme package [@chungNondegeneratePenalizedLikelihood2013a]. Specifically, we fit a partially Bayesian generalized linear model that uses regularizing priors to force the estimated random effects variance-covariance matrices away from singularity [@chungNondegeneratePenalizedLikelihood2013a]. If the interaction between treatment match and time was significant, we planned to conduct follow-up tests of the simple effect of treatment match at each time point (week 4, week 12, and week 26) using general linear models. 
-
-We identified the main effect of treatment match *a priori* as our focal effect; however, we report all estimates, test statistics, *p*-values, and confidence intervals from all models. 
+We examined this effect over time at 4, 12, and 26 weeks. Calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted three, separate generalized logistic regression models where we regressed the outcome (abstinent vs. smoking) on treatment matching. We conducted these regressions using the lme4 package in R [@batesLme4LinearMixedEffects2015]. 
 
 ## Results
 
@@ -357,39 +302,32 @@ Smoking-related characteristics of this sample appear in @tbl-smoking-chars. On 
 
 {{< embed notebooks/mak_tables.qmd#tbl-smoking-chars >}} 
 
-### AIM 1 results: Prediction models
-
-#### Model performance
+### Model performance
 
 
-We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features across inner folds). We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [@krstajicCrossvalidationPitfallsWhen2014]. The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). This value is comparable to model performance from extant literature predicting smoking cessation using machine learning (e.g., auROC = 0.660 [@laiDevelopmentMachineLearning2021]). @fig-combined, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).
+We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features across inner folds). We evaluated these best model configurations using *test set* performance to remove optimization bias present in performance metrics from validation sets [@krstajicCrossvalidationPitfallsWhen2014]. The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0.667 - 0.718, range = 0.592 - 0.788). @fig-combined, Panel A shows the ROC curve for held-out test set performance (concatenated across 30 held-out folds).
 
 {{< embed notebooks/mak_fig_1.qmd#fig-combined >}}
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
-#### Model calibration
+In @fig-combined, panel C, we display our model's calibration. This figure plots the predicted probabilities (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial treatment success. Predicted probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. 
+
+### Model interpretation
+
+#### Retained features
 
 
-In @fig-combined, panel C, we display our model's calibration. Predicted lapse probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). This figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection. 
-
-#### Model interpretation
-
-##### Retained features
-
-
-Our final model fit with the full dataset retained retained 155 features. Tables with all retained features as well as their precise parameter estimates appear in the Supplement.
-
-Of the retained features, 74 were treatment interaction features. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased the probability of treatment success when using that specific treatment (vs. the other two treatments).
+Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. The effect direction indicates whether increasing values of that feature (or coded positive for that level for one-hot-coded categorical features) increased or decreased the probability of treatment success when using that specific treatment (vs. the other two treatments). <!-- move this last sentence to a table caption? -->
 
 {{< embed notebooks/mak_tables.qmd#tbl-int-features >}}
 
-To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
+To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-##### Feature importance via Shapley values
+#### Feature importance via Shapley values
 
 
-Global feature importance (mean |Shapley value|) from our model appear in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
+Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
 
@@ -397,18 +335,12 @@ Global feature importance grouped by feature type (main effect or interaction) a
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-grouped >}}
 
-### AIM 2 results: Clinical benefit
+### Clinical benefit
 
-
-There was a significant fixed effect of treatment matching on abstinence (odds ratio [OR] = 1.851, *z* = 2.862, *p* = 0.004). Individuals who received their model-predicted best treatment were more likely to be abstinent than individuals who did not. There was also a significant fixed effect of time (OR = 0.210, *z* = -10.053, *p* < 0.001) such that the probability of abstinence declined over time. 
-
-There was not a significant interaction between treatment matching and time (*p* = 0.697). However, calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted simple effects analyses of the effect of treatment matching at each time point.[^1] This allowed us to characterize our results more fully and to understand our effects in their original probability terms.
 
 There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = 1.382, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). @fig-clin-ben-wk4 shows the mean abstinence rate by treatment matching at each time point.
 
 {{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}} 
-
-[^1]: We followed our preregistered analysis code to fit these simple effect models; however, we preregistered that we would conduct them only if the interaction effect was significant.
 
 ## Discussion
 

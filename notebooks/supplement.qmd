@@ -9,6 +9,42 @@ contains everything that was in the index.qmd supp sections and everything moved
 all figs/tables commented out right now to avoid rendering issues
 -->
 
+<!--
+cuts from main text:
+
+Assessments of treatment success were used in two separate ways across our two AIMS.
+
+In AIM 1, treatment success served as the *prediction outcome for our models*. For our primary analyses, we built prediction models to predict treatment success at 4 weeks post-quit (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We also conducted supplemental analyses where we built models predicting treatment success at 12 and 26 weeks post-quit (see Supplement).
+
+In AIM 2, treatment success served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
+
+
+
+##### Dimensionality reduction
+
+
+Dimensionality reduction approaches offer additional ways to produce lower-variance solutions that may generalize better to new data. We used several data-driven methods for dimensionality reduction such as: removing near-zero variance features, removing highly correlated features (via GLMNet penalization), and including lower-dimensional feature sets. We also used several non-data-driven approaches for dimensionality reduction. First, we removed variables that conflicted with our ultimate implementation goals (e.g., variables whose assessment required blood work or lab tests). This reduced the overall number of features in the model. Second, we removed variables that lacked face validity for predicting abstinence (e.g., detailed questions about snoring used to diagnose sleep apnea; retained sleep apnea diagnosis) or overlapped conceptually with other features (e.g., including body mass index instead of height and weight separately). 
+
+
+
+
+Although we can only optimize on one metric (i.e., auROC), we can define other relevant criteria as "satisficing metrics" ([@ngMachineLearningYearning2018], p. 22). We can require that our models meet a specific value for the satisficing metric and then optimize among those models. Specifically, because our goal was treatment selection, it was important that our models retain interaction features. Although retaining interaction features does not guarantee that our models will be able to select among treatments, *not* retaining any interactions *prevents* treatment selection. 
+
+We defined a satisficing metric of 50 or more treatment interaction features retained. This value was derived from the inner loop of nested cross-validation. As with auROC, we calculated the median number of treatment interaction features retained for each model configuration (i.e., averaged across the 10 validation sets). We arrived at a criterion of 50 interaction terms retained because: 1) this represented approximately the 50th percentile in the distribution of median interaction terms retained across model configurations; and 2) using this threshold still ensured there were sufficient model configurations among which to choose in each outer fold.
+
+Thus, we selected as our best models the models which 1) had the highest median auROC across folds, while 2) retaining a minimum median 50 treatment interaction features. We report median auROC for our best model configurations in the test sets. 
+
+
+Bayesian analyses were accomplished using the tidyposterior [@kuhnTidyposteriorBayesianAnalysis2022] and rstanarm [@goodrichRstanarmBayesianApplied2023] packages in R. Following recommendations from the rstanarm team and others [@rstudioteamRStudioIntegratedDevelopment2020; @gabryPriorDistributionsRstanarm2023], we used the rstanarm default autoscaled, weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting. 
+
+ADD PRIORS
+
+GLMNet aligns with our application goals in several ways. First, this algorithm allows for explicit inclusion of interaction terms (i.e., including interactions between treatment and all other features). Second, GLMNet penalizes model complexity via its two hyperparameters such that features are retained in the model only when their contribution to prediction outweighs the cost of adding another parameter to the model. A model using this algorithm may ultimately require a lower-burden assessment for implementation. Finally, linear models such as GLMNet are often more interpretable and transparent compared to "black box" statistical algorithms [@kuhnAppliedPredictiveModeling2018]. GLMNet's dimensionality reduction also increases its interpretability by reducing the high-dimensional feature space to a more manageable set of features. Initial testing showed that GLMNet outperformed or performed comparably to models fit using several other well-established statistical algorithms (XGBoost, Random Forest).
+
+
+
+-->
+
 ## Supplemental Methods
 
 ### AIM 1 analytic strategy

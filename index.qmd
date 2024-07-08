@@ -201,6 +201,8 @@ Treatment success also served as the outcome for *clinical benefit analyses*. We
 
 ### Model building
 
+Data preprocessing, modeling, and Bayesian analyses were done in R using the tidymodels ecosystem [@kuhnTidymodelsCollectionPackages2020]. Models were trained and evaluated using high-throughput computing resources provided by the University of Wisconsin Center for High Throughput Computing [@chtc].
+
 #### Statistical algorithm and hyperparameters
 
 

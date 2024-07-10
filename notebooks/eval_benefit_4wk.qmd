@@ -373,10 +373,10 @@ fig_med_subset_wk4_supp <- d_meds_only |>
 fig_med_subset_wk4_supp
 ```
 
-Supplemental figure: Started medication subset
+Supplemental figure: Treatment rank
 ```{r}
-#| label: fig-med-subset-wk4-supp
-#| fig-cap: "Benefit of treatment matching among individuals who reported any medication use over the first 4 weeks. Bars represent mean observed abstinence (from original trial) for individuals who did and did not receive their model-predicted best treatment, over time. Error bars indicate standard errors."
+#| label: fig-rank-wk4-supp
+#| fig-cap: "Benefit of treatment matching using treatment rank. Bars represent mean observed abstinence (from original trial) for individuals who received their model-predicted best, second-best, or worst treatment, over time. Error bars indicate standard errors."
 
 fig_rank_wk4_supp <- d |> 
   mutate(week_cat = factor(week,

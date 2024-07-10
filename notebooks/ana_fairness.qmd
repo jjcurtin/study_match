@@ -1,0 +1,83 @@
+---
+title: "Algorithmic Fairness"
+author: "Gaylen Fronk, Kendra Wyant, & John Curtin"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+### Set Up Environment
+
+```{r}
+study <- "match"
+version <- "v6"
+cv <- "nested"
+y_col_name <- "pp_hybrid_wk4_outcome"
+```
+
+Packages for script
+```{r packages_script, message=FALSE, warning=FALSE}
+library(tidyposterior)
+library(tidyverse)
+library(tidymodels)
+
+theme_set(theme_classic()) 
+```
+
+Absolute paths
+```{r, absolute paths}
+switch (Sys.info()[['sysname']],
+        # PC paths
+        Windows = {
+          path_models <- str_c("P:/studydata/match/models/", y_col_name)},
+        
+        # IOS paths
+        Darwin = {
+          path_models <- str_c("/Volumes/private/studydata/match/models/", y_col_name)},
+        
+        # Linux paths
+        Linux = {
+          path_models <- str_c("~/mnt/private/studydata/match/models/", y_col_name)}
+)
+```
+
+
+Chunk Defaults
+```{r defaults, include=FALSE}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+
+Source training controls 
+```{r source}
+# EDA
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+### Read in preds and metrics for best model
+
+```{r load_preds_metrics}
+
+auc <- read_rds(file.path(path_models,
+                          str_c("outer_metrics_", 
+                                version, "_", cv, ".rds"))) |> 
+  arrange(outer_split_num) |> 
+  mutate(repeat_num = rep(str_c("repeat", 1:3), each = 10),
+         fold_num = rep(str_c("fold", 1:10), 3)) |>   # assumes 3x10 fold
+  select(repeat_num, fold_num, roc_auc) |> 
+  glimpse()
+
+```

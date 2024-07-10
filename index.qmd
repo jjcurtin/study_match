@@ -145,8 +145,6 @@ The goal of this project was to produce and evaluate a treatment selection model
 
 We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement. Finally, our data and other study materials are publicly available on our [OSF page](https://osf.io/qad4n/), and our annotated analysis scripts and results are publicly available on our [study website](https://jjcurtin.github.io/study_match/). 
 
-To evaluate clinical benefit, we followed published research evaluating treatment selection models [@derubeisPersonalizedAdvantageIndex2014; @derubeisHistoryCurrentStatus2019]. For our Bayesian hierarchical generalized linear models, we followed guidelines from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022] that we have followed in other published research from our laboratory [@wyantMachineLearningModels2023]. For all other analyses, we restricted many researcher degrees of freedom via cross-validation. Cross-validation inherently includes replication: models are fit on held-in training sets, decisions are made in held-out validation sets, and final performance is evaluated on held-out test sets.
-
 ### Data
 <!-- add in megan's suggestions -->
 
@@ -193,9 +191,7 @@ Participants were comprehensively assessed for individual difference characteris
 
 Throughout study participation, treatment success was assessed via biologically confirmed, 7-day point-prevalence abstinence. Point-prevalence abstinence assesses for any smoking (here, in the previous 7 days) and yields a single, dichotomous outcome of "abstinent" or "smoking." Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; [@bakerEffectsNicotinePatch2016]). If participants self-reported any smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." 
 
-Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). 
-
-<!-- add justification: 1) models are worse at later outcomes; 2) allows for earlier changes; 3) evaluating treatment effects WHILE taking treatment -->
+Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We selected this prediction outcome to evaluate the differential effects of treatment while participants were actively using the medications. <!-- add footnote re: models are worse at later outcomes, see supplement -->
 
 Treatment success also served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
 
@@ -203,63 +199,58 @@ Treatment success also served as the outcome for *clinical benefit analyses*. We
 
 Data preprocessing, modeling, and Bayesian analyses were done in R using the tidymodels ecosystem [@kuhnTidymodelsCollectionPackages2020]. Models were trained and evaluated using high-throughput computing resources provided by the University of Wisconsin Center for High Throughput Computing [@chtc].
 
-#### Statistical algorithm and hyperparameters
-
-
-All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet) and differed across sensible values for the associated hyperparameters, alpha and lambda. This algorithm aligned with our application goals: GLMNet allows including interation terms explicitly (i.e., interactions between treatment and all other features), and it reduces dimensionality by penalizing model complexity. Additional details appear in the Supplement.
-
 #### Feature engineering
 
 
-Feature engineering is the process of converting raw data into meaningful features that improve model effectiveness [@kuhnFeatureEngineeringSelection2019]. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)).
-
-Generic feature engineering steps included: 1) imputing missing data (median imputation for numeric data, mode imputation for categorical [ordered and unordered] data); 2) removing zero-variance features; 3) using a Yeo-Johnson transformation of all numeric features to normalize distributions; 4) one-hot-coding of unordered categorical data; and 5) standardizing all features to have a mean of 0 and standard deviation of 1 (required for GLMNet). Medians/modes for missing data imputation, identification of zero variance features, and means/standard deviations for normalization and standardization were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). Ordered categorical data (e.g., Likert scale items on self-report measures) could be ordinal scored (treated as numeric data) or one-hot coded (treated as unordered categorical data). Model configurations included either individual items within a self-report measure or total scale/sub-scale scores derived from items.
+Generic feature engineering steps included: 1) imputing missing data (median imputation for numeric data, mode imputation for categorical [ordered and unordered] data); 2) removing zero-variance features; 3) using a Yeo-Johnson transformation of all numeric features to normalize distributions; 4) one-hot-coding of unordered categorical data; and 5) standardizing all features to have a mean of 0 and standard deviation of 1 (required by statisical algorithm). Medians/modes for missing data imputation, identification of zero variance features, and means/standard deviations for normalization and standardization were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
 
 Treatment was also one-hot-coded such that there were three features, one corresponding to each treatment (varenicline, C-NRT, nicotine patch). The three treatment features were allowed to interact with all other features to permit differential prediction. 
+A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)).
+
+#### Model configurations
+
+
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet) and differed across sensible values for the associated hyperparameters, alpha and lambda. This algorithm aligned with our application goals: GLMNet allows including interation terms explicitly (i.e., interactions between treatment and all other features), and it reduces dimensionality by penalizing model complexity. Model configurations differed by 1) whether feature sets included individual items within a self-report measure or total scale/sub-scale scores derived from items, and 2) whether ordered categorical data (e.g., Likert scale items) were ordinal scored or one-hot coded. Additional details appear in the Supplement.
+
+
 
 #### Cross-validation
 
 
-We used nested *k*-fold cross-validation for model training, selection, and evaluation [@jonathanUseCrossvalidationAssess2000; @krstajicCrossvalidationPitfallsWhen2014]. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. Importantly, these sets are independent, maintaining separation between data used to train the models (held-in data), select the best models (held-out validation sets), and evaluate those best models (held-out test sets). Therefore, nested cross-validation removes optimization bias from the evaluation of model performance in the test sets and can yield lower variance performance estimates than single test set approaches [@jonathanUseCrossvalidationAssess2000; @krstajicCrossvalidationPitfallsWhen2014]. We used 1 repeat of 10-fold cross-validation (i.e., *k* = 10) for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop. Best model configurations were selected using median model performance across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median performance across the 30 *test sets*.
+We used nested *k*-fold cross-validation for model training, selection, and evaluation [@krstajicCrossvalidationPitfallsWhen2014]. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. We used 1 repeat of 10-fold cross-validation (i.e., *k* = 10) for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop. 
 
-We used leave-one-out cross-validation (LOOCV) when computing Shapley values and identifying model-predicted best treatments (see below). In LOOCV, the value of *k* is set to *N* (sample size) such that each test set consists of a single held-out participant. We fit *N* = 1086 models, where each participant served as the test set once for a model fit with the other 1085 participants. 
+Models were selected and evaluated using auROC, which indexes the probability that the model will predict a higher score for a randomly selected positive case (abstinent) relative to a randomly selected negative case (smoking) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. Because it was important that our model retained interaction features, we defined a "satisficing metric" of 50 or more treatment interaction features retained [@ngMachineLearningYearning2018]. Best model configurations were selected using median auROC among model configurations that retained a median of 50 treatment interaction features across the 10 *validation sets*.  Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.
 
-#### Metrics
+We also used leave-one-out cross-validation (LOOCV) for feature importance and clinical benefit evaluation (see below). In LOOCV, the value of *k* is set to *N* (sample size) such that each test set consists of a single held-out participant. We fit *N* = 1086 models, where each participant served as the test set once for a model fit with the other 1085 participants. 
 
-
-Our primary performance metric for model selection and evaluation was area under the Receiver Operating Characteristic Curve (auROC) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. auROC indexes the probability that the model will predict a higher score for a randomly selected positive case (abstinent) relative to a randomly selected negative case (smoking). 
-
-It was important that our model retained interaction features. We defined a "satisficing metric" of 50 or more treatment interaction features retained using the inner loop of nested cross-validation ([@ngMachineLearningYearning2018], p. 22). As with auROC, we calculated the median number of treatment interaction features retained for each model configuration (i.e., averaged across the 10 validation sets). We chose this criterion because: 1) 50 interactions represented approximately the 50th percentile in the distribution of median interaction terms retained across model configurations; and 2) using this threshold ensured there were sufficient model configurations among which to choose in each outer fold.
-
-We selected our best model among models that 1) had the highest median auROC across folds, while 2) retaining a minimum median 50 treatment interaction features. We report median auROC for our best model configurations in the test sets. 
-
-#### Bayesian analysis of model performance
+#### Model evaluation
 
 
-We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for auROC for the best models. We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. We regressed the auROCs (logit transformed) from the 30 test sets on two random intercepts: one for the repeat, and another for the fold within repeat (folds are nested within repeats for 3X10-fold cross-validation). We report the 95% (equal-tailed) Bayesian CIs from the posterior probability distributions for our model's auROCs. If 95% Bayesian CIs do not include 0.5 (chance performance), we can conclude that the model performs better than chance. More details on these analyses appear in the Supplement.
+We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for test set auROC. We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. The median posterior probability for auROC represents our best estimate for the magnitude of the auROC parameter for each model. If the credible intervals do not contain .5 (chance performance), this suggests our model is capturing signal in the data. More details on these analyses appear in the Supplement.
+
+#### Fairness benchmarks
+
+
+We aim for the responsible and transparent reporting of model performance and clinical utility, and we acknowledge that models that work for only a subset of people, if implemented, could widen existing treatment disparities. Consequently, we calculated median posterior probability and 95% Bayesian CIs for auROC separately for three dichotomized demographic groups with potential disparities in access to substance use treatment - race and ethnicity (non-Hispanic White vs. non-White) [@pinedoCurrentReexaminationRacial2019; @kilaruIncidenceTreatmentOpioid2020], income (above poverty vs. below poverty) [@olfsonHealthcareCoverageService2022], and sex at birth (male vs. female) [@greenfieldSubstanceAbuseTreatment2007; @kilaruIncidenceTreatmentOpioid2020]. We conducted Bayesian model comparisons to assess the likelihood that the model performs differently by group. We report median differences in posterior probabilities and the 95% Bayesian CIs around these differences. More details on these group comparisons appear in the Supplement.
 
 ### Model interpretation
 
 
-Interpretability is important when using machine learning for clinical applications to identify important features and encourage implementation [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We interpreted our model using two methods. First, we examined the parameter estimates from our best model. Features are retained in a GLMNet model only if their contribution outweighs the additional complexity. We reviewed the retained features and their parameter estimates as a metric of feature importance. 
+Interpretability is important when using machine learning for clinical applications to identify important features and encourage implementation [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We reviewed the retained features and their parameter estimates as a metric of feature importance because GLMNet only retains features whose contribution outweighs the additional complexity. 
 
-Second, we computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of the importance of features. We calculated Shapley values using LOOCV with the final, best selected model configuration. We used the DALEX and DALEXtra packages [@biecekDALEXExplainersComplex2018] in R, which provide local Shapley values (i.e., for each observation) in log-odds units for binary classification models. To calculate global importance, we averaged the absolute value of the local Shapley values of each feature across observations. These global importance scores allow us to answer questions of *relative feature importance*; however, these are descriptive analyses because standard errors or other indices of uncertainty for importance scores are not yet available for Shapley values.
-
-Shapley values are additive, which allowed us to create two feature categories, Main Effects and Interactions, to assess the relative overall contribution of treatment interaction features and main effect (non-interaction) features.
+We also computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of feature importance. We calculated Shapley values using LOOCV with the final, best selected model configuration. We used the DALEX and DALEXtra packages [@biecekDALEXExplainersComplex2018] in R, which provide local Shapley values (i.e., for each observation) in log-odds units for binary classification models. To index global feature importance, we averaged the absolute value of the local Shapley values of each feature across observations. Shapley values are additive, which allowed us to create two feature categories, Main Effects and Interactions. We calculated global importance of each feature category by averaging the absolute value of the Shapley values of all features in the category across observations. These global importance scores allowed us to contextualize relative feature importance for each feature and feature category.
 
 ### Clinical benefit evaluation
 
 #### Select final model configuration
 
 
-To get a single, final model, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds. A final model was fit on the full dataset using this best selected model configuration. This model was used to obtain parameter estimates for interpretation, and it would serve as the model disseminated for ultimate implementation.
+To get a single, final model, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds. A final model was fit on the full dataset using this best selected model configuration to obtain parameter estimates for interpretation.
 
 #### Identify model-predicted best treatment
 
 
-Using LOOCV, we fit a series of models with 1085 participants and made predictions for the single held-out participant. This ensured that we were making predictions for a new patient (i.e., one that our model had not seen) to match most closely how this model would be ultimately implemented. 
-
-We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produced one prediction per person per treatment. These substitutions affected the model's predicted probabilities through any main effect of treatment and any interactions of treatment with other features. The treatment that yielded the highest model-predicted probability of abstinence was identified as that participant's "best" treatment. 
+Using LOOCV, we made predictions for each held-out participant to match real-world implementation (i.e., making predictions for a new patient). We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produced one prediction per person per treatment. The treatment that yielded the highest model-predicted probability of abstinence was identified as that participant's "best" treatment. 
 
 For example, an individual may have received varenicline in the original trial. We calculated their probability of abstinence using their data (i.e., with varenicline as the "treatment" feature), and then we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. Among these three predicted probabilities, their probability of abstinence may have been highest when C-NRT was substituted in as their treatment, meaning C-NRT was identified as their best treatment.
 
@@ -314,6 +305,10 @@ We selected the best model configurations using auROCs from the *validation sets
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), suggesting this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
 In @fig-combined, panel C, we display our model's calibration. This figure plots the predicted probabilities (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial treatment success. Predicted probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. 
+
+### Fairness benchmarks
+
+Figure X shows the difference in performance of each model by demographic group. All group comparisons for race/ethnicity, sex at birth, and income were significant (probability > 0.95). There was a median increase in auROC of 0.048 (95% CI 0.013 - 0.084) for non-White participants (vs. non-Hispanic White participants), indicating better performance for non-White participants. There was a median increase in auROC of 0.033 (95% CI 0.004 - 0.062) for participants below (vs. above) the national poverty line, indicating better performance for participants with lower income. There was a median increase in auROC of 0.056 (95% CI 0.026 - 0.087) for males (vs. females), indicating better performance for male participants.
 
 ### Model interpretation
 

@@ -45,6 +45,8 @@ GLMNet aligns with our application goals in several ways. First, this algorithm 
 
 -->
 
+<!-- 
+
 ## Supplemental Methods
 
 ### AIM 1 analytic strategy
@@ -85,24 +87,24 @@ Although we did not preregister completing these analyses with 12-week and 26-we
 
 We selected the best model configurations using auROCs from the *validation sets* (among models that met our satisficing metric of a median of at least 50 retained treatment interaction features in inner folds). We evaluated these best model configurations using *test set* performance. Test set performance for the 4-week model appears in the main manuscript. The median auROC across the 30 test sets for the 12-week model was 0.665 (IQR = 0.628 - 0.697, range = 0.535 - 0.788). The median auROC across the 30 test sets for the 26-week model was 0.629 (IQR = 0.573 - 0.658, range = 0.474 - 0.743). The single, concatenated ROC curve and the 30 individual ROC curves (one per held-out fold) for the 4-, 12-, and 26-week models appear in @fig-roc-all.
 
-<!--
+
 {{< embed notebooks/mak_fig_roc_supp.qmd#fig-roc-all >}}
--->
+
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.663 [Bayesian CI: 0.640 - 0.685] for the 12-week model and 0.620 [Bayesian CI: 0.596 - 0.644] for the 26-week model. These results suggest both models have predictive signal as the CIs did not contain 0.5 (chance performance). @fig-posteriors displays the posterior probability distributions for these models' auROCs alongside the posterior probability distribution for the 4-week model's auROCs.
 
-<!--
+
 {{< embed notebooks/ana_bayes_match.qmd#fig-posteriors >}}
--->
+
 
 #### Model comparisons
 
 
 We used the posterior probability distributions for the auROCs to compare the 4-, 12-, and 26-week models. The median increase in auROC for the 4- vs. 12-week model was 0.029 (95% CI = 0.010 - 0.049), yielding a probability of 99.8% that the 4-week model had superior performance. The median increase in auROC for the 4- vs. 26-week model was 0.072 (95% CI = 0.052 - 0.092), yielding a probability of 100% that the 4-week model had superior performance. The median increase in auROC for the 12- vs. 26-week model was 0.043 (95% CI = 0.022 - 0.064), yielding a probability of 100% that the 12-week model had superior performance. @fig-contrasts presents histograms of the posterior probability distributions for these model contrasts.
 
-<!--
+
 {{< embed notebooks/ana_bayes_match.qmd#fig-contrasts >}}
--->
+
 
 #### Model calibration
 
@@ -111,40 +113,40 @@ In @fig-cal-supp, we display the calibration for the 4-week model (reproduced fr
 
 Each figure plots the probabilities from our held-out predictions (made with leave-one-out cross-validation) using the final selected model configuration for each individual for their original trial-assigned treatment against the observed trial abstinence rates. Probabilities were relatively well calibrated and ordinal in their relationship with the true probability of abstinence for both the 12- and 26-week models. Given this, these probabilities can provide precise predictions of treatment success that can be used for treatment selection.
 
-<!--
+
 {{< embed notebooks/mak_fig_cal_supp.qmd#fig-cal-supp >}}
--->
+
 
 #### Model interpretation
 
 
 The names of all retained features and their parameter estimates from the final 4-week model appear in @tbl-retained-vars-wk4. Retained features for the 4-week model are discussed in detail in the main manuscript. 
 
-<!--
+
 {{< embed notebooks/fit_final_model_4wk.qmd#tbl-retained-vars-wk4 >}} 
--->
+
 
 Our final 12-week model fit with the full dataset retained retained 111 features (@tbl-retained-vars-wk12). Of these, 47 were treatment interaction features. Although we required that model configurations have a median of 50 or more treatment interaction terms retained across configurations, there was variability among folds; thus, it is unsurprising that the final model may have slightly fewer retained interaction features. 
 
 To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 29 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-<!-- 
+
 {{< embed notebooks/fit_final_model_12wk.qmd#tbl-retained-vars-wk12 >}} 
--->
+
 
 Our final 26-week model fit with the full dataset retained retained 107 features (@tbl-retained-vars-wk26). Of these, 45 were treatment interaction features. Like above, variability among folds led to the final model having slightly fewer than 50 retained interaction features. 
 
 To perform treatment selection, only interactive features would need to be assessed, as features that increase or decrease probability magnitude equally across all three treatments do not help with differential prediction. Consequently, implementing this model for treatment selection would require assessing only 36 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-<!--
+
 {{< embed notebooks/fit_final_model_26wk.qmd#tbl-retained-vars-wk26 >}} 
--->
+
 
 ### AIM 2 results: Clinical benefit
 
 There was no significant fixed effect of treatment matching for the 12-week (*p* = 0.279) or the 26-week (*p* = 0.967) model. The treatment matching X time interaction was also not significant for the 12-week (*p* = 0.660) or the 26-week (*p* = 0.402) model. There was a significant fixed effect of time in both models (12-week model: OR = 0.210, *z* = -9.973, *p* < 0.001; 26-week model: OR = 0.208, *z* = -10.050, *p* < 0.001) such that the probability of treatment success declined over time. Mean treatment success by treatment matching over time from the 4-week model is reproduced for visual comparison purposes in @fig-clin-ben-wk4-supp. @fig-clin-ben-wk12 and @fig-clin-ben-wk26 follow the same figure format for the 12- and 26-week models, respectively.
 
-<!-- 
+
 {{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4-supp >}}
 
 {{< embed notebooks/eval_benefit_12wk.qmd#fig-clin-ben-wk12 >}}

@@ -18,7 +18,7 @@ In AIM 1, treatment success served as the *prediction outcome for our models*. F
 
 In AIM 2, treatment success served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
 
-
+Generic feature engineering steps included: 1) imputing missing data (median imputation for numeric data, mode imputation for categorical [ordered and unordered] data); 2) removing zero-variance features; 3) using a Yeo-Johnson transformation of all numeric features to normalize distributions; 4) one-hot-coding of unordered categorical data; and 5) standardizing all features to have a mean of 0 and standard deviation of 1 (required by statisical algorithm). Medians/modes for missing data imputation, identification of zero variance features, and means/standard deviations for normalization and standardization were derived from held-in (training) data and applied to held-out (validation and test) data (see Cross-validation section below). 
 
 ##### Dimensionality reduction
 

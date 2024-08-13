@@ -219,18 +219,16 @@ We examined this effect over time at 4, 12, and 26 weeks. Calculating and interp
 ### Fairness benchmarks
 
 
-We aim for the responsible and transparent reporting of model performance and clinical utility, and we acknowledge that models that work for only a subset of people, if implemented, could widen existing treatment disparities. Consequently, we conducted fairness analyses on our model performance (i.e., auROC) and clinical benefit. We conducted analyses separately for three dichotomized demographic groups that display higher rates of cigarette smoking and/or experience additional barriers to receiving treatment for substance use disorders: 1) race and ethnicity (non-Hispanic White vs. non-White) [@pinedoCurrentReexaminationRacial2019; @kilaruIncidenceTreatmentOpioid2020]; income (above poverty vs. below poverty) [@olfsonHealthcareCoverageService2022]; and sex at birth (male vs. female) [@greenfieldSubstanceAbuseTreatment2007; @kilaruIncidenceTreatmentOpioid2020]. 
+We aim for the responsible and transparent reporting of model performance and clinical utility, and we acknowledge that models that work for only a subset of people, if implemented, could widen existing treatment disparities. Consequently, we conducted fairness analyses on our model performance (i.e., auROC) and clinical benefit. We conducted analyses separately for three dichotomized demographic groups that display higher rates of cigarette smoking and/or encounter additional barriers to receiving treatment for substance use disorders: 1) race and ethnicity (non-Hispanic White vs. non-White); 2) income (above vs. below poverty line); and 3) sex at birth (male vs. female) [@jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @pinedoCurrentReexaminationRacial2019; @olfsonHealthcareCoverageService2022; @kilaruIncidenceTreatmentOpioid2020]
 
-For model performance, we conducted Bayesian model comparisons to assess the likelihood that the model performs differently by group. We report median differences in posterior probabilities and the 95% Bayesian CIs around these differences. For clinical benefit, we compared the benefit of treatment selection (i.e., matched to best treatment vs. other treatment) at each time (4 weeks, 12 weeks, 26 weeks) by group. We report all results regardless of significance.
+For fairness of model performance, we conducted Bayesian model comparisons to assess the likelihood that the model performs differently by demographic group. We report median differences in posterior probabilities and the 95% Bayesian CIs around these differences. For fairness of clinical benefit, we compared the benefit of treatment selection (i.e., matched to best treatment vs. other treatment) at each time (4 weeks, 12 weeks, 26 weeks) by demographic group. We report the parameter estimate, confidence interval, and *p*-value for the effect of demographic group in each model.
 
 ## Results
 
 ### Sample characteristics
 
 
-All 1086 participants who were randomized to treatment in the comparative effectiveness trial [@bakerEffectsNicotinePatch2016] were included in our analysis sample. 
-
-Demographic characteristics of this sample appear in [@tbl-demohtml]{.content-visible when-format="html"}[@tbl-demopdf]{.content-visible unless-format="html"}. Our sample was 52.12% (N = 566) female. We had good representation of White (67.03%, N = 728) and Black (28.45%, N = 309) individuals but poor representation among Asian (0.28%, N = 3), Multiracial (2.03%, N = 22), Native American/Alaska Native (0.55%, N = 6), and Other individuals (1.66%, N = 18). This was also a primarily non-Hispanic sample (97.51%, N = 1059). There was wide variety with respect to marital status, employment status, and income, including over one third of the sample reporting annual income lower than $25,000 (national poverty line at the time of data collection). 
+All 1086 participants who were randomized to treatment in the comparative effectiveness trial [@bakerEffectsNicotinePatch2016] were included in our analysis sample. Demographic characteristics of this sample appear in [@tbl-demohtml]{.content-visible when-format="html"}[@tbl-demopdf]{.content-visible unless-format="html"}. Smoking-related characteristics of this sample appear in @tbl-smoking-chars.
 
 ::: {.content-hidden unless-format="html"}
 
@@ -246,8 +244,6 @@ Demographic characteristics of this sample appear in [@tbl-demohtml]{.content-vi
 {{< embed notebooks/mak_tables.qmd#demopdf >}} 
 :::
 
-Smoking-related characteristics of this sample appear in @tbl-smoking-chars. On average, individuals had been smoking almost 30 years and were currently smoking 17 cigarettes per day. Over three quarters of the sample reported smoking their first cigarette of the day within 30 minutes of waking up. 
-
 {{< embed notebooks/mak_tables.qmd#tbl-smoking-chars >}} 
 
 ### Model performance
@@ -261,33 +257,14 @@ We used the 30 test set auROCs to estimate the posterior probability distributio
 
 In @fig-combined, panel C, we display our model's calibration. This figure plots the predicted probabilities for each individual for their original trial-assigned treatment against the observed trial treatment success. Predicted probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. 
 
-### Fairness benchmarks
-
-All group comparisons for race/ethnicity, sex at birth, and income were significant (probability > 0.95). There was a median increase in auROC of 0.048 (95% CI 0.013 - 0.084) for non-White participants (vs. non-Hispanic White participants), indicating better performance for non-White participants. There was a median increase in auROC of 0.033 (95% CI 0.004 - 0.062) for participants below (vs. above) the national poverty line, indicating better performance for participants with lower income.^[Fifty-three participants (4.9%) did not provide income data and were excluded from this analyses.] There was a median increase in auROC of 0.056 (95% CI 0.026 - 0.087) for males (vs. females), indicating better performance for male participants.
-
 ### Model interpretation
 
-#### Retained features
 
+Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions (see Supplemental Table X for retained feature list). To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help with differential prediction. Implementing this model for treatment selection requires assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions. Retained treatment interaction features appear in @tbl-int-features, grouped by feature category from [@tbl-featureshtml]{.content-visible when-format="html"}[@tbl-featurespdf]{.content-visible unless-format="html"}. 
-
-{{< embed notebooks/mak_tables.qmd#tbl-int-features >}}
-
-To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help with differential prediction. Implementing this model for treatment selection requires assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
-
-#### Feature importance via Shapley values
-
-
-Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global, both overall (Panel A) and for treatment interaction features specifically (Panel B). Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
+Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global. Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
-
-Global feature importance grouped by feature type (main effect or interaction) appear in @fig-shap-grouped. Main effect features were relatively more important than treatment interaction features for predicting overall treatment success. 
-
-{{< embed notebooks/shap_4wk.qmd#fig-shap-grouped >}}
-
-<!-- need to combine these into one figure to meet requirements -->
 
 ### Clinical benefit
 
@@ -295,6 +272,13 @@ Global feature importance grouped by feature type (main effect or interaction) a
 There was a significant fixed effect of treatment matching on abstinence at 4 weeks (OR = 1.382, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). @fig-clin-ben-wk4 shows the mean abstinence rate by treatment matching at each time point. The pattern of results was identical when including only individuals who reported any medication use in the analysis sample.
 
 {{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}} 
+
+### Fairness benchmarks
+
+
+Model performance was better for male (vs. female) participants (median increase in auROC = 0.056 [95% CI 0.026 - 0.087]). Unexpectedly, model performance was better for non-White (vs. non-Hispanic White) participants (median increase in auROC = 0.048 [95% CI 0.013 - 0.084]) and for participants below (vs. above) the national poverty line (median increase in auROC = 0.033 [95% CI 0.004 - 0.062]).^[Fifty-three participants (4.9%) did not provide income data and were excluded from this analysis.]
+
+Clinical benefit fairness analysis results here!
 
 ## Discussion
 
@@ -307,7 +291,7 @@ We can achieve this benefit using an accessible, low-burden assessment. Implemen
 
 This focus on accessibility is espeically important given disparities in mental healthcare. Access to treatment is a known barrier in mental healthcare and a contributing factor driving healthcare disparities [@jacobsonDigitalTherapeuticsMental2022]. Cigarette smoking rates remain higher in many marginalized populations [@bakerSmokingTreatmentReport2021; @jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @kellyPrevalenceSmokingOther2012; @cropseySmokingFemalePrisoners2004; @harrisonCigaretteSmokingMental2020; @baggettTobaccoUseHomeless2013; @soarSmokingAmongstAdults2020]. Prioritizing accessibility in implementation is a critical first step towards mitigating rather than exacerbating health disparities [@maceachernMachineLearningPrecision2021]. 
 
-We aimed to further address this goal with our fairness benchmark analyses. We found that our prediction model performed worse for females than men; however, it performed better for non-White individuals and individuals below the poverty line. These findings suggest our model may be well-positioned to offer benefit to individuals usually disadvantaged by research efforts and mental healthcare.
+We aimed to further address this goal with our fairness benchmark analyses. We found that our prediction model performed worse for females than men; however, it performed better for non-White individuals and individuals below the poverty line. (CLINICAL BENEFIT RESULTS DISCUSSION HERE - MAY NEED TO ADJUST CONCLUSIONS). These findings suggest our model may be well-positioned to improve treatment equity. If our goal is to reduce and ultimately close the treatment gap between privileged individuals and individuals often disadvantaged in research efforts and mental healthcare, then we need tools such as this model that offer *additional* benefit to those disadvantaged demographic groups.
 
 ### Long-term outcomes
 
@@ -337,16 +321,16 @@ Dynamic change is the rule rather than the exception when it comes to chronic di
 
 Accounting for dynamic changes will require ongoing assessment of key features that predict treatment success. Such monitoring is now feasible given developments in personal sensing (i.e., in situ data collection via sensors embedded in individuals' daily lives) [@epsteinPredictionStressDrug2020; @soysterPooledPersonspecificMachine2022; @chihPredictiveModelingAddiction2014; @baeMobilePhoneSensors2018; @wyantMachineLearningModels2023] and is acceptable to individuals with substance use disorders [@wyantAcceptabilityPersonalSensing2023]. Sensing via ecological momentary assessment is well-positioned to capture the self-report items used as features in this treatment selection model. Although frequently answering a 50-item survey is likely not feasible, it may be that more proximal features have greater predictive power, thus requiring fewer features for successful treatment selection. Indeed, in previous work in our laboratory, we have been able to predict hour-by-hour probabilities of alcohol lapses quite accurately (auROCs > 0.9) when using self-report features measured much closer to the outcome [@wyantMachineLearningModels2023].
 
-Using this dynamic monitoring, we can select and adapt treatments and supports over time. There are certainly opportunities to adapt medications – for example, titrating doses or identifying moments when someone could benefit most from a lozenge. In general, medications are more static treatments that are less well-suited to dynamic changes; however, they do not need to be used on their own. We observed that matching people to the right medication improves treatment success at 4 weeks. Medications could help create early treatment success that positions people to engage with additional supports that might be able to adapt more dynamically. Alternative treatments and supports via web-based interventions and mobile health apps may offer platforms for sustainable, scalable, ongoing support. We can recommend specific modules and individual tools that map onto currently important features affecting treatment success. This mapping between risk factors and supports is likely to be quite complex and will require considerable future research. But if we hope to advance precision mental health for smoking, addiction, and even mental health broadly, we must consider the dynamic nature of risk and recovery inherent in these conditions.
+Using this dynamic monitoring, we can select and adapt treatments and supports over time. There are certainly opportunities to adapt medications – for example, titrating doses or identifying moments when someone could benefit most from a lozenge. In general, medications are more static treatments that are less well-suited to dynamic changes, but they do not need to be used on their own. We observed that matching people to the right medication improves treatment success at 4 weeks. Medications could help create early treatment success that positions people to engage with additional supports that might be able to adapt more dynamically. Alternative treatments and supports via web-based interventions and mobile health apps may offer platforms for sustainable, scalable, ongoing support. We can recommend specific modules and individual tools that map onto currently important features affecting treatment success. This mapping between risk factors and supports is likely to be quite complex and will require considerable future research. But if we hope to advance precision mental health for smoking, addiction, and even mental health broadly, we must consider the dynamic nature of risk and recovery inherent in these conditions.
 
 ### Interpreting our treatment selection model
 
 
-Several recent reviews have noted that the low interpretability of "black box" machine learning models may impede their utility for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. Consequently, we aimed to make our model as interpretable as possible. We identified features that predict differential treatment success (i.e., features that interact with treatment to help us select among treatments). Our best selected model configuration retained 74 interaction terms that spanned 52 unique items. Each feature's associated global Shapley value, which indicates overall magnitude of feature importance, was relatively small. This finding supports what has long been suspected in precision mental health: There is no one feature that explains sufficient variance to make differential predictions by treatment on its own. Rather, each feature offers only a small contribution, but these features together can guide treatment selection.
+Several recent reviews have noted that the low interpretability of "black box" machine learning models may impede their utility for clinical and public health goals [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. Consequently, we aimed to make our model as interpretable as possible. We identified features that predict differential treatment success (i.e., features that interact with treatment to help us select among treatments). Our best selected model configuration retained 74 interaction terms that spanned 52 unique items. Each feature's associated global Shapley value, which indicates overall magnitude of feature importance, was relatively small. This finding supports what has long been suspected in precision mental health: There is no one feature that explains sufficient variance to make differential predictions by treatment on its own. Rather, each feature offers only a small contribution, but many features together can guide treatment selection.
 
 We also identified features that predict treatment success overall (i.e., "main effects"). These features contribute to the smoking cessation literature and support the conclusion from a recent review that predictors of treatment success span many categories [@bickelPredictorsSmokingCessation2023]. We found similar breadth in important features in this model: economic (e.g., income), environmental (e.g., living with another smoker), sociodemographic (e.g., marital status), psychological (e.g., depression diagnosis), physical health (e.g., pain interfering with daily activities), and smoking use/history (e.g., longest previous quit attempt) characteristics all contributed to predicting treatment success. 
 
-Additionally, these prognostic factors may yet help to advance precision mental health goals. These factors may represent mechanisms underlying smoking cessation success and thus offer targeted areas for future treatment development. They also may be used to tailor existing treatments to increase success across individuals. Main effect features in our model may also interact with other treatments not included in this study. For example, buproprion is another first-line smoking cessation medication [@cahillPharmacologicalInterventionsSmoking2013]. It may be that some features in this model do not differentiate among C-NRT, nicotine patch, or varenicline but would differentiate between one of these treatments and buproprion. 
+Additionally, these "main effect" features may yet help to advance precision mental health goals. These features may represent mechanisms underlying smoking cessation success and thus offer targeted areas for future treatment development. They also may be used to tailor existing treatments to increase success across individuals. Main effect features in our model may also interact with other treatments not included in this study. For example, buproprion is another first-line smoking cessation medication [@cahillPharmacologicalInterventionsSmoking2013]. It may be that some features in this model do not differentiate among C-NRT, nicotine patch, or varenicline but would differentiate between one of these treatments and buproprion. 
 
 #### The role of demographic features
 
@@ -355,16 +339,16 @@ Several demographic features emerged as important: race, gender, income, and mar
 
 In some contexts, it would be problematic to use features that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race is discriminatory (e.g., [@farayolaEthicsTrustworthinessAI2023]). However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes across vulnerable subpopulations.
 
-#### The downside of transparency
+#### The risk of transparency
 
 
-When patients and clinicians can easily see non-intuitive features, they may be dissuaded from using or trusting this treatment selection model. For example, an interaction feature with the ASI-3 item "When my throat is tight, I worry I will choke to death" was retained. Because it seems to indicate a rather severe level of anxiety about physical conditions, perhaps it offered more predictive power than other correlated features and was thus retained by GLMNet. Regardless of the reason, the reality is that seeing questions like this on a treatment selection assessment may make patients or clinicians doubt the trustworthiness of the model.
+When patients and clinicians can easily see non-intuitive features, they may be dissuaded from using or trusting this treatment selection model. For example, an interaction feature with the Anxiety Sensitivity Index-3 item "When my throat is tight, I worry I will choke to death" was retained. Because it seems to indicate a rather severe level of anxiety about physical conditions, perhaps it offered more predictive power than other correlated features and was thus retained by GLMNet. Regardless of the reason, the reality is that seeing questions like this on a treatment selection assessment may make patients or clinicians doubt the trustworthiness of the model.
 
 
 ### Future directions
 
 
-We made a concerted effort in this project to evaluate how our treatment selection model would perform for new patients. Regardless, the ultimate test of this model's clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether using this model is feasible and acceptable to patients and clinicians in clinical practice. Second, we can evaluate the benefit of our treatment selection model in an entirely new sample. Individuals who receive their model-predicted best treatment could be compared to any one of several possible comparison groups. Individuals in the comparison group could receive a random treatment assignment (mimicking clinical trials). Alternatively, they could receive clinician-assigned treatment to mirror traditional treatment selection (and best clinical practice). Another option is that we could compare to a simpler model. For example, there is evidence that treatment success is lower when people are re-treated with the same treatment [@heckmanEffectivenessSwitchingSmokingCessation2017; @fioreClinicalPracticeGuideline2008; @tonnesenRecyclingNicotinePatches1993; @gonzalesRetreatmentVareniclineSmoking2014] and that treatment adherence is higher when people choose their preferred treatment [@cropseyPilotTrialVivo2017]. Thus, treatments in the comparison group could be assigned based on patient preference and re-treatment status. Each comparison offers different advantages and disadvantages that should be considered thoughtfully when designing a prospective trial.
+We made a concerted effort in this project to evaluate how our treatment selection model would perform for new patients using cross-validation procedures. Regardless, the ultimate test of this model's clinical benefit will be in a prospective trial. This trial will offer two tests. First, it will assess whether using this model is feasible and acceptable to patients and clinicians in clinical practice. Second, we can evaluate the benefit of our treatment selection model in an entirely new sample. Individuals who receive their model-predicted best treatment could be compared to any one of several possible comparison groups. Individuals in the comparison group could receive a random treatment assignment (mimicking clinical trials). Alternatively, they could receive clinician-assigned treatment to mirror traditional treatment selection (and best clinical practice). Another option is that we could compare to a simpler model. For example, there is evidence that treatment success is lower when people are re-treated with the same treatment [@heckmanEffectivenessSwitchingSmokingCessation2017; @fioreClinicalPracticeGuideline2008; @tonnesenRecyclingNicotinePatches1993; @gonzalesRetreatmentVareniclineSmoking2014] and that treatment adherence is higher when people choose their preferred treatment [@cropseyPilotTrialVivo2017]. Thus, treatments in the comparison group could be assigned based on patient preference and re-treatment status. Each comparison offers different advantages and disadvantages that should be considered thoughtfully when designing a prospective trial.
 
 ### Conclusion
 

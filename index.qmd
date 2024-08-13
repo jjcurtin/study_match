@@ -262,7 +262,7 @@ In @fig-combined, panel C, we display our model's calibration. This figure plots
 
 Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions (see Supplemental Table X for retained feature list). To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help with differential prediction. Implementing this model for treatment selection requires assessing only 52 unique items (e.g., multiple dummy variables are from a single item, the same feature interacts with more than one treatment). 
 
-Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global. Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions.
+Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global. Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions. UPDATE FIGURE TO ONLY BE PANEL A
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
 

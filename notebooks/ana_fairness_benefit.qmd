@@ -1,0 +1,132 @@
+---
+title: "Clinical Benefit Fairness"
+author: "Gaylen Fronk"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Set Up Environment
+
+```{r}
+study <- "match"
+version <- "v6"
+cv <- "nested"
+y_col_name <- "pp_hybrid_wk4_outcome"
+```
+
+Function conflicts
+```{r}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+tidymodels_conflictRules()
+```
+
+Packages, functions, and paths
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidymodels)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+
+
+
+path_processed <- format_path(str_c("studydata/match/processed_data/"))
+path_models <- format_path(str_c("studydata/match/models/", y_col_name))
+```
+
+## Prepare data
+
+Read in demographics
+
+```{r}
+
+d_dem <- read_csv(file.path(path_processed, "match_cln.csv"), 
+              show_col_types = FALSE) |> 
+  select(subid, gender_ehr, race_ehr, ethnicity_ehr, income_order) |> 
+  mutate(sex = if_else(gender_ehr == "female", "Female", "Male"),
+         race_ethnicity = if_else(race_ehr == "white" & ethnicity_ehr == "non_hispanic",
+                                  "White/Non-Hispanic", "Not White"),
+         income = case_match(
+           income_order,
+           c("01_less_than_10000", "02_btwn_10000_19999", 
+             "03_btwn_20000_24999") ~ "Below Poverty Line",
+           c("04_btwn_25000_34999", "05_btwn_35000_49999", 
+             "06_btwn_50000_74999", "07_more_than_75000") ~ "Above Poverty Line",
+           NA_character_ ~ "Missing"
+         )) |> 
+  select(-income_order, -ends_with("ehr")) |> 
+  glimpse()
+```
+
+Read in aim 2 dataset
+
+```{r}
+
+d_ben <- read_csv(file.path(path_models, 
+                        str_c("aim_2_", version, "_", y_col_name, ".csv")),
+              show_col_types = FALSE) |> 
+  mutate(outcome_rct_wk4_num = if_else(outcome_rct_wk4 == "abstinent", 1, 0),
+         outcome_rct_wk12_num = if_else(outcome_rct_wk12 == "abstinent", 1, 0),
+         outcome_rct_wk26_num = if_else(outcome_rct_wk26 == "abstinent", 1, 0),
+         tx_worst = case_when(
+           prob_patch < prob_combo_nrt & prob_patch < prob_varenicline ~ "patch",
+           prob_combo_nrt < prob_patch & prob_combo_nrt < prob_varenicline ~ "combo_nrt",
+           prob_varenicline < prob_patch & prob_varenicline < prob_combo_nrt ~ "varenicline",
+           TRUE ~ NA_character_),
+         tx_second = case_when(
+           tx_worst == "patch" & tx_best == "varenicline" ~ "combo_nrt",
+           tx_worst == "patch" & tx_best == "combo_nrt" ~ "varenicline",
+           tx_worst == "varenicline" & tx_best == "patch" ~ "combo_nrt",
+           tx_worst == "varenicline" & tx_best == "combo_nrt" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "varenicline" ~ "patch",
+           tx_worst == "combo_nrt" & tx_best == "patch" ~ "varenicline",
+           TRUE ~ NA_character_)) |> 
+  select(subid, starts_with("tx_"), starts_with("prob_"),
+         outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num) |> 
+  pivot_longer(
+    cols = c(outcome_rct_wk4_num, outcome_rct_wk12_num, outcome_rct_wk26_num),
+    names_to = "week",
+    names_pattern = "(?<=outcome_rct_wk)(.+)(?=_num)",
+    values_to = "outcome_rct_num"
+  ) |> 
+  mutate(c_tx_match = if_else(tx_match == TRUE, 0.5, -0.5), # center
+         week = as.numeric(week))
+
+glimpse(d_ben)
+
+```
+
+Join
+```{r}
+d <- d_ben |> 
+  left_join(d_dem, by = "subid") |> 
+  glimpse()
+
+```
+
+## Create difference scores
+
+```{r}
+d_diff <- d |> 
+  mutate()
+```
+
+
+
+

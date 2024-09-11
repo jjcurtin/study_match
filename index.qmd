@@ -56,10 +56,9 @@ editor_options:
 ## Introduction
 
 
-Precision medicine seeks to guide and personalize treatment selection using individual difference characteristics that are likely to predict treatment success for each patient [@bickmanImprovingMentalHealth2020]. Successful precision medicine would increase the likelihood of treatment success for each patient and improve treatment effectiveness rates across the population. 
-<!--  need a few more words to explain.  as before? -->
+Precision medicine seeks to guide and personalize treatment selection using individual difference characteristics that are likely to predict treatment success for each patient [@bickmanImprovingMentalHealth2020]. Successful precision medicine would increase the likelihood of treatment success for each patient because each patient receives the treatment predicted to work best for them. It would also improve treatment effectiveness rates across the population because each treatment is administered only to the patients for whom that treatment is expected to be their best option. 
 
-Precision mental health is the application of the precision medicine paradigm to mental health conditions [@derubeisHistoryCurrentStatus2019; @inselNIMHResearchDomain2014; @bickmanAchievingPrecisionMental2016; @bickmanImprovingMentalHealth2020]. Treatments for mental health conditions are usually no more than moderately effective, and many treatments for the same disorder can be quite comparable [@lewisPsychologicalTherapiesPosttraumatic2020; @weiszArePsychotherapiesYoung2019; @adjeiCO110ComparativeEffectiveness2022]. Precision mental health models may allow us to select among these treatments to improve mental healthcare. Consequently, many researchers have pursued precision mental health in recent years [@derubeisHistoryCurrentStatus2019]. 
+Precision mental health is the application of the precision medicine paradigm to mental health conditions [@derubeisHistoryCurrentStatus2019; @inselNIMHResearchDomain2014; @bickmanAchievingPrecisionMental2016; @bickmanImprovingMentalHealth2020]. Precision mental health models may allow us to select among these treatments to improve mental healthcare. Treatments for mental health conditions are usually no more than moderately effective, and many treatments for the same disorder can be quite comparable [@lewisPsychologicalTherapiesPosttraumatic2020; @weiszArePsychotherapiesYoung2019; @adjeiCO110ComparativeEffectiveness2022]. Consequently, many researchers have pursued precision mental health in recent years [@derubeisHistoryCurrentStatus2019]. 
 
 Despite the abundance of research, much less progress has been made to personalize treatments for mental health disorders compared to treatments for medical disorders [@bickmanAchievingPrecisionMental2016; @bickmanImprovingMentalHealth2020; @kranzlerPrecisionMedicinePharmacogenetics2017; @oliverPrecisionMedicineAddiction2017; @kesslerPragmaticPrecisionPsychiatry2021]. One possible reason for this is that many factors influence heterogeneous, complex clinical phenomena like mental health diagnoses and treatment success [@feczkoMethodsChallengesAssessing2020]. Thus, any single feature (i.e., predictor variable) cannot account for more than a small portion of the variance in treatment success [@kesslerPragmaticPrecisionPsychiatry2021; @inselNIMHResearchDomain2014]. Precision mental health efforts so far, however, have largely focused on personalizing treatments using only a single feature [@derubeisHistoryCurrentStatus2019]. It is perhaps unsurprising that models that consider only one or a small handful of features - which also limits considering features from different categories concurrently - have failed to capture the real-world complexity underlying clinical phenomena like treatment success.
 
@@ -98,7 +97,7 @@ Although there is not yet much research selecting among smoking cessation treatm
 ## Purpose
 
 
-The goal of this project was to produce and evaluate a treatment selection model to select among medications for smoking cessation. We used data from a previously completed comparative effectiveness trial of varenicline, C-NRT, and nicotine patch [@bakerEffectsNicotinePatch2016]. We built a model to predict treatment success using a high-dimensional array of baseline individual difference features and three smoking cessation treatments. We evaluated the clinical benefit of this treatment selection model to determine whether using our model to select treatments can increase abstinence following quitting smoking. 
+The goal of this project was to evaluate the clinical benefit of a treatment selection model. Specifically, we assessed whether using our model to select among medications for smoking cessation can increase abstinence following quitting smoking. The treatment selection model was developed using data from a previously completed comparative effectiveness trial of varenicline, C-NRT, and nicotine patch [@bakerEffectsNicotinePatch2016]. 
 
 ## Methods
 
@@ -151,12 +150,38 @@ Participants were comprehensively assessed for individual difference characteris
 #### Treatment success outcome
 
 
-Throughout study participation, treatment success was assessed via biologically confirmed, 7-day point-prevalence abstinence. Point-prevalence abstinence assesses for any smoking (here, in the previous 7 days) and yields a single, dichotomous outcome of "abstinent" or "smoking." Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; [@bakerEffectsNicotinePatch2016]). If participants self-reported any smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." 
+Throughout study participation, treatment success was repeatedly assessed via biologically confirmed, 7-day point-prevalence abstinence. Point-prevalence abstinence assesses for any smoking (here, in the previous 7 days) and yields a single, dichotomous outcome of "abstinent" or "smoking." Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; [@bakerEffectsNicotinePatch2016]). If participants self-reported any smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." 
 
-Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We selected treatment success at 4 weeks in order to 1) predict an outcome that would allow individuals to pivot to a different medication earlier if their treatment was unsuccessful; and 2) evaluate the differential effects of treatment while participants were actively using the medications.^[We fit additional models predicting treatment success at 12 and 26 weeks, and these models had significantly worse performance than our 4 week prediction model, supporting our choice to use the 4 week model (See Supplement).]
-<!--  how does this support our choice?  maybe just say we put the other midels in supplement? -->
+<!-- GEF: maybe move these next two paragraphs into the sub-sections for model building and benefit eval rather than describing here out-of-context -->
+Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We selected treatment success at 4 weeks in order to 1) predict an outcome that - in clinical practice - would allow individuals to pivot to a different medication earlier if their treatment was unsuccessful; and 2) evaluate the differential effects of treatment while participants were actively using the medications.^[We fit additional models predicting treatment success at 12 and 26 weeks, and these models had significantly worse performance than our 4 week prediction model (See Supplement).]
+
 Treatment success also served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
 <!--  this is not clear to me.  lets talk -->
+
+<!--
+RE-ORG
+
+^keep data section as is above, move treatment success outcome paragraphs to relevant subsections
+
+1. Model building (but NOT selection/evaluation?)
+
+2. Evaluating clinical benefit
+- we identified the best model configuration (i.e., combination of model characteristics)
+- we got predictions for each person, held-out (explain LOOCV briefly)
+- process for evaluating/analysis plan
+- is clinical benefit equal across groups?
+
+3. Evaluating model performance (is there signal to increase confidence in benefit?)
+- nested CV process
+- auROC
+- satisficing metric
+- is performance equal across groups? (maybe cut)
+
+4. Understanding model performance
+- parameter estimates
+- SHAP
+
+-->
 
 ### Model building
 

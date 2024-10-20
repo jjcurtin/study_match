@@ -97,7 +97,7 @@ Although there is not yet much research selecting among smoking cessation treatm
 ## Purpose
 
 
-The goal of this project was to evaluate the clinical benefit of a treatment selection model. Specifically, we assessed whether using our model to select among medications for smoking cessation can increase abstinence following quitting smoking. The treatment selection model was developed using data from a previously completed comparative effectiveness trial of varenicline, C-NRT, and nicotine patch [@bakerEffectsNicotinePatch2016]. 
+The goal of this project was to evaluate the clinical benefit of a treatment selection model. Specifically, we assessed whether using our model to select among medications for smoking cessation can increase abstinence following quitting smoking. We also assessed whether any treatment benefit is fair such that it performs equitably across demographic groups. To increase confidence in any clinical benefit we observed, we also evaluated model performance (i.e., is there predictive signal?) and interpreted our model (i.e., how does our model work?).
 
 ## Methods
 
@@ -105,7 +105,7 @@ The goal of this project was to evaluate the clinical benefit of a treatment sel
 
 
 We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement <!-- need to do this! -->. Finally, our data and other study materials are publicly available on our [OSF page](https://osf.io/qad4n/), and our annotated analysis scripts and results are publicly available on our [study website](https://jjcurtin.github.io/study_match/). 
-<!--  does this site include the pre-reg we didnt follow? -->
+<!--  does this site include the pre-reg we didnt follow? GEF: the OSF page does. need to think about how to give access to data maybe without linking to OSF -->
 
 ### Data
 
@@ -117,7 +117,7 @@ The data for this project came from a completed randomized controlled trial cond
 
 Participants were randomly assigned to one of three medication conditions: varenicline, C-NRT, or nicotine patch. For varenicline, participants began medication use prior to their quit attempt, starting with 0.5 mg once daily for 3 days, followed by 0.5 mg twice daily for 4 days. On the target quit date, participants increased to 1 mg twice daily and continued this dose for 12 weeks except in response to adverse events. For C-NRT or nicotine patch, participants initiated treatment on their quit date. Patch dosing was 8 weeks of 21 mg, 2 weeks of 14 mg, and 2 weeks of 7 mg. All individuals who received C-NRT were also instructed to use at least 5 lozenges per day (2 or 4 mg nicotine lozenges determined by time to first daily cigarette) for the full 12 weeks except in the case of adverse effects.
 
-All participants also received counseling per clinical guidelines [@fioreClinicalPracticeGuideline2008]. Participants received 5 in-person counseling sessions (pre-quit, quit day, week 1, week 4, week 12) and 1 phone counseling session (week 8). Counseling consisted of motivational interviewing/enhancement techniques, supportive therapy, and skill training elements.
+All participants also received counseling per clinical guidelines [@fioreClinicalPracticeGuideline2008]. Participants received 5 in-person counseling sessions (pre-quit, quit day, week 1, week 4, week 12) and 1 phone counseling session (week 8). Counseling consisted of motivational interviewing/enhancement, supportive therapy, and skill training.
 
 #### Individual difference characteristics
 
@@ -152,58 +152,72 @@ Participants were comprehensively assessed for individual difference characteris
 
 Throughout study participation, treatment success was repeatedly assessed via biologically confirmed, 7-day point-prevalence abstinence. Point-prevalence abstinence assesses for any smoking (here, in the previous 7 days) and yields a single, dichotomous outcome of "abstinent" or "smoking." Participants self-reported whether they had smoked over the past 7 days, and their report was biologically confirmed via exhaled carbon monoxide (CO). Participants were labeled as "abstinent" if their CO level was less than 6 parts per million (ppm; [@bakerEffectsNicotinePatch2016]). If participants self-reported any smoking in the past 7 days, their CO level contradicted their self-report (i.e., CO level > 6 ppm), or biological confirmation could not be confirmed, participants were labeled as "smoking." 
 
-<!-- GEF: maybe move these next two paragraphs into the sub-sections for model building and benefit eval rather than describing here out-of-context -->
-Assessments of treatment success were used in two separate ways. During model building, treatment success at 4 weeks post-quit served as the *prediction outcome for our models* (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We selected treatment success at 4 weeks in order to 1) predict an outcome that - in clinical practice - would allow individuals to pivot to a different medication earlier if their treatment was unsuccessful; and 2) evaluate the differential effects of treatment while participants were actively using the medications.^[We fit additional models predicting treatment success at 12 and 26 weeks, and these models had significantly worse performance than our 4 week prediction model (See Supplement).]
+### Evaluating clinical benefit
 
-Treatment success also served as the outcome for *clinical benefit analyses*. We evaluated whether using our treatment selection model yielded higher treatment success (i.e., higher rates of abstinence) at 4, 12, and 26 weeks post-quit.
-<!--  this is not clear to me.  lets talk -->
 
-<!--
-RE-ORG
+The primary purpose of this project was to evaluate the clinical benefit of our treatment selection model. In other words, we determined whether using a model to select treatments for individual patients improves clinical outcomes. Details on fitting, selecting, and evaluating model performance of the treatment selection model appear in "Model building, selection, & evaluation."
 
-^keep data section as is above, move treatment success outcome paragraphs to relevant subsections
+#### Identify model-predicted best treatment
 
-1. Model building (but NOT selection/evaluation?)
 
-2. Evaluating clinical benefit
-- we identified the best model configuration (i.e., combination of model characteristics)
-- we got predictions for each person, held-out (explain LOOCV briefly)
-- process for evaluating/analysis plan
-- is clinical benefit equal across groups?
+We used our best model configuration (i.e., combination of model characteristics; see Model Building, Selection, & Evaluation) to make treatment success predictions for each participant. Models were fit with 1085 participants, and predictions were made for the remaining, held-out participant. This approach matches real-world implementation in that we made predictions for a new patient the model has not seen. 
 
-3. Evaluating model performance (is there signal to increase confidence in benefit?)
-- nested CV process
-- auROC
-- satisficing metric
-- is performance equal across groups? (maybe cut)
+We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produced one prediction per person per treatment. The treatment that yielded the highest model-predicted probability of abstinence was identified as that participant's "best" treatment. 
 
-4. Understanding model performance
-- parameter estimates
-- SHAP
+For example, an individual received varenicline in the original trial. We calculated their probability of abstinence using their data (i.e., with varenicline as the "treatment" feature), and we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. Their probability of abstinence was highest when substituting C-NRT, meaning C-NRT was identified as their best treatment.
 
--->
+#### Categorize treatment matching
 
-### Model building
 
-Data preprocessing, modeling, and Bayesian analyses were done in R using the tidymodels ecosystem [@kuhnTidymodelsCollectionPackages2020]. Models were trained and evaluated using high-throughput computing resources provided by the University of Wisconsin Center for High Throughput Computing [@chtc]. Additional details about model building and evaluation appear in the Supplement.
+Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants could be categorized as having received "best treatment" or "other treatment" in the original trial. 
+
+For example, the individual described above received varenicline in the original trial, but their model-predicted probability of abstinence was highest when substituting C-NRT for treatment. This participant's best treatment did not match their trial treatment, so they were labeled as matched to "other treatment."
+
+#### Analysis plan
+
+
+Our primary analysis evaluated the clinical benefit of our treatment selection model by comparing the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who were matched to their best treatment or to other treatment (between-subjects; 0.5 ["best treatment"] vs. -0.5 ["other treatment"]). 
+
+We examined this effect of treatment matching on abstinence at 4, 12, and 26 weeks post-quit. Calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used and whether effects are determined in probabilities, odds, or log-odds units [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted three, separate generalized logistic regression models where we regressed the outcome (abstinent vs. smoking) on treatment matching. We conducted these regressions using the lme4 package in R [@batesLme4LinearMixedEffects2015]. We also conducted sensitivity analyses using only participants who reported starting their medication (i.e., any medication use reported during the first 4 weeks post-quit; N = 988).
+
+#### Fairness benchmarks
+
+
+Treatment selection models that work for only a subset of people, if implemented, could widen existing mental healthcare disparities. Consequently, we conducted fairness analyses to determine whether there was equitable clinical benefit across demographic groups. We conducted analyses separately for three dichotomized demographic groups that display higher rates of cigarette smoking and/or encounter additional barriers to receiving treatment: 1) race and ethnicity (non-Hispanic White vs. non-White); 2) income (above vs. below poverty line); and 3) sex at birth (male vs. female) [@jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @pinedoCurrentReexaminationRacial2019; @olfsonHealthcareCoverageService2022; @kilaruIncidenceTreatmentOpioid2020].
+
+<!-- GEF fix/add to this once i go through analyses -->We compared the benefit of treatment selection (i.e., matched to best treatment vs. other treatment) at each time (4 weeks, 12 weeks, 26 weeks) by demographic group. We report the parameter estimate, confidence interval, and *p*-value for the effect of demographic group in each model. 
+
+### Model building, selection, & evaluation
+
+
+Data preprocessing, modeling, and Bayesian analyses were conducted in R using the tidymodels ecosystem [@kuhnTidymodelsCollectionPackages2020]. Models were trained and evaluated using high-throughput computing resources provided by the University of Wisconsin Center for High Throughput Computing [@chtc]. Additional details about model building and evaluation appear in the Supplement.
 
 #### Feature engineering
 
 
-We followed standard practices for generic feature engineering steps (see Supplement). Treatment was one-hot-coded such that there were three features, one corresponding to each treatment (varenicline, C-NRT, nicotine patch). The three treatment features were allowed to interact with all other features to permit differential prediction. 
-A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)).
+We followed standard practices for generic feature engineering steps (see Supplement). Treatment was one-hot-coded such that there were three features, one corresponding to each treatment (varenicline, C-NRT, nicotine patch). The three treatment features were allowed to interact with all other features to permit differential prediction. A sample feature engineering script (i.e., tidymodels recipe) containing all feature engineering steps is available on our OSF study page ([https://osf.io/qad4n/](https://osf.io/qad4n/)).
 
 #### Model configurations
 
 
-All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet) and differed across sensible values for the associated hyperparameters, alpha and lambda. This algorithm aligned with our application goals: GLMNet allows including interation terms explicitly (i.e., interactions between treatment and all other features), and it reduces dimensionality <!-- link back to overfiting from intro?  -->by penalizing model complexity. Model configurations differed by 1) whether feature sets included individual items within a self-report measure or total scale/sub-scale scores derived from items, and 2) whether ordered categorical data (e.g., Likert scale items) were ordinal scored or one-hot coded. 
+All model configurations used the statistical algorithm Elastic Net Logistic Regression (GLMNet) and differed across sensible values for the associated hyperparameters, alpha and lambda. This algorithm aligned with our application goals: GLMNet allows including interation terms explicitly (i.e., interactions between treatment and all other features), and it penalizes model complexity to reduce dimensionality and ultimately reduce the risk of overfitting. Model configurations differed by 1) whether feature sets included individual items within a self-report measure or total scale/sub-scale scores derived from items, and 2) whether ordered categorical data (e.g., Likert scale items) were ordinal scored or one-hot coded. 
 
-#### Model selection & evaluation
+#### Prediction outcome
+
+
+The model prediction outcome was treatment success at 4 weeks post-quit (i.e., predicting if individuals were labeled "abstinent" or "smoking" at 4 weeks). We selected treatment success at 4 weeks in order to 1) predict an outcome that - in clinical practice - would allow individuals to pivot to a different medication earlier if their treatment was unsuccessful; and 2) evaluate the differential effects of treatment while participants were actively using the medications.^[We fit additional models predicting treatment success at 12 and 26 weeks, and these models had significantly worse performance than our primary 4 week prediction model (See Supplement).]
+
+#### Model selection
 
 
 We used nested *k*-fold cross-validation for model training, selection, and evaluation [@krstajicCrossvalidationPitfallsWhen2014]. Nested cross-validation uses two nested loops for dividing and holding out folds: an outer loop, where held-out folds serve as *test sets* for model evaluation; and inner loops, where held-out folds serve as *validation sets* for model selection. We used 1 repeat of 10-fold cross-validation (i.e., *k* = 10) for the inner loops and 3 repeats of 10-fold cross-validation for the outer loop. 
 
-Models were selected and evaluated using area under the receiver operating characteristic curve (auROC), <!-- define first?  -->which indexes the probability that the model will predict a higher score for a randomly selected positive case (abstinent) relative to a randomly selected negative case (smoking) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. Because it was important that our model retained interaction features, we defined a "satisficing metric" <!--  what do we call the auROC metric? -->of 50 or more treatment interaction features retained [@ngMachineLearningYearning2018]. Best model configurations were selected using median auROC among model configurations that retained a median of 50 treatment interaction features across the 10 *validation sets*. Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.
+Models were selected and evaluated using area under the receiver operating characteristic curve (auROC), which indexes the probability that the model will predict a higher score for a randomly selected positive case (abstinent) relative to a randomly selected negative case (smoking) [@kuhnAppliedPredictiveModeling2018; @youngstromPrimerReceiverOperating2014]. Because it was important that our model retained interaction features, we required that model configurations retain an average of 50 or more treatment interaction features [@ngMachineLearningYearning2018]. Best model configurations were selected using median auROC among model configurations that retained a median of 50 treatment interaction features across the 10 *validation sets*. Final performance evaluation of those best model configurations used median auROC across the 30 *test sets*.
+
+To get a single, final model configuration, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds (among model configurations that retained a median of 50 treatment interaction features). This best model configuration was used to make predictions for clinical benefit evaluation (above) and feature importance analyses (see Model Interpretation). A final model was fit on the full dataset using this best configuration to obtain parameter estimates for additional interpretation (see Model Interpretation).
+
+#### Model performance evaluation
+
 
 We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) for test set auROC. We estimated the posterior probability distribution around model performance following recommendations from the tidymodels team [@kuhnTidyposteriorBayesianAnalysis2022]. The median posterior probability for auROC represents our best estimate for the magnitude of the auROC parameter for each model. If the credible intervals do not contain .5 (chance performance), this suggests our model is capturing signal in the data. 
 
@@ -214,49 +228,19 @@ We used a Bayesian hierarchical generalized linear model to estimate the posteri
 GEF: I believe all this info is in the supplement but will confirm, thank you!
 -->
 
+#### Model calibration
+
+
+We examined the calibration of our model's predictions by comparing model predictions to observed outcomes. Specifically, we compared the predicted probabilities for each individual for their original trial-assigned treatment against the observed trial treatment success. 
+
 ### Model interpretation
 
 
 Interpretability is important when using machine learning for clinical applications to identify important features and encourage implementation [@maceachernMachineLearningPrecision2021; @mooneyBigDataPublic2018; @cohenTreatmentSelectionDepression2018]. We reviewed the retained features and their parameter estimates as a metric of feature importance because GLMNet only retains features whose contribution outweighs the additional complexity. 
 
-We also computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of feature importance. We calculated Shapley values using leave-one-out *k*-fold cross-validation (LOOCV), where the value of *k* is set to *N* (sample size) such that each test set consists of a single held-out participant. Shapley values were calculated for each held-out participant using a model fit with the other 1085 participants and the final, best selected model configuration.
+We also computed Shapley Values [@lundbergUnifiedApproachInterpreting2017] to provide a consistent, objective explanation of feature importance. Shapley values were calculated for each held-out participant using a model fit with the other 1085 participants and the final, best selected model configuration.
 
 We used the DALEX and DALEXtra packages [@biecekDALEXExplainersComplex2018] in R, which provide local Shapley values (i.e., for each observation) in log-odds units for binary classification models. To index global feature importance, we averaged the absolute value of the local Shapley values of each feature across observations. Shapley values are additive, which allowed us to create two feature categories, Main Effects and Interactions. We calculated global importance of each feature category by averaging the absolute value of the Shapley values of all features in the category across observations. These global importance scores allowed us to contextualize relative feature importance for each feature and feature category.
-
-### Clinical benefit evaluation
-<!--  i worry that this gets buried by coming later when it is the most important analysis -->
-#### Select final model configuration
-
-
-To get a single, final model, we replicated our inner loop resampling (1 repeat of 10-fold cross-validation) on the full dataset. The best model configuration was selected using median auROC across the 10 held-out folds (among model configurations that retained a median of 50 treatment interaction features). A final model was fit on the full dataset using this best selected model configuration to obtain parameter estimates for interpretation.
-<!-- this final model was used in eatlier feat importance analysis?  maybe another reason to re-order  -->
-#### Identify model-predicted best treatment
-
-<!--  using final model or final model config from last section? -->
-We made predictions for each held-out participant using LOOCV (i.e., model is fit with the other 1085 participants). This approach matches real-world implementation in that we are making predictions for a new patient the model has not seen. We calculated three predicted probabilities for each participant by substituting each treatment into the model inputs. This produced one prediction per person per treatment. The treatment that yielded the highest model-predicted probability of abstinence was identified as that participant's "best" treatment. 
-
-For example, an individual received varenicline in the original trial. We calculated their probability of abstinence using their data (i.e., with varenicline as the "treatment" feature), and we calculated two additional probabilities by substituting C-NRT and nicotine patch for varenicline. Their probability of abstinence was highest when substituting C-NRT, meaning C-NRT was identified as their best treatment.
-
-#### Categorize treatment matching
-
-
-Some participants' best treatment matched what they were randomly assigned in the original trial. Other participants may have received a sub-optimal treatment (i.e., what the model identified as their second-best or worst treatment based on calculated probabilities). Thus, participants could be categorized by whether they received their best treatment or another <!-- you call it "other" below. this section needs to be very clear. maybe more examples?  -->treatment in the original trial. 
-
-For example, the individual described above received varenicline in the original trial, but their model-predicted probability of abstinence was highest when substituting C-NRT for treatment. This participant's best treatment did not match their trial treatment, so they were labeled as matched to "other treatment."
-
-#### Evaluate clinical benefit
-
-
-Our primary analysis evaluated the clinical benefit of our treatment selection model by comparing the observed outcomes (i.e., abstinence vs. smoking from the original trial) for people who were matched to their best treatment or to another treatment (between-subjects; 0.5 ["best treatment"] vs. -0.5 ["other treatment"]). 
-
-We examined this effect over time at 4, 12, and 26 weeks. Calculating and interpreting interactions in logistic models is not straightforward because significance can differ based on the link function used<!--   focus nit only on link but whether prob, odds, or log-odds--> [@karaca-mandicInteractionTermsNonlinear2012; @collinsOptimizationBehavioralBiobehavioral2018]. Consequently, we conducted three, separate generalized logistic regression models where we regressed the outcome (abstinent vs. smoking) on treatment matching. We conducted these regressions using the lme4 package in R [@batesLme4LinearMixedEffects2015]. We also conducted sensitivity analyses using only participants who reported starting their medication (i.e., any medication use reported during the first 4 weeks post-quit; N = 988).
-
-### Fairness benchmarks
-
-
-We aim for the responsible and transparent reporting of model performance and clinical utility, and we acknowledge that models that work for only a subset of people, if implemented, could widen existing treatment disparities. Consequently, we conducted fairness analyses on our model performance (i.e., auROC) and clinical benefit.<!--  maybe we really only care about clinical benefit? --> We conducted analyses separately for three dichotomized demographic groups that display higher rates of cigarette smoking and/or encounter additional barriers to receiving treatment: 1) race and ethnicity (non-Hispanic White vs. non-White); 2) income (above vs. below poverty line); and 3) sex at birth (male vs. female) [@jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @pinedoCurrentReexaminationRacial2019; @olfsonHealthcareCoverageService2022; @kilaruIncidenceTreatmentOpioid2020]
-
-For fairness of model performance, we conducted Bayesian model comparisons to assess the likelihood that the model performs differently by demographic group. We report median differences in posterior probabilities and the 95% Bayesian CIs around these differences. For fairness of clinical benefit, we compared the benefit of treatment selection (i.e., matched to best treatment vs. other treatment) at each time (4 weeks, 12 weeks, 26 weeks) by demographic group. We report the parameter estimate, confidence interval, and *p*-value <!--not a p-value?   -->for the effect of demographic group in each model.
 
 ## Results
 
@@ -281,6 +265,16 @@ All 1086 participants who were randomized to treatment in the comparative effect
 
 {{< embed notebooks/mak_tables.qmd#tbl-smoking-chars >}} 
 
+### Clinical benefit
+
+
+There was a significant effect of treatment matching on abstinence at 4 weeks (OR = 1.382, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). @fig-clin-ben-wk4 shows the mean abstinence rate by treatment matching at each time point. The pattern of results was identical when including only individuals who reported any medication use in the analysis sample (4 weeks: OR = , *z* = , *p* = ; 12 weeks: *p* = ; 26 weeks: *p* = ).
+
+{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}} 
+
+Clinical benefit fairness analysis results here! ^[Fifty-three participants (4.9%) did not provide income data and were excluded from this analysis.]
+<!--  i think you just need these?  these are second most important analyses -->
+
 ### Model performance
 
 
@@ -290,53 +284,30 @@ The median auROC across the 30 test sets for the 4-week model was 0.695 (IQR = 0
 
 We used the 30 test set auROCs to estimate the posterior probability distribution for the auROC of these models. The median auROC from the posterior distribution was 0.693. This value represents our best estimate for the magnitude of the auROC parameter. The 95% Bayesian CI for the auROC was relatively narrow [0.674 - 0.711] and did not contain 0.5 (chance performance), providing strong evidence that this model has predictive signal. @fig-combined, Panel B displays the posterior probability distribution for the auROC.
 
-In @fig-combined, panel C, we display our model's calibration. This figure plots the predicted probabilities for each individual for their original trial-assigned treatment against the observed trial treatment success. Predicted probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. <!--KW: I wonder if some of this should go in the methods? GEF: not sure where is best - thoughts? 
-
-jc: this is another analysis so should be described in method loke others-->
+In @fig-combined, panel C, we display our model's calibration. Predicted probabilities are binned (bin width = 10%) and plotted against the observed probability of abstinence for observations in that bin. If probabilities were perfectly calibrated, all bin means would fall on the dotted line (e.g., bin from 0 - 10 with an observed mean probability of 0.05, bin from 10 - 20 with an observed mean probability of 0.15). Probabilities are well calibrated and ordinal in their relationship with the true probability of abstinence. 
 
 ### Model interpretation
 
 
-Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions (see Supplemental Table X for retained feature list). To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help with differential prediction. <!--you have used that term a few times, maybe be clearer what it is first time used. different predictions across candidate medications   -->Implementing this model for treatment selection requires assessing only 52 unique items (e.g., multiple dummy <!--  one hot? -->variables are from a single item, the same feature interacts with more than one treatment). 
+Our final model fit with the full dataset retained 155 features overall including 74 treatment interactions (see Supplemental Table X for retained feature list). To perform treatment selection, only interactive features need to be assessed, as features that increase or decrease probabilities equally across treatments do not help to make different predictions across candidate medications. Implementing this model for treatment selection requires assessing only 52 unique items (e.g., multiple one hot features are from a single item, the same feature interacts with more than one treatment). 
 
-Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global. Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions. UPDATE FIGURE TO ONLY BE PANEL A 
+Global feature importance (mean |Shapley value|) from our model appears in @fig-shap-global. Shapley values describe the relative importance of these individual features for making predictions. Six of the top 25 most globally important features were treatment interactions. <!-- GEF: UPDATE FIGURE TO ONLY BE PANEL A -->
 
 {{< embed notebooks/shap_4wk.qmd#fig-shap-global >}}
-
-
-
-### Clinical benefit
-
-<!--  again, i worry this comes late -->
-There was a significant fixed <!--  are there random effects in model?  if not, delete "fixed" -->effect of treatment matching on abstinence at 4 weeks (OR = 1.382, *z* = 2.452, *p* = 0.014) such that individuals who received their model-predicted best treatment were more likely to be abstinent. The effect of treatment matching was no longer significant at 12 weeks (*p* = 0.232) or at the 26-week follow-up assessment (*p* = 0.943). @fig-clin-ben-wk4 shows the mean abstinence rate by treatment matching at each time point. The pattern of results was identical when including only individuals who reported any medication use in the analysis sample.<!--footnote this statement but add p or just add p here?   -->
-
-{{< embed notebooks/eval_benefit_4wk.qmd#fig-clin-ben-wk4 >}} 
-
-### Fairness benchmarks
-
-
-Model performance was better for male (vs. female) participants (median increase in auROC = 0.056 [95% CI 0.026 - 0.087]). Unexpectedly, model performance was better for non-White (vs. non-Hispanic White) participants (median increase in auROC = 0.048 [95% CI 0.013 - 0.084]) and for participants below (vs. above) the national poverty line (median increase in auROC = 0.033 [95% CI 0.004 - 0.062]).^[Fifty-three participants (4.9%) did not provide income data and were excluded from this analysis.]
-
-Clinical benefit fairness analysis results here!
-<!--  i think you just need these?  these are second most important analyses -->
 
 ## Discussion
 
 
 In this project, we produced a treatment selection model that can offer immediate benefit to individuals looking to quit smoking using several first-line medications. Individuals who received their model-predicted best treatment in the original trial had a mean abstinence rate that was 7.4% higher than individuals who did not (38.9% vs. 31.5%) at 4 weeks. Although this absolute difference may seem somewhat small, this corresponds to a 23.5% *relative* improvement - simply by allocating treatments to the right person.<!-- good!  -->
 
-We feel confident in this effect for several reasons. First, we made predictions for each individual to identify their best treatment while they were held-out from model fitting to match how this model will be used in clinical practice (i.e., to make predictions and select a treatment for new patients). Second, our model is capturing predictive signal, as supported by the Bayesian CI around our model's auROC, adding to our trust in the model's prediction outputs. Third, these predictions were well-calibrated such that we can trust their ordinal ranking. This is critical because what is used in our treatment selection process is the relative *order* (i.e., rank) of predicted probabilities for each person rather than the values themselves. 
+We feel confident in this effect for several reasons. First, we made predictions for each individual to identify their best treatment while they were held-out from model fitting to match how this model will be used in clinical practice (i.e., to make predictions and select a treatment for new patients). Second, our model is capturing predictive signal, as supported by the Bayesian CI around our model's auROC, adding to our trust in the model's prediction outputs. Third, these predictions were well-calibrated such that we can trust their ordinal ranking. This is critical because our treatment selection process relies on the relative *order* (i.e., rank) of predicted probabilities for each person rather than the values themselves. 
   
-We can achieve this benefit using an accessible, low-burden assessment. Implementing this treatment selection model would require assessing approximately 50 multiple choice and yes/no questions, which survey research suggests would take 11-12 minutes to complete [@lenznerCognitiveBurdenSurvey2010]. Additionally, because all items are self-report questions, this assessment can be completed remotely (e.g., administered online) and can be made available to people without access to in-person medical care. This assessment tool is particularly valuable in this context because two treatments in the model (C-NRT, nicotine patch) are widely available over-the-counter, offering scalable implementation when healthcare access is limited. 
+We can achieve this benefit using an accessible, low-burden assessment. Implementing this treatment selection model would require assessing approximately 50 multiple choice and yes/no questions, which survey research suggests would take 11-12 minutes to complete [@lenznerCognitiveBurdenSurvey2010]. Additionally, because all items are self-report questions, this assessment can be completed remotely (e.g., administered online) and can be made available to people without access to in-person medical care. This remote capacity is particularly valuable because two treatments in the model (C-NRT, nicotine patch) are widely available over-the-counter, offering scalable implementation when healthcare access is limited. 
 
 <!--  will need to synch this next paragraph with fairness for clinical benefit -->
 This focus on accessibility is especially important given disparities in mental healthcare. Access to treatment is a known barrier in mental healthcare and a contributing factor driving healthcare disparities [@jacobsonDigitalTherapeuticsMental2022]. Cigarette smoking rates remain higher in many marginalized populations [@bakerSmokingTreatmentReport2021; @jamalCurrentCigaretteSmoking2015a; @corneliusTobaccoProductUse2020; @kellyPrevalenceSmokingOther2012; @cropseySmokingFemalePrisoners2004; @harrisonCigaretteSmokingMental2020; @baggettTobaccoUseHomeless2013; @soarSmokingAmongstAdults2020]. Prioritizing accessibility in implementation is a critical first step towards mitigating rather than exacerbating health disparities [@maceachernMachineLearningPrecision2021]. 
 
-We aimed to further address this goal with our fairness benchmark analyses. We found that our prediction model performed worse for females than men; however, it performed better for non-White individuals and individuals below the poverty line. (CLINICAL BENEFIT RESULTS DISCUSSION HERE - MAY NEED TO ADJUST CONCLUSIONS). These findings suggest our model may be well-positioned to improve treatment equity. If our goal is to reduce and ultimately close the treatment gap between privileged individuals and individuals often disadvantaged in research efforts and mental healthcare, then we need tools such as this model that offer *additional* benefit to those disadvantaged demographic groups.
-
-<!--KW: That's interesting that the model performed better for non-White and lower income participants! Yay for diverse training data! Also, were these differences significant in terms of probability that models differed? I wondering because your performance differences are lower than mine and also in a different direction (I was using a one-tailed test cutoff for probability >.95 so if you were looking at both directions you would need cutoff > 97.5). Maybe the conclusion here would be that the models were clinically equivalent across majority/minority groups as opposed to focussing on there being differences.
-
-GEF: note to revisit these conclusions/results with John. income is 3.35% probability (so wouldn't meet 2.5/97.5 cutoff) but the other two are 99% and 1%-->
+We further addressed this goal with our fairness benchmark analyses. (CLINICAL BENEFIT RESULTS DISCUSSION HERE - MAY NEED TO ADJUST CONCLUSIONS). These findings suggest...  <!-- [from original discussion of model performance] our model may be well-positioned to improve treatment equity. If our goal is to reduce and ultimately close the treatment gap between privileged individuals and individuals often disadvantaged in research efforts and mental healthcare, then we need tools such as this model that offer *additional* benefit to those disadvantaged demographic groups. -->
 
 ### Long-term outcomes
 
@@ -352,7 +323,7 @@ It is important to note, however, that our primary goal was *not* overall predic
 <!-- first again?  -->
 The clinical benefit that our treatment selection model offers is short-lived. There is no longer statistically significant benefit of treatment matching at 12 weeks, though there is a numeric difference (31.2% abstinence vs. 27.8% abstinence), and there is no statistical or numeric difference at all by 6 months. 
 
-Initial treatment success is critical, especially for cigarette smoking where even reducing smoking or quitting for a short period of time can improve health outcomes and life expectancy [@jhaprabhat21stCenturyHazardsSmoking2013]. Additionally, smoking early in a quit attempt can have strong negative consequences: decreased self-efficacy, reduced treatment adherence, and premature treatment cessation [@schlamInterventionsTobaccoSmoking2013]. Findings such as these highlight that selecting a treatment that increases treatment success in early recovery (i.e., at 4 weeks) is necessary - though not sufficient - for long-term success.
+Initial treatment success is critical, especially for cigarette smoking where even reducing smoking or quitting for a short period of time can improve health outcomes and life expectancy [@jhaprabhat21stCenturyHazardsSmoking2013]. Additionally, smoking early in a quit attempt can have strong negative consequences: decreased self-efficacy, reduced treatment adherence, and premature treatment cessation [@schlamInterventionsTobaccoSmoking2013]<!-- GEF: consider linking to abstinence violation effect -->. Findings such as these highlight that selecting a treatment that increases treatment success in early recovery (i.e., at 4 weeks) is necessary - though not sufficient - for long-term success.
 
 Nevertheless, we were of course hopeful that treatment matching benefits would endure. However, it is perhaps unsurprising that they do not. There may be several possibilities for the lack of benefit at later assessment points. 
 
@@ -389,7 +360,7 @@ Additionally, these "main effect" features may yet help to advance precision men
 #### The role of demographic features
 
 <!--  main or interaction? -->
-Several demographic features emerged as important: race, gender, income, and marital status. Ethnicity did not emerge as an important feature, and race-based features were specifically related to identifying as a Black or White individual. However, the limited representation of Hispanic, Latino/a, Asian, Multiracial, and Native American/Alaska Native individuals in this sample warrants caution in drawing conclusions about the predictive utility of ethnicity- and race-based features. 
+Several demographic features emerged as important interactive features for treatment selection: race, gender, income, and marital status. Ethnicity did not emerge as an important interactive feature, and race-based interactive features were specifically related to identifying as a Black or White individual. However, the limited representation of Hispanic, Latino/a, Asian, Multiracial, and Native American/Alaska Native individuals in this sample warrants caution in drawing conclusions about the utility of ethnicity- and other race-based features for treatment selection. 
 
 In some contexts, it would be problematic to use features that tap into constructs delineating marginalized identities such as race or socioeconomic status. For example, making decisions about who gets insurance (or doesn't) and who gets released earlier from prison (or doesn't) based on race is discriminatory (e.g., [@farayolaEthicsTrustworthinessAI2023]). However, in the precision mental health landscape, we are not deciding *who* gets treatment. Rather, we are deciding *which* treatment to give a specific patient. Thus, we can take advantage of experiential or symptomatological differences as a result of characteristics such as race, ethnicity, sex, income, or comorbid health conditions to improve treatment outcomes across vulnerable subpopulations.
 

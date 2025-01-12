@@ -263,7 +263,7 @@ summary(model_12wk_rank)
 26 weeks
 ```{r}
 model_26wk_rank <- glm(outcome_rct_num ~ tx_rank_1v23 + tx_rank_2v3, 
-                  data = d_wk12,
+                  data = d_wk26,
                   family = binomial(link = "logit"))
 
 summary(model_26wk_rank)

@@ -46,8 +46,8 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/sta
 
 
 
-path_processed <- format_path(str_c("studydata/match/processed_data"))
-path_models <- format_path(str_c("studydata/match/models/", y_col_name))
+path_processed <- "R:/studydata/match/processed_data"
+path_models <- str_c("R:/studydata/match/models/", y_col_name)
 ```
 
 ## Prepare data
@@ -58,7 +58,7 @@ Read in demographics
 
 d_dem <- read_csv(file.path(path_processed, "match_cln.csv"), 
               show_col_types = FALSE) |> 
-  select(subid, gender_ehr, race_ehr, ethnicity_ehr, income_order) |> 
+  select(subid, gender_ehr, race_ehr, ethnicity_ehr, income_order, employment) |> 
   mutate(sex = if_else(gender_ehr == "female", "Female", "Male"),
          race_ethnicity = if_else(race_ehr == "white" & ethnicity_ehr == "non_hispanic",
                                   "White/Non-Hispanic", "Not White"),
@@ -68,8 +68,9 @@ d_dem <- read_csv(file.path(path_processed, "match_cln.csv"),
              "03_btwn_20000_24999") ~ "Below Poverty Line",
            c("04_btwn_25000_34999", "05_btwn_35000_49999", 
              "06_btwn_50000_74999", "07_more_than_75000") ~ "Above Poverty Line",
-           NA_character_ ~ "Missing"
-         )) |> 
+           NA_character_ ~ "Missing"),
+         employment = if_else(employment == "unemployed", 
+                              "unemployed", "employed")) |> 
   select(-income_order, -ends_with("ehr")) |> 
   glimpse()
 ```
@@ -119,6 +120,341 @@ d <- d_ben |>
   glimpse()
 
 ```
+
+## Analyses
+
+Centered variables
+```{r}
+d <- d |> 
+  mutate(
+    c_employment_unemployed = if_else(employment == "unemployed", 0, 1),
+    c_employment_employed = if_else(employment == "unemployed", 1, 0),
+    c_employment = if_else(employment == "unemployed", -0.5, 0.5),
+    c_sex_male = if_else(sex == "Male", 0, 1),
+    c_sex_female = if_else(sex == "Male", 1, 0),
+    c_race_ethn_white_non_his = if_else(race_ethnicity == "White/Non-Hispanic", 0, 1),
+    c_race_ethn_not_white = if_else(race_ethnicity == "White/Non-Hispanic", 1, 0),
+    c_income_above = case_match(
+      income,
+      "Below Poverty Line" ~ 1,
+      "Above Poverty Line" ~ 0,
+      "Missing" ~ NA_real_
+    ),
+    c_income_below = case_match(
+      income,
+      "Below Poverty Line" ~ 0,
+      "Above Poverty Line" ~ 1,
+      "Missing" ~ NA_real_
+    )
+  ) |> 
+  glimpse()
+```
+
+Filter to weeks
+```{r}
+d_wk4 <- d |> 
+  filter(week == 4)
+
+d_wk12 <- d |> 
+  filter(week == 12)
+
+d_wk26 <- d |> 
+  filter(week == 26)
+```
+
+### TESTING: Employment
+
+Center on the level that you want the simple effect for
+
+**Week 4**
+
+Simple effect of employment
+```{r}
+employ_4 <- glm(outcome_rct_num ~ c_tx_match * c_employment_employed,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(employ_4)
+exp(coef(employ_4)["c_tx_match"])
+```
+No significant effect of treatment matching at 4 weeks for individuals who are employed full- or part-time. OR relatively similar to overall treatment matching effect (1.28 vs. 1.38).
+
+Simple effect of unemployment
+```{r}
+unemploy_4 <- glm(outcome_rct_num ~ c_tx_match * c_employment_unemployed,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(unemploy_4)
+exp(coef(unemploy_4)["c_tx_match"])
+```
+Significant effect of treatment matching at 4 weeks for individuals who are unemployed. OR higher than overall treatment matching effect (1.68 vs. 1.38).
+
+**Week 12**
+
+Simple effect of employment
+```{r}
+employ_12 <- glm(outcome_rct_num ~ c_tx_match * c_employment_employed,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(employ_12)
+```
+No significant effect of treatment matching at 12 weeks for individuals who are employed full- or part-time.
+
+Simple effect of unemployment
+```{r}
+unemploy_12 <- glm(outcome_rct_num ~ c_tx_match * c_employment_unemployed,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(unemploy_12)
+```
+No significant effect of treatment matching at 12 weeks for individuals who are unemployed. 
+
+**Week 26**
+
+Simple effect of employment
+```{r}
+employ_26 <- glm(outcome_rct_num ~ c_tx_match * c_employment_employed,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(employ_26)
+```
+No significant effect of treatment matching at 26 weeks for individuals who are employed full- or part-time.
+
+Simple effect of unemployment
+```{r}
+unemploy_26 <- glm(outcome_rct_num ~ c_tx_match * c_employment_unemployed,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(unemploy_26)
+```
+No significant effect of treatment matching at 26 weeks for individuals who are unemployed. 
+
+### Race/ethnicity
+
+**Week 4**
+
+Simple effect of White/Non-Hispanic
+```{r}
+white_4 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_white_non_his,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(white_4)
+exp(coef(white_4)["c_tx_match"])
+```
+No significant effect of treatment matching at 4 weeks for White, non-Hispanic individuals. OR somewhat lower for White/Non-Hispanic individuals than overall effect (1.21 vs. 1.38).
+
+Simple effect of Non-White
+```{r}
+nonwhite_4 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_not_white,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(nonwhite_4)
+exp(coef(nonwhite_4)["c_tx_match"])
+```
+Significant effect of treatment matching at 4 weeks for non-White individuals. OR much higher for non-White individuals than overall effect (2.16 vs. 1.38).
+
+**Week 12**
+
+Simple effect of White/Non-Hispanic
+```{r}
+white_12 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_white_non_his,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(white_12)
+```
+No significant effect of treatment matching at 12 weeks for White, non-Hispanic individuals.
+
+Simple effect of Non-White
+```{r}
+nonwhite_12 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_not_white,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(nonwhite_12)
+```
+No significant effect of treatment matching at 12 weeks for non-White individuals. 
+
+**Week 26**
+
+Simple effect of White/Non-Hispanic
+```{r}
+white_26 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_white_non_his,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(white_26)
+```
+No significant effect of treatment matching at 26 weeks for White, non-Hispanic individuals.
+
+Simple effect of Non-White
+```{r}
+nonwhite_26 <- glm(outcome_rct_num ~ c_tx_match * c_race_ethn_not_white,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(nonwhite_26)
+```
+No significant effect of treatment matching at 4 weeks for non-White individuals. 
+
+### Sex
+
+**Week 4**
+
+Simple effect of Male
+```{r}
+male_4 <- glm(outcome_rct_num ~ c_tx_match * c_sex_male,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(male_4)
+exp(coef(male_4)["c_tx_match"])
+```
+No significant effect of treatment matching at 4 weeks for Male individuals. OR very similar to overall effect (1.39 vs. 1.38).
+
+Simple effect of Female
+```{r}
+female_4 <- glm(outcome_rct_num ~ c_tx_match * c_sex_female,
+                data = d_wk4,
+                family = binomial(link = "logit"))
+
+summary(female_4)
+exp(coef(female_4)["c_tx_match"])
+```
+No significant effect of treatment matching at 4 weeks for Female individuals. OR very similar to overall effect (1.37 vs. 1.38).
+
+**Week 12**
+
+Simple effect of Male
+```{r}
+male_12 <- glm(outcome_rct_num ~ c_tx_match * c_sex_male,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(male_12)
+```
+No significant effect of treatment matching at 12 weeks for male individuals.
+
+Simple effect of Female
+```{r}
+female_12 <- glm(outcome_rct_num ~ c_tx_match * c_sex_female,
+                data = d_wk12,
+                family = binomial(link = "logit"))
+
+summary(female_12)
+```
+No significant effect of treatment matching at 12 weeks for female individuals. 
+
+**Week 26**
+
+Simple effect of Male
+```{r}
+male_26 <- glm(outcome_rct_num ~ c_tx_match * c_sex_male,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(male_26)
+```
+No significant effect of treatment matching at 26 weeks for male individuals.
+
+Simple effect of Female
+```{r}
+female_26 <- glm(outcome_rct_num ~ c_tx_match * c_sex_female,
+                data = d_wk26,
+                family = binomial(link = "logit"))
+
+summary(female_26)
+```
+No significant effect of treatment matching at 4 weeks for female individuals. 
+
+### Income
+
+Need to remove subset of participants who did not provide income data.
+```{r}
+d_wk4_income <- d_wk4 |> 
+  filter(income != "Missing")
+
+d_wk12_income <- d_wk12 |> 
+  filter(income != "Missing")
+
+d_wk26_income <- d_wk26 |> 
+  filter(income != "Missing")
+```
+
+**Week 4**
+
+Simple effect of higher income
+```{r}
+above_4 <- glm(outcome_rct_num ~ c_tx_match * c_income_above,
+                data = d_wk4_income,
+                family = binomial(link = "logit"))
+
+summary(above_4)
+exp(coef(above_4)["c_tx_match"])
+```
+Significant effect of treatment matching at 4 weeks for higher income individuals. OR similar to overall effect (1.44 vs. 1.38).
+
+Simple effect of low income
+```{r}
+below_4 <- glm(outcome_rct_num ~ c_tx_match * c_income_below,
+                data = d_wk4_income,
+                family = binomial(link = "logit"))
+
+summary(below_4)
+exp(coef(below_4)["c_tx_match"])
+```
+No significant effect of treatment matching at 4 weeks for lower income individuals. OR higher than overall effect (1.53 vs. 1.38) and than higher income individuals (1.53 vs. 1.44) but with wider standard error.
+
+**Week 12**
+
+Simple effect of High income
+```{r}
+above_12 <- glm(outcome_rct_num ~ c_tx_match * c_income_above,
+                data = d_wk12_income,
+                family = binomial(link = "logit"))
+
+summary(above_12)
+```
+No significant effect of treatment matching at 12 weeks for higher income individuals.
+
+Simple effect of Low income
+```{r}
+below_12 <- glm(outcome_rct_num ~ c_tx_match * c_income_below,
+                data = d_wk12_income,
+                family = binomial(link = "logit"))
+
+summary(below_12)
+```
+No significant effect of treatment matching at 12 weeks for lower income individuals. 
+
+**Week 26**
+
+Simple effect of High income
+```{r}
+above_26 <- glm(outcome_rct_num ~ c_tx_match * c_income_above,
+                data = d_wk26_income,
+                family = binomial(link = "logit"))
+
+summary(above_26)
+```
+No significant effect of treatment matching at 26 weeks for higher income individuals.
+
+Simple effect of Low income
+```{r}
+below_26 <- glm(outcome_rct_num ~ c_tx_match * c_income_below,
+                data = d_wk26_income,
+                family = binomial(link = "logit"))
+
+summary(below_26)
+```
+No significant effect of treatment matching at 4 weeks for lower income individuals. 
 
 
 

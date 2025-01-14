@@ -37,7 +37,7 @@ theme_set(theme_classic())
 Absolute paths
 ```{r, absolute paths}
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
-path_models <- format_path(str_c("studydata/match/models/", y_col_name))
+path_models <- "P:/models"
 ```
 
 
@@ -60,7 +60,7 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.
 ```{r load_preds_metrics}
 
 auroc_dem <- read_csv(file.path(path_models,
-                          str_c("auroc_dem_", 
+                          str_c("pp_hybrid_wk4_outcome/", "auroc_dem_", 
                                 version, "_", cv, ".csv")),
                       show_col_types = FALSE) |> 
   arrange(outer_split_num) |> 

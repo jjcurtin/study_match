@@ -55,7 +55,7 @@ Absolute paths
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_input <- stringr::str_c("P:/studydata/match/chtc/", 
+          path_input <- stringr::str_c("P:/chtc/", 
                                        y_col_name)
           path_models <- stringr::str_c("P:/models/", 
                                         y_col_name)},

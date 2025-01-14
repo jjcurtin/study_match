@@ -274,9 +274,7 @@ Clinical benefit fairness analysis results here!
 
 We conducted follow-up fairness analyses for the significant effect of treatment matching at 4 weeks. *Figure X* shows the mean abstinence rate for individuals matched to their best treatment and individuals matched to other treatment separately by sex (Panel A), race/ethnicity (Panel B), and income (Panel C). The treatment matching effect size was similar for male (OR = 1.395) and female (OR = 1.372) participants, and abstinence rates were similar across groups. Non-White participants had a descriptively greater benefit of treatment matching (OR = 2.164) than non-Hispanic White participants (OR = 1.208). However, abstinence rates overall were lower for non-White participants. The treatment matching benefit was similar for individuals whose income was above (OR = ) and below (OR = ) the national poverty line, but abstinence rates were lower overall for individuals below the poverty line.^[Fifty-three participants (4.9%) did not provide income data and were excluded from this analysis. As a comparison, the overall effect of treatment matching for this sample subset was OR = 1.482, *z* = 2.712, *p* = 0.007.]
 
-<!--
-{{< embed notebooks/ana_fairness_benefit.qmd#fig-clin-ben-fair >}}
--->
+<!-- {{< embed notebooks/ana_fairness_benefit.qmd#fig-clin-ben-fair >}} -->
 
 
 ### Model performance

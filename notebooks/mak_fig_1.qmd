@@ -122,7 +122,7 @@ fig_roc
 
 Read in posteriors
 ```{r}
-pp <- read_rds(file.path("P:/studydata/match/models/", 
+pp <- read_rds(file.path("P:/models/", 
                          str_c("posteriors_", version, "_nested.rds")))
 ```
 

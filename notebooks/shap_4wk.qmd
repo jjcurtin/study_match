@@ -47,15 +47,15 @@ options(conflicts.policy = "depends.ok")
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_data <- str_c("P:/studydata/match/chtc/", y_col_name)},
+          path_data <- str_c("P:/chtc/", y_col_name)},
         
         # IOS paths
         Darwin = {
-          path_data <- str_c("/Volumes/private/studydata/match/chtc/", y_col_name)},
+          path_data <- str_c("/Volumes/chtc/", y_col_name)},
         
         # Linux paths
         Linux = {
-          path_data <- str_c("~/mnt/private/studydata/match/chtc/", y_col_name)}
+          path_data <- str_c("~/mnt/chtc/", y_col_name)}
 )
 ```
 

@@ -57,21 +57,21 @@ switch (Sys.info()[['sysname']],
         Windows = {
           path_input <- stringr::str_c("P:/studydata/match/chtc/", 
                                        y_col_name)
-          path_models <- stringr::str_c("P:/studydata/match/models/", 
+          path_models <- stringr::str_c("P:/models/", 
                                         y_col_name)},
         
         # IOS paths
         Darwin = {
-          path_input <- stringr::str_c("/Volumes/private/studydata/match/chtc/", 
+          path_input <- stringr::str_c("/Volumes/chtc/", 
                                        y_col_name)
-          path_models <- stringr::str_c("/Volumes/private/studydata/match/models/", 
+          path_models <- stringr::str_c("/Volumes/models/", 
                                         y_col_name)},
         
         # Linux paths
         Linux = {
-          path_input <- stringr::str_c("~/mnt/private/studydata/match/chtc/", 
+          path_input <- stringr::str_c("~/mnt/chtc/", 
                                        y_col_name)
-          path_models <- stringr::str_c("~/mnt/private/studydata/match/models/", 
+          path_models <- stringr::str_c("~/mnt/models/", 
                                         y_col_name)}
 )
 ```

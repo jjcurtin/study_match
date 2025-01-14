@@ -46,8 +46,8 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/sta
 
 
 
-path_processed <- "R:/studydata/match/processed_data"
-path_models <- str_c("R:/studydata/match/models/", y_col_name)
+path_processed <- "P:/processed_data"
+path_models <- str_c("P:/models/", y_col_name)
 ```
 
 ## Prepare data

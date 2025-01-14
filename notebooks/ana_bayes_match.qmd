@@ -53,15 +53,15 @@ Absolute paths
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_models <- "P:/studydata/match/models/"},
+          path_models <- "P:/models/"},
         
         # IOS paths
         Darwin = {
-          path_models <- "/Volumes/private/studydata/match/models/"},
+          path_models <- "/Volumes/models/"},
         
         # Linux paths
         Linux = {
-          path_models <- "~/mnt/private/studydata/match/models/"}
+          path_models <- "~/mnt/models/"}
 )
 ```
 

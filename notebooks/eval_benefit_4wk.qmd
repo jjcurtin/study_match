@@ -50,20 +50,20 @@ options(conflicts.policy = "depends.ok")
 switch (Sys.info()[['sysname']],
         # PC paths
         Windows = {
-          path_models <- str_c("P:/studydata/match/models/", y_col_name)
-          path_data <- "P:/studydata/match/processed_data"},
+          path_models <- str_c("P:/models/", y_col_name)
+          path_data <- "P:/processed_data"},
         
         # IOS paths
         Darwin = {
-          path_models <- str_c("/Volumes/private/studydata/match/models/",
+          path_models <- str_c("/Volumes/models/",
                                y_col_name)
-          path_data <- "/Volumes/private/studydata/match/processed_data"},
+          path_data <- "/Volumes/processed_data"},
         
         # Linux paths
         Linux = {
-          path_models <- str_c("~/mnt/private/studydata/match/models/",
+          path_models <- str_c("~/mnt/models/",
                                y_col_name)
-          path_data <- "~/mnt/private/studydata/match/processed_data"}
+          path_data <- "~/mnt/processed_data"}
 )
 ```
 

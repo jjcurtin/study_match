@@ -214,7 +214,7 @@ fig_shap_global_tx
 
 Paneled Global figure
 ```{r}
-#| label: fig-shap-global
+#| label: fig-shap-global-panel
 #| fig-height: 9
 #| fig-cap: "Global feature importance via Shapley values. Bar represents magnitude of global feature importance, which is calculated from the mean of the absolute value across all observations for that feature. A) Global feature importance for top 25 features overall. B) Global feature importance for top 25 treatment interaction features."
  
@@ -223,6 +223,15 @@ fig_panel_shap_global <- (fig_shap_global / fig_shap_global_tx / guide_area()) +
               heights = unit(c(3, 3, 0.5), "in")) +
   plot_annotation(tag_levels = "A",
                   title = "Top Global Shapley Values")
+
+fig_panel_shap_global
+```
+
+"Panel A" only (overall global SHAP)
+```{r}
+#| label: fig-shap-global
+#| fig-height: 9
+#| fig-cap: "Global feature importance via Shapley values for top 25 features. Bar represents magnitude of global feature importance, which is calculated from the mean of the |Shapley value| across all observations for that feature."
 
 fig_panel_shap_global
 ```
